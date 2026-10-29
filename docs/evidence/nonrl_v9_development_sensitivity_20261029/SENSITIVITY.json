@@ -1,0 +1,1716 @@
+{
+  "status": "development_diagnostic_only",
+  "dataset_sha256": "120173888964ee0545393cd0d2685c794f7aa261626463fa7c10fc981b9c6407",
+  "model_lock_sha256": "89627247af4397ec523d690a9dd15c996383a15d25d14be4034c1c62ab143031",
+  "metadata_sha256": "3c217c96784431817159de1c9f6850c0df70f4efdf9277a87488d8a6a8349bed",
+  "diagnostic_source_sha256": "6e45334661d83200a841773893f35d9181c17afcb13ff659f605639b7a711a58",
+  "actor_source_sha256": {
+    "current_student_policy_20260921.py": "9102be44fcfa27212c71bc81179b9e455574710cd457153bd5dbbee713c77fc3",
+    "office_vmc_memory_esn_20260927.py": "afcff76d7769d9453cd58a412d7c280a5d9355b4335fc7e318eec973d181c44a",
+    "office_mlp_rnn_20261002.py": "0bc084dce6b5e890982c6fb4e1551b59ea0723839db22be26e250814167af8f4"
+  },
+  "intervention_protocol": [
+    [
+      "position_error_1mm",
+      [
+        20,
+        21,
+        22
+      ],
+      0.001
+    ],
+    [
+      "estimated_force_0p1N",
+      [
+        39,
+        40,
+        41
+      ],
+      0.1
+    ]
+  ],
+  "sample_stride": 10,
+  "caveats": [
+    "Single-coordinate synthetic interventions, not dynamically consistent states.",
+    "One-step policy sensitivity is not closed-loop stability or a causal attribution.",
+    "Saturation includes pre-existing saturation; it is not a newly-induced rate.",
+    "Normalized requested actions before the common filter, not physical torques.",
+    "No refit or parameter selection; no unseen-test inputs consumed."
+  ],
+  "rows": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0001667378666067649,
+            "p95": 0.00150052075471926,
+            "maximum": 0.01713216229014139
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0025286452160054058,
+            "p95": 0.019599983225800255,
+            "maximum": 0.03923944524918277
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.00016428679155546823,
+            "p95": 0.0014968211730787182,
+            "maximum": 0.007550690011698717
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0025200954014673775,
+            "p95": 0.021115633591633546,
+            "maximum": 0.03923944524918277
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.00025608826293920146,
+            "p95": 0.0011699735784204074,
+            "maximum": 0.005942140623209746
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0030277407285201658,
+            "p95": 0.0485432112203706,
+            "maximum": 0.060849263548248
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.00021890488472585238,
+            "p95": 0.0014293947925401102,
+            "maximum": 0.004076615287396463
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.004229434897942705,
+            "p95": 0.017733097168006893,
+            "maximum": 0.027484109896394222
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0005054309663922452,
+            "p95": 0.0022577957009620865,
+            "maximum": 0.00647692797968949
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.003694494912930227,
+            "p95": 0.05624582796725981,
+            "maximum": 0.05907343268515926
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.000509038810624743,
+            "p95": 0.002283061895698621,
+            "maximum": 0.005481311780888301
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0037484135418112607,
+            "p95": 0.05683158502112421,
+            "maximum": 0.063216058970922
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "a621fa126c8b15aa36687dc0f04accc7e6a1b772d28afe47b013547863dee656",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0006747353191899653,
+            "p95": 0.001451513811431976,
+            "maximum": 0.002378116550921128
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0026255414582332347,
+            "p95": 0.01642809191844976,
+            "maximum": 0.019134060097265773
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "a621fa126c8b15aa36687dc0f04accc7e6a1b772d28afe47b013547863dee656",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0006866074340194485,
+            "p95": 0.0014872118677493737,
+            "maximum": 0.002378116550921128
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0025949832675620206,
+            "p95": 0.01667852282571165,
+            "maximum": 0.01935978253558717
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "a621fa126c8b15aa36687dc0f04accc7e6a1b772d28afe47b013547863dee656",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0006335907903476652,
+            "p95": 0.0016586788530113061,
+            "maximum": 0.002222112269313596
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0026158271602917246,
+            "p95": 0.016292834938124164,
+            "maximum": 0.01950013446412595
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "a621fa126c8b15aa36687dc0f04accc7e6a1b772d28afe47b013547863dee656",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0008472531434130915,
+            "p95": 0.0015975607294099767,
+            "maximum": 0.0023685251979919247
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0026703108624203747,
+            "p95": 0.01701385848611068,
+            "maximum": 0.019617770591834553
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "a621fa126c8b15aa36687dc0f04accc7e6a1b772d28afe47b013547863dee656",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0006405495254721747,
+            "p95": 0.0016161992236181256,
+            "maximum": 0.0035984547060637587
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0029638544357769303,
+            "p95": 0.01640225260510185,
+            "maximum": 0.018939909360597352
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "a621fa126c8b15aa36687dc0f04accc7e6a1b772d28afe47b013547863dee656",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.000586818073453411,
+            "p95": 0.001729910326654706,
+            "maximum": 0.00339119470480973
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.002860901430725442,
+            "p95": 0.017011457684810802,
+            "maximum": 0.01850814315659523
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "f246bb82ba8fbc294732d45a4afceb74c42d0c7515b71f7e4aeefdf743a6da8c",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0019097636291759974,
+            "p95": 0.005053309241621425,
+            "maximum": 0.006036813272913482
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.004984073521592884,
+            "p95": 0.011425978698733786,
+            "maximum": 0.040780822655822994
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "f246bb82ba8fbc294732d45a4afceb74c42d0c7515b71f7e4aeefdf743a6da8c",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0019102010298964632,
+            "p95": 0.005052636482587661,
+            "maximum": 0.006036813272913482
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.005079390601770002,
+            "p95": 0.012033594328768587,
+            "maximum": 0.040780822655822994
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "f246bb82ba8fbc294732d45a4afceb74c42d0c7515b71f7e4aeefdf743a6da8c",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0016428219999398965,
+            "p95": 0.00445079937045565,
+            "maximum": 0.0061009939658266425
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.005642098477345075,
+            "p95": 0.011170905300362133,
+            "maximum": 0.0387289298005073
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "f246bb82ba8fbc294732d45a4afceb74c42d0c7515b71f7e4aeefdf743a6da8c",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.002099822393231275,
+            "p95": 0.004269057328035725,
+            "maximum": 0.004573593941484551
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.006014689667195986,
+            "p95": 0.012158340521028339,
+            "maximum": 0.028233704254862223
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "f246bb82ba8fbc294732d45a4afceb74c42d0c7515b71f7e4aeefdf743a6da8c",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0012730613634555693,
+            "p95": 0.005255360562495089,
+            "maximum": 0.0072554506497468085
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.005648505181277482,
+            "p95": 0.017853850698055132,
+            "maximum": 0.03438748096913434
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "f246bb82ba8fbc294732d45a4afceb74c42d0c7515b71f7e4aeefdf743a6da8c",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.001148054764978703,
+            "p95": 0.004819205339498355,
+            "maximum": 0.005432903913680995
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.005882819371604944,
+            "p95": 0.01664358754541512,
+            "maximum": 0.03459857255539146
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "94dfd9a70e67ee3a6a40a45f4fcf54c5b40baf434fd4ee6d71701a203f07f438",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0001529097115938174,
+            "p95": 0.0007848002949151251,
+            "maximum": 0.019091586419708796
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.002345448128250438,
+            "p95": 0.02041754533652042,
+            "maximum": 0.04157349849918149
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "94dfd9a70e67ee3a6a40a45f4fcf54c5b40baf434fd4ee6d71701a203f07f438",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.00014435067170217968,
+            "p95": 0.0007283182502713113,
+            "maximum": 0.008922434275063826
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.002370514909655423,
+            "p95": 0.02043990320852265,
+            "maximum": 0.04157349849918149
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "94dfd9a70e67ee3a6a40a45f4fcf54c5b40baf434fd4ee6d71701a203f07f438",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.00012853720384232168,
+            "p95": 0.0008571610124353791,
+            "maximum": 0.004790416433203659
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.002868066782092422,
+            "p95": 0.02282010599282962,
+            "maximum": 0.06276737572923963
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "94dfd9a70e67ee3a6a40a45f4fcf54c5b40baf434fd4ee6d71701a203f07f438",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 9.126920649938351e-05,
+            "p95": 0.0012002599371964697,
+            "maximum": 0.004555403433732633
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0026130192571280353,
+            "p95": 0.017382353899602344,
+            "maximum": 0.03233755837248113
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "94dfd9a70e67ee3a6a40a45f4fcf54c5b40baf434fd4ee6d71701a203f07f438",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.00045039910734642015,
+            "p95": 0.0018892733974345216,
+            "maximum": 0.008346224927519463
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.00330549272971922,
+            "p95": 0.03586186305976474,
+            "maximum": 0.08997556513067176
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "94dfd9a70e67ee3a6a40a45f4fcf54c5b40baf434fd4ee6d71701a203f07f438",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0003431467704553461,
+            "p95": 0.0018246095690418272,
+            "maximum": 0.008489824151044878
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.003220506483140484,
+            "p95": 0.035851014306251934,
+            "maximum": 0.09590645946185536
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "acd90a0a46636c848fa4b33d00675518b5547ff9e4287fd9d08f7bdbc2bdbab2",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0017625033895486628,
+            "p95": 0.002764179025842055,
+            "maximum": 0.0036800751133955235
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0040099879301847274,
+            "p95": 0.0138433344206743,
+            "maximum": 0.018532265473511975
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "acd90a0a46636c848fa4b33d00675518b5547ff9e4287fd9d08f7bdbc2bdbab2",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0017611425034040774,
+            "p95": 0.002764179025842055,
+            "maximum": 0.0036800751133955235
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.004122259563001603,
+            "p95": 0.013607856820557006,
+            "maximum": 0.018532265473511975
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "acd90a0a46636c848fa4b33d00675518b5547ff9e4287fd9d08f7bdbc2bdbab2",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0012443803868901944,
+            "p95": 0.002612934373748852,
+            "maximum": 0.0035047901163127175
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.004184066453532191,
+            "p95": 0.014981160929541408,
+            "maximum": 0.01792078386709642
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "acd90a0a46636c848fa4b33d00675518b5547ff9e4287fd9d08f7bdbc2bdbab2",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0012149725751957963,
+            "p95": 0.0026226379572057658,
+            "maximum": 0.003048890302190285
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.004262650309805434,
+            "p95": 0.014433945915399884,
+            "maximum": 0.01685966936960991
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "acd90a0a46636c848fa4b33d00675518b5547ff9e4287fd9d08f7bdbc2bdbab2",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0012103009862215023,
+            "p95": 0.0027057846407855177,
+            "maximum": 0.0045407011653285125
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.003718703891285932,
+            "p95": 0.015495755785457848,
+            "maximum": 0.02059470126775391
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "acd90a0a46636c848fa4b33d00675518b5547ff9e4287fd9d08f7bdbc2bdbab2",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0010991391548332695,
+            "p95": 0.0024606427077660795,
+            "maximum": 0.003138394589462079
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0037277870610364205,
+            "p95": 0.014931346327543801,
+            "maximum": 0.020563915435221153
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "3218fb6b021e130adbc57089638138ad4f4f95c5b17963eb73a8b1c2c02d66ff",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.001318965136725315,
+            "p95": 0.00400645963575143,
+            "maximum": 0.006767309259874506
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.004081894612726605,
+            "p95": 0.022468897660684644,
+            "maximum": 0.026644733644768825
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "3218fb6b021e130adbc57089638138ad4f4f95c5b17963eb73a8b1c2c02d66ff",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0012904997969066172,
+            "p95": 0.004235899633372704,
+            "maximum": 0.006767309259874506
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.00408852913540437,
+            "p95": 0.022487124440013585,
+            "maximum": 0.02683788459092984
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "3218fb6b021e130adbc57089638138ad4f4f95c5b17963eb73a8b1c2c02d66ff",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0010521603865042035,
+            "p95": 0.005468483244961638,
+            "maximum": 0.008865552072282158
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.004894653747567615,
+            "p95": 0.020454440092476663,
+            "maximum": 0.02634000089539732
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "3218fb6b021e130adbc57089638138ad4f4f95c5b17963eb73a8b1c2c02d66ff",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0020465339571100086,
+            "p95": 0.0034321055165135303,
+            "maximum": 0.00783590818097113
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0035441303308015263,
+            "p95": 0.015907680041298944,
+            "maximum": 0.028792828800514012
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "3218fb6b021e130adbc57089638138ad4f4f95c5b17963eb73a8b1c2c02d66ff",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0015458663266411745,
+            "p95": 0.00471758683233847,
+            "maximum": 0.00638689159996883
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.004492736921916519,
+            "p95": 0.02143601658776872,
+            "maximum": 0.031796871494513816
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "3218fb6b021e130adbc57089638138ad4f4f95c5b17963eb73a8b1c2c02d66ff",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0013931708265144146,
+            "p95": 0.0050755566930288515,
+            "maximum": 0.006257888365679434
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.004420519948256471,
+            "p95": 0.021521386972556893,
+            "maximum": 0.03181175303218621
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "a7a4eba3aa23a90024d8962b5bad6704fc0c4aeab4d7527ba4b24c16c9b6db9d",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.00012450113401029468,
+            "p95": 0.0009372871165036188,
+            "maximum": 0.023375284390269598
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0030197402418867692,
+            "p95": 0.018098838532198385,
+            "maximum": 0.053845053264069256
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "a7a4eba3aa23a90024d8962b5bad6704fc0c4aeab4d7527ba4b24c16c9b6db9d",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0001239383261857861,
+            "p95": 0.0008461222432523045,
+            "maximum": 0.0038580028529001525
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0028834348706921805,
+            "p95": 0.019975994126739713,
+            "maximum": 0.053845053264069256
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "a7a4eba3aa23a90024d8962b5bad6704fc0c4aeab4d7527ba4b24c16c9b6db9d",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0001601490829899791,
+            "p95": 0.0010954623127912553,
+            "maximum": 0.007915556049520009
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.003107960564599762,
+            "p95": 0.01777317976586031,
+            "maximum": 0.0459916721946025
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "a7a4eba3aa23a90024d8962b5bad6704fc0c4aeab4d7527ba4b24c16c9b6db9d",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.00013194878681262352,
+            "p95": 0.0010285441705989024,
+            "maximum": 0.0032433184039481894
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0041796107079895345,
+            "p95": 0.015890327986727848,
+            "maximum": 0.029958515442736623
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "a7a4eba3aa23a90024d8962b5bad6704fc0c4aeab4d7527ba4b24c16c9b6db9d",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0003373799407536018,
+            "p95": 0.0015419026599779518,
+            "maximum": 0.00959629365779402
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.003121396092614692,
+            "p95": 0.028892807427126525,
+            "maximum": 0.05121819047089976
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "a7a4eba3aa23a90024d8962b5bad6704fc0c4aeab4d7527ba4b24c16c9b6db9d",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.000332951748257938,
+            "p95": 0.0013935659491278187,
+            "maximum": 0.010032767112100438
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0032186005337781695,
+            "p95": 0.027072000843939268,
+            "maximum": 0.059631006921084216
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "913d8fbae692152f3134b27716f8c84c25009a65af63842bec014108222e8686",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.000946938491625533,
+            "p95": 0.0017689185942148997,
+            "maximum": 0.0025530330816742513
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0027787225452800598,
+            "p95": 0.00940506152301712,
+            "maximum": 0.012850742657897473
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "913d8fbae692152f3134b27716f8c84c25009a65af63842bec014108222e8686",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.000942965207661596,
+            "p95": 0.0017662063840217213,
+            "maximum": 0.002578751009077427
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0028110701684827826,
+            "p95": 0.0094058767112238,
+            "maximum": 0.012850742657897473
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "913d8fbae692152f3134b27716f8c84c25009a65af63842bec014108222e8686",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.000861902352854432,
+            "p95": 0.002151823590802455,
+            "maximum": 0.003622386419283502
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0028476620576326464,
+            "p95": 0.009528248356239942,
+            "maximum": 0.023381725003216364
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "913d8fbae692152f3134b27716f8c84c25009a65af63842bec014108222e8686",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0009707669392153167,
+            "p95": 0.0018579297203481298,
+            "maximum": 0.003682742610151238
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0027536031750602873,
+            "p95": 0.00946370670311834,
+            "maximum": 0.021298833220628824
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "913d8fbae692152f3134b27716f8c84c25009a65af63842bec014108222e8686",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0006419863660214859,
+            "p95": 0.0024090980320899784,
+            "maximum": 0.002839981483285724
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0028899835563188057,
+            "p95": 0.009280832452590657,
+            "maximum": 0.020767430147271518
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "913d8fbae692152f3134b27716f8c84c25009a65af63842bec014108222e8686",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.0007200659910574871,
+            "p95": 0.00240949087326557,
+            "maximum": 0.0028656362856353907
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.002737747039763136,
+            "p95": 0.009305199469036084,
+            "maximum": 0.02103666772987264
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "rod_00",
+      "scene": "rod",
+      "split": "train",
+      "frames": 500,
+      "checkpoint_sha256": "a1809de393496ab3631483172c18fc9f95534bd56856a85e5d7a6ee498aefb61",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0012034076716540597,
+            "p95": 0.00443617016276246,
+            "maximum": 0.005477490361807362
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.004757438442677611,
+            "p95": 0.016246125042638206,
+            "maximum": 0.022797865040859244
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "rod_08",
+      "scene": "rod",
+      "split": "validation",
+      "frames": 500,
+      "checkpoint_sha256": "a1809de393496ab3631483172c18fc9f95534bd56856a85e5d7a6ee498aefb61",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.0012385218750366538,
+            "p95": 0.0042393123464696935,
+            "maximum": 0.005441615552638432
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 300,
+            "median": 0.004790190384362888,
+            "p95": 0.016280734061185926,
+            "maximum": 0.02497065049211494
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "ball_00",
+      "scene": "ball",
+      "split": "train",
+      "frames": 750,
+      "checkpoint_sha256": "a1809de393496ab3631483172c18fc9f95534bd56856a85e5d7a6ee498aefb61",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0011240596147115223,
+            "p95": 0.003038707902430849,
+            "maximum": 0.006005073857369202
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0051291944603097,
+            "p95": 0.017023576557889303,
+            "maximum": 0.030796890062018634
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "ball_08",
+      "scene": "ball",
+      "split": "validation",
+      "frames": 750,
+      "checkpoint_sha256": "a1809de393496ab3631483172c18fc9f95534bd56856a85e5d7a6ee498aefb61",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0011821864911723179,
+            "p95": 0.0026562473188989533,
+            "maximum": 0.004320457926893222
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 450,
+            "median": 0.0057366920416346105,
+            "p95": 0.017393476118299795,
+            "maximum": 0.03243539773773481
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "corner_00",
+      "scene": "corner",
+      "split": "train",
+      "frames": 325,
+      "checkpoint_sha256": "a1809de393496ab3631483172c18fc9f95534bd56856a85e5d7a6ee498aefb61",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.001408091836688774,
+            "p95": 0.00403201432303025,
+            "maximum": 0.005234799629008441
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.005841597196888888,
+            "p95": 0.01719113125145732,
+            "maximum": 0.025427323126417815
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "teacher_identity": "corner_08",
+      "scene": "corner",
+      "split": "validation",
+      "frames": 325,
+      "checkpoint_sha256": "a1809de393496ab3631483172c18fc9f95534bd56856a85e5d7a6ee498aefb61",
+      "clone_replay_error": 0.0,
+      "interventions": {
+        "position_error_1mm": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.00136959551716404,
+            "p95": 0.003859794399435763,
+            "maximum": 0.0051650175718953376
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        },
+        "estimated_force_0p1N": {
+          "residual_action_max_abs_change": {
+            "n": 198,
+            "median": 0.005843543026507388,
+            "p95": 0.018957507158735332,
+            "maximum": 0.0423932010666946
+          },
+          "perturbed_residual_saturation_fraction": 0.0
+        }
+      }
+    }
+  ]
+}

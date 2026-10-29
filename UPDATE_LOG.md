@@ -1,3 +1,10 @@
+## 2026-10-29 — v9训练/验证输入敏感性检查与真实推进核验
+
+- [完整检查](docs/NONRL_V9_DEVELOPMENT_SENSITIVITY_20261029.md)：六teacher train00/validation08历史、三方法九模型、54组同状态单步输入干预；±0.1N估计力下ESN最大归一化残差动作变化0.095906、RNN0.023382、MLP0.042393；±1mm位置误差分别0.023375/0.004541/0.008866。数据/模型前后hash不变、clone无扰动回放精确。无拟合/物理积分/测试读取；只支持ESN敏感性线索，不证明闭环稳定性或唯一根因，不称修复成功。
+- 本机独立低优先级CPU6/25%/单线程/512MiB/禁swap分析服务exit0（wall2.141s）。原scope七样本真实time17.04→44.04s、身份保持/OOM0/实验swap0；随后48→49/108、Task5、Strict/BOTH0、SPT NA。唯一v3后继仍等待、1103源hash一致。保持原108→18开发配对→train/val修复→另冻结未见三特化测试顺序；Goal active、主矩阵未修复。
+- 五成员源码/报告/敏感性/有限观察包15206bytes/SHA719ad24ad9b02be46eacc5532a8dfe1f46bfd09e2ebced7c565fcee70591246e，逐成员及远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_development_sensitivity_20261029_v1/EVIDENCE.tar.gz`。无在途108归档、服务器计算或RL操作。
+- 开工fetch/read main fc7fcda23251db552f44be63ae4f211f2eb88ea2、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，保留两个无关untracked。本轮progress。
+
 ## 2026-10-29 — v9实际scope后处理入口修复与六指标手算预检
 
 - [完整记录](docs/NONRL_V9_TRANSFER_AUDIT_PREFLIGHT_20261029.md)：实际v9由scope直接启动，旧v8顶层审计要求其preparation/handoff，不能伪造套用。新增v9入口绑定实际登记/完整source/父protocol/conditions/v9数据与九模型，复用逐回合独立子步审计和条件SPT汇总。仍只算组合迁移压力，非三特化最终主矩阵。
