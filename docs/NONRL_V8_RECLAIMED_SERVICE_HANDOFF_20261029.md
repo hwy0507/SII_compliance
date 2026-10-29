@@ -1,5 +1,23 @@
 # 原108结束后的临时服务回收衔接
 
+## 后续核验：05:31–05:36 UTC，77→79
+
+05:31:37.140–05:36:07.222UTC共10样本，原1172675/start32623702及1201537/start32942337
+保持loaded/active，完整77→79。MLP2从31.04s/carry到54.04s，原协调器随后接续ESN3，
+再接续RNN3，末样本4.04s/lift。MLP2实际runtime为55s/noabort/TaskStrictfalse/carry；
+ESN3实际16.16s/lift/global_penetration_exceeded_2mm/TaskStrictfalse，短回合失败保留。
+这是运行收据核对，不是新增独立子步审计或完整第九条件结论。
+最高MemoryCurrent2077904896bytes/3GiB，全部样本OOM/oom_kill/实验swap0；
+末主机MemAvailable4190408kB、SwapFree344kB。observer61682到79后自然exit0，科学继续。
+
+[10样本及观察源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_VERIFIED_WAIT_0531.json)，
+21965bytes，SHA256 `af4f76d0a6e2bfaad060c1d804e43329df6f518f99debf61270d8566b8095828`。
+已核暂存及最终共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0531_20261029_v1/V8_VERIFIED_WAIT_0531.json`。
+开工main08437d86/baselinef6e8f8c实际fetch/read。本轮verified wait，Goal active，主矩阵未修复。
+原完整108/后处理继续，唯一v6未启动；完整审查归档→八球覆盖→正式补采/公平重训保持，
+无新物理/拟合/绑定源改动，可选004审计未重试。
+
 ## 后续核验：05:20–05:28 UTC，75→77
 
 05:20:33.735–05:28:33.887UTC共17样本，原1172675/start32623702及后处理1201537/start32942337

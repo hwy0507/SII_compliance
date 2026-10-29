@@ -1,3 +1,8 @@
+## 2026-10-29 — 非RL原108核验77→79
+
+- 05:31:37–05:36:07UTC共10样本原1172675/start32623702及1201537/start32942337 loaded/active，77→79、MLP2→ESN3→RNN3；最高2077904896bytes/3GiB、OOM/实验swap0。MLP2 runtime55s/carry失败，ESN3 runtime16.16s/lift/global penetration abort失败，全部保留；非新独立子步审计。observer61682自然exit0，科学继续。
+- 21965bytes/SHAaf4f76d0观察含源码，已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0531_20261029_v1/V8_VERIFIED_WAIT_0531.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。开工main08437d86/baselinef6e8f8c实际fetch/read。
+- 本轮verified wait，Goal active，主矩阵未修复；原完整108/后处理→审查归档→唯一v6八球→正式补采/公平重训仍待。无新物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
 ## 2026-10-29 — 新容器partial75精确恢复与完整76
 
 - [最新交接](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。05:30发现容器主机更换、旧75/全部等待/guardv5消失，无FINISHED75；旧21样本观察当时有效，不能冒充当前live。旧75明确中断，原74–76无法评定，旧canonical76准备全部superseded，勿重复启动。
