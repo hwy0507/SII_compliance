@@ -1,3 +1,9 @@
+## 2026-10-30 — 球撞九模型诊断：训练拟合好仍可能闭环恢复失败
+
+- 新只读脚本与JSON/PNG/PDF基于本次真实ball00九轨迹，逐模型750帧actor精确重放和原数据/模型/review/指标hash核验，无新物理/优化/test。RNN全train-history MSE1.05–1.09e-5低于ESN1.14–1.27e-5，球开发却0/3对3/3；三RNN后期向上requested residual明显高于同历史反事实teacher，低整体MSE不能证明恢复。距离分析显示失败RNN02仍接近训练样本，不能把全部失败归为简单逐帧分布外；成功MLP03反事实误差亦可高于失败RNN02，禁止以此新选模/改gate。
+- 证据`CONTACT_YIELD_BALL_SUPPORT_DIAGNOSIS_20261030.json/png/pdf`及专题新增说明。六神经normalizer差仅浮点1.11e-16，最初逐位断言失败已明确容差复核；四实际观察最近距离独立计算差0。图已目视核验；requested velocity不是实际末端速度，距离不含hidden history，反事实不是实际示范。
+- 开工fetch/read main82300885f14f9fbe17131916e43394640b019034/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；AGENTS完整重读。上一轮progress，本轮新增科学证据为progress；四探针明确审批仍待、无新登记/进程，原两服务宿主核实inactive/PID0，最终108未派发。新raw仅本地，无服务器导出/计算、无RL/删除，两个无关untracked保留；Goal active。
+
 ## 2026-10-30 — 完整27开发结果：ESN9/9双成功，公平恢复修复已具体化
 
 - 原固定27诊断及最终等待器均自然inactive/PID0；独立review完成，27原METRICS/hash及actor/filter replay逐项核验。ESN Task/Strict/machine9/9；RNN6/6/9（分母9）；MLP8/6/8（分母9）。三场景双成功ESN3/3、3/3、3/3，RNN3/3、0/3、3/3，MLP1/3、2/3、3/3。仅train00开发，不是最终矩阵；全部六失败保留。证据`CONTACT_YIELD_COMPLETE27_DEVELOPMENT_20261030.json`及专题`docs/NONRL_CONTACT_YIELD_STUDENT_DIAGNOSIS_20261030.md`。

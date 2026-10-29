@@ -1,0 +1,1190 @@
+{
+  "status": "complete_saved_history_ball_support_diagnosis",
+  "dataset_sha256": "67c01021964857020a039a644a9ff6a5b67735c034d45bb7cc5c84b53cf0691b",
+  "development_review_sha256": "bbc0d8ea0beb46df50d6192402ac0dad892d390b2c3e8459b6f73d9e481e1b38",
+  "analyzer_sha256": "a2e3cb2e365bddee7ee60df59ba6a7357a97478863f3131d0e2f86bd116a73b1",
+  "fields": [
+    14,
+    15,
+    16,
+    20,
+    21,
+    22,
+    26,
+    27,
+    28,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "normalization": "train-only std floored0.005, clip[-12,12], absolute expansion: matches instantaneous MLP/RNN input; excludes recurrent hidden history",
+  "nearest_distance": "minimum RMS Euclidean distance to any training frame in the 36-dimensional normalized representation; exact chunked search",
+  "validation_reference": {
+    "all_validation": {
+      "mean": 0.040237262245208856,
+      "median": 0.008785413228035168,
+      "p95": 0.18144488796943403,
+      "maximum": 1.90006599602249
+    },
+    "ball_validation": {
+      "mean": 0.04369154576150774,
+      "median": 0.011377127865896605,
+      "p95": 0.16924569721268476,
+      "maximum": 1.90006599602249
+    },
+    "all_validation_p95": 0.18144488796943403
+  },
+  "training_history_errors": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "frames": 12600,
+      "requested_action_mse": 1.143924082358087e-05,
+      "z_action_mse": 2.754384170993383e-05
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "frames": 12600,
+      "requested_action_mse": 1.0787960918339072e-05,
+      "z_action_mse": 1.3863395357507728e-05
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "frames": 12600,
+      "requested_action_mse": 0.00012942495933081935,
+      "z_action_mse": 6.447376621975059e-05
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "frames": 12600,
+      "requested_action_mse": 1.2729315416388259e-05,
+      "z_action_mse": 3.671509511484712e-05
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "frames": 12600,
+      "requested_action_mse": 1.094633194601093e-05,
+      "z_action_mse": 1.329928709435943e-05
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "frames": 12600,
+      "requested_action_mse": 0.00012626111374581804,
+      "z_action_mse": 6.007801139692315e-05
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "frames": 12600,
+      "requested_action_mse": 1.2013618673975694e-05,
+      "z_action_mse": 3.7556724289591496e-05
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "frames": 12600,
+      "requested_action_mse": 1.0501050097688816e-05,
+      "z_action_mse": 1.3918563575283512e-05
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "frames": 12600,
+      "requested_action_mse": 0.00012562474303543907,
+      "z_action_mse": 6.203501273806861e-05
+    }
+  ],
+  "rows": [
+    {
+      "id": "ball_00__special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "task_success": true,
+      "strict_success": true,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 4.021502434961067e-05,
+          "student_mean_z_yield_mps": 0.016187446270444824,
+          "counterfactual_teacher_mean_z_yield_mps": 0.015774672418473145,
+          "pose_error_norm_m": {
+            "mean": 0.035000818384861805,
+            "median": 0.02392209806223993,
+            "p95": 0.07941662547119117,
+            "maximum": 0.08167605433329966
+          },
+          "nearest_train_distance": {
+            "mean": 0.04592756722942856,
+            "median": 0.03906165560509341,
+            "p95": 0.12358418174516797,
+            "maximum": 0.14458058939767574
+          },
+          "fraction_above_validation_p95": 0.0
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 3.672680937140358e-05,
+          "student_mean_z_yield_mps": 0.0014424128674277786,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0025333421108796115,
+          "pose_error_norm_m": {
+            "mean": 0.07146330864775516,
+            "median": 0.05292854099840656,
+            "p95": 0.14838830461024594,
+            "maximum": 0.15116811611123687
+          },
+          "nearest_train_distance": {
+            "mean": 0.07043838377890607,
+            "median": 0.03697016380192287,
+            "p95": 0.3178040022810062,
+            "maximum": 0.619285943817941
+          },
+          "fraction_above_validation_p95": 0.09333333333333334
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 6.877850509517483e-05,
+          "student_mean_z_yield_mps": 0.0064769582768461655,
+          "counterfactual_teacher_mean_z_yield_mps": 0.005995521166576894,
+          "pose_error_norm_m": {
+            "mean": 0.04658150708287671,
+            "median": 0.04363123889549766,
+            "p95": 0.09189008861951306,
+            "maximum": 0.10190456195688971
+          },
+          "nearest_train_distance": {
+            "mean": 0.07533772629563902,
+            "median": 0.03970422545556219,
+            "p95": 0.22399810651000418,
+            "maximum": 0.6072184116411494
+          },
+          "fraction_above_validation_p95": 0.088
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.00032047213477482935,
+          "student_mean_z_yield_mps": 0.007389989663073213,
+          "counterfactual_teacher_mean_z_yield_mps": 0.020341227314866414,
+          "pose_error_norm_m": {
+            "mean": 0.0036237360939584107,
+            "median": 0.0033744498023011225,
+            "p95": 0.007498707230278665,
+            "maximum": 0.011040903384525364
+          },
+          "nearest_train_distance": {
+            "mean": 0.04471927496903149,
+            "median": 0.04487379426425342,
+            "p95": 0.09052984825070333,
+            "maximum": 0.1824722024562936
+          },
+          "fraction_above_validation_p95": 0.004
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 0.0005975890363057617,
+          "student_mean_z_yield_mps": 0.0012399926384460533,
+          "counterfactual_teacher_mean_z_yield_mps": 0.02191044980164437,
+          "pose_error_norm_m": {
+            "mean": 0.0065649488518764185,
+            "median": 0.0066947984929736125,
+            "p95": 0.0072437950729633,
+            "maximum": 0.007273323538675637
+          },
+          "nearest_train_distance": {
+            "mean": 0.043958169552675605,
+            "median": 0.04360733335937256,
+            "p95": 0.047506727223727965,
+            "maximum": 0.0476475609026349
+          },
+          "fraction_above_validation_p95": 0.0
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "80fade6a9b836e4bad25bbeb3b1b25d3f368b333972d702afc2bca6f7031c26e",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "398983fbe802ac6db83c47756ac793fbfca09fc7fca1fb5950be164090958927"
+      },
+      "metrics_sha256": "5f873bfaadbf55fed679a2e72b70754d54205c116f41632cf57fe76acdc71a92"
+    },
+    {
+      "id": "ball_00__special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "task_success": false,
+      "strict_success": false,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 7.198616966699035e-05,
+          "student_mean_z_yield_mps": 0.02344169756027112,
+          "counterfactual_teacher_mean_z_yield_mps": 0.021787342341470003,
+          "pose_error_norm_m": {
+            "mean": 0.021052753213548808,
+            "median": 0.016942919203763028,
+            "p95": 0.04623876671175412,
+            "maximum": 0.04999998381452901
+          },
+          "nearest_train_distance": {
+            "mean": 0.08873469616524522,
+            "median": 0.08216160039206408,
+            "p95": 0.17274154137211747,
+            "maximum": 0.183011668424501
+          },
+          "fraction_above_validation_p95": 0.02
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 0.0030256674983590577,
+          "student_mean_z_yield_mps": 0.05023448168721306,
+          "counterfactual_teacher_mean_z_yield_mps": 0.011062559624922587,
+          "pose_error_norm_m": {
+            "mean": 0.0204555283198953,
+            "median": 0.020533762917675766,
+            "p95": 0.027233332924416324,
+            "maximum": 0.027565569143582123
+          },
+          "nearest_train_distance": {
+            "mean": 0.2808067125948829,
+            "median": 0.29405243641855067,
+            "p95": 0.3725448644696565,
+            "maximum": 0.3747183628194493
+          },
+          "fraction_above_validation_p95": 0.9466666666666667
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 0.007201859866038712,
+          "student_mean_z_yield_mps": 0.06650639681362139,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0005123843295842344,
+          "pose_error_norm_m": {
+            "mean": 0.030273111852193675,
+            "median": 0.030470846845440637,
+            "p95": 0.031858123061660124,
+            "maximum": 0.0320070196798638
+          },
+          "nearest_train_distance": {
+            "mean": 0.4023131949204496,
+            "median": 0.4089753843087565,
+            "p95": 0.4104029973238339,
+            "maximum": 0.41059949436428145
+          },
+          "fraction_above_validation_p95": 1.0
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.007415960317919269,
+          "student_mean_z_yield_mps": 0.06797295199303365,
+          "counterfactual_teacher_mean_z_yield_mps": 4.413037932222133e-06,
+          "pose_error_norm_m": {
+            "mean": 0.03470362788668892,
+            "median": 0.03475850569282854,
+            "p95": 0.036926231628372955,
+            "maximum": 0.03715855623205181
+          },
+          "nearest_train_distance": {
+            "mean": 0.41530028060320806,
+            "median": 0.4152366911215096,
+            "p95": 0.4197438021937693,
+            "maximum": 0.42023957844620546
+          },
+          "fraction_above_validation_p95": 1.0
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 0.007434717178530975,
+          "student_mean_z_yield_mps": 0.06862651761705889,
+          "counterfactual_teacher_mean_z_yield_mps": 1.2445286289342737e-09,
+          "pose_error_norm_m": {
+            "mean": 0.03947359765922098,
+            "median": 0.039470592486048214,
+            "p95": 0.0415463388517905,
+            "maximum": 0.04177985955395499
+          },
+          "nearest_train_distance": {
+            "mean": 0.4255300272392277,
+            "median": 0.4254587337162853,
+            "p95": 0.4304812196617232,
+            "maximum": 0.43106127786456017
+          },
+          "fraction_above_validation_p95": 1.0
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "c9ce8262300bb70e6117979c07139d3256f11ce3330f1e8806c8487b89f345ef",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "cae2c0fbdd3d74ec3018f7ca991b51f41b230669b85f6baba9e46c8efe93b034"
+      },
+      "metrics_sha256": "f8e5466301dce171b940cc9e6fec1f92ec8e0ecf13a581d14eb348708b576265"
+    },
+    {
+      "id": "ball_00__special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "task_success": false,
+      "strict_success": false,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 0.00030590933954071037,
+          "student_mean_z_yield_mps": 0.02702769639634441,
+          "counterfactual_teacher_mean_z_yield_mps": 0.018905389730378547,
+          "pose_error_norm_m": {
+            "mean": 0.022040292034374066,
+            "median": 0.01673319180292469,
+            "p95": 0.046149090238221877,
+            "maximum": 0.04999998381452901
+          },
+          "nearest_train_distance": {
+            "mean": 0.14399343216166682,
+            "median": 0.1611314815721654,
+            "p95": 0.2789581132497078,
+            "maximum": 0.4352279764978642
+          },
+          "fraction_above_validation_p95": 0.32
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 0.003420298646690222,
+          "student_mean_z_yield_mps": 0.0650831916245262,
+          "counterfactual_teacher_mean_z_yield_mps": 0.01821055258470953,
+          "pose_error_norm_m": {
+            "mean": 0.025346388685216686,
+            "median": 0.027325967988051682,
+            "p95": 0.029586532449918115,
+            "maximum": 0.029709658408693995
+          },
+          "nearest_train_distance": {
+            "mean": 0.4263071016102808,
+            "median": 0.4648653891337647,
+            "p95": 0.49260164268464934,
+            "maximum": 0.4939661149937354
+          },
+          "fraction_above_validation_p95": 1.0
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 0.00464503716587911,
+          "student_mean_z_yield_mps": 0.07198964658220962,
+          "counterfactual_teacher_mean_z_yield_mps": 0.016773712127384387,
+          "pose_error_norm_m": {
+            "mean": 0.03173579277831211,
+            "median": 0.031723769945767206,
+            "p95": 0.033555647991318854,
+            "maximum": 0.033762670476173234
+          },
+          "nearest_train_distance": {
+            "mean": 0.5015343807099918,
+            "median": 0.5018995010819061,
+            "p95": 0.5033991410445291,
+            "maximum": 0.5035871568954147
+          },
+          "fraction_above_validation_p95": 1.0
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.006503541959365535,
+          "student_mean_z_yield_mps": 0.07558711229231428,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0102305245109182,
+          "pose_error_norm_m": {
+            "mean": 0.04266931599042051,
+            "median": 0.038112832304731156,
+            "p95": 0.07100583295796337,
+            "maximum": 0.0796208209049222
+          },
+          "nearest_train_distance": {
+            "mean": 0.5258120276350476,
+            "median": 0.5080224658040662,
+            "p95": 0.599881574114031,
+            "maximum": 0.6042028051194853
+          },
+          "fraction_above_validation_p95": 1.0
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 0.016281878213152905,
+          "student_mean_z_yield_mps": 0.07382602124871283,
+          "counterfactual_teacher_mean_z_yield_mps": -0.032064020764855566,
+          "pose_error_norm_m": {
+            "mean": 0.13044449159335908,
+            "median": 0.1394261827169026,
+            "p95": 0.14779007304121486,
+            "maximum": 0.14789058950849987
+          },
+          "nearest_train_distance": {
+            "mean": 0.6398952956453741,
+            "median": 0.6411851954926158,
+            "p95": 0.6676686888510567,
+            "maximum": 0.6695334134224988
+          },
+          "fraction_above_validation_p95": 1.0
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "101a626f00ad11571c63eedbc4c1162618bf6f1c540ac012dc182b3701ce90b5",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "60e4069a389cf4f5a30af3045da60f8e1296f5655a9f4045bb0281bb79ad155f"
+      },
+      "metrics_sha256": "5f5a5646093c39cfeaec0a8c298c032ce9d490a81a531e46eea236beb332b469"
+    },
+    {
+      "id": "ball_00__special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "task_success": true,
+      "strict_success": true,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 2.828343630777284e-05,
+          "student_mean_z_yield_mps": 0.016196528591955705,
+          "counterfactual_teacher_mean_z_yield_mps": 0.015995760705050897,
+          "pose_error_norm_m": {
+            "mean": 0.033956818339936135,
+            "median": 0.02341857742783717,
+            "p95": 0.07923557692641979,
+            "maximum": 0.0817367206705756
+          },
+          "nearest_train_distance": {
+            "mean": 0.03695629794772684,
+            "median": 0.027461979798754754,
+            "p95": 0.10475045406255369,
+            "maximum": 0.1660194674799056
+          },
+          "fraction_above_validation_p95": 0.0
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 3.346137893885646e-05,
+          "student_mean_z_yield_mps": 0.002879284142210265,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0016239557562593566,
+          "pose_error_norm_m": {
+            "mean": 0.06892556539776573,
+            "median": 0.052195292050304425,
+            "p95": 0.14755990707168137,
+            "maximum": 0.15111691043699224
+          },
+          "nearest_train_distance": {
+            "mean": 0.07261526139978852,
+            "median": 0.03969062038190074,
+            "p95": 0.3106918309861531,
+            "maximum": 0.4957127940299755
+          },
+          "fraction_above_validation_p95": 0.09333333333333334
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 5.499812513280124e-05,
+          "student_mean_z_yield_mps": 0.0031640928578018463,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0020039064245047336,
+          "pose_error_norm_m": {
+            "mean": 0.04383988987039954,
+            "median": 0.041475183392710675,
+            "p95": 0.08381646574758263,
+            "maximum": 0.0917564925577561
+          },
+          "nearest_train_distance": {
+            "mean": 0.0908715128202646,
+            "median": 0.08331710037433733,
+            "p95": 0.15455816879042467,
+            "maximum": 0.49680108354641783
+          },
+          "fraction_above_validation_p95": 0.04
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.0008242994769456669,
+          "student_mean_z_yield_mps": 0.0075904738429149925,
+          "counterfactual_teacher_mean_z_yield_mps": 0.026637029061285747,
+          "pose_error_norm_m": {
+            "mean": 0.0036849301307580688,
+            "median": 0.0031707454392023164,
+            "p95": 0.0076667021482078705,
+            "maximum": 0.0108315274180401
+          },
+          "nearest_train_distance": {
+            "mean": 0.07147799035923677,
+            "median": 0.05951687434548658,
+            "p95": 0.17186154991678665,
+            "maximum": 0.2024845547123703
+          },
+          "fraction_above_validation_p95": 0.032
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 8.590304810987399e-05,
+          "student_mean_z_yield_mps": 0.001186563685877896,
+          "counterfactual_teacher_mean_z_yield_mps": 0.007382291909465698,
+          "pose_error_norm_m": {
+            "mean": 0.005440854690830432,
+            "median": 0.005757758853279083,
+            "p95": 0.006222210786117286,
+            "maximum": 0.006239619357818116
+          },
+          "nearest_train_distance": {
+            "mean": 0.04422529900682956,
+            "median": 0.04634258207050915,
+            "p95": 0.05054855379020714,
+            "maximum": 0.16029125325231727
+          },
+          "fraction_above_validation_p95": 0.0
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "009601db15f282f1945dc85c77f34875c1db6acd94d6ccb07f9089dee74c4210",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "5ccb61e3a84456eabd38d9da1d7f4627bafd842591851ca00b6d9e1c28bf808d"
+      },
+      "metrics_sha256": "e1454be825ac9b8644393b5c2aca04a929a33bbeb4962646d56a5633929d7731"
+    },
+    {
+      "id": "ball_00__special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "task_success": false,
+      "strict_success": false,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 5.569057749670722e-05,
+          "student_mean_z_yield_mps": 0.023108148074786197,
+          "counterfactual_teacher_mean_z_yield_mps": 0.02124231577880738,
+          "pose_error_norm_m": {
+            "mean": 0.021611317059860687,
+            "median": 0.017197692767845257,
+            "p95": 0.04630474019964916,
+            "maximum": 0.04999998381452901
+          },
+          "nearest_train_distance": {
+            "mean": 0.07605145519805168,
+            "median": 0.07399855579632772,
+            "p95": 0.1223672189271857,
+            "maximum": 0.35916883316346526
+          },
+          "fraction_above_validation_p95": 0.04
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 0.00010052450644716364,
+          "student_mean_z_yield_mps": 0.029350825077291146,
+          "counterfactual_teacher_mean_z_yield_mps": 0.021218878604011556,
+          "pose_error_norm_m": {
+            "mean": 0.012982354133634648,
+            "median": 0.012934184561244207,
+            "p95": 0.013762486484152252,
+            "maximum": 0.013850062904631495
+          },
+          "nearest_train_distance": {
+            "mean": 0.14336486706292315,
+            "median": 0.1416626227083641,
+            "p95": 0.16965439681265562,
+            "maximum": 0.17452721766308157
+          },
+          "fraction_above_validation_p95": 0.0
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 0.00020308727013194808,
+          "student_mean_z_yield_mps": 0.03193819842246303,
+          "counterfactual_teacher_mean_z_yield_mps": 0.020132767716962305,
+          "pose_error_norm_m": {
+            "mean": 0.014995683500131854,
+            "median": 0.015082691176722115,
+            "p95": 0.015736243189171967,
+            "maximum": 0.015787657982916915
+          },
+          "nearest_train_distance": {
+            "mean": 0.12170869174934064,
+            "median": 0.12052563701896728,
+            "p95": 0.12672454234852437,
+            "maximum": 0.12834847079837355
+          },
+          "fraction_above_validation_p95": 0.0
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.0006577002598471557,
+          "student_mean_z_yield_mps": 0.03233005336745653,
+          "counterfactual_teacher_mean_z_yield_mps": 0.011507750762686715,
+          "pose_error_norm_m": {
+            "mean": 0.016009675061773906,
+            "median": 0.016050086333985362,
+            "p95": 0.016165046337337455,
+            "maximum": 0.016166301585547715
+          },
+          "nearest_train_distance": {
+            "mean": 0.10900554853477767,
+            "median": 0.11104282515219048,
+            "p95": 0.11947971931818915,
+            "maximum": 0.11974698836277768
+          },
+          "fraction_above_validation_p95": 0.0
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 0.001184004352718447,
+          "student_mean_z_yield_mps": 0.029361495024638033,
+          "counterfactual_teacher_mean_z_yield_mps": 0.00034507858960896215,
+          "pose_error_norm_m": {
+            "mean": 0.01465886907020338,
+            "median": 0.01468455945588238,
+            "p95": 0.015565331567937133,
+            "maximum": 0.015645698164387913
+          },
+          "nearest_train_distance": {
+            "mean": 0.066743474550845,
+            "median": 0.06630429417479305,
+            "p95": 0.08790405703695192,
+            "maximum": 0.09032816983791438
+          },
+          "fraction_above_validation_p95": 0.0
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "127b8d0940fd4e9c3ceb8a6a785a394902ff619827a12e6a867ebd859d5d4a2b",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "efa7fa3301e863e9c0f592569380f8eac2d849d3905fb88c52dfaf2f6af4eac8"
+      },
+      "metrics_sha256": "0b389959d8dd05feb7d332490bd07e5066d5189ec9f6303ee5b9d955aed19510"
+    },
+    {
+      "id": "ball_00__special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "task_success": true,
+      "strict_success": true,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 0.00040856040045020954,
+          "student_mean_z_yield_mps": 0.025242940353935706,
+          "counterfactual_teacher_mean_z_yield_mps": 0.01953700151739365,
+          "pose_error_norm_m": {
+            "mean": 0.02205513983863983,
+            "median": 0.017065311838347454,
+            "p95": 0.04622185856357645,
+            "maximum": 0.04999998381452901
+          },
+          "nearest_train_distance": {
+            "mean": 0.20258779891022613,
+            "median": 0.2088564381469217,
+            "p95": 0.3445606261154875,
+            "maximum": 0.4149879726966733
+          },
+          "fraction_above_validation_p95": 0.72
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 0.0007869272840651006,
+          "student_mean_z_yield_mps": 0.0276666014412036,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0045552395820976045,
+          "pose_error_norm_m": {
+            "mean": 0.01397668320880947,
+            "median": 0.01394449561569678,
+            "p95": 0.01432390441706167,
+            "maximum": 0.014392559656314021
+          },
+          "nearest_train_distance": {
+            "mean": 0.10433574679328846,
+            "median": 0.09472404960572767,
+            "p95": 0.16895818453814865,
+            "maximum": 0.18262390130341896
+          },
+          "fraction_above_validation_p95": 0.013333333333333334
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 0.0010515271489907807,
+          "student_mean_z_yield_mps": 0.027334194669847548,
+          "counterfactual_teacher_mean_z_yield_mps": 0.00027237867609605895,
+          "pose_error_norm_m": {
+            "mean": 0.013334350511776252,
+            "median": 0.013339210794331811,
+            "p95": 0.013661290210091936,
+            "maximum": 0.013697125543558066
+          },
+          "nearest_train_distance": {
+            "mean": 0.054508311078596036,
+            "median": 0.05286065822515322,
+            "p95": 0.062270845155008143,
+            "maximum": 0.06468657284275865
+          },
+          "fraction_above_validation_p95": 0.0
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.0006093745429250621,
+          "student_mean_z_yield_mps": 0.01650820002650015,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0006561102136423806,
+          "pose_error_norm_m": {
+            "mean": 0.040167376433666475,
+            "median": 0.012693002930003876,
+            "p95": 0.14110928882139104,
+            "maximum": 0.15503546195283055
+          },
+          "nearest_train_distance": {
+            "mean": 0.056487543589932646,
+            "median": 0.053494656795709195,
+            "p95": 0.07734682548632041,
+            "maximum": 0.6010191191451826
+          },
+          "fraction_above_validation_p95": 0.012
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 0.002693660472797854,
+          "student_mean_z_yield_mps": 0.01530327426243935,
+          "counterfactual_teacher_mean_z_yield_mps": 0.045113578479943,
+          "pose_error_norm_m": {
+            "mean": 0.02347553469815994,
+            "median": 0.010990742830473924,
+            "p95": 0.07567457893417409,
+            "maximum": 0.08606282810835192
+          },
+          "nearest_train_distance": {
+            "mean": 0.20610344642206352,
+            "median": 0.14125758690614004,
+            "p95": 0.45597342790595324,
+            "maximum": 0.6042887555112236
+          },
+          "fraction_above_validation_p95": 0.432
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "34aa2405518daad99d48f815d90f9b7e619df2547eb9a324399913ecefb7dc46",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "64dd16ac46a326f0592191cba4c059c32061a6755b54109df17dfa018a011d29"
+      },
+      "metrics_sha256": "5be5370e2eca21226d2ca53a8ee0102b3516c67254558fcd8c9150790e183a0b"
+    },
+    {
+      "id": "ball_00__special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "task_success": true,
+      "strict_success": true,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 3.134364515730795e-05,
+          "student_mean_z_yield_mps": 0.016474567865992714,
+          "counterfactual_teacher_mean_z_yield_mps": 0.01569417730044361,
+          "pose_error_norm_m": {
+            "mean": 0.034001752548810014,
+            "median": 0.023389417343835792,
+            "p95": 0.07952943328110264,
+            "maximum": 0.0819392008469182
+          },
+          "nearest_train_distance": {
+            "mean": 0.029908165983619128,
+            "median": 0.024767347588145232,
+            "p95": 0.07756071961475856,
+            "maximum": 0.09785466737422886
+          },
+          "fraction_above_validation_p95": 0.0
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 3.0617594377638296e-05,
+          "student_mean_z_yield_mps": 0.003149205311858144,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0012691639123216779,
+          "pose_error_norm_m": {
+            "mean": 0.0664710383482074,
+            "median": 0.04803036482754082,
+            "p95": 0.14763758608111177,
+            "maximum": 0.15057812353495692
+          },
+          "nearest_train_distance": {
+            "mean": 0.06396563163884278,
+            "median": 0.043422198723073624,
+            "p95": 0.15920924242987206,
+            "maximum": 0.5548762668818645
+          },
+          "fraction_above_validation_p95": 0.05333333333333334
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 5.043392624934752e-05,
+          "student_mean_z_yield_mps": 0.0028545250599586276,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0020599505869964073,
+          "pose_error_norm_m": {
+            "mean": 0.04455710456719512,
+            "median": 0.04130713162755576,
+            "p95": 0.0862223696799983,
+            "maximum": 0.09529018991465864
+          },
+          "nearest_train_distance": {
+            "mean": 0.08107639066046068,
+            "median": 0.07659635625673138,
+            "p95": 0.14258770944598467,
+            "maximum": 0.4071604070127557
+          },
+          "fraction_above_validation_p95": 0.016
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.0011549721822018998,
+          "student_mean_z_yield_mps": 0.017255529053846863,
+          "counterfactual_teacher_mean_z_yield_mps": 0.040180776697878166,
+          "pose_error_norm_m": {
+            "mean": 0.003750067887863468,
+            "median": 0.0030349885147998943,
+            "p95": 0.00775343076718211,
+            "maximum": 0.012246733743202773
+          },
+          "nearest_train_distance": {
+            "mean": 0.07413038278590635,
+            "median": 0.06333421986813711,
+            "p95": 0.1495647305067904,
+            "maximum": 0.20761375127653167
+          },
+          "fraction_above_validation_p95": 0.04
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 4.6403943703137556e-05,
+          "student_mean_z_yield_mps": 0.0021870230613651753,
+          "counterfactual_teacher_mean_z_yield_mps": 0.007796456923479562,
+          "pose_error_norm_m": {
+            "mean": 0.005188331692190905,
+            "median": 0.005368060391315743,
+            "p95": 0.006528559509628411,
+            "maximum": 0.0066082782397711174
+          },
+          "nearest_train_distance": {
+            "mean": 0.014754662007226284,
+            "median": 0.013281386203698894,
+            "p95": 0.027319365799457047,
+            "maximum": 0.03045589542906039
+          },
+          "fraction_above_validation_p95": 0.0
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "9107983b6b8312ef270039216a2e28c5555cc4a6096df526bbad9925dfd1b2a6",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "a355edd1cb6dc81ab4e6e206c92ab523d0148a0b444906c185ddd324f2778dab"
+      },
+      "metrics_sha256": "a6d318b262abd113a507496766ba25d3ed302098b1e272bc5e3986c6a226a06b"
+    },
+    {
+      "id": "ball_00__special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "task_success": false,
+      "strict_success": false,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 7.057447034058223e-05,
+          "student_mean_z_yield_mps": 0.023476650892189626,
+          "counterfactual_teacher_mean_z_yield_mps": 0.020575784465100718,
+          "pose_error_norm_m": {
+            "mean": 0.02151966344883402,
+            "median": 0.017045215912550878,
+            "p95": 0.046304207654629295,
+            "maximum": 0.04999998381452901
+          },
+          "nearest_train_distance": {
+            "mean": 0.06941534887742988,
+            "median": 0.06991443086427436,
+            "p95": 0.13470422783164598,
+            "maximum": 0.16034857892121107
+          },
+          "fraction_above_validation_p95": 0.0
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 0.0004170335282649209,
+          "student_mean_z_yield_mps": 0.03685668930093429,
+          "counterfactual_teacher_mean_z_yield_mps": 0.01983239164568464,
+          "pose_error_norm_m": {
+            "mean": 0.015791255642964113,
+            "median": 0.016159642127812696,
+            "p95": 0.01704783976398859,
+            "maximum": 0.017140355097519513
+          },
+          "nearest_train_distance": {
+            "mean": 0.1752777980318924,
+            "median": 0.16927678502400512,
+            "p95": 0.20168106093870505,
+            "maximum": 0.20824441786329964
+          },
+          "fraction_above_validation_p95": 0.26666666666666666
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 0.0007413269256359504,
+          "student_mean_z_yield_mps": 0.04157472206269859,
+          "counterfactual_teacher_mean_z_yield_mps": 0.018860906257928762,
+          "pose_error_norm_m": {
+            "mean": 0.018697493298538908,
+            "median": 0.018731079515499467,
+            "p95": 0.01998231963872972,
+            "maximum": 0.020101045308966378
+          },
+          "nearest_train_distance": {
+            "mean": 0.19546918432272004,
+            "median": 0.1953844984655331,
+            "p95": 0.22106230042510483,
+            "maximum": 0.22353013142686026
+          },
+          "fraction_above_validation_p95": 0.72
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.001533992539884256,
+          "student_mean_z_yield_mps": 0.04405886451099199,
+          "counterfactual_teacher_mean_z_yield_mps": 0.011765087986415792,
+          "pose_error_norm_m": {
+            "mean": 0.021309652553115177,
+            "median": 0.02152393054832668,
+            "p95": 0.021690226501453403,
+            "maximum": 0.021692037042437093
+          },
+          "nearest_train_distance": {
+            "mean": 0.24626368696774587,
+            "median": 0.24912305120510075,
+            "p95": 0.253517811227663,
+            "maximum": 0.2535630912126993
+          },
+          "fraction_above_validation_p95": 1.0
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 0.002281157923215008,
+          "student_mean_z_yield_mps": 0.040457849395365994,
+          "counterfactual_teacher_mean_z_yield_mps": 0.00038725634775279227,
+          "pose_error_norm_m": {
+            "mean": 0.020183521139138533,
+            "median": 0.020268627110110266,
+            "p95": 0.021394709275590146,
+            "maximum": 0.021472586709432476
+          },
+          "nearest_train_distance": {
+            "mean": 0.20558479799938614,
+            "median": 0.2081659295826564,
+            "p95": 0.2413757035725824,
+            "maximum": 0.2438701877304779
+          },
+          "fraction_above_validation_p95": 0.768
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "41a0f14260241f0cee0d8c2280722d70390be87575f866dd5bf3055f0b1af8f9",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "7347349462d280bd3d5dbc2b6a59edb76cb7136ef2226ea19c95f209deba38eb"
+      },
+      "metrics_sha256": "32c6722afc1d08c85924c65b01c25499b55e6fbfe6de5d7385d6f6b4b3594ce5"
+    },
+    {
+      "id": "ball_00__special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "task_success": true,
+      "strict_success": true,
+      "windows": [
+        {
+          "start_s": 0,
+          "end_s": 2,
+          "frames": 50,
+          "counterfactual_action_mse": 0.0002164565506266796,
+          "student_mean_z_yield_mps": 0.018557580229532192,
+          "counterfactual_teacher_mean_z_yield_mps": 0.018998093436407144,
+          "pose_error_norm_m": {
+            "mean": 0.03293136556705679,
+            "median": 0.02239288924838932,
+            "p95": 0.08076953291504863,
+            "maximum": 0.08312906741419764
+          },
+          "nearest_train_distance": {
+            "mean": 0.12445192195203866,
+            "median": 0.09287740077009883,
+            "p95": 0.2844609863584826,
+            "maximum": 0.3471026304915499
+          },
+          "fraction_above_validation_p95": 0.26
+        },
+        {
+          "start_s": 2,
+          "end_s": 5,
+          "frames": 75,
+          "counterfactual_action_mse": 5.5677490096150704e-05,
+          "student_mean_z_yield_mps": 0.001403497430799043,
+          "counterfactual_teacher_mean_z_yield_mps": 0.0012972066837847265,
+          "pose_error_norm_m": {
+            "mean": 0.07510287456723595,
+            "median": 0.06168095531939261,
+            "p95": 0.14795963716096283,
+            "maximum": 0.15167304112410915
+          },
+          "nearest_train_distance": {
+            "mean": 0.062303889461592966,
+            "median": 0.04734129172555992,
+            "p95": 0.11810858413691104,
+            "maximum": 0.40003101938048363
+          },
+          "fraction_above_validation_p95": 0.04
+        },
+        {
+          "start_s": 5,
+          "end_s": 10,
+          "frames": 125,
+          "counterfactual_action_mse": 0.0007389284387430678,
+          "student_mean_z_yield_mps": 0.003755744473947335,
+          "counterfactual_teacher_mean_z_yield_mps": 0.005333738433871127,
+          "pose_error_norm_m": {
+            "mean": 0.047422873453698826,
+            "median": 0.044230220680115506,
+            "p95": 0.09234629345550877,
+            "maximum": 0.10276297660190692
+          },
+          "nearest_train_distance": {
+            "mean": 0.09339622594864952,
+            "median": 0.06478101852923879,
+            "p95": 0.2573333789706813,
+            "maximum": 1.0266832726454127
+          },
+          "fraction_above_validation_p95": 0.128
+        },
+        {
+          "start_s": 10,
+          "end_s": 20,
+          "frames": 250,
+          "counterfactual_action_mse": 0.007879263320476379,
+          "student_mean_z_yield_mps": 0.010799438852401281,
+          "counterfactual_teacher_mean_z_yield_mps": 0.08162861617285457,
+          "pose_error_norm_m": {
+            "mean": 0.005543778680331924,
+            "median": 0.004920156122097709,
+            "p95": 0.007759146223885191,
+            "maximum": 0.01327444780191984
+          },
+          "nearest_train_distance": {
+            "mean": 0.10678481700060108,
+            "median": 0.10848762563125058,
+            "p95": 0.15192347385984262,
+            "maximum": 0.1947788554262896
+          },
+          "fraction_above_validation_p95": 0.012
+        },
+        {
+          "start_s": 20,
+          "end_s": 30,
+          "frames": 250,
+          "counterfactual_action_mse": 0.010792432960494076,
+          "student_mean_z_yield_mps": 0.004735476411366355,
+          "counterfactual_teacher_mean_z_yield_mps": 0.09264758177453299,
+          "pose_error_norm_m": {
+            "mean": 0.005748676814130611,
+            "median": 0.005712140862962378,
+            "p95": 0.006604102509614968,
+            "maximum": 0.0067072677812925205
+          },
+          "nearest_train_distance": {
+            "mean": 0.05299380072817539,
+            "median": 0.04782170363108314,
+            "p95": 0.09344031310293617,
+            "maximum": 0.10313208314365169
+          },
+          "fraction_above_validation_p95": 0.0
+        }
+      ],
+      "input_hashes": {
+        "trajectory.npz": "b18c74b58fab5fb31e952db3dd9e611bd4ef0d97094d26efcffc3d37c2f21edf",
+        "teacher.json": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+        "student_checkpoint.npz": "18bd8fdd2fc11d26c434235c5d20a5d2547171140298409b47a2c85dffaf9ebd"
+      },
+      "metrics_sha256": "a1e0b668fb8f148096a2851ca1423f527f94bc1185ae9023c219a433388e7d84"
+    }
+  ],
+  "limitations": [
+    "Train00 development trajectories only; no unseen tests or new selection.",
+    "Counterfactual teacher replay is not actual teacher recovery or eligible data.",
+    "Instantaneous distance omits recurrent history, joint geometry and unselected canonical fields; not a calibrated OOD detector.",
+    "Action component converted with0.32 is requested yield velocity, not executed end-effector velocity.",
+    "Association between support, action bias and failure does not prove a unique cause."
+  ],
+  "new_physical_steps": 0,
+  "new_optimizer_updates": 0
+}

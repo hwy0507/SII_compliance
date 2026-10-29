@@ -1,3 +1,18 @@
+## 2026-10-30：球撞全九模型保存历史诊断，不把低MSE等同恢复成功
+
+新增分析脚本`code/mujoco_6d_vmc_benchmark/experiments/diagnose_contact_yield_ball_support_20261030.py`、[完整数值](evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_BALL_SUPPORT_DIAGNOSIS_20261030.json)及[三家族九回合诊断图](evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_BALL_SUPPORT_DIAGNOSIS_20261030.png)（另有PDF）。来源为本次完整27开发中的真实ball00轨迹，不是旧场景或合成曲线。零新增物理/optimizer/test输入；九学生全750帧精确actor重放、dataset/模型/原review/指标hash核验。
+
+结论进一步收窄：
+
+- 三RNN对全部24条teacher训练历史的requested-action MSE约1.05–1.09e-5，比ESN的1.14–1.27e-5更低，但球撞闭环3/3失败、ESN3/3成功。不能简单归因“训练步数少或整体拟合差”，teacher-history平均MSE不足以验证闭环恢复。
+- RNN01/02/03的20–30s平均向上requested yield分别0.06863/0.02936/0.04046m/s；同一保存历史的反事实teacher分别约0/0.000345/0.000387m/s。这是动作偏差的实证线索；requested yield并非实际末端速度，不能直接作为实际抵消量/因果证明。
+- 使用与MLP/RNN一致的18字段、train-only归一化/clip/绝对值扩展，对12600训练帧做精确最近邻RMS距离。六个validation身份的全部帧距离p95=0.181445（球两validation p95=0.169246）。RNN01和MLP01后期全部高于前者，支持覆盖不足线索；但失败RNN02后期距离中位0.0663、全部低于前者，故该距离不能解释所有失败。它不包括RNN hidden history，不是校准OOD概率，低于p95不证明充分覆盖或可恢复。
+- 成功MLP03后期反事实动作MSE0.01079，高于失败RNN02的0.001184，不能将此误差直接作为成功判据、选模指标或任意新增门槛。阶段不同、teacher内部历史及闭环反馈都可能影响对应关系，尚未分解因果。
+
+六神经checkpoint的normalizer与重新计算值最大差1.11e-16（浮点求和顺序），绝对输入标志一致；原先逐位normalizer断言因此失败，改为明确数值容差后全部通过，未发现归一化部署bug。四条真实观察独立直接减法/平方/最小值与cdist距离完全一致。PNG已目视检查；三列纵轴独立标注，不能凭曲线高度跨列比较。
+
+下一步仍是已具体化的真实teacher恢复验证及共同纠偏数据决策，不能把本反事实/距离图当新增成功示范。四条探针的自动审批拒绝尚未解除，未执行登记/采集，也未绕过。两原服务本轮宿主核实inactive/PID0、最终108零派发；Goal active。
+
 ## 2026-10-30：完整27开发审查结束，实际恢复探针待明确授权
 
 原诊断和final108等待器均已自然inactive/PID0；完整独立review与本轮保存文件hash核验一致。开发结果为三个train00身份×三seed，不能称unseen泛化：
