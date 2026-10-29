@@ -2,6 +2,7 @@
 
 ## 2026-10-29 — 非RL ESN读出外推定位
 
+- 科学93d5e7a4的5成员源码/准确报告/审查/标量检查/全读出数组，16141740bytes/SHA c9a01017，已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_readout_support_20261029_v1/READOUT_DIAGNOSTIC.tar.gz`。00:24UTC原1172675/start32623702和后处理1201537/start32942337保持active，18/108、第三条件在途；第二条件九runtime Task/Strict全false，全子步审计待，无重启。
 - [报告](docs/NONRL_V8_READOUT_SUPPORT_DIAGNOSIS_20261029.md)。三锁定ESN在同成功teacher1375帧上，载荷×上下文垂向raw项RMS3.376/3.054/10.366，原train仅.192/.064/.141；垂向裁剪40.80/17.09/41.45%，train全0。原train-only ridge设计支持度亦显示组合特征强外推；非概率/因果或选seed依据。
 - 新只读诊断00:19:53UTC自然success，无新拟合/物理。全train与既有teacher预测重建、独立二次型和全数组标量算术通过。下一步有效八球v3验证真实方向，再修三场景共同的载荷×方向/阶段/恢复覆盖，不能只增加同一路径示范。原108/后处理保持，17/108；主矩阵未修复、Goal active。证据/数组暂本机待共享。
 

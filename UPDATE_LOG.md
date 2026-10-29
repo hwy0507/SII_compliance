@@ -1,5 +1,6 @@
 ## 2026-10-29 — 非RL ESN读出外推定位
 
+- 科学93d5e7a4的5成员源码/准确报告/审查/标量检查/完整数组已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_readout_support_20261029_v1/READOUT_DIAGNOSTIC.tar.gz`，16141740bytes/SHA c9a01017f62b7a63f5f8357ae30c77227b688cfcfb55f0988ccfc72527500412。不含原108或后补说明。00:24UTC原两个服务身份保持active，18/108、第三条件在途；第二条件九runtime Task/Strict全false，独立完整子步审计尚待。无重启，Goal active。
 - [报告](docs/NONRL_V8_READOUT_SUPPORT_DIAGNOSIS_20261029.md)。当前三ESN在既有成功teacher1375帧的载荷×上下文垂向raw RMS3.376/3.054/10.366（train .192/.064/.141），垂向动作裁剪40.80/17.09/41.45%（train0）。只用24train构建原ridge设计支持度，teacher约90.55–94.84%帧超各自train95分位；非概率/单一因果，不据此改选seed2。
 - 新有界只读工具完成全train/既有teacher预测重建、独立二次型、全已存组和/RMS标量验证，最大组和误差9.44e−14。报告SHA9edc5ef2、数组SHA32d12441；没有新物理/拟合/模型修改。实际服务00:19:53UTC自然success、CPU50%/线程1/3GiB/swap0。
 - 下一步按有效八球v3检查真实方向，再扩三场景共有的载荷×方向/阶段/恢复覆盖，保留原teacher和公平选择规则。原108/后处理同身份继续，17/108；当前失败不作成功，Goal active。开工main2ab89c31/baselinef6e8f8c实际fetch/read。新证据暂本机待共享，无RL/子agent/服务器计算/删除。
