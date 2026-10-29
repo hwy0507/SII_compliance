@@ -1,3 +1,5 @@
+> **RL最新：[75早期loss、全终端与76仅恢复](docs/RL_PARAMETER75_EARLY_ANCHOR_20261029.md)。原75/74–76继续，无76训练；科研完成仍GPU保载，Goal active。**
+
 > **RL最新：[完整74与有限75](docs/RL_PARAMETER74_COMPLETE_20261029.md)。75已实际接续，原74–76等待保持；GPU科研完成仍保载，Goal active。**
 
 > **RL最新：[74十分钟核验与75准备](docs/RL_PARAMETER74_WAIT75_PREP_20261029.md)。原74/74–76继续，无75训练；GPU科研完成后仍保载，Goal active。**

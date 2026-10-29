@@ -1,0 +1,64 @@
+"""Dispatch one explicitly reviewed stage76; preserve all learned state."""
+from pathlib import Path
+import json,hashlib,subprocess,os,shutil,time
+B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');root=Path(__file__).parent;out=B/'runs/parameter_capacity_pool30_cycle76_20261026_v1'
+def verified_copy(src, dst):
+ src,dst=Path(src),Path(dst)
+ data=src.read_bytes()
+ assert data==src.read_bytes(), f'Source changed while copying: {src}'
+ with dst.open('xb') as stream:
+  stream.write(data);stream.flush();os.fsync(stream.fileno())
+ assert dst.read_bytes()==data, f'Copied bytes differ: {dst}'
+ shutil.copystat(src,dst)
+ return str(dst)
+
+def sha(p):
+ with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+def read(p):return json.loads(p.read_text())
+def write(p,d):p.write_text(json.dumps(d,indent=2)+'\n')
+assert not (out/'LAUNCH.json').exists()
+for name,h in read(root/'LAUNCH_SOURCE_REVIEW.json')['files'].items():assert sha(root/name)==h
+decision=read(root/'DECISION76.json');assert decision['passed'] and decision['plot_inspected'] and not decision['convergence_claim']
+assert decision['parent_cycle']==75 and decision['new_cycle']==76
+assert {'parent_review','health','loss','paired_gate','check_only','reward_window56_58'} <= set(decision['evidence'])
+for x in decision['evidence'].values():assert sha(Path(x['path']))==x['sha256']
+# Require the original68-70 window assessment before any finite76 dispatch.
+window=B/'runs/parameter_capacity68_70_reward_stability_20261028_v1'
+for key,name in [('reward_window68_70','REVIEW.json'),('reward_window68_70_saved','SAVED_ARITHMETIC_REVIEW.json'),('reward_window68_70_plot','PLOT_INSPECTION.json')]:
+ assert key in decision['evidence']
+ assert Path(decision['evidence'][key]['path']).resolve()==(window/name).resolve()
+assert read(window/'SAVED_ARITHMETIC_REVIEW.json')['passed']
+assert read(window/'PLOT_INSPECTION.json')['actual_image_viewed']
+# Bind the already-registered current71-73 PLAN; its complete verdict is also required before finite76.
+current_window=B/'runs/parameter_capacity71_73_reward_stability_20261028_v1/PLAN.json'
+assert 'current_window71_73_plan' in decision['evidence']
+assert Path(decision['evidence']['current_window71_73_plan']['path']).resolve()==current_window.resolve()
+assert read(current_window)['cycles']==[71,72,73]
+# Finite76 must bind the completed original71-73 window, not just its PLAN.
+completed_window=B/'runs/parameter_capacity71_73_reward_stability_20261028_v1'
+for key,name in [('reward_window71_73','REVIEW.json'),('reward_window71_73_saved','SAVED_ARITHMETIC_REVIEW.json'),('reward_window71_73_plot','PLOT_INSPECTION.json')]:
+ assert key in decision['evidence']
+ assert Path(decision['evidence'][key]['path']).resolve()==(completed_window/name).resolve()
+assert read(completed_window/'SAVED_ARITHMETIC_REVIEW.json')['passed']
+assert read(completed_window/'PLOT_INSPECTION.json')['actual_image_viewed']
+# Retain prospective original74-76 PLAN without requiring future results before76.
+future_plan=B/'runs/parameter_capacity74_76_reward_stability_20261029_v1/PLAN.json'
+assert 'future_window74_76_plan' in decision['evidence']
+assert Path(decision['evidence']['future_window74_76_plan']['path']).resolve()==future_plan.resolve()
+assert sha(future_plan)=='d8c243d979f43520e34036b5ce7dfb1b5f5712b5e4091dc09f4dacfdb5061703'
+assert read(future_plan)['cycles']==[74,75,76]
+assert read(root/'parameter_FINISHED.json')['prepared']
+assert read(out/'CHECK_ONLY_COMPLETE.json')['passed'];assert all(v==0 for v in read(out/'CHECK_ONLY_EXIT_CODES.json').values())
+write(out/'PRELAUNCH_SCIENTIFIC_REVIEW.json',dict(decision,time=time.time(),parent_cycle=75,new_cycle=76,new_cycles=1,automatic_followup=False))
+verified_copy(root/'startup76.py',out/'startup_review.py')
+env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1');jobs=read(out/'COMMANDS.json')['jobs']
+for j in jobs:
+ p=subprocess.Popen(j['command'],stdout=(out/(j['controller']+'_driver.log')).open('x'),stderr=subprocess.STDOUT,env=env,start_new_session=True)
+ j.update(pid=p.pid,proc_start_ticks=Path(f'/proc/{p.pid}/stat').read_text().split(') ')[1].split()[19],time=time.time())
+write(out/'LAUNCH.json',dict(time=time.time(),jobs=jobs,new_cycles=1,automatic_followup=False))
+monitor=out/'archive_review.py';verified_copy(B/'runtime/resume_sources_20261028_v1/archive_review_next_20261028.py',monitor)
+p=subprocess.Popen([str(B/'env/bin/python'),str(monitor),'parameter_capacity_pool30','76'],stdout=(out/'archive_review.log').open('x'),stderr=subprocess.STDOUT,env=env,start_new_session=True)
+write(out/'MONITOR_LAUNCH.json',dict(pid=p.pid,proc_start_ticks=Path(f'/proc/{p.pid}/stat').read_text().split(') ')[1].split()[19],time=time.time(),script_sha256=sha(monitor)));print(json.dumps(dict(jobs=jobs,monitor_pid=p.pid),indent=2))
+
+p=subprocess.Popen([str(B/'env/bin/python'),str(out/'startup_review.py')],stdout=(out/'startup_review.log').open('x'),stderr=subprocess.STDOUT,env=env,start_new_session=True)
+write(out/'STARTUP_LAUNCH.json',dict(pid=p.pid,proc_start_ticks=Path(f'/proc/{p.pid}/stat').read_text().split(') ')[1].split()[19],time=time.time(),script_sha256=sha(out/'startup_review.py')))

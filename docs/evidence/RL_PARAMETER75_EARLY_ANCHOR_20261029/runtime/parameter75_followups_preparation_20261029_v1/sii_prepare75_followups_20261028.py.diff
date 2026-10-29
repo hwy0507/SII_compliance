@@ -1,0 +1,30 @@
+--- /tmp/sii_prepare74_followups_20261028.py
++++ /tmp/sii_prepare75_followups_20261028.py
+@@ -1,7 +1,7 @@
+ from pathlib import Path
+ import re,json,ast,difflib,hashlib,time
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+-mapping={'00072':'00073','00073':'00074','2184':'2214','2214':'2244','72':'73','73':'74'}
++mapping={'00073':'00074','00074':'00075','2214':'2244','2244':'2274','73':'74','74':'75'}
+ def clone(src,dst,checkpoint=None):
+  a=src.read_text();hashes={}
+  def protect(m):
+@@ -16,12 +16,12 @@
+  ast.parse(s);assert not dst.exists();dst.write_text(s);dst.with_name(dst.name+'.diff').write_text(''.join(difflib.unified_diff(a.splitlines(True),s.splitlines(True),fromfile=str(src),tofile=str(dst))))
+  return dict(name=dst.name,parent=str(src),parent_sha256=sha(src),sha256=sha(dst),mapping=mapping,token_coverage=counts,inverse_exact_before_checkpoint_update=True,protected_sha_literals=len(hashes),checkpoint_hash_change=change)
+ for method in ['vmc','admittance']:
+- old=B/f'runs/{method}73_terminal_anchor_followup_20261028_v1';new=B/f'runs/{method}74_terminal_anchor_followup_20261028_v1';new.mkdir(exist_ok=False)
+- checkpoint=json.loads((B/f'runs/parameter_capacity_pool30_cycle73_review_20261026_v1/{method}_REVIEW.json').read_text())['checkpoint_sha256']
++ old=B/f'runs/{method}74_terminal_anchor_followup_20261028_v1';new=B/f'runs/{method}75_terminal_anchor_followup_20261028_v1';new.mkdir(exist_ok=False)
++ checkpoint=json.loads((B/f'runs/parameter_capacity_pool30_cycle74_review_20261026_v1/{method}_REVIEW.json').read_text())['checkpoint_sha256']
+  files=[clone(old/n,new/n,checkpoint if n=='capture_anchor.py' else None) for n in ['capture_anchor.py','review_anchor.py','track.py','review_values.py','wait.py']]
+- (new/'SOURCE_REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),files=files,ast_passed=True,historical_focus_preserved=True,old_rows=2214,expected_new_rows=2244,new_training=False),indent=2)+'\n');print(method,'prepared')
+-old=B/'runtime/parameter_task_label_audit73_20261028_v1';new=B/'runtime/parameter_task_label_audit74_20261028_v1';new.mkdir(exist_ok=False)
++ (new/'SOURCE_REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),files=files,ast_passed=True,historical_focus_preserved=True,old_rows=2244,expected_new_rows=2274,new_training=False),indent=2)+'\n');print(method,'prepared')
++old=B/'runtime/parameter_task_label_audit74_20261028_v1';new=B/'runtime/parameter_task_label_audit75_20261028_v1';new.mkdir(exist_ok=False)
+ (new/'audit_labels.py').write_bytes((old/'audit_labels.py').read_bytes());assert sha(new/'audit_labels.py')==sha(old/'audit_labels.py')
+-files=[clone(old/'wait73.py',new/'wait74.py'),clone(old/'review_labels73.py',new/'review_labels74.py')]
++files=[clone(old/'wait74.py',new/'wait75.py'),clone(old/'review_labels74.py',new/'review_labels75.py')]
+ (new/'SOURCE_REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),files=files,generic_auditor_unchanged=True,auditor_sha256=sha(new/'audit_labels.py'),ast_passed=True,automatic_training=False),indent=2)+'\n')
+-(B/'runs/parameter_task_label_audit74_20261028_v1').mkdir(exist_ok=False);print('labels74 prepared')
++(B/'runs/parameter_task_label_audit75_20261028_v1').mkdir(exist_ok=False);print('labels75 prepared')
