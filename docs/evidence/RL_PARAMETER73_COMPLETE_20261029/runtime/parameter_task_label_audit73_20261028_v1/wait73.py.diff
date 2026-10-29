@@ -1,0 +1,40 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter_task_label_audit72_20261028_v1/wait72.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter_task_label_audit73_20261028_v1/wait73.py
+@@ -1,4 +1,4 @@
+-"""Wait for the registered original cycle72; run only saved-label audit."""
++"""Wait for the registered original cycle73; run only saved-label audit."""
+ from pathlib import Path
+ import hashlib
+ import json
+@@ -10,7 +10,7 @@
+ os.sched_setaffinity(0, {53})
+ HERE = Path(__file__).resolve().parent
+ BASE = HERE.parent.parent
+-OUT = BASE / 'runs/parameter_task_label_audit72_20261028_v1'
++OUT = BASE / 'runs/parameter_task_label_audit73_20261028_v1'
+ 
+ 
+ def read(path):
+@@ -30,7 +30,7 @@
+ 
+ 
+ try:
+-    plan = read(OUT / 'PLAN72.json')
++    plan = read(OUT / 'PLAN73.json')
+     for name, digest in plan['sources'].items():
+         assert sha(HERE / name) == digest
+     run = Path(plan['parent_run'])
+@@ -51,9 +51,9 @@
+         time.sleep(5)
+     for name, digest in plan['sources'].items():
+         assert sha(HERE / name) == digest
+-    subprocess.run([sys.executable, str(HERE / 'audit_labels.py'), '--before', '71', '--after', '72',
+-                    '--output', str(OUT / 'COMPLETE71_72.json')], check=True)
+-    (OUT / 'FINISHED72.json').write_text(json.dumps(dict(completed=True, time=time.time())) + '\n')
++    subprocess.run([sys.executable, str(HERE / 'audit_labels.py'), '--before', '72', '--after', '73',
++                    '--output', str(OUT / 'COMPLETE72_73.json')], check=True)
++    (OUT / 'FINISHED73.json').write_text(json.dumps(dict(completed=True, time=time.time())) + '\n')
+ except BaseException as error:
+-    (OUT / 'WAIT72_FAILURE.json').write_text(json.dumps(dict(time=time.time(), error=repr(error))) + '\n')
++    (OUT / 'WAIT73_FAILURE.json').write_text(json.dumps(dict(time=time.time(), error=repr(error))) + '\n')
+     raise

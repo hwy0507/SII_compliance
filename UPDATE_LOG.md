@@ -4,6 +4,21 @@
 - 原边界观察01:39:19–01:51:49UTC26次，34→36/108，原1172675/1201537身份loaded/active、正确rollout.progress.json真实推进；最大772517888bytes/OOMswap0。observer71124自然exit0，原科学接续第五条件；只读审计01:52:55完成、CPU5.049s，无新增物理。
 - 开工实际fetch/read mainf7fde7a3/baselinef6e8f8c。上一轮verified wait，本轮完成整组审计属progress；原108/后处理继续，v4八球未启动，主矩阵修复与三场景公平重训尚待。新小证据仅本机待核共享，Goal active；无RL/子agent/服务器计算/删除。
 
+## 2026-10-29 — 参数74早期loss、全2214锚点与75仅恢复
+
+- [交接](docs/RL_PARAMETER74_EARLY_ANCHOR_20261029.md)。原74三路身份保持，01:53:09steps3056485/3057337/3058323，各30sampler无失败。前5000原字节/连续步号/全数值/独立算术及实际图通过；I/A critic略降、V略升，有限尖峰保留，仅前缀非收敛。
+- 全73的2214×57 V/A锚点精确，独立SSE6280.163604/6328.963926，含73新增30、0新前向；74预期2244，原focus/两分母保持。两个终端及全标签等待器已部署，真实不完整74拒绝。
+- 75仅恢复等待中，原wait源保持，无75训练，真实缺DECISION75拒绝。75launcher保留原68–70和原71–73全审/PLAN，新增原74–76准确PLAN绑定，不提前要求未来结果。原74全loss及74–76等待保持，阈值不变。
+- 87guard样本min81/66/70/67%、低于50[0, 0, 0, 0]，科研完成仍保载，非瞬时保证/重启服务。SSD包108成员/1977957字节/SHA014d0669逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工mainc0dd9712/baselinef6e8f8c实际fetch/read，无子agent，Goal active、Direct34false。
+
+## 2026-10-29 — 完整73、原71–73审查与准确有限74
+
+- [交接](docs/RL_PARAMETER73_COMPLETE_20261029.md)。三路完整73各30×55/41250/noabort，旧72 replay/history保持、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2184终端及实际图已审。
+- 原71–73完整算术/实际图及独立5000 bootstrap复核完成，原5%/近零1/seed/anchor55及全部历史结论保持，原算术收据bootstrap_reruns0未改。尚未整体收敛，具体失败/退化见交接。
+- DECISION74绑定53证据，准确73全state/replay/next65536及实际74 startup通过，01:45:42steps3050929/3051617/3052627。全74loss和预登记74–76等待已部署，无自动75，Direct34false，Goal active。
+- observer自然完成61样本，结束时当前审查就绪False，其后按实际状态核验，不重启科学。430guard样本min79/62/62/63%、低于50[0, 0, 0, 0]，含合成负载，科研完成仍保载。
+- SSD包260成员/3567783字节/SHA3a9c47c0逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工main01bb3503/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-29 — 非RL原108十五分钟核验30→33
 
 - 01:20:47.388–01:35:47.408UTC共31次原1172675/start32623702及后处理1201537/start32942337保持loaded/active，30→33/108，最大791601152bytes/3GiB，OOM/oom_kill/swap0；observer40291自然exit0，原科学继续。第四条件九模型未全齐，不重启审计。
