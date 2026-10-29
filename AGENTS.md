@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 有界横向教师五开发验证运行，三名义场景已qualified
+
+- 读[新教师五回合开发验证](docs/NONRL_CROSS_TRACK_TEACHER_DEVELOPMENT_20261030.md)。新增独立执行/审查/登记协调器，不编辑旧物理worker；固定横向1.5/s、速度0.02m/s、载荷尺度1N，三个名义train00后接两条175/275学生前缀恢复。前缀使用原MLP02 rank2（已安全通过但回位失败）区分恢复缺口；不是原有穿透超限的rank1。前缀反事实label仍禁作示范，实际后缀须合格并另登记共享数据协议才可训练。三种前缀真实保存历史独立回放、完整/异常记录与mask、真实prepare/check/重复拒绝零物理控制通过。
+- 唯一服务`sii-cross-track-teacher-development-20261030.service` PID1766039 active/CPU6线程1/3GiB/swap0，登记1142源全部一致。三名义rod/ball/corner均完整qualified，独立三case前缀review重核actor/label/配对/子步/资源通过；rod500/400000，峰矩34.523502Nm/外穿透0.071541mm，7.72s越棍、8.16s回位确认<12.80s撤回。只证明这三条开发回合，非新teacher全面恢复或安全/泛化。两条纠偏当前175步前缀回合已300/240000真实推进，275仍待；原服务均自然inactive，无重复模拟器或最终test。
+- 首条rod完整raw/登记/源码/独立审核38payload+manifest包70522159bytes/SHAde6b61a9c0bb96d8f60bec64fb009a01dedcdaca5e06350d1cb6cd859e22a8b2逐成员/源前后/远端暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/cross_track_teacher_first_20261030_v1/FIRST_ROD_RAW.tar.gz`。只含首条raw，不冒称球/角/纠偏已归档；报告三case后续澄清在包生成后追加，receipt区分包/Git文档hash，服务器仅存储/hash。
+- Goal active：两纠偏结果/完整五case审查与共享、纠偏数据/公平重训、九模型锁定/未见108/六指标/媒体仍待；旧office108的57待补保留，无RL/删除。开工fetch/read main3f3f0eabaa51d96ec72bc2b092107b9eafd2e3e4、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，收工重读AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 两条真实teacher接管均不能横向回位；有界反馈原型已实现
 
 - 读[实际纠偏失败与教师缺口](docs/NONRL_V9_ACTUAL_TEACHER_RECOVERY_FAILURE_20261030.md)。原full12自然结束，独立完整review核99case/72复用/28失败/七selected；MLP02/03均全12耗尽null，最终等待器明确null/dispatch_attempted=false、未见108目录不存在。ESN/RNN各三seed及MLP01开发合格不等于最终成功。原选模完整失败保留，非基础设施停摆。
