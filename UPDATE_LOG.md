@@ -1,3 +1,9 @@
+## 2026-10-30 — 棍推九条完成，开发10/27并自然接续球撞
+
+- 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b多次宿主核实active；完整7→8→9→10。rod00九条ESN/RNN均三seed双成功/机器合规；MLP第三seed双成功，前两条失败完整保留，合计Task3/3、Strict1/3、machine2/3。首ball00 ESN01也Task/Strict/machine true；当前RNN01球350动作/280000子步。仅固定训练身份开发结果，非最终泛化。
+- 新增CONTACT_YIELD_ALL9_ROD_DEVELOPMENT_20261030.json：按登记顺序核九条METRICS/hash、qualification/actor-filter审计输入hash和完整500动作/400000子步记录，保存两条失败与全九行为证据；无新物理积分、拟合、重选或unseen读取。最终108原后继仍等待/零派发；不计算开发SPT、不修改活协调器或gate。
+- 开工fetch/read maindb7c226532208170e217dea593237718e6448cf6/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，完整AGENTS开工及收尾重读；前轮progress，本轮verified wait与全九开发前缀核验。两活source清单一致、OOM/swap0、内存约1.99GB/3GiB；Goal active，全27/必要修复/最终108/六指标/媒体待。raw仅本地，无新归档/服务器计算/RL/删除，两个无关untracked保留。
+
 ## 2026-10-30 — 固定开发6/27，MLP第二条为穿透安全失败
 
 - 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b多次宿主核实active，完整4→5→6；新增RNN02双成功/机器合规，MLP02 Task真但Strict/machine假。MLP02实际9.60s越棍、11.48s回位确认<12.80s撤回，安全失败来自0.219492mm外穿透>原0.2mm，独立子步重算首次4.74110s、峰4.74165s、26子步/1.3ms；actor/filter replay通过。与MLP01未及时回位的失败区分，门槛未改、失败保留。

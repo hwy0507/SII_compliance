@@ -1,3 +1,9 @@
+## 2026-10-30：棍推九条完成，已接续球撞
+
+固定rod00开发身份的九模型回合全部完整结束：ESN三seed Task/Strict/machine3/3；RNN三seed同为3/3；MLP Task3/3、Strict1/3、machine2/3。MLP03实际双成功；MLP01行为失败、MLP02穿透安全失败保持。不能把单开发条件结果扩展为最终测试成功率，不计算开发SPT或重选模型。
+
+新增 `CONTACT_YIELD_ALL9_ROD_DEVELOPMENT_20261030.json` 保存九条真实METRICS/行为门/来源hash、原actor/filter审计输入hash及完整500动作/400000子步记录核验，全部失败保留。没有新独立动力学积分。两活登记source清单一致，原服务PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b自然接续ball00：首ESN01 Task/Strict/machine均true，当前总计10/27，RNN01球已350动作/280000子步；无OOM/swap、内存约1.99GB/3GiB。最终108仍waiting/零派发，全27后再审查修复与最终比较安排。
+
 ## 2026-10-30：前六条审计与两种MLP失败分离
 
 固定诊断完整6/27，均为rod00训练身份：ESN01/02与RNN01/02 Task/Strict/machine均true；MLP01 Task/machine true但撤回前未越棍回位；MLP02 Task true，行为顺序实际通过（9.60s越棍、11.48s持续回位确认<12.80s撤回），但安全门失败。MLP02外穿透峰0.219492mm超过原0.2mm，第一次超限4.74110s、峰4.74165s、26子步共1.3ms；并非执行器超限或actor/filter部署错误。不能放宽门槛消除失败，也不能把两条失败均归为没有蹭棍。
