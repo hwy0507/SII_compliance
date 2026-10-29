@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL原108核验64→65
+
+- 04:28:46.130–04:30:46.168UTC五次原1172675/start32623702与后处理1201537/start32942337保持loaded/active；RNN1物理28.04→完整55s，累计64→65并接续MLP1。RNN1 runtime Task/Strict=false、最终approach、无abort，非新增独立审计。最大内存2388496384bytes/3GiB、OOM/oom_kill/实验swap0；主机swap仍近满。observer16841自然exit0，科学继续。
+- 观察源码及五样本12526bytes/SHAb548e02f已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0428_20261029_v1/V8_VERIFIED_WAIT_0428.json`，见[当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。开工main02ab66aa/baselinef6e8f8c实际fetch/read。
+- 本轮verified wait，Goal active；原完整108/后处理继续，唯一八球v6未启动，主矩阵修复/补采/重训仍待。无RL/子agent/服务器计算/删除，可选004审计未重试。
+
 ## 2026-10-29 — 非RL第七条件完整运行快照
 
 - [当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。04:22原62，04:23:29准确快照63/108、已接续条件007；原1172675/start32623702与后处理1201537/start32942337 loaded/active，OOM/实验swap0。保存脚本首次取样已满足边界后自然exit0，仅一个保存样本，不称多样本观察。

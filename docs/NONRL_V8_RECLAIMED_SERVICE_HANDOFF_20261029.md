@@ -1,5 +1,20 @@
 # 原108结束后的临时服务回收衔接
 
+## 后续核验：04:28–04:30 UTC
+
+本轮verified wait：04:28:46.130–04:30:46.168共五次原1172675/start32623702及
+后处理1201537/start32942337保持loaded/active，完整64→65，RNN1物理28.04→55秒，
+原协调器接续MLP1。RNN1完整runtime Task/Strict=false、最终approach、无abort；
+这是运行结果，不是新增独立物理审计。最大内存2388496384bytes/3GiB，OOM/oom_kill/
+实验swap0；全机swap仍近满。observer16841达到第65条边界后自然exit0，科学继续。
+
+[完整观察](evidence/NONRL_INTENT_RECOVERY_20261029/V8_VERIFIED_WAIT_0428.json)含源码与五样本，
+12526bytes，SHA256 `b548e02f88e0d71c6325f6c99ba490d7d709cb06ad331f727d16dd2d7f4ffa92`。
+已核暂存/最终共享于
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0428_20261029_v1/V8_VERIFIED_WAIT_0428.json`。
+开工main02ab66aa/baselinef6e8f8c实际fetch/read，原完整108/后处理未完，唯一八球v6未启动，
+Goal active。无新仿真/拟合/指标改动，可选004审计未重试。
+
 ## 最新运行结果：第七条件006完整
 
 04:23:29.932 UTC原矩阵63/108，原1172675/start32623702和后处理1201537/start32942337
