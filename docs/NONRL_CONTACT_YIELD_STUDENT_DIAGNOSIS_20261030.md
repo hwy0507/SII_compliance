@@ -1,3 +1,9 @@
+## 2026-10-30：前六条审计与两种MLP失败分离
+
+固定诊断完整6/27，均为rod00训练身份：ESN01/02与RNN01/02 Task/Strict/machine均true；MLP01 Task/machine true但撤回前未越棍回位；MLP02 Task true，行为顺序实际通过（9.60s越棍、11.48s持续回位确认<12.80s撤回），但安全门失败。MLP02外穿透峰0.219492mm超过原0.2mm，第一次超限4.74110s、峰4.74165s、26子步共1.3ms；并非执行器超限或actor/filter部署错误。不能放宽门槛消除失败，也不能把两条失败均归为没有蹭棍。
+
+新增 `CONTACT_YIELD_FIRST6_DEVELOPMENT_REVIEW_20261030.json`：逐条METRICS与原独立actor/filter审计、qualification输入hash核验；重新读取六条各400000子步并独立复算穿透峰/首次超限/时间。Task6/6、Strict4/6、machine5/6仅为固定开发前缀，不是最终成功率或家族排名；六条完整、失败均保留，不算开发SPT。原服务同PID/Invocation继续第三seed ESN，OOM/swap0，final108后继仍等待/零派发。完整27结束后再形成公平修复方案。
+
 ## 2026-10-30：前四条完整，MLP首条失败已定位到行为门
 
 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b持续active，完整4/27：rod00的ESN01/RNN01/ESN02 Task、Strict、machine均true；MLP01 Task/machine true、Strict false。MLP接触4.76635s、让位4.88s均有效，但12.80s棍撤回前没有越棍/持续回位；完整20s、500动作/400000子步、actor/filter replay均通过，峰矩39.105Nm/穿透0.037771mm，无数值或执行器违规。失败完整保留，不能当双成功/SPT样本。

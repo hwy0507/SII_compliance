@@ -1,3 +1,9 @@
+## 2026-10-30 — 固定开发6/27，MLP第二条为穿透安全失败
+
+- 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b多次宿主核实active，完整4→5→6；新增RNN02双成功/机器合规，MLP02 Task真但Strict/machine假。MLP02实际9.60s越棍、11.48s回位确认<12.80s撤回，安全失败来自0.219492mm外穿透>原0.2mm，独立子步重算首次4.74110s、峰4.74165s、26子步/1.3ms；actor/filter replay通过。与MLP01未及时回位的失败区分，门槛未改、失败保留。
+- 新增CONTACT_YIELD_FIRST6_DEVELOPMENT_REVIEW_20261030.json：核前六条METRICS/审计/qualification输入hash，六×400000子步穿透重算；Task6/6、Strict4/6、machine5/6仅开发前缀，不是最终test或总体家族排名，不算开发SPT。当前ESN03 rod在途；原最终后继仍等待/零派发，全27结束后再公平修复。
+- 开工fetch/read main8027eb8834474d829dbe3d536aab86dd1bc52fd0/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，完整AGENTS开工及收尾重读。前轮progress，本轮verified wait与新安全失败证据；两活登记source一致、OOM/swap0、内存约1.66GB/3GiB。Goal active，全27/必要修复/最终108/六指标/媒体待；raw仅本地，无新归档/服务器计算/RL/删除，两个无关untracked保留。
+
 ## 2026-10-30 — 开发闭环4/27；ESN两seed与RNN首条通过，MLP失败保留并诊断
 
 - 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b宿主多次核实active，完整1→2→3→4；ESN01/RNN01/ESN02 rod00 Task/Strict/machine true。MLP01 Task/machine true、Strict false：接触/让位有效，棍撤回前未越棍及持续回位；完整500动作/400000子步、actor/filter replay通过。失败保留，无重试/重选/门槛修改。RNN02 rod00已100动作/80000子步。
