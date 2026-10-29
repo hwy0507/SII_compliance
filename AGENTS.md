@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 完整18条诊断与共同闭环资格修复已实际派发
+
+- 读[共同筛选与真实状态](docs/NONRL_V9_COMMON_CLOSED_LOOP_SELECTION_20261029.md)。18条完整开发审查：teacher全部合格，ESN5/6（rod00失败）、RNN5/6（ball00失败）、MLP6/6；不是正式测试/Strict主结果。离线误差很小仍可能闭环饱和，优先修复选模资格；不能单归因teacher或蹭棍。原组合108仍51完成/57待补，不当三分离特化主矩阵。
+- 108候选全部hash/75拟合/24train6val/原排名已核。三方法三seed各按原validation MSE前三候选、每候选相同九train/val闭环；首失败完整保留、首全合格选择，耗尽则null无回退。不读取office测试调参、无新拟合、无门槛放宽；完成还须独立审查及另冻结未见最终测评。
+- v1资源affinity拒绝、v2缺cpu.max拒绝，均零新仿真，保留不重启。新增v3显式taskset CPU6；cpu controller未委派时仍恰一核，3GiB/swap0/线程1冻结；七项guard和五核心函数AST等价通过。当前唯一实际仿真`sii-v9-common-eligibility-v3-20261029.service` PID1684974/Invocation eab97f0b83e545e9956cd2cc230a6d44；ESN seed01 rank2 rod00真实在途，原rank1失败精确复用。父v5完整inactive。后续以v3 execution为准，不重启旧服务或改绑定源。Goal active，未声称修复成功。
+- 14成员129123bytes/SHA1e2007e3759aa0914bdd1837850609b6394bcb7180d4a7bcda61a0108b990934小证据已逐成员及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_common_eligibility_20261029_v3/EVIDENCE.tar.gz`。含完整18小审查/源码/失败与LIVE快照，不含完整raw，不宣称全备份，服务器无计算。
+- 开工fetch/read main d51f149cd9424c4cb31208d9517f8d07410ac0d6、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，无关untracked保留。
+
+
 ## 2026-10-29 — 安全边界调整诊断优先级；同场景已复现ESN闭环失败
 
 - 读[调度修正与真实配对](docs/NONRL_V9_PRIORITY_BOUNDARY_AMENDMENT_20261029.md)。原组合office108会长期阻塞同场景修复，现用其已有STOP_REQUESTED协议让在途回合自然落盘，51/108完整、Task5/Strict0、原scope inactive，57格未完成清单/原execution hash全部保留；不把旧矩阵写complete。旧v3按其前提拒绝派发、无student execution。后续补齐原不相交格子，完整联合审计；不按旧测试挑新参数。这一显式调度修正覆盖上条“先108全部结束再18”的计划顺序。
