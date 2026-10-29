@@ -1,3 +1,5 @@
+> **RL最新：[77等待与78完整审查/派发准备](docs/RL_RECOVERY77_WAIT78_DEPLOY_20261029.md)。原77全检查/仅恢复等待/76–78/GPU保底继续，无78决定或训练，Goal active。**
+
 > **RL最新：[77前缀与78仅恢复准备](docs/RL_RECOVERY77_PREFIX78_PREPARATION_20261029.md)。原77全检查/76–78/GPU保底继续，78仅恢复等待已部署，无78训练，Goal active。**
 
 > **RL最新：[77全标签与2274终端后续](docs/RL_RECOVERY77_FOLLOWUPS_20261029.md)。原77继续、全部后续已部署；原76–78和GPU保底保持，无自动78，Goal active。**

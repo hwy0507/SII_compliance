@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 恢复77等待与78完整审查/派发准备
+
+- [交接](docs/RL_RECOVERY77_WAIT78_DEPLOY_20261029.md)。78 startup/archive/reward-replay-health、完整loss及77→78配对源码准备，保留49–74/76/77历史、75拒绝和原算术/gate。decision78绑定完整77全审/四张实际图/准确恢复/全部历史和原76–78PLAN；真实未完整77、缺决定、缺78LAUNCH拒绝通过，无78决定/训练。
+- 原77连续21样本/600.002秒15身份live，当前steps{'impedance': 3188312, 'admittance': 3188942, 'vmc': 3192992}；观察器自然结束，原科学与78仅恢复等待继续，终态依FINISHED。guard184样本min[76, 69, 70, 66]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。Goal active、Direct34false。
+- SSD48成员/47887字节/SHAb9772cf4逐成员/AST核验，非HDD/arm1全备份；mainb1deda65/baselinef6e8f8c已读，认证发布待，无子agent。
+
 ## 2026-10-29 — 恢复77前缀审查与78仅恢复准备
 
 - [交接](docs/RL_RECOVERY77_PREFIX78_PREPARATION_20261029.md)。77前5000原字节/连续步号/所有数值/独立算术和实际六栏图通过；I/V尖峰保留，仅前缀非收敛。原77steps{'impedance': 3176605, 'admittance': 3177603, 'vmc': 3180779}、各30sampler，原全loss/标签/终端/76–78保持。
