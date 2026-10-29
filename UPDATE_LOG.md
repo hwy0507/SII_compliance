@@ -1,5 +1,6 @@
 ## 2026-10-29 — 非RL第二条件全审与八球v4接续保护
 
+- 科学5e755f51九文件源码/准确报告/准备/审计包27227bytes/SHA81328269及完整21次观察30628bytes/SHA8ef6da35，已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition001_handoff_20261029_v1/`。00:27:18–00:37:18UTC原1172675/1201537身份保持、19→21/最大926273536bytes/OOMswap0；observer27970自然exit0。00:38:39原科学仍active、22/108。原第三条件ESN seed2窗口穿透.243724mm失败保留；v4未物理执行，Goal active。
 - [报告](docs/NONRL_V8_CONDITION001_AND_HANDOFF_FIX_20261029.md)。原第二条件九完整55秒、Task/Strict均false，9,900,000保存子步/hash/原actor-filter收据审计通过SHA89b71793；MLP seed2穿透.351307mm失败保留，MLP seed1无人体接触舒适NA。不是全矩阵或新成功，SPT仍NA。
 - 待用补采入口旧is-active任意非0被当作停止，可能误接收查询异常，已改明确loaded/inactive/success/PID0且原PID/start消失；准备核准确命令，绑定准备/model-lock，CPU≤100%实查。唯一新准备v4 REG6b54db81，v3从未物理启动并保留superseded/旧源；八case/teacher/物理/gate/filter/输入/执行器及预算与v3精确一致，只有launcher源变化。
 - 2正9负边界、默认task/layout/原gate/八方向静态及真实在途拒绝全部通过，0新物理/训练。原1172675与后处理1201537继续；先完整108/全审/查看归档，再v4八球及三场景共同数据修复。开工main8dec2341/baselinef6e8f8c实际fetch/read。新证据暂本机待共享，Goal active，无RL/子agent/服务器计算/删除。
