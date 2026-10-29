@@ -1,3 +1,10 @@
+## 2026-10-29 — 非RL第六条件完成与失败快照归档
+
+- [当前交接](docs/NONRL_V8_CONDITION005_RUNTIME_20261029.md)。原108完成第六条件，三次边界观察53→54、observer70581自然exit0；03:42快照55，03:51核验57/108，原1172675/start32623702及后处理1201537/start32942337仍loaded/active，无重启。
+- 前六条件54条runtime Task/Strict/BOTH全0；第六九条均55s无abort，ESN三seed及MLP2机器合规失败、MLP1无接触舒适NA。独立审计仅覆盖000–003，004/005尚待，SPT NA，不称完整矩阵/修复成功。
+- 两原始证据7183bytes/SHA c98dd310ac6d7d07cb0abae055f9fe810fd29e481701af4204fb42800f226bd8 已逐成员和暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition005_runtime_20261029_v1/EVIDENCE.tar.gz`。
+- 开工实际fetch/read main8c2ae0415ab37ba278a9ab3d26061423b85dd45d/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d。原108/完整后处理继续，唯一后继八球v5未启动；可选004新审计仍待原问题回复，未重试。本轮verified wait，Goal active，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL实际载荷参数核验与原108推进
 
 - [报告](docs/NONRL_V8_SAVED_MODEL_PARAMETERS_20261029.md)。读取30条示范实际scene.mjb并逐execution hash核验，棍/球各0.1kg、角0.08kg；冻结测试0.08kg且角惯量相同。30示范dt5e−5与七ctrlrange均与原d4c28e40测试MJB一致。排除“测试载荷比所有示范重”的解释，不证明动态载荷、估计外力、任务或联合覆盖相同，不据此改质量/物理/gate。

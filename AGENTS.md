@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL第六条件运行快照与当前接续
+
+- [当前交接](docs/NONRL_V8_CONDITION005_RUNTIME_20261029.md)。原108边界观察53→54，03:42快照55、03:51核验57/108；原1172675/start32623702与后处理1201537/start32942337仍active，不重启。前六条件54条runtime Task/Strict/BOTH全0；独立审计仅000–003，004/005仍待，不称主矩阵修复。
+- 两原件7183bytes/SHAc98dd310已逐成员及暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition005_runtime_20261029_v1/EVIDENCE.tar.gz`。第六九条完整55s，无BOTH则SPT NA，所有失败保留。
+- 原108/原完整后处理继续；之后完整查看归档→唯一八球v5→真实三场景补采/公平重训/冻结回归，仍未修复。可选004新审计仍待原问题回复，未重试；不阻塞原科学。Goal active，本轮verified wait，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL实际MJB参数核对与原108推进
 
 - [报告](docs/NONRL_V8_SAVED_MODEL_PARAMETERS_20261029.md)。读取30示范实际MJB并核execution hash：棍/球载荷各0.1kg、角0.08kg；原冻结测试0.08kg，角的惯量亦相同。30示范dt5e−5及七ctrlrange与测试一致。不能说测试载荷比所有示范更重；也不能据此说载荷×方向/阶段联合覆盖已足。未改质量/物理/gate、无积分/拟合。
