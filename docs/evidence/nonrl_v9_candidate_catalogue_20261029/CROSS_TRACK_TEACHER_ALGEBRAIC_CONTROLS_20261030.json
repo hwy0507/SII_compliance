@@ -1,0 +1,47 @@
+{
+  "status": "passed_algebraic_only",
+  "configuration": {
+    "recovery": {
+      "threshold_n": 0.25873933901601237,
+      "attack_s": 0.10198773608427858,
+      "release_s": 1.257675717389726,
+      "offset_m": 0.03456819977079349,
+      "gain_per_s": 2.680422312515623,
+      "velocity_mps": 0.1567756593255339,
+      "activation_mode": "progress",
+      "progress_distance_m": 0.01659942039303537,
+      "intent_velocity_mps": 0.003
+    },
+    "velocity_weight": 1.0,
+    "pair_average": true,
+    "options": {
+      "damping_6d": [
+        56.0,
+        56.0,
+        220.0,
+        2.8,
+        2.4,
+        3.0
+      ]
+    },
+    "cross_track_recovery": {
+      "version": "bounded_cross_track_recovery_v1",
+      "gain_per_s": 1.5,
+      "maximum_speed_mps": 0.02,
+      "load_scale_n": 1.0
+    }
+  },
+  "random_samples": 2000,
+  "maximum_restore_speed_mps": 0.019999916720969603,
+  "controls": [
+    "restore sign/symmetry",
+    "smooth load suppression",
+    "100-step original equality at zero cross-track error",
+    "zero horizontal path disables term",
+    "random bounded/orthogonal/error-reducing restore"
+  ],
+  "source_sha256": "45161f0819c97cd1b51e643857933b839d4a5173389f9806c820783e4a2d9a69",
+  "physical_executions": 0,
+  "no_training_performed": true,
+  "limitations": "No physical safety, successful recovery or qualified demonstration established. Must register finite matched-scene probes."
+}

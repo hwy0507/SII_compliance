@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 两条真实teacher接管均不能横向回位；有界反馈原型已实现
+
+- 读[实际纠偏失败与教师缺口](docs/NONRL_V9_ACTUAL_TEACHER_RECOVERY_FAILURE_20261030.md)。原full12自然结束，独立完整review核99case/72复用/28失败/七selected；MLP02/03均全12耗尽null，最终等待器明确null/dispatch_attempted=false、未见108目录不存在。ESN/RNN各三seed及MLP01开发合格不等于最终成功。原选模完整失败保留，非基础设施停摆。
+- 已登记两条真实rod00训练身份纠偏探针完成：7s/11s学生后teacher接管，独立纯actor/公共filter回放及原Task/rod/安全审查完成；均Task=true但行为/安全false，零合格新示范。teacher后缀越棍至撤回最小横向偏差9.133/10.307mm、y action峰约6.46e-13/1.62e-19，管内采样0；原teacher确实没纠正这两条学生偏离。穿透0.241339mm首次4.7792s发生在学生前缀，不能归咎teacher后缀；后缀峰仅0.000312mm/0。保存状态诊断不替代逐样本行为gate；未见测试未曝光。
+- 新增独立teacher原型cross_track_recovery_teacher_20261030.py，仅canonical48参考误差/路径/估计力，横向反馈1.5/s、速度上限0.02m/s、1N平滑载荷抑制；不改旧冻结源/物理/gate/学生输入。符号对称、载荷抑制、零误差100步原teacher一致、零水平方向、2000随机有界/正交/恢复方向控制通过。仅代数验证，未接入wrapper或登记/派发新teacher物理；下一轮应先有限开发验证，并用已审查安全但不回位的学生候选区分恢复效果，合格后共享后缀mask/warmup数据公平重训。不能把本原型当修复成功或给最终ESN加教师。
+- 新增27raw含18失败671payload逐成员/源前后核验，1785026817bytes/SHAd8f7be0cbb65d3073533fbd32096717ff2a8de2e20fb294466a56f01f23fc741，已远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_fullgrid_new27_20261030_v1/NEW27_RAW.tar.gz`。明确依赖旧72raw SHA664252fb…已远端重核，精确map两包覆盖99/28，避免重复归档旧72。
+- 两条失败完整raw/执行/源/审计/日志及新原型控制63payload包142361019bytes/SHA91605fcf50d781360433e738182220c11e7fa07f1a179a7f5180bf9804b90966逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_actual_handoff_failures_20261030_v1/ACTUAL_HANDOFF_RAW.tar.gz`。服务器仅存储/hash，无RL/删除/重复仿真；原1132及探针1136绑定源一致，新增独立文件不改历史运行。
+- Goal active：新teacher物理纠偏验证/数据增强/公平重训、九模型锁定、最终108/六指标/媒体仍待；旧office108的57待补保留。开工fetch/read main aa35d4491dbf90d4b71970fe5984443ba576e708、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，收工重读AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 两条真实教师纠偏探针已准备并自动等待安全接续
 
 - 读[两条有限教师接管探针](docs/NONRL_V9_TEACHER_HANDOFF_PROBES_20261030.md)。新增执行wrapper/独立审查/协调器，复用原物理worker不编辑；训练rod00、失败MLP02 rank1，175/275学生步后teacher接管至完整20s。原MJB/filter/gate/执行器/dt/输入冻结，记录mixed角色及未完成动作，实际teacher后缀才是未来标签候选；前缀反事实禁止作执行示范。独立纯controller回放、完整/异常worker胶合、真实prepare/check和重复拒绝、五等待边界控制通过；零新物理，不冒称纠偏/重训成功。
