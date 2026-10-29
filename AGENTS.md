@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 固定27学生闭环等待器已active；最终108新来源适配准备完成
+
+- 读[接续与评估来源适配](docs/NONRL_CONTACT_YIELD_UNSEEN_ADAPTER_20261030.md)。宿主核验原采集PID1827286/Invocation ec3b6f480c184966bf86c5def563210d，16/30完整qualified、ball06在途；10rod独立通过保持。原训练等待器PID1829248仍waiting_for_collection/零派发。固定27后继PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b实际active、waiting_for_audited_fits/零派发。三注册source全部一致，3GiB/swap0、OOM0。精确启动快照见CONTACT_YIELD_DIAGNOSIS_HANDOFF_LAUNCH_20261030.json。
+- 后继仅父九模型完整审计且inactive后执行固定27 train00闭环，不重选/不读unseen；科学失败全保留，基础设施异常保留前缀及当前身份。新增final108来源adapter复用原物理/指标/review，固定27全Task/Strict/机器与精确replay通过才显式注册；当前未注册/未测试。十类错误拒绝、前置失败零sealed读取、异常checker恢复零物理控制复跑通过，新增三源AST检查通过。
+- Goal active：teacher通过不等于学生修复。完整30、75fits/九模型、27闭环与必要开发修复、最终108/六指标/媒体待。MJB/物理/input/filter/dt/gates冻结；旧综合历史及未完成格保留。raw仅本地，未绕过先前导出拒绝，无服务器计算/RL/删除/重复模拟器。
+- 开工宿主fetch/read main ffd928cd26d582268347ef26c61a58a3182d5a2e、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读完整AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 新teacher棍推10/10独立合格；固定九学生诊断入口准备完成
 
 - 读[学生诊断与完整棍推证据](docs/NONRL_CONTACT_YIELD_STUDENT_DIAGNOSIS_20261030.md)。同采集PID1827286/Invocation ec3b6f480c184966bf86c5def563210d保持；三次宿主观察确认rod08 475step/380000子步→ball00 150→325step/120000→260000子步，真实接续。10rod全合格且新独立前缀10/10：核source/config/原始输入hash、actor精确重放、label、完整时钟/子步、同初态/MJB/filter、原Task/安全/棍行为门。全部撤回前持续回位，确认领先1.24–5.59s，原失败rod09现领先2.19s。真实PNG/PDF/绘图source与hash已保存并目视核验；不是新学生或unseen结果。
