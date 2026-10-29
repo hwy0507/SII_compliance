@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery78_20261029_v1/prepare.py", line 40, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery78_20261029_v1/prepare.py", line 36, in main
+    codes={m:p.wait() for m,p in processes.items()};write(OUT/'CHECK_ONLY_EXIT_CODES.json',codes);assert all(x==0 for x in codes.values()),codes
+                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'impedance': 1, 'admittance': 1, 'vmc': 1}
+Traceback (most recent call last):
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery77_health_dependency_fix_20261029_v1/postprocess.py", line 24, in <module>
+    subprocess.run([sys.executable,str(P/'prepare.py')],check=True,env=env)
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python', '/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery78_20261029_v1/prepare.py']' returned non-zero exit status 1.

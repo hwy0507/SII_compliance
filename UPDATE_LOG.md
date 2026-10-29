@@ -1,3 +1,9 @@
+## 2026-10-29 — 完整77、诊断/恢复环境修复与78实际续训
+
+- [交接](docs/RL_RECOVERY77_COMPLETE78_RUNNING_20261029.md)。完整77三路30×55/41250、旧回放保持/新reward0误差；全loss/180标签/90reward对/health/2274+30终端和实际图全审，尖峰/actor漂移与导纳long0200改善、long0500退化保留，未收敛。
+- 缺health依赖按76原字节补齐，仅接缺失审查；空CUDA可见性导致仅恢复RNG误判已对照定位，原driver不变、三路准确state/replay/next65536和实际78startup通过。原失败链保留，无科学重启。78当前steps{'impedance': 3198395, 'admittance': 3199837, 'vmc': 3201243}，各30sampler，全loss/标签/2304终端锚点后续及原76–78窗口已部署，Goal active、无自动79/Direct34。
+- guard376样本min[75, 67, 67, 66]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。SSD383成员/3205500字节/SHAe0333625逐成员/AST核验，非HDD/arm1全备份；mainb1deda65/baselinef6e8f8c已读，认证发布待，无子agent。
+
 ## 2026-10-29 — 恢复77等待与78完整审查/派发准备
 
 - [交接](docs/RL_RECOVERY77_WAIT78_DEPLOY_20261029.md)。78 startup/archive/reward-replay-health、完整loss及77→78配对源码准备，保留49–74/76/77历史、75拒绝和原算术/gate。decision78绑定完整77全审/四张实际图/准确恢复/全部历史和原76–78PLAN；真实未完整77、缺决定、缺78LAUNCH拒绝通过，无78决定/训练。

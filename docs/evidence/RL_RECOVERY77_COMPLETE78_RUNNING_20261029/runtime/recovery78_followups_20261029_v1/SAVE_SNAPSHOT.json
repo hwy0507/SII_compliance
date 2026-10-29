@@ -1,0 +1,167 @@
+{
+  "time": 1793261401.0016434,
+  "host": "rltest-1025--a6ed2ff39b3c-nvfdwjhzzw",
+  "learners": [
+    {
+      "pid": 1981259,
+      "proc_start_ticks": "45614433",
+      "live": true,
+      "method": "impedance",
+      "progress": {
+        "cycle": 78,
+        "steps": 3198395,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3193396,
+        "wall_time_utc": 1793261399.4623058
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 1981260,
+      "proc_start_ticks": "45614434",
+      "live": true,
+      "method": "admittance",
+      "progress": {
+        "cycle": 78,
+        "steps": 3199837,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3194838,
+        "wall_time_utc": 1793261399.7205758
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 1981261,
+      "proc_start_ticks": "45614434",
+      "live": true,
+      "method": "vmc",
+      "progress": {
+        "cycle": 78,
+        "steps": 3201243,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3196244,
+        "wall_time_utc": 1793261398.2105365
+      },
+      "samplers": 30
+    }
+  ],
+  "waiters": {
+    "parameter_recovery78_task_labels_20261029_v1": {
+      "pid": 2028708,
+      "proc_start_ticks": "45621418",
+      "live": true,
+      "plan_sha256": "19d97dacca78d5c944f4b5ef5b2919de5b05c1ae45bd1a6f98cc75473168e570"
+    },
+    "vmc_recovery78_terminal_followup_20261029_v1": {
+      "pid": 2055721,
+      "proc_start_ticks": "45624762",
+      "live": true,
+      "plan_sha256": "d3f99f563d036e46e1ecfe775452eba69c7d723846e5211215d081d5888b1f26"
+    },
+    "admittance_recovery78_terminal_followup_20261029_v1": {
+      "pid": 2080129,
+      "proc_start_ticks": "45628146",
+      "live": true,
+      "plan_sha256": "99f0864164f2f4117b661c482260bcc72d9231af9cd637cb0653b1fcd0330eb1"
+    },
+    "parameter_recovery78_loss_20261029_v1": {
+      "pid": 1981265,
+      "proc_start_ticks": "45614439",
+      "live": true,
+      "plan_sha256": "c849c837dc434b0090598adec46c96eb681369bb3735611ac490c5b5d990e0dd"
+    },
+    "parameter_recovery76_78_reward_stability_20261029_v1": {
+      "pid": 436148,
+      "proc_start_ticks": "44768306",
+      "live": true,
+      "plan_sha256": "57b3d6be84b8b384922a35879ddfd5cd1c6e7a6b71b35ca5652c2ddfc8cd4e85"
+    }
+  },
+  "goal": "active",
+  "direct34": false,
+  "archive": {
+    "pid": 1981262,
+    "proc_start_ticks": "45614435",
+    "live": true
+  },
+  "guard_processes": [
+    {
+      "pid": 78710,
+      "proc_start_ticks": "44694367",
+      "cmdline": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /tmp/sii_gpu_util_guard_20261029_v6/guard.py "
+    },
+    {
+      "pid": 78730,
+      "proc_start_ticks": "44694378",
+      "cmdline": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /tmp/sii_gpu_util_guard_20261029_v6/guard.py --worker 0 "
+    },
+    {
+      "pid": 78731,
+      "proc_start_ticks": "44694378",
+      "cmdline": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /tmp/sii_gpu_util_guard_20261029_v6/guard.py --worker 1 "
+    },
+    {
+      "pid": 78732,
+      "proc_start_ticks": "44694378",
+      "cmdline": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /tmp/sii_gpu_util_guard_20261029_v6/guard.py --worker 2 "
+    },
+    {
+      "pid": 78733,
+      "proc_start_ticks": "44694378",
+      "cmdline": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /tmp/sii_gpu_util_guard_20261029_v6/guard.py --worker 3 "
+    }
+  ],
+  "guard": {
+    "samples": 376,
+    "minimum": [
+      75,
+      67,
+      67,
+      66
+    ],
+    "below50": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "last": {
+      "time": 1793261396.8629816,
+      "gpus": [
+        {
+          "gpu": 0,
+          "utilization": 80,
+          "memory_mib": 564,
+          "duty": 0.8
+        },
+        {
+          "gpu": 1,
+          "utilization": 95,
+          "memory_mib": 4463,
+          "duty": 0.7
+        },
+        {
+          "gpu": 2,
+          "utilization": 93,
+          "memory_mib": 4493,
+          "duty": 0.7
+        },
+        {
+          "gpu": 3,
+          "utilization": 94,
+          "memory_mib": 4494,
+          "duty": 0.7
+        }
+      ],
+      "synthetic_guard_included": true
+    },
+    "synthetic": true,
+    "keep_after_science": true
+  }
+}

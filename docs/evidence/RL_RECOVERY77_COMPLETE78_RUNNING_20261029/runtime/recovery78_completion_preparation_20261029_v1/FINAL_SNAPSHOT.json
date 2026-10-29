@@ -1,0 +1,148 @@
+{
+  "time": 1793259477.3415227,
+  "host": "rltest-1025--a6ed2ff39b3c-nvfdwjhzzw",
+  "learners": [
+    {
+      "pid": 3187668,
+      "proc_start_ticks": "45169092",
+      "live": true,
+      "method": "impedance",
+      "progress": {
+        "cycle": 77,
+        "steps": 3188312,
+        "completed_conditions": 16,
+        "running": 14,
+        "pending": 0,
+        "updates": 3183313,
+        "wall_time_utc": 1793259477.1542137
+      },
+      "finished": null,
+      "samplers": 14
+    },
+    {
+      "pid": 3187669,
+      "proc_start_ticks": "45169092",
+      "live": true,
+      "method": "admittance",
+      "progress": {
+        "cycle": 77,
+        "steps": 3188942,
+        "completed_conditions": 16,
+        "running": 14,
+        "pending": 0,
+        "updates": 3183943,
+        "wall_time_utc": 1793259477.2136302
+      },
+      "finished": null,
+      "samplers": 14
+    },
+    {
+      "pid": 3187670,
+      "proc_start_ticks": "45169092",
+      "live": true,
+      "method": "vmc",
+      "progress": {
+        "cycle": 77,
+        "steps": 3192992,
+        "completed_conditions": 18,
+        "running": 12,
+        "pending": 0,
+        "updates": 3187993,
+        "wall_time_utc": 1793259467.670128
+      },
+      "finished": null,
+      "samplers": 12
+    }
+  ],
+  "archive": {
+    "pid": 3187671,
+    "proc_start_ticks": "45169092",
+    "live": true
+  },
+  "restore78_waiter": {
+    "pid": 110433,
+    "proc_start_ticks": "45315607",
+    "live": true
+  },
+  "waiters": {
+    "parameter_recovery77_task_labels_20261029_v1": {
+      "pid": 3693087,
+      "proc_start_ticks": "45236452",
+      "live": true,
+      "plan_sha256": "6138fd881a19cab3e8c14e27287fc0604a9eb1d153da89023c33bfcba02d2784"
+    },
+    "vmc_recovery77_terminal_followup_20261029_v1": {
+      "pid": 3835143,
+      "proc_start_ticks": "45254904",
+      "live": true,
+      "plan_sha256": "7febaf35c4f798146a0e0f23cc5108a2385594ada91aa498bcb274e35aa96e31"
+    },
+    "admittance_recovery77_terminal_followup_20261029_v1": {
+      "pid": 3835144,
+      "proc_start_ticks": "45254905",
+      "live": true,
+      "plan_sha256": "22ec3cfb452de04204e7813e011c02f97450cbfe2f93995171d771f14187adf4"
+    },
+    "parameter_recovery77_loss_20261029_v1": {
+      "pid": 3187674,
+      "proc_start_ticks": "45169097",
+      "live": true,
+      "plan_sha256": "9b7922d0f04ca8bb06937d039d9dd95628daa7dfe3dd8b1d311b75929d7e01b2"
+    },
+    "parameter_recovery76_78_reward_stability_20261029_v1": {
+      "pid": 436148,
+      "proc_start_ticks": "44768306",
+      "live": true,
+      "plan_sha256": "57b3d6be84b8b384922a35879ddfd5cd1c6e7a6b71b35ca5652c2ddfc8cd4e85"
+    }
+  },
+  "decision78": false,
+  "training78": false,
+  "guard": {
+    "samples": 184,
+    "minimum": [
+      76,
+      69,
+      70,
+      66
+    ],
+    "below50": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "last": {
+      "time": 1793259475.566489,
+      "gpus": [
+        {
+          "gpu": 0,
+          "utilization": 80,
+          "memory_mib": 564,
+          "duty": 0.8
+        },
+        {
+          "gpu": 1,
+          "utilization": 95,
+          "memory_mib": 4469,
+          "duty": 0.7
+        },
+        {
+          "gpu": 2,
+          "utilization": 97,
+          "memory_mib": 4501,
+          "duty": 0.7
+        },
+        {
+          "gpu": 3,
+          "utilization": 70,
+          "memory_mib": 4494,
+          "duty": 0.7
+        }
+      ],
+      "synthetic_guard_included": true
+    },
+    "synthetic": true,
+    "keep_after_science": true
+  }
+}
