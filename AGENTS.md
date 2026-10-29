@@ -1,5 +1,32 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 接触让位后蹭棍teacher全量重采运行，公平训练唯一接续已启动
+
+- 读[本轮修复和接续](docs/NONRL_CONTACT_YIELD_SCRAPE_RETRAIN_20261030.md)。最新teacher在感知接触与4mm让位后才提供有界0.02m/s路径补偿，三开发探针独立3/3合格；仅加推进旧版0/3失败保留。rod09 4.918s接触→5.04s让位→10.68s越棍→10.76s持续回位确认<12.95s撤回。teacher用过开发validation rod09；六validation只作开发选模，不称独立泛化。冻结MJB/物理/input/filter/actuator/dt/gate未改。
+- 唯一新采集`sii-contact-yield-scrape-collection-20261030.service` PID1827286/Invocation ec3b6f480c184966bf86c5def563210d，输出`outputs/contact_yield_scrape_collection_20261030_v1`；复用三条同配置探针、其余27逐条一次，24train/6val。04:13快照完成3/30全部合格，rod03在途，独立前缀复核3/3；MemoryCurrent约1.04GB/3GiB、OOM0/swap0、CPU6/单线程，非全30或学生成功。
+- 唯一有限等待器`sii-contact-yield-scrape-training-handoff-20261030.service` PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab、约60MB，`outputs/contact_yield_scrape_training_handoff_20261030_v1`当前waiting_for_collection/dispatch_attempted=false。全30资格+独立完整重放+采集停止才建纯teacher数据并接续公平训练；任一失败保留不拟合、不重试。目标`outputs/contact_yield_scrape_retrain_20261030_v1`尚不存在。3 seeds/每族每seed12候选/32k neural updates/相同validation MSE选模/75fit作业后九模型锁定及完整审计；不自动派发unseen108。源已绑定，禁止修改或重复启动。
+- 新builder补齐旧fit审计器要求的lineage.hashes真实来源字段；未修改训练算法或门槛。未完成/重复prepare/原29/30拒绝、active/deactivating等待、少身份/重复/失败不派发及真实3前缀核验通过。源编译/diff检查通过。首轮系统Python缺PIL在import失败零物理，换登记解释器后通过。
+- [启动精确收据](docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_SCRAPE_LAUNCH_20261030.json)更正早期探针摘要old_collection SHA手抄错误：实际434f2225…与探针registration一致；绑定旧摘要保留。没有改原始数据。Goal active，当前无新训练/最终test；Task/Strict/双通过SPT/平均峰矩/真实舒适缺测NA/机器合规主矩阵仍待修复。旧综合结果与57未完成格保留，无RL/删除/服务器计算。
+- 宿主fetch成功，已读main80c856d89627acc95b40c456781014b6989682a4、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d两分支日志；纠正sandbox网络/user bus失败。新raw仅本地，先前服务器raw导出被自动审查拒绝，本轮未绕过，未声称新归档。收工重读AGENTS，保留两个无关untracked。
+
+
+## 2026-10-30 — 棍推teacher修复探针3/3合格，等待完整30条重采
+
+- [独立证据](docs/evidence/nonrl_v9_candidate_catalogue_20261029/VERTICAL_STAGE_SCRAPE_TEACHER_PROBES_20261030.json)。原30条teacher采集29/30通过；rod_09 Task/机器安全/action-filter replay通过但棍体接触/让位后未在撤回前完成持续回位，保留失败并阻断dataset。首个路径切向补偿v1在rod09/04/01三身份都因提前越过、没有手部接触和让位而失败，全部保留。
+- 根因定位：垂直路径方向`[0,0,1]`时旧恢复按水平路径长度关闭；只有XY参考纠偏无法补偿纵向受阻。仅增加切向推进会在接触前绕开棍子。新`VerticalStageScrapeTeacher`先以canonical48横向力和误差记录接触并确认至少4mm让位，再提供最多0.02m/s平滑切向补偿；不读phase、时钟、几何、成功标志。MJB/physics、canonical48、公共filter、actuator限制、dt、Task/Safety/棍行为门槛冻结。
+- 独立三探针通过：rod09接触4.918s、让位5.04s、越棍10.68s、持续回位确认10.76s、撤回12.95s；rod04和rod01也通过相同顺序/资格门及actor/filter replay。仅为开发teacher证据，不是模型学习、最终108或泛化证明。CPU6单路/单线程/MemoryMax3GiB/禁swap执行，无OOM。
+- 新完整30条重采已登记待启动，保留24train/6validation与旧身份；拟复用3条同MJB/seed/teacher配置且已合格的scrape v2轨迹，另外运行27条。失败样本会保留并阻断dataset。全部资格和数据复核后才运行ESN/MLP/RNN公平fit，九模型锁定后才评估冻结unseen108。
+- 当前无训练、无最终测试。Goal active；服务器raw归档权限问题待解决；本轮fetch main/baseline因网络拒绝失败，push未执行。收工重读AGENTS并更新UPDATE_LOG。
+
+## 2026-10-30 — 30条新采集结束，29合格，棍推失败保留待修
+
+- 本轮开工fetch/read `origin/main` `80c856d89627acc95b40c456781014b6989682a4` 与 `origin/baseline` `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 的UPDATE_LOG及本AGENTS。原因更正：实际棍后回位窗口`obs[45:48]=[0,0,1]`为竖直路径方向，并非全零/暂停。v1只投影水平方向而停用回位；v2遇非零竖直方向清除历史水平向量，仍停用修复。保存轨迹/动作重放证据见`CROSS_TRACK_VERTICAL_DIRECTION_DIAGNOSIS_20261030.json`。
+- v2服务完整保留：rod/ball通过；corner完整325步因诊断文件被agent在源清单建立后修改，`source_stable=false`而失败，未派发后两纠偏，无标签。证据`PERSISTENT_CROSS_TRACK_TERMINAL_FAILURE_20261030.json`；不重启。v3在竖直路径用bounded XY reference feedback（gain1.5/s、cap.02m/s、load gate1N），不变canonical48/filter/物理/门槛；名义三场景通过、7s安全student前缀纠偏通过、11s前缀行为失败，独立4/5。gain2/s、同cap的复核仍4/5；7s成功、11s以约5.1mm末误差失败。v5固定gain2/.02、只把晚前缀提前至9s，独立5/5；完整棍门为yield→几何越过→持续进入5mm管道80ms→撤回前，9s回合10.08越过、11.92开始回位、12.00确认，12.84撤回，Task/safety/behavior均通过。均属train identity teacher开发，不是学生评测、最终测试或一般安全证明。真实对照图`VERTICAL_STAGE_RECOVERY_COMPARISON_20261030.png`。
+- 确认teacher成功与学生学习需分开。新teacher固定gain2/s、0.02m/s上限、1N gate，30身份采集已结束：复用3条同配置/MJB合格名义轨迹，另运行27条；30条24train/6validation身份中29条合格，球10/10、桌角10/10、棍推9/10。仅rod_09失败：完整Task、安全、actor/filter replay通过，但手/指几何在棍撤回前未达到5mm/80ms持续回位门槛；失败原始证据保留，未降低门槛，dataset builder按协议拒绝拟合。服务已自然停止，cgroup移除；全过程MemoryMax3GiB、swap0，结束前OOM0。当前不训练、不测unseen108。两条实际恢复suffix另存mask候选但本轮先不混入，待循环warmup语义审计。
+- 数据集builder及下一步公平训练源已新增。30全合格后按同teacher hash组纯teacher的24train/6val；沿用ESN/MLP/RNN各3 seeds、每seed/family 12候选及原32k neural update/validation selection。训练/新final108尚未开始。最终比较必须按双Task+Strict成功条件下SPT、平均峰矩、人体舒适未测标NA、机器合规；旧composite结果保留历史，不作三分离主结果。
+- v1/v2及v3完整raw共享路径/摘要见`CROSS_TRACK_COMPLETE_SHARED_RECEIPT_20261030.json`及`VERTICAL_AWARE_COMPLETE_SHARED_RECEIPT_20261030.json`；v4 gain复核已共享但协调器文件事后修改造成协调器精确快照差异，记录于`VERTICAL_AWARE_GAIN2_SHARED_RECEIPT_20261030.json`；v5 131成员本地包309662979bytes/SHA`2ec5506d253070d856acb376b874fd174a682af229dfb07976adeda84b6146f7`，server导出被自动审查拒绝，未声称已共享。collection真实raw当前本机，尚未归档。服务器只存储/hash，未计算。
+- Goal保持active：30数据/公平重训/九模型锁定/冻结未见108与指标矩阵/媒体/归档均待。冻结物理、MJB、gate、输入、filter、执行器限制、dt5e-5未改。旧主矩阵/57未完成格保持。当前任务新增未提交文件仅限本问题；两个无关untracked `MUJOCO_LOG.TXT`、`docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md`保留。收工需重读AGENTS并更新根UPDATE_LOG。
+
 ## 2026-10-30 — 有界横向教师五开发验证运行，三名义场景已qualified
 
 - 读[新教师五回合开发验证](docs/NONRL_CROSS_TRACK_TEACHER_DEVELOPMENT_20261030.md)。新增独立执行/审查/登记协调器，不编辑旧物理worker；固定横向1.5/s、速度0.02m/s、载荷尺度1N，三个名义train00后接两条175/275学生前缀恢复。前缀使用原MLP02 rank2（已安全通过但回位失败）区分恢复缺口；不是原有穿透超限的rank1。前缀反事实label仍禁作示范，实际后缀须合格并另登记共享数据协议才可训练。三种前缀真实保存历史独立回放、完整/异常记录与mask、真实prepare/check/重复拒绝零物理控制通过。

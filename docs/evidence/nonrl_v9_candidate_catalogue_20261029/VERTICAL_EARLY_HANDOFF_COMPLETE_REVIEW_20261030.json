@@ -1,0 +1,208 @@
+{
+  "status": "verified_complete_five_development_probes",
+  "complete_cases": 5,
+  "qualified_cases": 5,
+  "failed_cases": 0,
+  "rows": [
+    {
+      "id": "rod_prefix0",
+      "qualified": true,
+      "task_success": true,
+      "safety_valid": true,
+      "scene_behavior_valid": true,
+      "peak_torque_nm": 35.28431017401273,
+      "max_external_penetration_m": 7.139514592360059e-05,
+      "rod": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.731749999995642,
+        "yield_excursion_m": 0.014403122300008708,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.55999999998905,
+        "rejoin_start_s": 7.799999999988491,
+        "rejoin_confirmed_s": 7.879999999988304,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "3c3d0bd862b5a23dab1b1c456f61517a1d69df91f772e7e4059c2ae818160318",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "da8720ee04839ba6054d877ce0e777d3f6ef954e554c637a39be52a1eea7eb93",
+          "recipe.json": "6858288a80c84e52966cff385faf09689743c2ffec0922c76e545ca4b4001e69",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "qualification_sha256": "d060cb59218a81fb05c8ccdcd008276c8b5816c25c1d76ff0b7e9a36877610ab",
+      "teacher_candidate_label_rows": 500
+    },
+    {
+      "id": "ball_prefix0",
+      "qualified": true,
+      "task_success": true,
+      "safety_valid": true,
+      "scene_behavior_valid": true,
+      "peak_torque_nm": 46.621767158679894,
+      "max_external_penetration_m": 0.0,
+      "rod": null,
+      "qualification_sha256": "861d4a8a0e7856f6a776da04375ceec6898c18d95de88bb45f3d00f6be344e94",
+      "teacher_candidate_label_rows": 750
+    },
+    {
+      "id": "corner_prefix0",
+      "qualified": true,
+      "task_success": true,
+      "safety_valid": true,
+      "scene_behavior_valid": true,
+      "peak_torque_nm": 51.260739310490465,
+      "max_external_penetration_m": 0.0,
+      "rod": null,
+      "qualification_sha256": "1682ef1cd8051ac0d9152a6ed7b56f3ab16fbf12e53d88a9a15d3ddc2c6c5217",
+      "teacher_candidate_label_rows": 325
+    },
+    {
+      "id": "rod_prefix175",
+      "qualified": true,
+      "task_success": true,
+      "safety_valid": true,
+      "scene_behavior_valid": true,
+      "peak_torque_nm": 35.25034506829083,
+      "max_external_penetration_m": 0.00013888642717085857,
+      "rod": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.340000000000982,
+        "retract_start_s": 12.840000000000982,
+        "contact_bodies": [
+          "fr3_link7",
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.777649999995535,
+        "yield_excursion_m": 0.03618457541469634,
+        "yield_start_s": 4.879999999995296,
+        "pass_s": 9.119999999985415,
+        "rejoin_start_s": 11.079999999980847,
+        "rejoin_confirmed_s": 11.159999999980661,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "7bf0a8e232f5dcc21033f17f0e3d901733046cbbf63908ef857b8cb1eab230c2",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "4022ea0cc501dfd9333fef63497d7340a28914b03bfff43e78ce0cdcab92142a",
+          "recipe.json": "891c74431f3d647452c213f98a256df68ad4b59f1993a78e45508ab219e0ae90",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "qualification_sha256": "a478e425e17cf78e9fb22ab8d262766011125633bc6ef2b9136f1b7373061471",
+      "teacher_candidate_label_rows": 325
+    },
+    {
+      "id": "rod_prefix225",
+      "qualified": true,
+      "task_success": true,
+      "safety_valid": true,
+      "scene_behavior_valid": true,
+      "peak_torque_nm": 35.275452002138515,
+      "max_external_penetration_m": 0.00013888642717085857,
+      "rod": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.340000000000982,
+        "retract_start_s": 12.840000000000982,
+        "contact_bodies": [
+          "fr3_link7",
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.777649999995535,
+        "yield_excursion_m": 0.03618457541469634,
+        "yield_start_s": 4.879999999995296,
+        "pass_s": 10.079999999983178,
+        "rejoin_start_s": 11.91999999997889,
+        "rejoin_confirmed_s": 11.999999999978703,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "12a966218e8484bd66ba23c4199e1ea606758424b09d719f13e29a1b2a4f3ad0",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "3e620bb57a88c06f0757ddb0326a7920f08b55de6a78be8e6244f2f48e67d3f3",
+          "recipe.json": "dc99f42d8f18ab1b87c68e2536105fea58ea636a47a6117b269c42cd6f8227ff",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "qualification_sha256": "9e4b0b7a19277dbad4f9024a1d5aac49aff035da1823cd5b8e0e53a975662a92",
+      "teacher_candidate_label_rows": 275
+    }
+  ],
+  "registration_sha256": "17dc735ed261854c149cade27ac064d7d79d876e9edd23cb972fd9d3d02fc1c9",
+  "execution_snapshot_sha256": "9d7f72164c63718482ac2a3fe25a7d7e8db16aadc48fe6e0bc05997d0682e65d",
+  "reviewer_sha256": "91b725a7f9b6776899099c53d1c76ede1cb9da148c57fc74b19247d568fe6104",
+  "final_test_performed": false,
+  "training_performed": false,
+  "limitations": "Five registered development identities only; not unseen success, general recovery proof or final matrix. Qualified executed teacher rows are only candidates for a separately audited shared-data protocol."
+}
