@@ -1,0 +1,83 @@
+{
+  "status": "streaming_checks_passed",
+  "resources": {
+    "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/sii-streaming-audit-check-20261029.service",
+    "memory_max": 134217728,
+    "swap_max": 0,
+    "cpu_max": null,
+    "affinity": [
+      6
+    ],
+    "cpu_bound": "single_cpu_affinity"
+  },
+  "memory_peak_bytes": 37941248,
+  "checker_sha256": "18b710dfc572cbc2941a46074e4ebf220d9a741efb7371aab8e15df622c67848",
+  "streaming_auditor_sha256": "c0e65e64f63a9bfef0eb84a91dd52461266597a164db95709b236864da0792e8",
+  "original_auditor_sha256": "98bd7a7c0ae89ba6b282d2f4e5e5c6e64ef2aa4da115e8b70207426257ae95fe",
+  "previous_audit_sha256": "aa1ead018cbbc25384a6804a51bb291a5cd32b007a01dc6cd2dee1231ba6e4d2",
+  "synthetic_rows": 10001,
+  "synthetic_chunk_sizes": [
+    257,
+    4096,
+    12000
+  ],
+  "synthetic_rejected": [
+    "nan",
+    "wrong_dt",
+    "unaligned",
+    "wrong_shape",
+    "truncated"
+  ],
+  "real_original_audit_comparisons": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "max_abs_errors": {
+        "substeps": 0,
+        "rmse_mm": 0.0,
+        "peak_speed_mps": 0.0,
+        "peak_torque_nm": 0.0,
+        "human_force_peak_n": 0.0,
+        "human_contact_impulse_ns": 0.0,
+        "comfort_exceed_duration_s": 0.0
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "max_abs_errors": {
+        "substeps": 0,
+        "rmse_mm": 1.4210854715202004e-13,
+        "peak_speed_mps": 0.0,
+        "peak_torque_nm": 0.0,
+        "human_force_peak_n": 0.0,
+        "human_contact_impulse_ns": 0.0,
+        "comfort_exceed_duration_s": 0.0
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "max_abs_errors": {
+        "substeps": 0,
+        "rmse_mm": 5.684341886080802e-14,
+        "peak_speed_mps": 0.0,
+        "peak_torque_nm": 0.0,
+        "human_force_peak_n": 0.0,
+        "human_contact_impulse_ns": 7.105427357601002e-15,
+        "comfort_exceed_duration_s": 0.0
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "max_abs_errors": {
+        "substeps": 0,
+        "rmse_mm": 6.821210263296962e-13,
+        "peak_speed_mps": 0.0,
+        "peak_torque_nm": 0.0,
+        "human_force_peak_n": 0.0,
+        "human_contact_impulse_ns": 0.0,
+        "comfort_exceed_duration_s": 0.0
+      }
+    }
+  ],
+  "physical_steps": 0,
+  "limitation": "Synthetic fixtures only test software; real comparisons use four previously audited original episodes including abort, no contact, zero comfort and full comfort. No new dynamics or training."
+}

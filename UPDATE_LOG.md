@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL低内存分块审计准备完成
+
+- [报告](docs/NONRL_V8_STREAMING_AUDIT_PREPARATION_20261029.md)。新独立auditor按4096子步读取，完整遍历原轨迹；来源/标签/终态时间核验前缀逐字使用SHA锁定原函数，门槛/公式/分母及1e−10公差保持，原在途源不改。稳定部分和导致浮点顺序差，不称逐bit等价。
+- 检查10001合成行/三chunk与全数组对照、NaN/错dt/长度/shape/截断五拒绝；四条原真实条件003旧审计覆盖abort/无接触/舒适0%/100%，全部字段在原公差内，最大绝对差6.821210263296962e−13。实际affinity=[6]/MemoryMax128MiB/swap0，memory.peak37941248bytes；测试自然exit0、42.817s/CPU7.449s。证据b0517cb2，无新物理或拟合，v5全部198源保持。
+- 第五条件的新审计派发遇自动权限复核两次deadline超时，工具允许的一次重试已用完；只读确认unit not-found/MainPID0、无输出。已请求用户明确回复，记录时未收到；无回复勿再尝试同动作。不是安全性或科学审计失败。原108与既有完整后处理继续，03:08:42原PID1172675/1201537 loaded/active、48/108，Goal active；第五条件独立审计仍待，四条旧结果不替代新审计。
+- 四成员源码/检查/派发记录包6453bytes/SHA4294f6e6df5b0f6502c505f675c5a58390ec9538d699fd1326f094b80dd7ff34已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_streaming_audit_preparation_20261029_v1/SOURCE_AND_CHECKS.tar.gz`；不含在途物理全集。
+- 开工main334835c93d5de14b318fed673cb2182b2d3c11c7/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d实际fetch/read；收尾3b159dcf独立RL更新已读并快进整合。本轮准备progress，上轮verified wait，主矩阵尚未修复，原后继八球v5/三场景补采/公平训练/冻结回归保持；无RL/子agent/服务器计算/用户数据删除。
+
 ## 2026-10-29 — 完整74审查与准确有限75
 
 - [交接](docs/RL_PARAMETER74_COMPLETE_20261029.md)。三路完整74各30×55/41250/noabort，旧73 replay/history保持、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2214终端及实际图已审，具体改善和退化保留。

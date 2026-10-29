@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL低内存审计已验证，新增派发待回复
+
+- [当前交接](docs/NONRL_V8_STREAMING_AUDIT_PREPARATION_20261029.md)。新独立streaming auditor逐4096子步遍历，原来源/标签/终态时间检查前缀及门槛不改；10001行三chunk、五类非法数据和四条旧真实审计对照通过，最大差6.82e−13在原公差内。测试实际affinity=[6]/128MiB/swap0，峰37941248bytes、自然exit0；无物理/拟合，v5全部198源保持。
+- 第五条件streaming审计启动的自动权限复核两次超时，一次允许重试已用完；unit not-found/MainPID0，审计输出不存在。已请求用户明确回复，记录时未收到；无回复勿再派发同一动作。超时不是安全拒绝或科学失败；原108与原完整后处理不依赖此可选审计，继续运行，Goal active。
+- 03:08:42UTC原1172675/1201537仍loaded/active，48/108。第五条件仍仅runtime快照、独立复核尚待；不能把四条旧样本检查当新条件审计。原108完整审查归档→八球v5→三场景补采/公平训练/冻结回归仍待。
+- 四文件源码/检查/派发状态6453bytes/SHA4294f6e6已逐成员和暂存/最终核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_streaming_audit_preparation_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。本轮准备progress，上轮verified wait；无RL/子agent/服务器计算/用户数据删除。
+
 ## 2026-10-29 — 完整74审查与准确有限75
 
 - [交接](docs/RL_PARAMETER74_COMPLETE_20261029.md)。三路完整74各30×55/41250/noabort，旧73 replay/history保持、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2214终端及实际图已审，具体改善和退化保留。
