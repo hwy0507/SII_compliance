@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 恢复76早期审查与77仅恢复
+
+- [交接](docs/RL_RECOVERY76_PREFIX77_PREPARATION_20261029.md)。前5000原字节/连续步号/全数值/独立算术和实际图核验；I/V尖峰保留，仅前缀非收敛。原76steps3137135/3138193/3141366、各30sampler，原全loss/标签/终端/76–78继续。
+- 新77driver显式完整76父边界和原partial75历史，五metadata插入逆变换等于原trainer；每路17协议+7边界负例、实际不完整76拒绝通过。仅恢复等待1622287部署，77实际恢复/训练未执行；启动/归档review源码仅准备。两次构建失败原件保留，无科学重启。
+- 11样本/300.002s全部原身份保持、observer自然结束。guard233样本min[74, 69, 69, 68]%、低于50[0, 0, 0, 0]，科研完成仍保载。SSD63成员/956256字节/SHA88f12597已核，非HDD/arm1全备份；main7445692e/baselinef6e8f8c已读并安全合并，push认证仍待，Goal active、Direct34false。
+
 ## 2026-10-29 — 非RL第九条件完整，原108到81
 
 - [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：05:38–05:48UTC共20样本原1172675/start32623702及1201537/start32942337保持loaded/active，79→81并接续条件009，OOM/实验swap0。第九九条runtime全失败，ESN1/3分别9.24/16.16秒global penetration abort，其余七条55s；前九81条TaskStrict全0，SPT NA，非新子步审计。observer20511自然exit0，科学继续。

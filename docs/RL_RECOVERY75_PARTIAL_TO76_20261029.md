@@ -63,3 +63,6 @@ partial75仍只有2244个terminal，与完整74的indices/57维feature/reward/ma
 GPU guardv6持续，排除最初2预热样本后301个样本各卡最低[75, 68, 66, 66]%，低于50次数[0, 0, 0, 0]；包含合成负载，科学完成后继续。当前系统重启仍会终止进程，未宣称重启自启。
 
 后续证据包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_RECOVERY76_TERMINAL_LABELS_20261029/FOLLOWUP_EVIDENCE.tar.gz`，65成员/938013字节，SHA `5938fe7ca3e47c4063dc65d26a4030ddbe8ba11f72181ec8f86577987ff9f730`，逐成员与源码AST检查通过。大型产物仍SSD，非HDD/arm1全备份。GitHub缺HTTPS认证，恢复提交a48d16cc与合并359c6ceb已在本地，远端发布仍待；不影响训练。Goal active，尚无77训练，Direct34false。
+
+
+后续最新：[恢复76早期loss、77仅恢复准备及连续观察](RL_RECOVERY76_PREFIX77_PREPARATION_20261029.md)。原76保持，77仅恢复等待，实际77训练未启动，GPU保载继续。

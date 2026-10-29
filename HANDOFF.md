@@ -1,3 +1,5 @@
+> **RL最新：[恢复76前缀与77仅恢复](docs/RL_RECOVERY76_PREFIX77_PREPARATION_20261029.md)。原76/76–78/GPU保底继续，77尚未训练，Goal active。**
+
 > **RL恢复76补充：实际partial75终端基准及76完整终端/标签等待已部署，原训练与GPU保载继续；见[当前交接](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。**
 
 > **RL最新：[新容器partial75恢复→76](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。旧75已中断，原74–76无法评定；当前独立76/76–78/guardv6运行，勿执行旧canonical76工具。Goal active。**
