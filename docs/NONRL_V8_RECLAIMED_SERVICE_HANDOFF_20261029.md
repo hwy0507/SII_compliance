@@ -1,5 +1,46 @@
 # 原108结束后的临时服务回收衔接
 
+## 第十条件完整与接触范围解释，原108到93
+
+06:30:35.140–06:41:05.354UTC共22样本，原1172675/start32623702及后处理
+1201537/start32942337均loaded/active，90→93并接续条件010的ESN2。
+最高MemoryCurrent1859694592bytes/3GiB，所有样本OOM/oom_kill/实验swap0；主机末SwapFree0。
+observer28771到93自然exit0，原科学继续。第十条件009九条全部Task/Strict=false，
+前十条件90条runtime Task/Strict/BOTH均0，条件SPT为NA。
+
+| 方法/seed末位 | 时长 s | 最终阶段 | 峰矩 Nm | 接触期舒适代理 | 机器合规 |
+|---|---:|---|---:|---:|---|
+| ESN1 | 46.68 | carry / abort | 76.349075 | 83.7428% | 否 |
+| RNN1 | 55 | approach | 42.749390 | 100% | 是 |
+| MLP1 | 55 | approach | 36.664909 | NA | 是 |
+| ESN2 | 17.56 | lift / abort | 57.356194 | 99.9450% | 否 |
+| RNN2 | 55 | carry | 40.027920 | 100% | 是 |
+| MLP2 | 55 | carry | 51.338665 | 100% | 否 |
+| ESN3 | 55 | carry | 46.331528 | 96.4407% | 是 |
+| RNN3 | 55 | carry | 38.000187 | 100% | 是 |
+| MLP3 | 55 | carry | 37.397362 | 100% | 是 |
+
+MLP1无人体接触，NA不是100%；安全或低峰矩不替代Task成功。九小型AUDIT/metrics文件
+hash已逐一匹配结果行；这是runtime收据核对，不是新增独立子步审计，004–009仍待原完整后处理。
+
+本轮另读取冻结MJB的几何/刚体映射，解释ESN2“外部穿透仅0.379mm却因全局>2mm终止”：
+原`rollout.json`全局峰值3.315180mm对应geom66/75，即left_finger/right_finger；
+外部峰值0.378817mm对应桌角顶部与left_finger。原冻结代码的全局量统计不同刚体接触，
+外部量排除机器人自接触和目标物体接触，二者不矛盾。ESN1全局/外部均2.468439mm，
+最深接触对应world与fr3_link7。没有改门槛，也未重新积分或从状态重建接触。
+只读范围解释服务自然exit0，运行1.462s/CPU1.241s；进程内已核affinity[6]/256MiB/swap0。
+
+[完整条件及观察](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION009_COMPLETE_AND_WAIT.json)：
+65882bytes，SHA256 `3b0c52d1f92651d47e4cb0c5e627204c103f8a62277fb90b51dbfeb333793490`。
+[接触范围及源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION009_CONTACT_SCOPE.json)：
+17683bytes，SHA256 `8c375aaa565f9ba5caae8e85661a9e23ee5b55c3ec7c62e6c0d2a0ee2ea1f8b5`。
+两成员包12053bytes/SHA256 `296ea078cd1100fa495245ad6dbb1c1cf01082ff9cc9e4742a7de0431c9eb809`
+已逐成员及暂存/最终大小hash核共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition009_complete_20261029_v1/EVIDENCE.tar.gz`。
+开工mainc1e2bf02/baselinef6e8f8c实际fetch/read；本轮完整条件及范围诊断progress，Goal active。
+主矩阵未修复；原完整审查归档→唯一v6八球/实际运动核查→正式补采/公平重训保持，
+无新物理/拟合/绑定源修改，可选004未重试。
+
 ## 连续观察：06:09–06:24UTC，86→89
 
 31次采样均确认原1172675/start32623702及后处理1201537/start32942337 loaded/active。

@@ -1,3 +1,10 @@
+## 2026-10-29 — 非RL第十条件完整与全局/外部穿透范围
+
+- [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：第十条件九条Task/Strict全false，ESN1/2分别46.68/17.56秒abort，其余七条55s；前十90条runtime均失败，SPT NA。九小型AUDIT/metrics hash一致，非新增独立子步审计，004–009待原完整后处理。
+- 冻结MJB映射与原源码核对：ESN2全局3.315mm来自左右手指自接触，外部0.379mm来自桌角与手指，两范围不同。ESN1全局/外部均2.468mm、world/fr3_link7。未发现该处数值矛盾；只读无积分、无门槛修改。范围描述进程内单CPU/256MiB/swap0、自然exit0。
+- 06:30–06:41UTC22样本原1172675/start32623702及1201537/start32942337 active，90→93；最高1859694592bytes/3GiB、OOM/实验swap0，observer28771自然exit0，原科学继续。两原件12053bytes/SHA296ea078已逐成员及暂存/最终核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition009_complete_20261029_v1/EVIDENCE.tar.gz`。
+- 开工mainc1e2bf02/baselinef6e8f8c实际fetch/read；上一轮verified wait，本轮完整条件/范围诊断progress，Goal active、主矩阵未修复。原完整审查归档→唯一v6八球/实际运动核查→正式三场景补采/公平重训保持，无RL/子agent/服务器计算或绑定源修改，可选004未重试。
+
 ## 2026-10-29 — 非RL原108连续观察86→89
 
 - 06:09:13–06:24:13UTC31次原1172675/start32623702及1201537/start32942337保持loaded/active，86→89、接续MLP3条件009。最高1871986688bytes/3GiB、OOM/实验swap0，全机swap仍近满。observer68766满900秒自然exit0，原科学继续，不重启。

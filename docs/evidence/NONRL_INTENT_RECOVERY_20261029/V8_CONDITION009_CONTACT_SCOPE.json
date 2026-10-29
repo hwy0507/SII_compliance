@@ -1,0 +1,423 @@
+{
+  "status": "complete_condition009_saved_contact_scope_description",
+  "created_utc": "2026-10-29T06:33:32.363293+00:00",
+  "observer_source": "import datetime\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport mujoco\n\nROOT = Path('/home/airpig/桌面/hwy/compliance_control/SII_compliance')\nBENCH = ROOT/'code/mujoco_6d_vmc_benchmark'\nEVAL = BENCH/'outputs/special_scene_frozen108_20261029_v8'\nOUTPUT = ROOT/'docs/evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION009_CONTACT_SCOPE.json'\nassert not OUTPUT.exists()\nsha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()\nsource = EVAL/'source/scripts/validate_office_apparatus_v5_20260917.py'\nexecution = json.loads((EVAL/'execution.json').read_text())\nrows = [r for r in execution['results'] if r['condition'].endswith('_009')]\nassert len(rows) == len({r['method'] for r in rows}) == 9\ncg = Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')\nresources = {n: (cg/n).read_text().strip() for n in ('memory.max','memory.swap.max','memory.events','memory.swap.current')}\nassert int(resources['memory.max']) <= 268435456 and resources['memory.swap.max'] == '0'\nresources['affinity'] = sorted(os.sched_getaffinity(0))\nassert len(resources['affinity']) == 1\nresult = []\nfor row in rows:\n    folder = Path(row['run'])\n    model_path = folder/'rollout.mjb'\n    assert sha(model_path) == row['model_sha256']\n    assert sha(folder/'AUDIT.json') == row['audit_sha256']\n    assert sha(folder/'execution.json') == row['execution_sha256']\n    audit = json.loads((folder/'AUDIT.json').read_text())\n    raw = json.loads((folder/'rollout.json').read_text())\n    model = mujoco.MjModel.from_binary_path(str(model_path))\n    def pair(names):\n        out=[]\n        for name in names or []:\n            g = int(name) if name.isdecimal() else mujoco.mj_name2id(model,mujoco.mjtObj.mjOBJ_GEOM,name)\n            assert 0 <= g < model.ngeom\n            body = int(model.geom_bodyid[g])\n            out.append(dict(recorded_name=name,geom_id=g,\n                geom_name=mujoco.mj_id2name(model,mujoco.mjtObj.mjOBJ_GEOM,g),body_id=body,\n                body_name=mujoco.mj_id2name(model,mujoco.mjtObj.mjOBJ_BODY,body)))\n        return out\n    stats=raw['stats']\n    assert audit['abort_reason'] == raw['abort_reason']\n    assert abs(audit['penetration_mm']-1000*stats['max_external_penetration_m']) < 1e-12\n    result.append(dict(method=row['method'],duration_s=row['duration_s'],abort_reason=raw['abort_reason'],\n        global_penetration_mm=1000*stats['max_penetration_m'],global_pair=pair(stats['worst_pair']),\n        external_penetration_mm=1000*stats['max_external_penetration_m'],external_pair=pair(stats['worst_external_pair']),\n        input_sha256={n:sha(folder/n) for n in ('rollout.mjb','rollout.json','AUDIT.json','execution.json')}))\nreport=dict(status='complete_condition009_saved_contact_scope_description',\n    created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),\n    observer_source=Path(__file__).read_text(), frozen_runtime_source_sha256=sha(source),\n    resources=resources, rows=result,\n    limitation='Recorded global versus external peak scopes plus geometry/body identities from the frozen MJB. '\n    'No MuJoCo integration, contact reconstruction, new substep audit, altered gate, fitting, or cause of model failure proved. '\n    'Global recorded peak includes different-body contacts; external scope excludes robot self-contact and intended target contacts.')\nwith OUTPUT.open('x') as f:\n    json.dump(report,f,ensure_ascii=False,indent=2,allow_nan=False);f.write('\\n')\nprint(OUTPUT,sha(OUTPUT))\n",
+  "frozen_runtime_source_sha256": "76ed25f77c7c32452121382b1f5a766f1b553af62802a1afb7000b3bd029ebe0",
+  "resources": {
+    "memory.max": "268435456",
+    "memory.swap.max": "0",
+    "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "memory.swap.current": "0",
+    "affinity": [
+      6
+    ]
+  },
+  "rows": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "duration_s": 46.67999999999995,
+      "abort_reason": "global_penetration_exceeded_2mm",
+      "global_penetration_mm": 2.4684389955421846,
+      "global_pair": [
+        {
+          "recorded_name": "office_v5_pillar",
+          "geom_id": 12,
+          "geom_name": "office_v5_pillar",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "fr3_link7_collision",
+          "geom_id": 52,
+          "geom_name": "fr3_link7_collision",
+          "body_id": 9,
+          "body_name": "fr3_link7"
+        }
+      ],
+      "external_penetration_mm": 2.4684389955421846,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_pillar",
+          "geom_id": 12,
+          "geom_name": "office_v5_pillar",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "fr3_link7_collision",
+          "geom_id": 52,
+          "geom_name": "fr3_link7_collision",
+          "body_id": 9,
+          "body_name": "fr3_link7"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "854d6ed965f9e125cf3201769b342448c5e380b9202b540c00f4302cc4840d20",
+        "AUDIT.json": "1d89d0cb76ac193171667d9ef8ff70b199a60f14b0209136aadc89b712c9f969",
+        "execution.json": "6a65527d5fb2f9884173d4a13bf1a098bead23a3ceed214e668876c29f6db945"
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "duration_s": 54.99999999999989,
+      "abort_reason": null,
+      "global_penetration_mm": 0.25741946312806196,
+      "global_pair": [
+        {
+          "recorded_name": "office_desk_top",
+          "geom_id": 2,
+          "geom_name": "office_desk_top",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "target_object_geom",
+          "geom_id": 76,
+          "geom_name": "target_object_geom",
+          "body_id": 13,
+          "body_name": "target_object"
+        }
+      ],
+      "external_penetration_mm": 0.11365573357278806,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_ball_geom",
+          "geom_id": 81,
+          "geom_name": "office_v5_ball_geom",
+          "body_id": 18,
+          "body_name": "office_v5_ball"
+        },
+        {
+          "recorded_name": "70",
+          "geom_id": 70,
+          "geom_name": null,
+          "body_id": 12,
+          "body_name": "right_finger"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "12591f91f02e0828d297f27045bdf24dd49802e641742b4c86bd8cf4cd51260d",
+        "AUDIT.json": "c5f0fdc8f481f90a1bf18ddfa4016f06837a7a6b857959100de593ffe41fa245",
+        "execution.json": "074db9402a2d0b20a01cb97e640a24e46b9fb16e9a35539afd3ef99d23105b9f"
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "duration_s": 54.99999999999989,
+      "abort_reason": null,
+      "global_penetration_mm": 0.46699545204193643,
+      "global_pair": [
+        {
+          "recorded_name": "office_desk_top",
+          "geom_id": 2,
+          "geom_name": "office_desk_top",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "target_object_geom",
+          "geom_id": 76,
+          "geom_name": "target_object_geom",
+          "body_id": 13,
+          "body_name": "target_object"
+        }
+      ],
+      "external_penetration_mm": 0.04321596609878353,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_ball_geom",
+          "geom_id": 81,
+          "geom_name": "office_v5_ball_geom",
+          "body_id": 18,
+          "body_name": "office_v5_ball"
+        },
+        {
+          "recorded_name": "hand_collision",
+          "geom_id": 58,
+          "geom_name": "hand_collision",
+          "body_id": 10,
+          "body_name": "hand"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "801376cb07e3a7102cadf252cc6980d8b6617d3118b375e6bda8ef0f1eb020af",
+        "AUDIT.json": "f5be91c323aba8aefe12bf664e03e7a24974f7fc514dd16fca32be7c977d63c8",
+        "execution.json": "6d73b740991be84f86f42835647221cdb0bd49b24212c0635ed1ff5ac51352d5"
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "duration_s": 17.55999999999999,
+      "abort_reason": "global_penetration_exceeded_2mm",
+      "global_penetration_mm": 3.315180492017674,
+      "global_pair": [
+        {
+          "recorded_name": "66",
+          "geom_id": 66,
+          "geom_name": null,
+          "body_id": 11,
+          "body_name": "left_finger"
+        },
+        {
+          "recorded_name": "75",
+          "geom_id": 75,
+          "geom_name": null,
+          "body_id": 12,
+          "body_name": "right_finger"
+        }
+      ],
+      "external_penetration_mm": 0.37881716344724015,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_corner_top",
+          "geom_id": 15,
+          "geom_name": "office_v5_corner_top",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "63",
+          "geom_id": 63,
+          "geom_name": null,
+          "body_id": 11,
+          "body_name": "left_finger"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "3e8648108d068ef6e92e55fc0467f4446d19c37036fde0cf2df877bda1d97cc2",
+        "AUDIT.json": "651922d5999e07f05a258cd81141a741ec2f0c2c2a767fd1c67742ace5473e4d",
+        "execution.json": "273cec71632601f302eccc9e058f5c571b32b79fecb9520219b8792508ce8c1b"
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "duration_s": 54.99999999999989,
+      "abort_reason": null,
+      "global_penetration_mm": 0.3365500196629813,
+      "global_pair": [
+        {
+          "recorded_name": "66",
+          "geom_id": 66,
+          "geom_name": null,
+          "body_id": 11,
+          "body_name": "left_finger"
+        },
+        {
+          "recorded_name": "target_object_geom",
+          "geom_id": 76,
+          "geom_name": "target_object_geom",
+          "body_id": 13,
+          "body_name": "target_object"
+        }
+      ],
+      "external_penetration_mm": 0.1617460514006837,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_ball_geom",
+          "geom_id": 81,
+          "geom_name": "office_v5_ball_geom",
+          "body_id": 18,
+          "body_name": "office_v5_ball"
+        },
+        {
+          "recorded_name": "hand_collision",
+          "geom_id": 58,
+          "geom_name": "hand_collision",
+          "body_id": 10,
+          "body_name": "hand"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "6b4cbe8e5f24435808cd6878b25f02a636e4a409701f08f7171712e5d9d0e3e1",
+        "AUDIT.json": "1bcea0af680f5a861de8ae9f27adfe1f88783b27545049e0ff69d8677e4eda5e",
+        "execution.json": "475cfef886bef9a26410569348a5ef0017d3c1274b4220a449f30a95ddac602a"
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "duration_s": 54.99999999999989,
+      "abort_reason": null,
+      "global_penetration_mm": 0.9553616058617368,
+      "global_pair": [
+        {
+          "recorded_name": "office_v5_pillar",
+          "geom_id": 12,
+          "geom_name": "office_v5_pillar",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "fr3_link7_collision",
+          "geom_id": 52,
+          "geom_name": "fr3_link7_collision",
+          "body_id": 9,
+          "body_name": "fr3_link7"
+        }
+      ],
+      "external_penetration_mm": 0.9553616058617368,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_pillar",
+          "geom_id": 12,
+          "geom_name": "office_v5_pillar",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "fr3_link7_collision",
+          "geom_id": 52,
+          "geom_name": "fr3_link7_collision",
+          "body_id": 9,
+          "body_name": "fr3_link7"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "a9acd6e6839e81cbbdc4a13b6eb0d21e31dc5585041b8fa51b5d29f50fdf54c1",
+        "AUDIT.json": "1ebf6c633cbcd6a7dcd904ec3a1f80d62d2d91a40eae1d08142b960c0da79363",
+        "execution.json": "41382250dfad9984277e4ffb9c08ef33ae0680be2cfe0ec8b02a19c59fbc90b9"
+      }
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "duration_s": 54.99999999999989,
+      "abort_reason": null,
+      "global_penetration_mm": 0.3772236396446596,
+      "global_pair": [
+        {
+          "recorded_name": "office_desk_top",
+          "geom_id": 2,
+          "geom_name": "office_desk_top",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "target_object_geom",
+          "geom_id": 76,
+          "geom_name": "target_object_geom",
+          "body_id": 13,
+          "body_name": "target_object"
+        }
+      ],
+      "external_penetration_mm": 0.1480025278014819,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_ball_geom",
+          "geom_id": 81,
+          "geom_name": "office_v5_ball_geom",
+          "body_id": 18,
+          "body_name": "office_v5_ball"
+        },
+        {
+          "recorded_name": "hand_collision",
+          "geom_id": 58,
+          "geom_name": "hand_collision",
+          "body_id": 10,
+          "body_name": "hand"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "1af11026d9f013fd53e8920428083d8867c1f8880c5c761b0366f39b56376dec",
+        "AUDIT.json": "5ea1aaebbfaf40af7e50a3454d1a7d704389856bcdf3e87eb4352e6bee9dccd3",
+        "execution.json": "e69e5272c9af9e84f56a634e06091b2106295c22d0e1f75bdb293b218b8e328e"
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "duration_s": 54.99999999999989,
+      "abort_reason": null,
+      "global_penetration_mm": 0.2036185391051104,
+      "global_pair": [
+        {
+          "recorded_name": "office_desk_top",
+          "geom_id": 2,
+          "geom_name": "office_desk_top",
+          "body_id": 0,
+          "body_name": "world"
+        },
+        {
+          "recorded_name": "target_object_geom",
+          "geom_id": 76,
+          "geom_name": "target_object_geom",
+          "body_id": 13,
+          "body_name": "target_object"
+        }
+      ],
+      "external_penetration_mm": 0.1773079948849011,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_ball_geom",
+          "geom_id": 81,
+          "geom_name": "office_v5_ball_geom",
+          "body_id": 18,
+          "body_name": "office_v5_ball"
+        },
+        {
+          "recorded_name": "hand_collision",
+          "geom_id": 58,
+          "geom_name": "hand_collision",
+          "body_id": 10,
+          "body_name": "hand"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "7be5799501d8df938e5123062ca026ead69566ab231dac3038aa651cd2ab9c5b",
+        "AUDIT.json": "ae9e525d06d5bc151f86aa1ff6a6202e9f63b91e7b4810a196bf6145b4a89590",
+        "execution.json": "0ce58647e77523dbd0c6f6b2979f5fe0eef0c3fd854c30ae4a18154a2dada785"
+      }
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "duration_s": 54.99999999999989,
+      "abort_reason": null,
+      "global_penetration_mm": 0.3763396423600394,
+      "global_pair": [
+        {
+          "recorded_name": "66",
+          "geom_id": 66,
+          "geom_name": null,
+          "body_id": 11,
+          "body_name": "left_finger"
+        },
+        {
+          "recorded_name": "target_object_geom",
+          "geom_id": 76,
+          "geom_name": "target_object_geom",
+          "body_id": 13,
+          "body_name": "target_object"
+        }
+      ],
+      "external_penetration_mm": 0.1574882492510271,
+      "external_pair": [
+        {
+          "recorded_name": "office_v5_ball_geom",
+          "geom_id": 81,
+          "geom_name": "office_v5_ball_geom",
+          "body_id": 18,
+          "body_name": "office_v5_ball"
+        },
+        {
+          "recorded_name": "hand_collision",
+          "geom_id": 58,
+          "geom_name": "hand_collision",
+          "body_id": 10,
+          "body_name": "hand"
+        }
+      ],
+      "input_sha256": {
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "rollout.json": "5ec5033f0f16eef81afd6f16b4f4778fb391f05a647f1af523715d0859cf15c7",
+        "AUDIT.json": "a2846219897d92e6d51cfcd860961ef2ae9d2b25ee9d6028355837e796290992",
+        "execution.json": "a2fecc9e8607022499696cd47ac847af2b2bbc43c40cc0d9c8c615cc90b03982"
+      }
+    }
+  ],
+  "limitation": "Recorded global versus external peak scopes plus geometry/body identities from the frozen MJB. No MuJoCo integration, contact reconstruction, new substep audit, altered gate, fitting, or cause of model failure proved. Global recorded peak includes different-body contacts; external scope excludes robot self-contact and intended target contacts."
+}
