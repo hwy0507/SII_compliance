@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 恢复79仅恢复及完整审查准备
+
+- [交接](docs/RL_RECOVERY79_PREPARATION_20261029.md)。79科学trainer与78逐字同一、五metadata插入可逆，递归保留原78/77/76/partial75；三路正例与每路19协议+8边界拒绝、真实未完整78拒绝通过。仅恢复等待4005471部署，准确恢复完成=False，无79决定/训练。
+- startup/archive/fullreview/health依赖实际导入及完整79loss历史/78→79配对准备；新decision须完整78和原76–78结果/五张实际图。两个准备错误均已修正保留，无科学重启。原78steps{'impedance': 3235898, 'admittance': 3237227, 'vmc': 3238500}/完成{'impedance': 30, 'admittance': 22, 'vmc': 30}、冻结33 runtime16/30；观察21样本/600.005秒19身份live或核验终态，Goal active、Direct34false。
+- guard214样本min[73, 71, 69, 65]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。SSD94成员/114183字节/SHAf451290a逐成员/AST核验，非HDD/arm1全备份；main69d656d6/baselinef6e8f8c2已读不变，认证发布待收据，无子agent。
+
 ## 2026-10-29 — 恢复78前缀异常与原Direct33继续
 
 - [交接](docs/RL_RECOVERY78_PREFIX_DIRECT33_WAIT_20261029.md)。78前三路5000原字节/连续步号/全部有限/独立算术和实际图通过；VMC critic185.416763→55.847782尖峰及actor漂移、阻抗反复尖峰保留，日志不能归因minibatch。仅描述性前缀、未收敛，原全loss/终端/labels/health和76–78保持。

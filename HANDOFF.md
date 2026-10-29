@@ -1,3 +1,5 @@
+> **RL最新：[79仅恢复/完整审查准备](docs/RL_RECOVERY79_PREPARATION_20261029.md)。原78/冻结33/GPU保活继续，无79决定或训练；必须先审原76–78完整结果。**
+
 > **RL最新：[78前缀异常与Direct33连续观察](docs/RL_RECOVERY78_PREFIX_DIRECT33_WAIT_20261029.md)。原78/冻结33/全部审查/GPU保活继续，未收敛，勿重复启动。**
 
 > **RL最新：[最新Direct33冻结验证实际启动](docs/RL_DIRECT33_FROZEN_VALIDATION_20261029.md)。原参数78及完整审查/GPU保活继续；完整冻结33尚未完成，勿重复启动。**
