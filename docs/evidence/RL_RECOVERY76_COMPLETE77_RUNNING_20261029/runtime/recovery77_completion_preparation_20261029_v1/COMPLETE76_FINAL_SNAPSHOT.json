@@ -1,0 +1,114 @@
+{
+  "time": 1793257194.796169,
+  "host": "rltest-1025--a6ed2ff39b3c-nvfdwjhzzw",
+  "learners": [
+    {
+      "pid": 3187668,
+      "proc_start_ticks": "45169092",
+      "method": "impedance",
+      "progress": {
+        "cycle": 77,
+        "steps": 3160279,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3155280,
+        "wall_time_utc": 1793257193.9908311
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 3187669,
+      "proc_start_ticks": "45169092",
+      "method": "admittance",
+      "progress": {
+        "cycle": 77,
+        "steps": 3161595,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3156596,
+        "wall_time_utc": 1793257193.5843828
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 3187670,
+      "proc_start_ticks": "45169092",
+      "method": "vmc",
+      "progress": {
+        "cycle": 77,
+        "steps": 3163135,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3158136,
+        "wall_time_utc": 1793257194.6934311
+      },
+      "samplers": 30
+    }
+  ],
+  "archive": {
+    "pid": 3187671,
+    "proc_start_ticks": "45169092"
+  },
+  "waiters": {
+    "parameter_recovery77_loss_20261029_v1": {
+      "pid": 3187674,
+      "proc_start_ticks": "45169097",
+      "plan_sha256": "9b7922d0f04ca8bb06937d039d9dd95628daa7dfe3dd8b1d311b75929d7e01b2"
+    },
+    "parameter_recovery76_78_reward_stability_20261029_v1": {
+      "pid": 436148,
+      "proc_start_ticks": "44768306",
+      "plan_sha256": "57b3d6be84b8b384922a35879ddfd5cd1c6e7a6b71b35ca5652c2ddfc8cd4e85"
+    }
+  },
+  "guard": {
+    "samples": 280,
+    "minimum": [
+      75,
+      67,
+      62,
+      63
+    ],
+    "below50": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "last": {
+      "time": 1793257190.0499036,
+      "gpus": [
+        {
+          "gpu": 0,
+          "utilization": 80,
+          "memory_mib": 564,
+          "duty": 0.8
+        },
+        {
+          "gpu": 1,
+          "utilization": 92,
+          "memory_mib": 4469,
+          "duty": 0.7
+        },
+        {
+          "gpu": 2,
+          "utilization": 94,
+          "memory_mib": 4501,
+          "duty": 0.7
+        },
+        {
+          "gpu": 3,
+          "utilization": 95,
+          "memory_mib": 4494,
+          "duty": 0.7
+        }
+      ],
+      "synthetic_guard_included": true
+    },
+    "synthetic": true,
+    "keep_after_science": true
+  }
+}

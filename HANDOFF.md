@@ -1,3 +1,5 @@
+> **RL最新：[完整恢复76与77运行](docs/RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。完整76全审、77实际启动审查通过，原76–78与GPU保底继续；无自动78，Goal active。**
+
 > **RL最新：[76观察与77派发准备](docs/RL_RECOVERY76_WAIT77_DEPLOY_20261029.md)。77尚未训练，按完整76证据接续；GPU保底继续，Goal active。**
 
 > **RL最新：[恢复76前缀与77仅恢复](docs/RL_RECOVERY76_PREFIX77_PREPARATION_20261029.md)。原76/76–78/GPU保底继续，77尚未训练，Goal active。**

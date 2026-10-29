@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 完整恢复76与有限77实际接续
+
+- [最新交接](docs/RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。76三路各30×55/41250/noabort，旧partial75 replay/history全部保留、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2244+30终端/实际图全审。I尖峰、Vactor漂移和short0600 Strict退化、A总体改善及long0200退化全部保留，未收敛。
+- DECISION77绑定96证据，三路准确全state/replay/next65536和actual INITIAL_STATE/startup通过，当前steps3160279/3161595/3163135、各30sampler。原科学参数/75中断/76–78准确PLAN保持，无自动78、Direct34false，Goal active。77全loss和归档health已部署，77标签/2274锚点待补。
+- guard280样本min[75, 67, 62, 63]%、低于50[0, 0, 0, 0]，审查空档含合成保载、科研完成仍继续。SSD317成员/2677677字节/SHA9fe6df28逐成员/AST已核，大数据SSD非HDD/arm1全备份。main6492ab17后c1e2bf02/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
+
 ## 2026-10-29 — 非RL连续观察86→89
 
 - 06:09–06:24UTC共31次原1172675/start32623702及1201537/start32942337 loaded/active，86→89，MLP2→ESN3→RNN3→MLP3；最高1871986688bytes/3GiB、OOM/实验swap0。observer68766满900秒自然exit0，原科学继续；新完成三条55s/TaskStrictfalse，第十条件未完整，非新子步审计。

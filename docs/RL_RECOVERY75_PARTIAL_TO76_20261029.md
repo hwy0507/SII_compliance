@@ -69,3 +69,6 @@ GPU guardv6持续，排除最初2预热样本后301个样本各卡最低[75, 68,
 
 
 后续最新：[76连续观察与77完整loss/派发准备](RL_RECOVERY76_WAIT77_DEPLOY_20261029.md)。77训练未启动，原目标与GPU保载继续。
+
+
+当前最新：[完整76审查与77实际接续](RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。77启动审查通过，原76–78与GPU保载继续，Goal active。
