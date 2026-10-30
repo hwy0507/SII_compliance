@@ -1,0 +1,406 @@
+{
+  "schema": "sii-contact-yield-v7-mlp-local-action-support-v1",
+  "status": "complete_saved_history_descriptive_analysis",
+  "dataset_sha256": "d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a",
+  "dataset_metadata_sha256": "98200f7478b015273a271151f8181fd5ed654fc421c51d46b78ddf5be1fb6e8b",
+  "fit_execution_sha256": "43b2adf2cd89c145956acbdb52379b2ee3b02a5a379eb359eae623b8f6f9fd45",
+  "fit_audit_sha256": "d5b0fa0171e6f8b7a3bcc7923d017a6cced2678b90261fd4777e74c1a721b864",
+  "model_lock_sha256": "031c20474aab35b7e26e3d471f9b365d86f585108ad48fd471d67c9ff7302368",
+  "development_review_sha256": "924761b2fde1f84be8577c6eda94e782d1d99346d656eae61e74b4e868b37430",
+  "analyzer_sha256": "97708cb125fd507f62e3c473fb97f4f8b160857261e904ba979a145c56e75214",
+  "feature_contract": {
+    "fields": [
+      14,
+      15,
+      16,
+      20,
+      21,
+      22,
+      26,
+      27,
+      28,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47
+    ],
+    "scale": "training observation std, floor 0.005",
+    "transform": "clip scaled values to [-12,12], append absolute values",
+    "reference": "training rows with positive importance only",
+    "k": 10,
+    "distance": "exact Euclidean distance divided by sqrt(36) in expanded feature space",
+    "action": "requested teacher action from the same nearest training frames",
+    "supervised_reference_frames": 16416,
+    "excluded_zero_weight_training_frames": 1934
+  },
+  "rows": [
+    {
+      "case_id": "rod_00__special_mlp_scratch_s2026102801",
+      "task_success": true,
+      "strict_success": true,
+      "machine_compliant": true,
+      "maximum_external_penetration_m": 0.00014085740180843796,
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 4.2,
+          "frames": 105,
+          "nearest_feature_rms": {
+            "p50": 0.05497361818703861,
+            "p95": 0.23846971936376604,
+            "maximum": 0.3255674420967896
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.00030619039046997316,
+            "p95": 0.007569109161127745,
+            "maximum": 0.007619851429343529
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.004263280979906596,
+            "p95": 0.02048125707927647,
+            "maximum": 0.03050431929667276
+          },
+          "neighbor_cross_episode_fraction": 0.8952380952380955
+        },
+        {
+          "start_s": 4.2,
+          "end_s": 4.7,
+          "frames": 12,
+          "nearest_feature_rms": {
+            "p50": 0.03881241709176626,
+            "p95": 0.054521989656899264,
+            "maximum": 0.0560565559612109
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.004833478591532206,
+            "p95": 0.006714375512829691,
+            "maximum": 0.006732291147760061
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.00754216913631706,
+            "p95": 0.00895653147602449,
+            "maximum": 0.009146528773546566
+          },
+          "neighbor_cross_episode_fraction": 0.7416666666666667
+        },
+        {
+          "start_s": 4.7,
+          "end_s": 5.0,
+          "frames": 8,
+          "nearest_feature_rms": {
+            "p50": 0.855652086692966,
+            "p95": 1.5676048857030451,
+            "maximum": 1.602320508647459
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.02749588019464055,
+            "p95": 0.045592804517312346,
+            "maximum": 0.046269906569742864
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.07371528673358643,
+            "p95": 0.13251784738941347,
+            "maximum": 0.13307945628994125
+          },
+          "neighbor_cross_episode_fraction": 0.8875
+        },
+        {
+          "start_s": 5.0,
+          "end_s": 8.0,
+          "frames": 75,
+          "nearest_feature_rms": {
+            "p50": 0.10949744055108848,
+            "p95": 0.44444254432754365,
+            "maximum": 0.7520577458556963
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.001505451458004261,
+            "p95": 0.023069203680985542,
+            "maximum": 0.04540815715062552
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.006014305855988838,
+            "p95": 0.025938398825368972,
+            "maximum": 0.03182709525715863
+          },
+          "neighbor_cross_episode_fraction": 0.4253333333333334
+        },
+        {
+          "start_s": 8.0,
+          "end_s": 12.76,
+          "frames": 119,
+          "nearest_feature_rms": {
+            "p50": 0.028674701197781174,
+            "p95": 0.06863776317299289,
+            "maximum": 0.09409506176076324
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.0010249188651016707,
+            "p95": 0.0022265565767778986,
+            "maximum": 0.00800518371711066
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.005083874800584095,
+            "p95": 0.00728881923808221,
+            "maximum": 0.007833777839471298
+          },
+          "neighbor_cross_episode_fraction": 0.5394957983193279
+        }
+      ],
+      "input_hashes": {
+        "trajectory_sha256": "ac4e20d13ffaa7bf5112a1439fba98e3a8d9d2e462d9b8a537390ce2888f22f0",
+        "metrics_sha256": "eb429133bc6cedd3b66274801a572e9fbb8235fddcbc1bc8444f83f454a16cd3"
+      }
+    },
+    {
+      "case_id": "rod_00__special_mlp_scratch_s2026102802",
+      "task_success": true,
+      "strict_success": false,
+      "machine_compliant": false,
+      "maximum_external_penetration_m": 0.00021566524880545178,
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 4.2,
+          "frames": 105,
+          "nearest_feature_rms": {
+            "p50": 0.04633495754125633,
+            "p95": 0.10509452859715747,
+            "maximum": 0.3145481690622079
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.0005396127766540465,
+            "p95": 0.009832539614159558,
+            "maximum": 0.01833536614048967
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.005179987676265495,
+            "p95": 0.013798565670714889,
+            "maximum": 0.02715198645601959
+          },
+          "neighbor_cross_episode_fraction": 0.8876190476190479
+        },
+        {
+          "start_s": 4.2,
+          "end_s": 4.7,
+          "frames": 12,
+          "nearest_feature_rms": {
+            "p50": 0.056056520928645506,
+            "p95": 0.08890554525765686,
+            "maximum": 0.09124759819241962
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.005589559522628424,
+            "p95": 0.0065882835849507045,
+            "maximum": 0.0065882835849507045
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.006800296695528438,
+            "p95": 0.01148846153293948,
+            "maximum": 0.01399975211717776
+          },
+          "neighbor_cross_episode_fraction": 0.9
+        },
+        {
+          "start_s": 4.7,
+          "end_s": 5.0,
+          "frames": 8,
+          "nearest_feature_rms": {
+            "p50": 1.3297037008963446,
+            "p95": 1.919473847759564,
+            "maximum": 1.9681360849592382
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.040709631728966356,
+            "p95": 0.04733515639224654,
+            "maximum": 0.0474261992373361
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.1067449462934573,
+            "p95": 0.1273112015525769,
+            "maximum": 0.12937922279880645
+          },
+          "neighbor_cross_episode_fraction": 0.7375
+        },
+        {
+          "start_s": 5.0,
+          "end_s": 8.0,
+          "frames": 75,
+          "nearest_feature_rms": {
+            "p50": 0.6259805127666925,
+            "p95": 1.8697867084841753,
+            "maximum": 2.2636013109063713
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.019151592022084607,
+            "p95": 0.0454481866496805,
+            "maximum": 0.048519021187352254
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.04802556469475987,
+            "p95": 0.11381524275690397,
+            "maximum": 0.16283471638948213
+          },
+          "neighbor_cross_episode_fraction": 0.6826666666666668
+        },
+        {
+          "start_s": 8.0,
+          "end_s": 12.76,
+          "frames": 119,
+          "nearest_feature_rms": {
+            "p50": 0.16681933380552172,
+            "p95": 0.38663204235287923,
+            "maximum": 0.4048244980694747
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.001402475176148568,
+            "p95": 0.007038479626301551,
+            "maximum": 0.008917801919734703
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.01028504450091539,
+            "p95": 0.01856416332625949,
+            "maximum": 0.01896695561047393
+          },
+          "neighbor_cross_episode_fraction": 0.3672268907563024
+        }
+      ],
+      "input_hashes": {
+        "trajectory_sha256": "9d4c7695eaf118350331d72c312e61d4fc837020c8f17f16a2220485902c323f",
+        "metrics_sha256": "62989ababa01b315627c4d775486944927daa0940c9b6519761d2be4902e853a"
+      }
+    },
+    {
+      "case_id": "rod_00__special_mlp_scratch_s2026102803",
+      "task_success": true,
+      "strict_success": false,
+      "machine_compliant": false,
+      "maximum_external_penetration_m": 0.0002456206580765072,
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 4.2,
+          "frames": 105,
+          "nearest_feature_rms": {
+            "p50": 0.035499283356818574,
+            "p95": 0.07880591821506154,
+            "maximum": 0.4733962070198678
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.0018979392149244497,
+            "p95": 0.009832539614159558,
+            "maximum": 0.016967371906645264
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.003938619416380251,
+            "p95": 0.00879349240917892,
+            "maximum": 0.01673780285135335
+          },
+          "neighbor_cross_episode_fraction": 0.8923809523809525
+        },
+        {
+          "start_s": 4.2,
+          "end_s": 4.7,
+          "frames": 12,
+          "nearest_feature_rms": {
+            "p50": 0.045036264555323585,
+            "p95": 0.08941892442684148,
+            "maximum": 0.10272151544627864
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.0044393488910592785,
+            "p95": 0.007056732272753912,
+            "maximum": 0.007629280668957835
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.005549669836282634,
+            "p95": 0.007833690930032092,
+            "maximum": 0.008563582139183082
+          },
+          "neighbor_cross_episode_fraction": 0.8916666666666667
+        },
+        {
+          "start_s": 4.7,
+          "end_s": 5.0,
+          "frames": 8,
+          "nearest_feature_rms": {
+            "p50": 2.340471424684044,
+            "p95": 2.628151693459467,
+            "maximum": 2.6458589215002415
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.04813319251061449,
+            "p95": 0.05859023508702833,
+            "maximum": 0.062086602944990896
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.06857517825004239,
+            "p95": 0.11349402908663557,
+            "maximum": 0.11596238819050288
+          },
+          "neighbor_cross_episode_fraction": 0.7625
+        },
+        {
+          "start_s": 5.0,
+          "end_s": 8.0,
+          "frames": 75,
+          "nearest_feature_rms": {
+            "p50": 1.0222449249011016,
+            "p95": 2.4927253278964745,
+            "maximum": 3.2807846962601
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.02405627073864397,
+            "p95": 0.04601600876082376,
+            "maximum": 0.08660453708821317
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.06468711865719659,
+            "p95": 0.11073777525117506,
+            "maximum": 0.1438609981270229
+          },
+          "neighbor_cross_episode_fraction": 0.7799999999999999
+        },
+        {
+          "start_s": 8.0,
+          "end_s": 12.76,
+          "frames": 119,
+          "nearest_feature_rms": {
+            "p50": 0.4978746973784035,
+            "p95": 0.6287109059740417,
+            "maximum": 0.654617737169624
+          },
+          "ten_neighbor_teacher_action_spread": {
+            "p50": 0.006447656568059075,
+            "p95": 0.010110050555292866,
+            "maximum": 0.017739571316831914
+          },
+          "student_to_neighbor_mean_action_gap": {
+            "p50": 0.00983128865065213,
+            "p95": 0.014468542089204253,
+            "maximum": 0.018362194178496844
+          },
+          "neighbor_cross_episode_fraction": 0.2957983193277311
+        }
+      ],
+      "input_hashes": {
+        "trajectory_sha256": "da94177c246c168d9688d3d18924188320dc4dd35f20d62ff826ebd403ef0ad1",
+        "metrics_sha256": "eaf07ca6161c576157dde415a7602d70b8c74c4f3aebd2018762652cd7f899e4"
+      }
+    }
+  ],
+  "limitations": [
+    "Nearest teacher actions are labels from neighboring observed states, not counterfactual teacher actions on the student state.",
+    "The 10-neighbor action spread is descriptive and is affected by temporal correlation and episode sampling.",
+    "The post-contact state and action gaps occur at or after the first penetration region; they do not identify a pre-impact causal action.",
+    "Only fixed27 rod development rollouts and registered v7 training data were read; final108 was not read.",
+    "No physics integration, model fitting, actor/filter replay, model selection, or gate changes were performed."
+  ],
+  "new_physics_steps": 0,
+  "new_optimizer_updates": 0
+}
