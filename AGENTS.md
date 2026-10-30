@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-31 — MLP容量诊断完成；新模型闭环待验证
+
+- 用户批准的v7公平重训与现有已完成run完全相同（40条/21,500帧，dataset SHA256 `d771433d…57f42a`，75候选/9个模型、FIT_AUDIT passed）；因此复用其收据，不重复跑相同75候选。
+- 新增MLP容量诊断保持canonical48、数据/标签/划分、六条validation选模和每候选32k更新不变，比较宽度128/256/384。36/36候选完成、0失败，独立拟合/actor replay审计通过；三个seed均按原validation规则选中宽度384。相对v7宽度128模型，validation MSE分别下降15.04%、12.23%、17.45%。登记、执行、独立审计与模型锁见`outputs/contact_yield_mlp_capacity_20261031_v1/`。
+- 容量诊断采用CPU6单核affinity、单线程、MemoryMax 3GiB、swap上限0；容器未挂载`cpu.max`，不声称CFS quota。首轮资源预检在候选启动前因缺`cpu.max`失败，原收据保留；后续修订以CPU affinity作单CPU限制。无新物理步、未用fixed27结果选模、final108未访问。
+- 新384宽度MLP尚未进入fixed27闭环，因此不能声称Task/Strict、安全合规改善。下一步需单独登记并核验九模型组合（原ESN/RNN锁定模型+三个384宽度MLP）在27个train00开发回合上的独立闭环与动作/filter/物理审计；所有失败保留。fixed27未全通过前不得注册final108。详见根`UPDATE_LOG.md`顶部。
+
 ## 2026-10-30 — History88更新后冻结接口通过；原训练继续
 
 - [交接](docs/RL_HISTORY88_FROZEN_READY_20261030.md)。三份实际更新partial88全learner/replay恢复、非零history权重/Adam、1375连续native与外部RNG重放/terminal/actor49隔离精确，8271记录动作、0physics/update；全state/RNG/hash不变。partial不能冒充完整88，非新性能/收敛。

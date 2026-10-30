@@ -1,3 +1,10 @@
+## 2026-10-31 — MLP容量诊断完成；新宽度模型尚未闭环验证
+
+- 用户批准的v7公平重训与已存在run逐项对应：统一40条/21,500帧数据（SHA256 `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`）、ESN/RNN/MLP各seed候选搜索、75/75完成、9个模型锁定，FIT_AUDIT通过。因此复用原始训练与审计收据，不重复消耗算力。该既有run的fixed27结果为Task 27/27、Strict 25/27；MLP 7/9，final108仍封存。
+- 同数据另完成MLP容量诊断：单隐层宽度128/256/384，每seed各12候选、每候选32,000更新，仍只按原六条纯teacher development validation MSE选模。execution记录36/36 complete、FIT_AUDIT passed，三个seed全部选择宽度384。selected validation MSE从v7宽度128的`1.688898e-4 / 1.637364e-4 / 1.719797e-4`降至`1.434842e-4 / 1.437191e-4 / 1.419610e-4`，相对下降`15.04% / 12.23% / 17.45%`。新checkpoint SHA256分别为`de81b4d10a7e04b027edb1b0c3784a3be2224029c2b505a5f05ef43e9bd59945`、`2fe1f5c4d70c21b9483490a249ca442ada8a23c90837dee7e9df10bc0cce31f8`、`0e570f76faf996dcee72ac7a7fdcad290bd2c88cc43d3ea4198e744cc2852bf4`。容量诊断登记、执行、审计和锁定收据位于`code/mujoco_6d_vmc_benchmark/outputs/contact_yield_mlp_capacity_20261031_v1/`。
+- 训练使用CPU6 affinity/单线程、MemoryMax 3GiB、swap上限0；容器无`cpu.max`，故无CFS quota声明。首轮scope预检因`cpu.max`缺失在第一个候选启动前失败，失败收据保留；后续版本改以单CPU affinity限制。未新增MuJoCo物理步、未以fixed27选模、未访问final108。独立拟合和actor replay审计通过，但宽度384 checkpoint尚无fixed27闭环结果，不能声称安全/Task/Strict提升。
+- 下一步应另行登记新九模型组合（原ESN/RNN锁定checkpoint与三个384宽度MLP）并完成27个train00开发回合及独立action/filter/物理审计；保留所有失败，27条未全部Task+Strict+机器合规前不得注册final108。开工实时查询GitHub：main=`d8ef159fa84acbde264c1460453fa50153dc0b76`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；fetch因连接GitHub失败，远端日志正文未能读取，本地tracking cache仍为main=`c5f5f9d7`。本条为本地进度修订，远端发布待网络恢复；Goal active。
+
 ## 2026-10-31 — v7 锁定模型已见棍推训练拟合诊断
 
 - 承接已批准并完成的 v7 公平重训（40条/21,500帧、75候选、9个锁定模型）；本轮没有重复训练。新增只读动作复放，核验`rod_00`的500帧观测和requested-action标签与原teacher逐位相同，均为正权重训练行；通过训练完成收据、FIT_AUDIT、模型锁、数据和checkpoint哈希检查。

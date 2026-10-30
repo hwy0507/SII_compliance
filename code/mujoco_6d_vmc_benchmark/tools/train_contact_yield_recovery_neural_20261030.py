@@ -12,25 +12,30 @@ import numpy as np
 import torch
 from torch import nn
 from optimize_tool_contact_20261002 import ROOT, sha, write, now, source_base_commit
-from office_mlp_rnn_20261002 import OfficeMLPRNN, CONTRACT
+from office_mlp_rnn_20261002 import OfficeMLPRNN, CONTRACT, CONTRACT_WIDE
 
 
 class Network(nn.Module):
-    def __init__(self, kind, dimension, seed, norm_slowdown=False, modular=False):
+    def __init__(self, kind, dimension, seed, norm_slowdown=False, modular=False, width=128):
         super().__init__()
+        if not 1 <= width <= 512:
+            raise ValueError('width must be in [1, 512]')
+        if modular and width != 128:
+            raise ValueError('modular masks are defined only for width 128')
         self.kind = kind
         self.norm_slowdown = norm_slowdown
         self.modular = modular
-        self.core = (nn.RNN(dimension, 128, batch_first=True, bias=False)
-                     if kind == 'rnn' else nn.Linear(dimension, 128, bias=False))
-        self.head = nn.Linear(128, 7, bias=False)
+        self.width = width
+        self.core = (nn.RNN(dimension, width, batch_first=True, bias=False)
+                     if kind == 'rnn' else nn.Linear(dimension, width, bias=False))
         rng = np.random.default_rng(seed)
-        input_w = rng.normal(0, 1/np.sqrt(dimension), (128, dimension))
-        output_w = rng.normal(0, .1/np.sqrt(128), (7, 128))
+        self.head = nn.Linear(width, 7, bias=False)
+        input_w = rng.normal(0, 1/np.sqrt(dimension), (width, dimension))
+        output_w = rng.normal(0, .1/np.sqrt(width), (7, width))
         with torch.no_grad():
             if kind == 'rnn':
                 self.core.weight_ih_l0.copy_(torch.tensor(input_w))
-                q, _ = np.linalg.qr(np.random.default_rng(seed+1000).normal(size=(128, 128)))
+                q, _ = np.linalg.qr(np.random.default_rng(seed+1000).normal(size=(width, width)))
                 self.core.weight_hh_l0.copy_(torch.tensor(.8*q))
             else:
                 self.core.weight.copy_(torch.tensor(input_w))
@@ -69,7 +74,8 @@ class Network(nn.Module):
         return action, state
 
     def export(self, fields, scale, absolute_inputs=False):
-        result = dict(contract=np.asarray(CONTRACT), kind=np.asarray(self.kind), fields=fields,
+        contract = CONTRACT if self.width == 128 else CONTRACT_WIDE
+        result = dict(contract=np.asarray(contract), kind=np.asarray(self.kind), fields=fields,
                       norm_slowdown=np.asarray(self.norm_slowdown),
                       absolute_inputs=np.asarray(absolute_inputs),
                       scale=scale, input_w=(self.core.weight_ih_l0 if self.kind == 'rnn' else self.core.weight).detach().numpy(),
@@ -84,6 +90,7 @@ def main():
     p.add_argument('--data', type=Path, required=True)
     p.add_argument('--metadata', type=Path, required=True)
     p.add_argument('--kind', choices=('mlp', 'rnn'), required=True)
+    p.add_argument('--width', type=int, default=128)
     p.add_argument('--seed', type=int, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--updates', type=int, default=2400)
@@ -144,7 +151,9 @@ def main():
         if a.absolute_inputs:features=np.c_[features,np.abs(features)]
         seq = {int(ep): np.flatnonzero(episode == ep) for ep in np.unique(episode)}
         assert all(np.unique(train[ids]).size == 1 for ids in seq.values())
-        model = Network(a.kind, features.shape[1], a.seed, a.norm_slowdown,a.modular)
+        if not 1 <= a.width <= 512:
+            raise ValueError('width must be in [1,512]')
+        model = Network(a.kind, features.shape[1], a.seed, a.norm_slowdown, a.modular, a.width)
         model.raw_slowdown_loss = a.raw_slowdown_loss
         if not 0<=a.drift_weight<=2:raise ValueError('Invalid integrated-action loss weight')
         parent_sha=None
@@ -161,6 +170,7 @@ def main():
                 model.head.weight.copy_(torch.from_numpy(z['output_w']))
                 if a.kind=='rnn':model.core.weight_hh_l0.copy_(torch.from_numpy(z['recurrent_w']))
         if not 0<a.learning_rate<=.01:raise ValueError('Invalid learning rate')
+        if not 1<=a.width<=512:raise ValueError('width must be in [1,512]')
         optimizer = torch.optim.AdamW(model.parameters(), lr=a.learning_rate, weight_decay=a.weight_decay)
         rng = np.random.default_rng(a.seed+2000)
         def predict_all(ids):
@@ -282,7 +292,7 @@ def main():
                     ('synthetic_holdout', ~train), ('seen_physical_histories', physical)])
         for name, mask in masks:
             groups[name] = dict(samples=int(mask.sum()), action_mse=float(np.mean((predictions[mask]-target[mask])**2)) if np.any(mask) else None)
-        result = dict(kind=a.kind, seed=a.seed, updates=update, selected_update=best_step, width=128,
+        result = dict(kind=a.kind, seed=a.seed, updates=update, selected_update=best_step, width=a.width,
                       target=a.target, norm_slowdown=a.norm_slowdown,
                       modular=a.modular,active_trainable_parameters=model.active_parameters,learning_rate=a.learning_rate,
                       drift_weight=a.drift_weight,drift_window_s=.64,parent_checkpoint_sha256=parent_sha,

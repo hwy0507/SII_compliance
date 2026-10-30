@@ -2,6 +2,7 @@
 import numpy as np
 
 CONTRACT = 'proprio48_office_mlp_rnn_v1'
+CONTRACT_WIDE = 'proprio48_office_mlp_rnn_v2'
 
 
 class OfficeMLPRNN:
@@ -10,7 +11,8 @@ class OfficeMLPRNN:
 
     def __init__(self, path):
         with np.load(path, allow_pickle=False) as z:
-            if str(z['contract']) != CONTRACT:
+            self.contract = str(z['contract'])
+            if self.contract not in (CONTRACT, CONTRACT_WIDE):
                 raise ValueError('Unsupported MLP/RNN contract')
             self.kind = str(z['kind'])
             self.fields = z['fields'].astype(int)
@@ -25,11 +27,17 @@ class OfficeMLPRNN:
             raise ValueError('Invalid architecture or non-proprioceptive field selection')
         if len(set(self.fields)) != len(self.fields) or self.scale.shape != (len(self.fields),):
             raise ValueError('Invalid input transform')
-        if self.input_w.shape != (128, len(self.fields)*(2 if self.absolute_inputs else 1)) or self.output_w.shape != (7, 128):
-            raise ValueError('Expected 128 hidden units/action7')
+        width = self.input_w.shape[0] if self.input_w.ndim == 2 else 0
+        if (not 1 <= width <= 512
+                or self.input_w.shape != (width, len(self.fields)*(2 if self.absolute_inputs else 1))
+                or self.output_w.shape != (7, width)
+                or (self.contract == CONTRACT and width != 128)
+                or (self.contract == CONTRACT_WIDE and width == 128)):
+            raise ValueError('Invalid hidden width or contract/action dimensions')
+        self.width = width
         arrays = [self.scale, self.input_w, self.output_w]
         if self.kind == 'rnn':
-            if self.recurrent_w.shape != (128, 128):
+            if self.recurrent_w.shape != (width, width):
                 raise ValueError('Invalid RNN state matrix')
             arrays.append(self.recurrent_w)
         if not all(np.isfinite(x).all() for x in arrays) or np.any(self.scale <= 0):
@@ -38,7 +46,7 @@ class OfficeMLPRNN:
 
     def reset(self):
         if self.kind == 'rnn':
-            self.state = np.zeros(128)
+            self.state = np.zeros(self.width)
 
     def act(self, observation):
         obs = np.asarray(observation, dtype=float)
