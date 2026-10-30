@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 完整89因果违规位数据与持久化初始接口通过
+
+- [交接](docs/RL_HISTORY89_VIOLATION_INTERFACE_20261030.md)。原87 prefix精确保留，88/89新增247500 raw历史及逐标量复算通过；全11072448行原51特征/独立bit对齐，现有回放不改。新critic/replay52、actor49、clock49/history50/bit51、10critic/Adam零列迁移，原history与23/47 marker保持。
+- v1单行dense归约导致CHEQ微差被拒，v2保留原点积+bit贡献修复，真实单行与float64梯度核验通过；三份实际完整89全部learner/replay逆迁移/下一65536与RNG/多stream动作/learner落盘通过，初始Q误差0；57拒绝、两维12随机fixture native更新/target引用/actor隔离通过，真实父0update/physics，不导入拟合权重。全replay落盘/cache及完整冻结消费者/trainer/eval仍待，无90/Direct34，旧失败窗口保持，未收敛。
+- 原冻结88完成数{'impedance': 17, 'admittance': 17, 'vmc': 16}，原评测/后处理继续，最终全90/raw/paired待。GPU148采样min[68, 74, 67, 75]%、低于50[0, 0, 0, 0]，科研结束仍保载；SSD81成员/SHA2be862f8核验，非HDD/arm1全备份。main5ebf8e08/baselinef6e8f8c已query/fetch/read/ff，发布见收据，无子agent，Goal active。
+
 ## 2026-10-30 — 完整89匹配因果违规位离线拟合完成
 
 - [交接](docs/RL_HISTORY89_VIOLATION_BIT_FIT_20261030.md)。准确完整89两组同52维/新列零/原已学history及Adam保留，三方法实际恢复与初始Q误差0；原87全部7813终端/原masks/all5，每臂固定500步共3000 clone更新，actor/alpha/target/正式checkpoint与RNG不变，0physics/无权重推广。

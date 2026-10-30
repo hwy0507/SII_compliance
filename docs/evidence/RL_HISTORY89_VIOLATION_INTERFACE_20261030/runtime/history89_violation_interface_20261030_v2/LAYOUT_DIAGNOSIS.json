@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "time": 1793387820.493563,
+  "methods": [
+    "impedance"
+  ],
+  "results": [
+    {
+      "batch": 1,
+      "dense_vs_old_max_abs": 1.52587890625e-05,
+      "split_vs_old_max_abs": 0.0,
+      "old_values": [
+        -47.58719253540039,
+        -47.790645599365234,
+        -47.31118392944336,
+        -47.382347106933594,
+        -47.602142333984375
+      ],
+      "dense_values": [
+        -47.587188720703125,
+        -47.7906608581543,
+        -47.31118392944336,
+        -47.38233947753906,
+        -47.602149963378906
+      ],
+      "split_values": [
+        -47.58719253540039,
+        -47.790645599365234,
+        -47.31118392944336,
+        -47.382347106933594,
+        -47.602142333984375
+      ]
+    },
+    {
+      "batch": 64,
+      "dense_vs_old_max_abs": 2.288818359375e-05,
+      "split_vs_old_max_abs": 0.0,
+      "old_values": [
+        -47.587188720703125,
+        -47.79064178466797,
+        -47.31118392944336,
+        -47.382362365722656,
+        -47.602142333984375
+      ],
+      "dense_values": [
+        -47.58718490600586,
+        -47.79066467285156,
+        -47.31119918823242,
+        -47.382362365722656,
+        -47.602149963378906
+      ],
+      "split_values": [
+        -47.587188720703125,
+        -47.79064178466797,
+        -47.31118392944336,
+        -47.382362365722656,
+        -47.602142333984375
+      ]
+    }
+  ],
+  "source_sha256": "d35399af0dfe745efbd2f9e1dab3af48a0299a674c404a0804f361c3f448159c",
+  "checkpoint_sha256": "b15a3229263f0e1283889b85847febf411e964b91aed05a1a57ff3c26151b68e",
+  "scope": "Actual saved89 first-row action/input at original context. Direct forward comparison confirms dense-zero CUDA rounding vs split-zero preservation at batch1/64. No physics or optimizer update; not a general error bound.",
+  "physics": 0,
+  "optimizer_updates": 0
+}

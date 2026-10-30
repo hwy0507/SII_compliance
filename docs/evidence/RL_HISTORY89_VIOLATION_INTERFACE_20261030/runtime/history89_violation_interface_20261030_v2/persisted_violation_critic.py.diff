@@ -1,0 +1,33 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v1/persisted_violation_critic.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v2/persisted_violation_critic.py
+@@ -46,6 +46,21 @@
+  adapted=types.FunctionType(current.__code__,dict(current.__globals__,_project_q=project_with_bit),current.__name__,current.__defaults__,current.__closure__)
+  wrapper.learner.train=types.MethodType(adapted,wrapper.learner)
+ 
++class PreservedHistoryLinear(nn.Linear):
++ """Keep original history51 dot-product layout and add the bit contribution.
++
++ A dense inserted zero column changed one-row CUDA reductions enough to perturb
++ CHEQ uncertainty. This layout retains exact old inference at zero initialization.
++ It represents the same real-arithmetic52-dimensional affine map; floating-point
++ reductions after bit learning differ from the earlier dense offline diagnostic.
++ """
++ def forward(self,value):
++  old_input=torch.cat((value[...,:51],value[...,52:]),dim=-1)
++  old_weight=torch.cat((self.weight[:,:51],self.weight[:,52:]),dim=1)
++  original=torch.nn.functional.linear(old_input,old_weight,self.bias)
++  contribution=value[...,51:52]*self.weight[:,51]
++  return original+contribution
++
+ def expand(wrapper):
+  agent=wrapper.learner.agent;hooks=agent.actor._forward_pre_hooks
+  if len(hooks)!=1 or next(iter(hooks.values())) is not actor_without_clock_or_history:raise ValueError('Expected original history actor isolation')
+@@ -56,7 +71,7 @@
+    for q in ensemble:
+     old=q.q_net[0]
+     if not isinstance(old,nn.Linear) or old.in_features!=51+wrapper.spaces.action_space.shape[0]:raise ValueError('Expected history51 critic')
+-    new=nn.Linear(old.in_features+1,old.out_features,bias=old.bias is not None,device=old.weight.device,dtype=old.weight.dtype)
++    new=PreservedHistoryLinear(old.in_features+1,old.out_features,bias=old.bias is not None,device=old.weight.device,dtype=old.weight.dtype)
+     with torch.no_grad():
+      new.weight.copy_(insert_zero(old.weight))
+      if old.bias is not None:new.bias.copy_(old.bias)

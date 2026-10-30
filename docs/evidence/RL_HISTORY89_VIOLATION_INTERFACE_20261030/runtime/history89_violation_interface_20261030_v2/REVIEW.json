@@ -1,0 +1,396 @@
+{
+  "passed": true,
+  "elapsed_s": 166.22634417563677,
+  "methods": {
+    "impedance": {
+      "passed": true,
+      "binding": {
+        "method": "impedance",
+        "checkpoint_sha256": "b15a3229263f0e1283889b85847febf411e964b91aed05a1a57ff3c26151b68e",
+        "learner_digest": "4da1db1df5ea33c5ac1b1be80480b27f5559600cda65c7780e6277cf0475c636",
+        "replay_digest": "02ca829252409be81a6b091a9aee94ad0174ac1e262605beea19172a976e29b9",
+        "sidecar_sha256": "20d5994a847a13fbf836efbafb9c7fb00762753a94fa1064592e30f2e0b59d90",
+        "bits_sha256": "c148ae2cf39b3e44db5d90b013e80e07098de7e1e6f509420adb8887baa1045f",
+        "rows": 3688948,
+        "action_dimension": 5,
+        "history_binding": {
+          "method": "impedance",
+          "checkpoint_sha256": "2a9e586a7f35c1388deb9a429bbb907a931e3035ac74fa7433ddd5b4d15d8e87",
+          "learner_digest": "effd81a3cae1db6ab12e50fd230f5366e019047bb58ea69b92a48639785edbb8",
+          "replay_digest": "d70f0ef79cf5786f0a3b05289fc4d59194545335126ccbe5b6837f3e684ffed9",
+          "sidecar_sha256": "2ee30dd5bd7555ed5cb9654de314056a11cefc220121d044e0958cef494d94be",
+          "rows": 3606448,
+          "action_dimension": 5
+        }
+      },
+      "initial_q_max_errors": {
+        "ensemble": 0.0,
+        "ensemble_targets": 0.0
+      },
+      "prediction_rows": 6759,
+      "old_full_learner_inverse_exact": true,
+      "new_weight_moment_zero": true,
+      "actor_native_actions_context_rng_exact": true,
+      "all_old_replay_fields_exact": true,
+      "all_added_raw_bit_features_exact": true,
+      "next65536_sample_and_rng_exact": true,
+      "learner_serialization_roundtrip_exact": true,
+      "replay_roundtrip_exact": true,
+      "all_streams_reset": true,
+      "negative_rejections": [
+        {
+          "case": "unmarked history51 load",
+          "error": "Exact bit marker required"
+        },
+        {
+          "case": "changed bit index",
+          "error": "Exact bit marker required"
+        },
+        {
+          "case": "wrong learner parent",
+          "error": "Only bound complete89 history learner may migrate"
+        },
+        {
+          "case": "missing interval",
+          "error": "Only the initial observation may have no interval"
+        },
+        {
+          "case": "unconsumed interval",
+          "error": "Consume completed interval before constructing next observation"
+        },
+        {
+          "case": "decreasing peak",
+          "error": "Cumulative external penetration decreased"
+        },
+        {
+          "case": "duplicate interval",
+          "error": "Interval must follow exactly one completed action"
+        },
+        {
+          "case": "invalid peak -1.0",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "invalid peak nan",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "invalid peak inf",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Bit inconsistent with continuous history"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Bit inconsistent with continuous history"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Invalid history/bit domain"
+        },
+        {
+          "case": "unmarked replay",
+          "error": "Both history and bit markers required"
+        },
+        {
+          "case": "lost original history marker",
+          "error": "Both history and bit markers required"
+        },
+        {
+          "case": "wrong replay parent",
+          "error": "Exact original history replay required"
+        },
+        {
+          "case": "wrong raw sidecar",
+          "error": "Bound raw history and bit files required"
+        },
+        {
+          "case": "wrong bits sidecar",
+          "error": "Bound raw history and bit files required"
+        },
+        {
+          "case": "wrong replay width",
+          "error": "Bound52 replay dimensions required"
+        }
+      ],
+      "terminal_clock_history_bit_exact": true,
+      "original_checkpoint_unchanged": true,
+      "migrated_learner_snapshot": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v2/impedance_migrated_learner.pt",
+        "sha256": "a09c22609bad68fa54db1a43dfaa7eff78d7365d034cf2b9820209dee7dcd032"
+      },
+      "actual_parent_optimizer_updates": 0,
+      "new_physics": 0
+    },
+    "admittance": {
+      "passed": true,
+      "binding": {
+        "method": "admittance",
+        "checkpoint_sha256": "dd711c30794b95602d685d7a1014fd9355cbb427c5ea37e90a36f4560ebc6b4d",
+        "learner_digest": "20a1c46b789303ee3780fb32d66fea16c0fc6862730ce722a31bbb1cee742c43",
+        "replay_digest": "e79c07b678ce300a97c16b3bc28328cacd4bab3cf9b497bf70db2b2035fac504",
+        "sidecar_sha256": "9acb50c45c06cddfc33248539435af1256c387115721cac97545b1a62502bbfc",
+        "bits_sha256": "c5467eb90f2ff83bfbfd459ef4919601ed5367d4aa7c31465ca96aee6b83aa9b",
+        "rows": 3691250,
+        "action_dimension": 7,
+        "history_binding": {
+          "method": "admittance",
+          "checkpoint_sha256": "819d9c29d202909f7760b38ec1bf2ecd72305c819ee11f87634eb986027c6579",
+          "learner_digest": "6f5a97fd0e3d9879be8da9e5eb2f0d073aaccf763cba98f335332adbd24f0a83",
+          "replay_digest": "71a02a3f1e254236bbcf406526a884136d82ec785745481da3a171a91c90c4ba",
+          "sidecar_sha256": "8c1bd3f9c9c6760e6993f50df14aa16ec29f54cfb41a4fea957b54922b900a80",
+          "rows": 3608750,
+          "action_dimension": 7
+        }
+      },
+      "initial_q_max_errors": {
+        "ensemble": 0.0,
+        "ensemble_targets": 0.0
+      },
+      "prediction_rows": 6758,
+      "old_full_learner_inverse_exact": true,
+      "new_weight_moment_zero": true,
+      "actor_native_actions_context_rng_exact": true,
+      "all_old_replay_fields_exact": true,
+      "all_added_raw_bit_features_exact": true,
+      "next65536_sample_and_rng_exact": true,
+      "learner_serialization_roundtrip_exact": true,
+      "replay_roundtrip_exact": true,
+      "all_streams_reset": true,
+      "negative_rejections": [
+        {
+          "case": "unmarked history51 load",
+          "error": "Exact bit marker required"
+        },
+        {
+          "case": "changed bit index",
+          "error": "Exact bit marker required"
+        },
+        {
+          "case": "wrong learner parent",
+          "error": "Only bound complete89 history learner may migrate"
+        },
+        {
+          "case": "missing interval",
+          "error": "Only the initial observation may have no interval"
+        },
+        {
+          "case": "unconsumed interval",
+          "error": "Consume completed interval before constructing next observation"
+        },
+        {
+          "case": "decreasing peak",
+          "error": "Cumulative external penetration decreased"
+        },
+        {
+          "case": "duplicate interval",
+          "error": "Interval must follow exactly one completed action"
+        },
+        {
+          "case": "invalid peak -1.0",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "invalid peak nan",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "invalid peak inf",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Bit inconsistent with continuous history"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Bit inconsistent with continuous history"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Invalid history/bit domain"
+        },
+        {
+          "case": "unmarked replay",
+          "error": "Both history and bit markers required"
+        },
+        {
+          "case": "lost original history marker",
+          "error": "Both history and bit markers required"
+        },
+        {
+          "case": "wrong replay parent",
+          "error": "Exact original history replay required"
+        },
+        {
+          "case": "wrong raw sidecar",
+          "error": "Bound raw history and bit files required"
+        },
+        {
+          "case": "wrong bits sidecar",
+          "error": "Bound raw history and bit files required"
+        },
+        {
+          "case": "wrong replay width",
+          "error": "Bound52 replay dimensions required"
+        }
+      ],
+      "terminal_clock_history_bit_exact": true,
+      "original_checkpoint_unchanged": true,
+      "migrated_learner_snapshot": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v2/admittance_migrated_learner.pt",
+        "sha256": "6ab9e065343dbc7b2d0c014a5942a4a1119ee37ee9d52f9bf2cb96a68b6e98ed"
+      },
+      "actual_parent_optimizer_updates": 0,
+      "new_physics": 0
+    },
+    "vmc": {
+      "passed": true,
+      "binding": {
+        "method": "vmc",
+        "checkpoint_sha256": "16520eb5cee4521e4986fba919d8daea6c675dc58b0fb4ebbb97262038537989",
+        "learner_digest": "74ad225ba8df3d8c7d0809ffc44735895a293ae82d9e08082955c6ad822c20a7",
+        "replay_digest": "9bef6f57611df33bd2a4dc4105f19f039511cca0d41c711fe871b4b92cf0e509",
+        "sidecar_sha256": "570bdf5e5ef7ed3e9ee5a5016a1347fa244b5b81a3e301e2a1c322c0206834ad",
+        "bits_sha256": "65f999a8d930f041b8287f2f5cbf66c25cd107a1f7d3712c5a0f492a05cd94f7",
+        "rows": 3692250,
+        "action_dimension": 7,
+        "history_binding": {
+          "method": "vmc",
+          "checkpoint_sha256": "0d996484d92822c78bdddd55a7f4854d2c563dd1c82dc694e43056e61d5ae57f",
+          "learner_digest": "ab6811d390d0dc1d12f644faafa01c51c83355780c3f7e01ac4a82c64ad47bc7",
+          "replay_digest": "cd92b212cd652d4f869f6f74d4dfed18b8934c49a4b4e99793d54f9c3157fd18",
+          "sidecar_sha256": "de66eb4e7e84aaacc8c6c772519dacf9d46d431cc315673f65d41d391121566d",
+          "rows": 3609750,
+          "action_dimension": 7
+        }
+      },
+      "initial_q_max_errors": {
+        "ensemble": 0.0,
+        "ensemble_targets": 0.0
+      },
+      "prediction_rows": 6758,
+      "old_full_learner_inverse_exact": true,
+      "new_weight_moment_zero": true,
+      "actor_native_actions_context_rng_exact": true,
+      "all_old_replay_fields_exact": true,
+      "all_added_raw_bit_features_exact": true,
+      "next65536_sample_and_rng_exact": true,
+      "learner_serialization_roundtrip_exact": true,
+      "replay_roundtrip_exact": true,
+      "all_streams_reset": true,
+      "negative_rejections": [
+        {
+          "case": "unmarked history51 load",
+          "error": "Exact bit marker required"
+        },
+        {
+          "case": "changed bit index",
+          "error": "Exact bit marker required"
+        },
+        {
+          "case": "wrong learner parent",
+          "error": "Only bound complete89 history learner may migrate"
+        },
+        {
+          "case": "missing interval",
+          "error": "Only the initial observation may have no interval"
+        },
+        {
+          "case": "unconsumed interval",
+          "error": "Consume completed interval before constructing next observation"
+        },
+        {
+          "case": "decreasing peak",
+          "error": "Cumulative external penetration decreased"
+        },
+        {
+          "case": "duplicate interval",
+          "error": "Interval must follow exactly one completed action"
+        },
+        {
+          "case": "invalid peak -1.0",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "invalid peak nan",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "invalid peak inf",
+          "error": "Finite nonnegative raw history required"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Bit inconsistent with continuous history"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Bit inconsistent with continuous history"
+        },
+        {
+          "case": "inconsistent history/bit",
+          "error": "Invalid history/bit domain"
+        },
+        {
+          "case": "unmarked replay",
+          "error": "Both history and bit markers required"
+        },
+        {
+          "case": "lost original history marker",
+          "error": "Both history and bit markers required"
+        },
+        {
+          "case": "wrong replay parent",
+          "error": "Exact original history replay required"
+        },
+        {
+          "case": "wrong raw sidecar",
+          "error": "Bound raw history and bit files required"
+        },
+        {
+          "case": "wrong bits sidecar",
+          "error": "Bound raw history and bit files required"
+        },
+        {
+          "case": "wrong replay width",
+          "error": "Bound52 replay dimensions required"
+        }
+      ],
+      "terminal_clock_history_bit_exact": true,
+      "original_checkpoint_unchanged": true,
+      "migrated_learner_snapshot": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v2/vmc_migrated_learner.pt",
+        "sha256": "ba5c7833d900401e610ca54ac3713bc678e6d1d10c83fef838e1d98f2f4f5ae7"
+      },
+      "actual_parent_optimizer_updates": 0,
+      "new_physics": 0
+    }
+  },
+  "fixtures": [
+    {
+      "dimension": 5,
+      "native_calls": 6,
+      "repeat_updates_exact": true,
+      "nonzero_bit_gradient": true,
+      "target_rebinding_exact": true,
+      "actor49_isolation_exact": true
+    },
+    {
+      "dimension": 7,
+      "native_calls": 6,
+      "repeat_updates_exact": true,
+      "nonzero_bit_gradient": true,
+      "target_rebinding_exact": true,
+      "actor49_isolation_exact": true
+    }
+  ],
+  "all_full89_migrations_passed": true,
+  "finite_online_registration": false,
+  "training90": false,
+  "new_physics": 0,
+  "actual_parent_optimizer_updates": 0,
+  "limits": "Initial migration/native fixture checks only; full serialized replay GPU-cache and complete1375-step frozen consumer interfaces remain to verify before training90."
+}
