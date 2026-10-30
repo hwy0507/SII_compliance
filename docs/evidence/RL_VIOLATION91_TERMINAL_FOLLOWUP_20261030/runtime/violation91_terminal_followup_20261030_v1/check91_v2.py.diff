@@ -1,0 +1,11 @@
+--- runtime/violation91_terminal_followup_20261030_v1/check91.py
++++ runtime/violation91_terminal_followup_20261030_v1/check91_v2.py
+@@ -2,7 +2,7 @@
+ import os,sys,json,time,hashlib,gc
+ os.sched_setaffinity(0,{11})
+ D=Path(__file__).resolve().parent;B=D.parents[1];O=B/'runs/violation91_fixed87_terminal_followup_20261030_v1';R=B/'runs/parameter_violation_cycle91_20261030_v1'
+-read=lambda p:json.loads(p.read_text())
++read=lambda p:json.loads(Path(p).read_text())
+ sys.path[:0]=[str(D),str(B/'runtime/violation90_frozen_preparation_20261030_v1'),str(B/'runtime/source_train17_clock/source/tools')]
+ from compare91 import validate_architecture91,validate_recovery91,sha,put,inputs
+ import torch

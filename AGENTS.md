@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 原91继续；固定87终端跟踪91已登记
+
+- [交接](docs/RL_VIOLATION91_TERMINAL_FOLLOWUP_20261030.md)。原7813终端/all5/原masks，87—90保存算术及52 raw输入精确；真实缺完整91拒绝。专用91边界按实际90 steps，三份startup架构/partial拒绝和27负例通过；check91路径类型错误原件保留，v2仅Path转换修复，无新forward/physics/update。
+- 唯一等待器1706570沿原archive截止；原91/冻结90继续，180.075s/105身份保持，总steps{'impedance': 3745137, 'admittance': 3747935, 'vmc': 3748645}。完整91/新终端诊断及冻结90全90/raw/paired待，未收敛、无自动92/Direct34。
+- GPU86样本min[65, 66, 68, 69]%、低于50[0, 0, 0, 0]，科研结束仍守护；冻结完成{'impedance': 4, 'admittance': 4, 'vmc': 4}。SSD41成员/SHAc1ca2d5c核验，HDD仅254字节指针、非全备份。main6a0ff687/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，全部失败保持。
+
 ## 2026-10-30 — 原91固定前5000审查；I/V尖峰保留
 
 - [交接](docs/RL_VIOLATION91_PREFIX_20261030.md)。准确完整90边界、固定5000原字节/保存算术/六栏实际图通过。critic首末I1.764565→1.638681、A1.145342→1.161649、V.764069→.798559；I/V最大25.0458/21.4508，I actor继续上移。仅早期有限值，非loss健康或reward收敛；无新训练派发/自动92/Direct34。

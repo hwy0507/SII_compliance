@@ -1,0 +1,56 @@
+{
+  "time": 1793395570.214586,
+  "actual_visual_inspection": true,
+  "plots": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation90_fixed87_terminal_followup_20261030_v1/fixed87_terminal_87_88_89_90.png",
+      "sha256": "63250ab8322ebdf1ec6943b94963feb0e10d81546d06d7cfd96886164aec3560",
+      "inspected": true
+    }
+  ],
+  "findings": [
+    "All87/88/89/90, all5 critics and all original87 terminal rows retained.",
+    "I total masked SSE improves strongly, driven by critic3/4; critic0/1 worsen versus89.",
+    "A total masked SSE worsens; critic3/4 regress, others improve.",
+    "V total masked SSE worsens; critic0..3 regress, critic4 improves.",
+    "All-row SSE declines across all5 in all methods; in-bag improvement is not universal. Seen-terminal fit does not establish policy safety, generalization or convergence."
+  ],
+  "summary": {
+    "impedance": {
+      "total_masked_sse89": 20325.76415575324,
+      "total_masked_sse90": 3362.887087466863,
+      "relative_total_change": -0.8345505211170625,
+      "per_critic_delta": [
+        692.9297526302817,
+        54.47162519117319,
+        -342.9930824199482,
+        -14705.857985472305,
+        -2661.4273782155815
+      ]
+    },
+    "admittance": {
+      "total_masked_sse89": 1413.062949735402,
+      "total_masked_sse90": 1550.0623534569677,
+      "relative_total_change": 0.09695208819056433,
+      "per_critic_delta": [
+        -100.93586190860879,
+        -103.99891262279198,
+        -307.4501242385777,
+        643.8248937328244,
+        5.5594087587196555
+      ]
+    },
+    "vmc": {
+      "total_masked_sse89": 698.0394316379316,
+      "total_masked_sse90": 1722.7011705152436,
+      "relative_total_change": 1.4679138347141358,
+      "per_critic_delta": [
+        256.0923393504054,
+        275.46279684392357,
+        352.528615440875,
+        252.23054797029545,
+        -111.65256072818738
+      ]
+    }
+  }
+}
