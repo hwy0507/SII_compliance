@@ -4,9 +4,9 @@
 - startup/archive/fullreview/health实际依赖和完整80loss/79→80配对工具准备；decision绑定完整79/四实际图、准确恢复、原76–78完整结果及79–81准确PLAN，三个缺前置真实拒绝。11样本/300.053s共15身份保持并独立保存复核，观察器自然结束，科学不重启；Goal active、无Direct34。
 - guard194样本min[75, 67, 68, 69]%、低于50[0, 0, 0, 0]，科研结束仍合成保活，历史低谷保留。SSD75成员/SHAc29bc3a5逐成员/AST已核，非HDD/arm1全备份；main21c580a9/baselinef6e8f8c2已读，发布待收据，无子agent。
 
-## 2026-10-30 — 接管恢复重训推进至44/75；handoff仍等待
+## 2026-10-30 — 接管恢复重训推进至46/75；handoff仍等待
 
-- 本轮本地核对v3协调器`execution.json`约12:39 CST时为training、44/75 complete；RNN seed2026102803 candidate06已自然完成，当前MLP seed2026102803 candidate06为12148/32000 updates。fit cgroup MemoryCurrent约1.14 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff文件仍为waiting，`dispatch_attempted=false`。未重复启动、未手动提前派发。
+- 本轮本地核对v3协调器`execution.json`约12:42 CST时为training、46/75 complete；RNN seed2026102801 candidate07已自然完成，当前MLP seed2026102801 candidate07为12068/32000 updates。fit cgroup MemoryCurrent约1.15 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff文件仍为waiting，`dispatch_attempted=false`。FIT_AUDIT尚未生成；未重复启动、未手动提前派发。
 - 本轮`git ls-remote`因无法连接GitHub失败；本地正在整合的远端main对象为`cd8bbf33`，baseline tracking ref为`f6e8f8c2`，不能称为本轮最新远端核验。systemd bus不可用，但直接读取fit/handoff cgroup和execution/progress文件成功。
 - 四条已批准teacher接管探针均通过其已登记Task/Strict/machine gate和actor/filter replay；这仍不等于学生已修复。75-fit、FIT_AUDIT、九模型锁定、fixed27、最终108及六指标报告未完成；物理/MJB、最终gate、actor输入、action filter、执行器限制、dt与测试集保持冻结。
 ## 2026-10-30 — 四条teacher接管探针通过；较早训练快照为29/75
