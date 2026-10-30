@@ -1,0 +1,10 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation91_terminal_followup_20261030_v1/observe.py
++++ observe.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import time,json,hashlib,traceback
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_violation_cycle91_20261030_v1';F=B/'runs/parameter90_violation_frozen_full30_20261030_v1';O=B/'runs/violation91_fixed87_terminal_followup_20261030_v1';P=B/'runtime/violation90_frozen_postprocess_20261030_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_violation_cycle92_20261030_v1';F=B/'runs/parameter90_violation_frozen_full30_20261030_v1';O=B/'runs/violation92_fixed87_terminal_followup_20261030_v1';P=B/'runtime/violation90_frozen_postprocess_20261030_v1'
+ read=lambda p:json.loads(p.read_text())
+ def identity(pid):
+  s=Path('/proc',str(pid),'stat').read_text().rsplit(')',1)[1].split();assert s[0]!='Z';return dict(pid=pid,start=s[19])

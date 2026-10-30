@@ -1,0 +1,15 @@
+--- prefix92.py
++++ prefix92_v2.py
+@@ -5,10 +5,10 @@
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_violation_cycle92_20261030_v1';O=D/'prefix5000';O.mkdir()
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_violation_cycle92_20261030_v1';O=D/'prefix5000_v2';O.mkdir()
+ read=lambda p:json.loads(p.read_text())
+ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+-full=read(B/'runs/parameter_violation_cycle92_review_20261030_v1/REVIEW.json');previous=read(B/'runs/parameter_violation_cycle92_review_20261030_v1/loss/REVIEW.json');assert full['passed'] and previous['passed']
++full=read(B/'runs/parameter_violation_cycle91_review_20261030_v1/REVIEW.json');previous=read(B/'runs/parameter_violation_cycle91_review_20261030_v1/loss/REVIEW.json');assert full['passed'] and previous['passed']
+ methods={};fig,axes=plt.subplots(3,2,figsize=(14,10),constrained_layout=True)
+ for i,m in enumerate(['impedance','admittance','vmc']):
+  source=R/m/'train/optimizer.jsonl'
