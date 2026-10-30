@@ -10,10 +10,10 @@
 - startup/archive/fullreview/health实际依赖和完整80loss/79→80配对工具准备；decision绑定完整79/四实际图、准确恢复、原76–78完整结果及79–81准确PLAN，三个缺前置真实拒绝。11样本/300.053s共15身份保持并独立保存复核，观察器自然结束，科学不重启；Goal active、无Direct34。
 - guard194样本min[75, 67, 68, 69]%、低于50[0, 0, 0, 0]，科研结束仍合成保活，历史低谷保留。SSD75成员/SHAc29bc3a5逐成员/AST已核，非HDD/arm1全备份；main21c580a9/baselinef6e8f8c2已读，发布待收据，无子agent。
 
-## 2026-10-30 — 接管恢复重训推进至60/75；handoff仍等待
+## 2026-10-30 — 接管恢复重训推进至61/75；handoff仍等待
 
-- 本轮本地核对v3协调器`execution.json`约12:58:31 CST时为training、60/75 complete；MLP seed2026102802 candidate09正在19018/32000 updates，validation MSE `2.8938e-4`。fit cgroup MemoryCurrent约1.00 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff文件仍为waiting，`dispatch_attempted=false`。FIT_AUDIT尚未生成；未重复启动、未手动提前派发。
-- 开工`git ls-remote`读到main `0ddbe661ae1d7a2e931ecd269754726fad87c893`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；随后fetch因当前网络连接GitHub失败，不能核验新提交或宣称本轮已推送。systemd bus不可用，但直接读取fit/handoff cgroup和execution/progress文件成功。
+- 本轮本地核对v3协调器`execution.json`约13:00 CST时为training、61/75 complete；RNN seed2026102803 candidate09正在23520/32000 updates，validation MSE `1.4472e-4`。fit cgroup MemoryCurrent约1.00 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff文件仍为waiting，`dispatch_attempted=false`。FIT_AUDIT尚未生成；未重复启动、未手动提前派发。
+- 本轮`git ls-remote`最初读到main `0ddbe661ae1d7a2e931ecd269754726fad87c893`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；之后fetch取得更新的远端main `ecdfdd530c97121ad1f86d0f198e3f111e80f6d9`并普通合并。进度提交 `1cccff20e5601869ff61cea135c9e3c38de23afb` 已成功推送；最后一次ls-remote再度网络失败。systemd bus不可用，但直接读取fit/handoff cgroup和execution/progress文件成功。
 - 四条已批准teacher接管探针均通过其已登记Task/Strict/machine gate和actor/filter replay；这仍不等于学生已修复。75-fit、FIT_AUDIT、九模型锁定、fixed27、最终108及六指标报告未完成；物理/MJB、最终gate、actor输入、action filter、执行器限制、dt与测试集保持冻结。
 ## 2026-10-30 — 四条teacher接管探针通过；较早训练快照为29/75
 
