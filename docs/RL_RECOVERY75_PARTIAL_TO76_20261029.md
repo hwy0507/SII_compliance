@@ -1,3 +1,9 @@
+## 2026-10-30 — 已学90违规位冻结接口通过；首5000 loss保留尖峰
+
+- [交接](RL_VIOLATION90_FROZEN_READY_20261030.md)。实际partial90三份全learner/replay恢复、双marker/非零bit及Adam、1375 native与外部RNG精确重放/terminal bit/actor49隔离通过，8271记录动作、0新physics/update。完整90冻结全90预登记及缺前置真实拒绝，最终恢复/评测仍待；不把partial当complete。
+- 三路固定前5000原字节/保存标量/实际六栏图通过。critic首末I1.990384→2.029705、A1.367704→1.220512、V1.013427→.812925；I尖峰34.85与actor漂移保留，非收敛。原90/88冻结继续，180.063秒/104身份保持，总steps{'impedance': 3699865, 'admittance': 3702178, 'vmc': 3703149}。
+- GPU59采样min[78, 66, 71, 69]%、低于50[0, 0, 0, 0]，科研结束仍保载；冻结88完成数{'impedance': 27, 'admittance': 26, 'vmc': 26}，最终全90/raw/paired待。SSD78成员/SHAc772c15f核验，非HDD/arm1全备份。maincb2631f0/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无自动91/Direct34，无子agent。
+
 ## 2026-10-30 — 违规位 critic 有限90实际训练
 
 - [交接](RL_VIOLATION90_ONLINE_20261030.md)。完整89退化与原88—90 A/V失败均保留；单独登记一个52维违规位在线90，不导入离线权重，保持已学history/Adam/双marker、actor49及原全部科学协议。93负例/6原生clone重复恢复通过；新90—92仅统计预登记，不自动91/92/Direct34。
