@@ -10,10 +10,10 @@
 - startup/archive/fullreview/health实际依赖和完整80loss/79→80配对工具准备；decision绑定完整79/四实际图、准确恢复、原76–78完整结果及79–81准确PLAN，三个缺前置真实拒绝。11样本/300.053s共15身份保持并独立保存复核，观察器自然结束，科学不重启；Goal active、无Direct34。
 - guard194样本min[75, 67, 68, 69]%、低于50[0, 0, 0, 0]，科研结束仍合成保活，历史低谷保留。SSD75成员/SHAc29bc3a5逐成员/AST已核，非HDD/arm1全备份；main21c580a9/baselinef6e8f8c2已读，发布待收据，无子agent。
 
-## 2026-10-30 — 接管恢复重训推进至68/75；handoff仍等待
+## 2026-10-30 — 接管恢复重训推进至69/75；handoff仍等待
 
-- 本轮本地核对v3协调器`execution.json`约13:07:54 CST时为training、68/75 complete；MLP seed2026102803 candidate10正在26496/32000 updates，validation MSE `2.2695e-4`。fit cgroup MemoryCurrent约1.04 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff文件仍为waiting，`dispatch_attempted=false`。FIT_AUDIT尚未生成；未重复启动、未手动提前派发。
-- 最新上一轮进度提交 `57e585c3b0849f038e2da657c89d2f0a87e4ab3c` 已推送并核验；baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 未变。systemd bus不可用，但直接读取fit/handoff cgroup和execution/progress文件成功。
+- 本轮本地核对v3协调器`execution.json`约13:09:17 CST时为training、69/75 complete；RNN seed2026102801 candidate11正在22576/32000 updates，validation MSE `7.6053e-5`。fit cgroup MemoryCurrent约1.05 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff文件仍为waiting，`dispatch_attempted=false`。FIT_AUDIT尚未生成；未重复启动、未手动提前派发。
+- 最新上一轮进度提交 `fc3545c7b1d9fa5ea1b57d43ef64d40b49a2611f` 已推送并核验；baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 未变。systemd bus不可用，但直接读取fit/handoff cgroup和execution/progress文件成功。
 - 四条已批准teacher接管探针均通过其已登记Task/Strict/machine gate和actor/filter replay；这仍不等于学生已修复。75-fit、FIT_AUDIT、九模型锁定、fixed27、最终108及六指标报告未完成；物理/MJB、最终gate、actor输入、action filter、执行器限制、dt与测试集保持冻结。
 ## 2026-10-30 — 四条teacher接管探针通过；较早训练快照为29/75
 
