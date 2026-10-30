@@ -1,3 +1,9 @@
+## 2026-10-30 — 原91继续；90—92稳定性实际90输入绑定通过
+
+- [交接](docs/RL_VIOLATION91_STABILITY_READY_20261030.md)。原90—92方案/hash/5%/nearzero1/5000bootstrap不变；新绑定以准确父+实际新增步数替代早期固定41250假设，实际90 I40752/29完整+1安全中止、A/V41250及30分母/reward/loss/原55契约通过。真实缺91拒绝，无完整窗口统计/REGISTRATION、无92派发。
+- 原91/冻结90/archive/固定终端等待及guard持续，300.117s/105身份保持，总steps{'impedance': 3751608, 'admittance': 3754455, 'vmc': 3755041}，冻结完成{'impedance': 5, 'admittance': 5, 'vmc': 5}。完整91及冻结90全90/raw/paired仍待，未收敛。
+- GPU67样本min[70, 68, 71, 68]%、低于50[0, 0, 0, 0]，科学结束仍守护；SSD31成员/SHAbd827cd7，HDD仅254字节指针，非全备份。main20c5b5fc/baselinef6e8f8c实际query/fetch/read，正常发布见收据；Goal active，无子agent，全部旧失败保持。
+
 ## 2026-10-30 — 原91继续；固定87终端跟踪91已登记
 
 - [交接](docs/RL_VIOLATION91_TERMINAL_FOLLOWUP_20261030.md)。原7813终端/all5/原masks，87—90保存算术及52 raw输入精确；真实缺完整91拒绝。专用91边界按实际90 steps，三份startup架构/partial拒绝和27负例通过；check91路径类型错误原件保留，v2仅Path转换修复，无新forward/physics/update。
