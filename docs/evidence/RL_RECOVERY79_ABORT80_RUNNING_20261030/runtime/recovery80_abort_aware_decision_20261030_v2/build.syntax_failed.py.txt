@@ -1,0 +1,45 @@
+from pathlib import Path
+import json,time,hashlib,ast,difflib
+D=Path(__file__).parent;B=D.parents[1];OLD=B/'runtime/recovery80_completion_preparation_20261030_v1';DIAG=B/'runs/impedance_recovery79_abort_review_20261030_v1'
+read=lambda p:json.loads(Path(p).read_text())
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def ref(p):return dict(path=str(p),sha256=sha(p))
+def write(p,x):
+ with p.open('x') as f:json.dump(x,f,indent=2);f.write('\n')
+write(D/'PLAN.json',dict(time=time.time(),registered_after_complete79=True,parent_cycle=79,new_cycle=80,new_cycles=1,maximum_new_transitions_per_method=41250,decision_rule_change='Replace no-prior-abort assumption only for exact audited79 impedance40550/29full/known long0000 abort; no generic abort acceptance. All other evidence and exact restore requirements retained.',original_rejection=ref(OLD/'COMPLETE79_ABORT_REJECTION.json'),original_source=ref(OLD/'decision80.py'),diagnosis=ref(DIAG/'FINAL_REVIEW.json'),original_guard_preserved=True,scientific_training_configuration_changed=False,physics_safety_reward_thresholds_changed=False,root_cause_unresolved=True,failed_episode_retried=False,all_failed_replay_retained=True,automatic81=False,direct34=False,convergence_claim=False))
+s=(OLD/'decision80.py').read_text();s=s.replace('"""Require full79 interpretation AND completed original76–78 statistics; no automatic training."""','"""Explicit post-abort79 finite80 decision, version2. Original no-abort guard remains rejected."""')
+anchor='def collect():\n'
+insert='''def validate_cycle(m,r,diagnosis):
+ assert r['conditions']==30 and r['retained_replay_all_fields_exact'] and r['max_reward_reconstruction_error']==0 and r['optimizer_and_network_finite']
+ if m=='impedance':
+  assert r['new_transitions']==40550 and r['full_horizon_count']==29 and r['aborts']==[diagnosis['known_abort']]
+  assert r['checkpoint_sha256']=='8f49c1cdd96b18167ebdfc37605256bce8651dd37c4f0d72b536c2d9b9312fb2'
+  assert r['steps']==3276448 and r['task']==17 and r['strict']==17
+ else:
+  assert m in ['admittance','vmc'] and r['new_transitions']==41250 and r['full_horizon_count']==30 and r['aborts']==[]
+def collect():
+'''
+assert s.count(anchor)==1;s=s.replace(anchor,insert)
+anchor=" evidence={};prior="
+replacement=""" plan=read(D/'PLAN.json');diagnostic=plan['diagnosis'];assert sha(diagnostic['path'])==diagnostic['sha256'];diagnosis=read(diagnostic['path'])
+ assert diagnosis['passed'] and diagnosis['abort_preserved'] and not diagnosis['physical_valid'] and not diagnosis['root_cause_established']
+ assert diagnosis['actual_actions']==675 and diagnosis['actual_cycle_new_transitions']==40550 and diagnosis['exactly_one_done'] and diagnosis['terminal_penalty']==-25
+ for v in diagnosis['evidence'].values():assert sha(v['path'])==v['sha256']
+ assert read(plan['original_rejection']['path'])['passed'] and sha(plan['original_rejection']['path'])==plan['original_rejection']['sha256']
+ assert sha(plan['original_source']['path'])==plan['original_source']['sha256']
+ evidence={'post_abort_plan':ref(D/'PLAN.json'),'abort_diagnosis':diagnostic,'original_no_abort_rejection':plan['original_rejection'],'rule_tests':ref(D/'RULE_TESTS.json'),'launch_preflight':ref(D/'PREFLIGHT.json')};prior="""
+assert s.count(anchor)==1;s=s.replace(anchor,replacement)
+old="  assert r['new_transitions']==41250 and r['retained_replay_all_fields_exact'] and r['max_reward_reconstruction_error']==0 and r['optimizer_and_network_finite']\n  assert r['full_horizon_count']==30 and r['aborts']==[] and health['methods'][m]['network_state_unchanged']"
+new="  validate_cycle(m,r,diagnosis)\n  assert health['methods'][m]['network_state_unchanged']"
+assert s.count(old)==1;s=s.replace(old,new)
+s=s.replace('configuration_changed=False,automatic_followup=False','configuration_changed=False,decision_rule_version=2,prior_safety_abort_preserved=True,root_cause_established=False,automatic_followup=False')
+changes={'decision80.py':s,'launch80.py':(OLD/'launch80.py').read_text().replace("decision['parent_cycle']==78","decision['parent_cycle']==79").replace('resume_recovery78.py','resume_recovery79.py').replace('explicit full78 decision; never automatic80','explicit full79 version2 decision; never automatic81').replace('automatic80 false','automatic81 false'),'deploy_loss80.py':(OLD/'deploy_loss80.py').read_text()}
+files=[]
+for name,data in changes.items():
+ ast.parse(data);(D/name).write_text(data);(D/(name+'.diff')).write_text(''.join(difflib.unified_diff((OLD/name).read_text().splitlines(True),data.splitlines(True),fromfile=str(OLD/name),tofile=str(D/name)))));files.append(dict(**ref(D/name),parent=ref(OLD/name)))
+for n in ['resume_recovery79.py','startup80.py','archive80.py']:files.append(ref(B/'runtime/prepare_recovery80_20261029_v1'/n))
+write(D/'LAUNCH_SOURCE_REVIEW.json',dict(passed=True,time=time.time(),files=files,original_guard_preserved=True,launcher_reference_fix='parent_cycle78->79; resume_recovery78.py->resume_recovery79.py',scientific_trainer_changed=False))
+(D/'CONTINUATION_REASON.txt').write_text('''Full79 remains non-converged. I critic first/last1000 2.576078/2.723751,max29.908985 and actor24.673951->24.081640; real27s long0000 penetration abort reduces full horizons29/30 and transitions40550. A critic1.196336->1.409760,max31.223160 with late spike cluster and actor drift; Task/Strict14/13 and reward-10.141245 worsen versus78. V critic1.151667->.907557,max27.185583,actor-12.689500->-12.613381 and Task/Strict17/17 improve some measures without establishing healthy stationary loss. Full2334 terminal-anchor SSE V8084.666548->3396.003020 improves but large residual remains; A1449.305195->2084.328691 worsens despite original focus improvement. Health A/V nonzero sampled above-soft-bound fractions .00078125/.00190430 retained; those are necessary fixed-checkpoint diagnostic bounds, not proofs of future calibration. All180 labels/90 reward pairs and four actual figures reviewed. Original76-78 Inearzero unassessable/A5%fail/Vrewardpass but loss unresolved remain unchanged; prospective79-81 exact PLAN unchanged and actual episode lengths retained.
+The original no-abort/full55 decision80 is correctly rejected and preserved. This separately versioned post-observation decision permits exactly one further finite simulated training cycle from exact79 state, INCLUDING every failed transition, with unchanged original2mm termination, failure terminal-25/failure-tail-9.940790, rewards, masks, physics, LR, batch65536,UTD1,terminal128 and4m append-only replay. The675-row shield recurrence and6750 logged servo checks pass, reward/done and all replay are correct, network/optimizer finite, exact80 full state/next65536 restored, and no input/model/controller source mismatch found. These justify collecting the next bounded training cycle to test persistence of failure/learning; they do not establish physical safety or known root cause. Saved25Hz geometry cannot reconstruct the recorded97.689mm inter-frame peak. Real failure remains physical_valid=false and Task/Strict=false; no retry/replacement or invented55s. New acceptance is narrowly bound to this exact audited abort and checkpoint, not blanket allowance for arbitrary failures. Training80 gets complete archive/loss/health/labels/terminal review before any81 decision. No automatic81/Direct34 or convergence claim. GPU synthetic occupancy remains independent of scientific work.
+''')
+print('Version2 source and explicit scientific decision rationale prepared; no launch')
