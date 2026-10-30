@@ -1,0 +1,78 @@
+{
+  "time": 1793396303.519907,
+  "parent_cycle": 90,
+  "new_cycle": 91,
+  "new_cycles": 1,
+  "maximum_new_actions_per_method": 41250,
+  "critic_revision": "raw_violation52",
+  "automatic_followup": false,
+  "offline_weights_promoted": false,
+  "optimizer_settings_changed": false,
+  "reward_physics_changed": false,
+  "direct34": false,
+  "architecture_final_acceptance": false,
+  "convergence_claim": false,
+  "evidence": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_review_20261030_v1/REVIEW.json",
+      "sha256": "af1a14798073e6c95d57b658d534914efc6b1e3827f33a1f09b38e67ebf33e41"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_review_20261030_v1/FINISHED.json",
+      "sha256": "5db4b3dcf3267f07ec3fa26c437e94702a6b9836b8e3d0016f7cf99a14d65a54"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_review_20261030_v1/health/DIAGNOSIS.json",
+      "sha256": "d26253824546a280e65e2a8539cef5b1924412105f4210b1475005c143383f82"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_review_20261030_v1/loss/REVIEW.json",
+      "sha256": "0981f5785cadbdc0c9f92508a704411a1c9d95ecd15a465cb6703dc1124623e4"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_review_20261030_v1/PLOT_INSPECTION.json",
+      "sha256": "986a41e9d8cea57ccd418c94a04f41c64086986d7c249414245bfe7aa2a5a549"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_completion_20261030_v1/INTERPRETATION.json",
+      "sha256": "a0a68e08365eeef19e6ca459f062402b37385a827b917994bc944141fc7637d9"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_completion_20261030_v1/INTERPRETATION_SAVED_REVIEW.json",
+      "sha256": "5263c61de52038cd80b99b357f8ff619b5854af9d84af574dd482858f51dd271"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_completion_20261030_v1/PLOT_INSPECTION.json",
+      "sha256": "4657f20022c007bfd5dc57f2095a210fc27deb90d1ca334e7e38e96bd0e66acf"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_completion_20261030_v1/ABORT_REVIEW.json",
+      "sha256": "d21a6a2b427c324a4ac0099ba9912f60e286849c885cf46161d987be062b3618"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation90_fixed87_terminal_followup_20261030_v1/REVIEW.json",
+      "sha256": "1a6d4bbeb705cc54f4e95dac692bab39eca3c3c776f664ed9233721b4836419d"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation90_fixed87_terminal_followup_20261030_v1/FINISHED.json",
+      "sha256": "4e3ddc8c9c1964ae8594c65378f81c833dc6da65573035743763ede0933e62ae"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation90_fixed87_terminal_followup_20261030_v1/PLOT_INSPECTION.json",
+      "sha256": "917054960858046d91656c13b660f79e4ccdf869ae73f53c61e0a450a0e6fe11"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation90_92_reward_stability_20261030_v1/PLAN.json",
+      "sha256": "ccede86f8ff0596c40bc5c0219923c93f30545d9f0737a41557920405957efa2"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_completion_20261030_v1/EARLY_WINDOW_FAILURE.json",
+      "sha256": "63714435069c86b419b89f7a734094b213742783f89a018b6f7e2899ae8ec0d7"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history88_90_reward_stability_20261030_v1/REVISION_BOUNDARY_90.json",
+      "sha256": "086d9b5673d66a554602db64075b241af045cc84dc6936fd40706b98aae4db33"
+    }
+  ],
+  "reason": "Complete90 implementation/replay/reward and native frozen restore audits passed. First online52 cycle has lower critic tail means but I late spikes and actor drift. Fixed original87 terminal masked SSE improves I83.45% yet worsens A9.70%/V146.79%; all-row SSE decreases. Online labels improve A/V but I loses long0000 through a global object/corner penetration abort, whose external bit is0; preserve failure and original gates. This mixed evidence neither establishes convergence nor justifies promoting offline weights or changing physics/actor information. Register exactly one further same52 online cycle from all learned90 weights/Adam/replay/RNG, retaining the abort transition and unchanged objective/learning rates/UTD, to obtain the next comparable complete-cycle result and assess persistence of gains/regressions. Full91 must be reviewed before any92 decision. The90-92 statistics plan does not itself dispatch training. Frozen90 runs independently as prospectively fixed-policy evaluation."
+}

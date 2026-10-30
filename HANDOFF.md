@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整90精确恢复；同52修订有限91实际运行
+
+- [交接](docs/RL_VIOLATION91_ONLINE_20261030.md)。依据完整90混合结果及I安全中止单独登记91，trainer与实际90逐字相同，原52/actor49/历史/Adam/RNG及全部协议保持，无自动92/Direct34。108负例、6真实batch65536 clone重复恢复通过；I按实际3729700父行保留中止，loss边界不假定41250。
+- 实际startup旧52全回放/新bit-history-clock/action/reward0误差、30MJB/30sampler通过；120.129s/99身份保持，总steps{'impedance': 3734112, 'admittance': 3736866, 'vmc': 3737781}。完整91、reward稳定和loss健康待；原90冻结完成数{'impedance': 2, 'admittance': 2, 'vmc': 2}继续，最终全90/raw/paired待。
+- GPU135样本min[69, 68, 69, 65]%、低于50[0, 0, 0, 0]，科研结束仍保载。SSD122成员/SHA922a8c73核验、HDD仅254字节指针，非HDD/arm1全备份。main697d2d5b/baselinef6e8f8c2已query/fetch/read，正常发布见收据；Goal active，无子agent，所有旧失败保留。
+
 ## 2026-10-30 — 完整90与安全中止已审；冻结90全90实际启动
 
 - [交接](docs/RL_COMPLETE90_FROZEN90_20261030.md)。I40752/A,V41250新步，全旧replay及新52输入/动作/reward0误差；Task/Strict17/16、14/14、17/17。I long0000在35.08s全局穿透安全中止（97.91mm），外部bit0不覆盖该失败；原分母保留。critic末段下降但I尖峰/actor漂移，未收敛。
