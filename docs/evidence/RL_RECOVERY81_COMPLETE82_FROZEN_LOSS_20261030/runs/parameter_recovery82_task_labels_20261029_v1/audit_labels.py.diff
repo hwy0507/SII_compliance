@@ -1,0 +1,35 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery81_task_labels_20261029_v1/audit_labels.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery82_task_labels_20261029_v1/audit_labels.py
+@@ -21,17 +21,17 @@
+ 
+ 
+ def run_path(cycle):
+-    assert cycle in (80,81), 'Only completed recovery80/81; interrupted75 excluded'
++    assert cycle in (81,82), 'Only completed recovery81/82; interrupted75 excluded'
+     return BASE / f'runs/parameter_partial75_recovery_cycle{cycle}_20261029_v1'
+ 
+ 
+ def review_path(cycle):
+-    assert cycle in (80,81), 'Only completed recovery80/81; interrupted75 excluded'
++    assert cycle in (81,82), 'Only completed recovery81/82; interrupted75 excluded'
+     return BASE / f'runs/parameter_partial75_recovery_cycle{cycle}_review_20261029_v1'
+ 
+ 
+ def audit(before, after, output):
+-    assert (before, after) == (80, 81), 'Consecutive complete recovery80/81 only'
++    assert (before, after) == (81, 82), 'Consecutive complete recovery81/82 only'
+     assert not output.exists(), 'Refuse to overwrite prior evidence'
+     inputs = []
+     maps = {}
+@@ -94,9 +94,9 @@
+                 for key in ('model', 'evaluator', 'rollout'):
+                     assert ref(Path(case[key]['path'])) == case[key]
+     report = dict(passed=True, time=time.time(), cycles=[before, after], methods=methods, inputs=inputs,
+-                  source=ref(Path(__file__)), saved_rollouts_checked=181, new_physics=0, optimizer_updates=0,
++                  source=ref(Path(__file__)), saved_rollouts_checked=182, new_physics=0, optimizer_updates=0,
+                   gate_unchanged=True, convergence_claim=False,
+-                  limitation='Complete recovery80 to complete recovery81; original75 remains interrupted. All 90 paired conditions and 181 saved rollout labels checked, including Task-only changes. Saved physical statistics and executed gate are checked; no independent substep recomputation or task trajectory replay, no new gate or causal claim.')
++                  limitation='Complete recovery81 to complete recovery82; original75 remains interrupted. All 90 paired conditions and 182 saved rollout labels checked, including Task-only changes. Saved physical statistics and executed gate are checked; no independent substep recomputation or task trajectory replay, no new gate or causal claim.')
+     output.parent.mkdir(parents=True, exist_ok=True)
+     output.write_text(json.dumps(report, indent=2) + '\n')
+     print(json.dumps({m: {'counts': v['counts'], 'changes': [(p['condition'], p['changed_fields']) for p in v['changes']]} for m, v in methods.items()}, indent=2))

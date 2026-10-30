@@ -1,0 +1,49 @@
+{
+  "time": 1793342252.2360122,
+  "method": "vmc",
+  "cycle": 80,
+  "registration_timing": "After complete80 loss74.12 spike and terminal concentration reviewed; before any new diagnostic forward",
+  "batches": 512,
+  "batch_size": 65536,
+  "seed": 2026103080,
+  "device": "cuda:0",
+  "cpu_affinity": [
+    0
+  ],
+  "helper": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter_capacity_pool30_cycle75_20261026_v1",
+  "inputs": {
+    "checkpoint": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle80_archive_20261029_v1/vmc/cycle_00080.pt",
+      "sha256": "eb28fe8eefd7fb208464aefe30682457876065f78564ad06ff6ca76f59270fb4"
+    },
+    "registration": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle80_20261029_v1/vmc/REGISTRATION.json",
+      "sha256": "ff9ce63201a720f6854cb4404a669b36ef8290b1022188bec4e1165c4f978670"
+    },
+    "full_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle80_review_20261029_v1/REVIEW.json",
+      "sha256": "89339a6b7d708acea65d89b9a1b9f31a995358a70c9b62012969ba7ebcce4233"
+    },
+    "terminal_values": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc_recovery80_terminal_followup_20261029_v1/values.npz",
+      "sha256": "09b8116c75a1dc560e305c86f35d4cb5ff15f04b62b53c97e206a0c9af7bf102"
+    },
+    "terminal_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc_recovery80_terminal_followup_20261029_v1/REVIEW.json",
+      "sha256": "0e3aa0a37d736c6d05287b337f9b2e71f2695d094850fc6852fa4508f09513f6"
+    },
+    "new_terminal_case_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery80_complete81_running_20261030_v1/NEW80_TERMINAL_CASE_REVIEW.json",
+      "sha256": "0de311d5317d63ed42820e3d24a11e34507c5bd3c0353d53dcc03b53ed675457"
+    }
+  },
+  "audit_source_sha256": "04eb3f2983f2fc04f71c6a2becbf657a8ddd39d315a53f2ad6b324aaded0d1b1",
+  "focus_replay_index": 3318758,
+  "complete79_replay_size": 3279750,
+  "maximum_diagnostic_draws": 33554432,
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "scientific_protocol_changed": false,
+  "source_interception": "Use actual registered train method under no_grad; intercept first q_optimizer.zero_grad and forbid optimizer steps and target updates",
+  "limitation": "Retrospective targeted frozen complete80 VMC diagnostic under an independent seed. It samples original full retained replay/65536/terminal128/masks/projected random-mean-pair target loss. No chronological optimizer, actor/alpha/target updates or physical trajectories; does not reconstruct historical online minibatches or establish loss-spike causality, healthy convergence, policy performance or a new acceptance threshold. Diagnostic random draws advance only this isolated process RNG; original checkpoint, live81 and its RNG remain untouched."
+}

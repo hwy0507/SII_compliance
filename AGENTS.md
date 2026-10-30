@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 完整81/原79–81与冻结loss配对已审；有限82实际续训
+
+- [交接](docs/RL_RECOVERY81_COMPLETE82_FROZEN_LOSS_20261030.md)。81三路30×55/41250/noabort、reward0误差/旧回放/full loss/health/180标签/两终端/实际图全审；reward−2.412239/−10.248241/−2.827428、Task/Strict18/17、15/13、17/17。原79–81及全部历史失败保留，未收敛。
+- 冻结80和81-on-fixed80各512×65536真实原loss只读诊断、全索引/分母/终端独立复核及实际配对图完成；有限尖峰可以来自采样，不重建在线74.12原因、不新增健康门槛。明确DECISION82/三路精确恢复/实际startup通过，全后续和前瞻82–84审计已部署，steps{'impedance': 3362035, 'admittance': 3364279, 'vmc': 3365495}；无自动83/Direct34，Goal active。
+- GPU408样本min[59, 67, 68, 67]%、低于50[0, 0, 0, 0]，科研完成仍合成保载。SSD387成员/SHA6815bb64已核，非HDD/arm1全备份；main1c5154e1/baselinef6e8f8c已fetch/read，发布见SSD PUBLICATION收据，无子agent。
+
 ## 2026-10-30 — 原81前5000已审；82恢复与完整窗口决策准备
 
 - [交接](docs/RL_RECOVERY81_PREFIX82_PREPARATION_20261030.md)。81固定前5000原字节/独立算术/实际图通过；critic首→尾I2.795769→2.513341、A1.193168→1.146491、V1.091015→1.018133，I/V尖峰19.475/14.953及actor漂移保留，非收敛。原81steps{'impedance': 3336680, 'admittance': 3338993, 'vmc': 3340850}。

@@ -1,0 +1,79 @@
+impedance {"steps": 3358948, "updates": 3353949, "checkpoint_sha256": "6dae48a98001e836fe37e59cb27c8de2c66839c91af1a5802d1234f23ed52106", "replay_capacity_extension": {"version": 1, "original_capacity": 1000000, "capacity": 2000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite"}, "replay_capacity_followup": {"version": 1, "previous_capacity": 2000000, "capacity": 4000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite", "historical_marker_preserved": true}, "current_replay_capacity": 4000000, "historical_entry_cycle": 23, "crossed_second_capacity": true, "rows_beyond_second_capacity": 1358948, "replay_size": 3358948, "crossed_original_capacity": true, "new_transitions": 41250, "retained_replay_rows": 3317698, "retained_replay_all_fields_exact": true, "conditions": 30, "task": 18, "strict": 17, "reward_mean": -2.4122385839735925, "full_horizon_count": 30, "aborts": [], "max_reward_reconstruction_error": 0.0, "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction", "source_parent_sha256": "bca5232a900afd3e05b762bb9a7c3a05c212e548376380eca0472fe680cbb4d8", "stage_resumed_parent_sha256": "bca5232a900afd3e05b762bb9a7c3a05c212e548376380eca0472fe680cbb4d8", "optimizer_and_network_finite": true, "convergence_claim": false}
+admittance {"steps": 3361250, "updates": 3356251, "checkpoint_sha256": "c0fa1f332b07ea867fc63b2ac5f38a9bbdb558330ba7b967fb9f4e8c44476f81", "replay_capacity_extension": {"version": 1, "original_capacity": 1000000, "capacity": 2000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite"}, "replay_capacity_followup": {"version": 1, "previous_capacity": 2000000, "capacity": 4000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite", "historical_marker_preserved": true}, "current_replay_capacity": 4000000, "historical_entry_cycle": 23, "crossed_second_capacity": true, "rows_beyond_second_capacity": 1361250, "replay_size": 3361250, "crossed_original_capacity": true, "new_transitions": 41250, "retained_replay_rows": 3320000, "retained_replay_all_fields_exact": true, "conditions": 30, "task": 15, "strict": 13, "reward_mean": -10.248240875828502, "full_horizon_count": 30, "aborts": [], "max_reward_reconstruction_error": 0.0, "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction", "source_parent_sha256": "2f5a86c7611df88014393765ed384f2ab6d40f33a970a2a3a11c160f7367a543", "stage_resumed_parent_sha256": "2f5a86c7611df88014393765ed384f2ab6d40f33a970a2a3a11c160f7367a543", "optimizer_and_network_finite": true, "convergence_claim": false}
+vmc {"steps": 3362250, "updates": 3357251, "checkpoint_sha256": "5a434e45a4d8720833c6b68f4b11c2799f30081bf491c07a78eebf592a748356", "replay_capacity_extension": {"version": 1, "original_capacity": 1000000, "capacity": 2000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite"}, "replay_capacity_followup": {"version": 1, "previous_capacity": 2000000, "capacity": 4000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite", "historical_marker_preserved": true}, "current_replay_capacity": 4000000, "historical_entry_cycle": 23, "crossed_second_capacity": true, "rows_beyond_second_capacity": 1362250, "replay_size": 3362250, "crossed_original_capacity": true, "new_transitions": 41250, "retained_replay_rows": 3321000, "retained_replay_all_fields_exact": true, "conditions": 30, "task": 17, "strict": 17, "reward_mean": -2.827427949840564, "full_horizon_count": 30, "aborts": [], "max_reward_reconstruction_error": 0.0, "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction", "source_parent_sha256": "eb28fe8eefd7fb208464aefe30682457876065f78564ad06ff6ca76f59270fb4", "stage_resumed_parent_sha256": "eb28fe8eefd7fb208464aefe30682457876065f78564ad06ff6ca76f59270fb4", "optimizer_and_network_finite": true, "convergence_claim": false}
+{
+  "impedance": {
+    "steps": 3358948,
+    "terminal_count": 2425,
+    "terminal_q_absolute_error": {
+      "count": 12125,
+      "mean": 0.8714971172686705,
+      "minimum": 1.9073486328125e-05,
+      "maximum": 77.77079772949219,
+      "p50": 0.09625625610351562,
+      "p95": 1.6585693359374956
+    },
+    "sampled_td_absolute_error": {
+      "count": 20480,
+      "mean": 0.2516500956411619,
+      "minimum": 4.76837158203125e-07,
+      "maximum": 32.46205139160156,
+      "p50": 0.11435508728027344,
+      "p95": 0.7660438537597649
+    },
+    "alpha": 0.00180508301127702,
+    "failure_stages": {
+      "carry": 12,
+      "retreat": 1
+    }
+  },
+  "admittance": {
+    "steps": 3361250,
+    "terminal_count": 2424,
+    "terminal_q_absolute_error": {
+      "count": 12120,
+      "mean": 0.7378273029925406,
+      "minimum": 1.9073486328125e-06,
+      "maximum": 68.76829528808594,
+      "p50": 0.1352376937866211,
+      "p95": 1.7297241210937488
+    },
+    "sampled_td_absolute_error": {
+      "count": 20480,
+      "mean": 0.21015720103605418,
+      "minimum": 3.814697265625e-06,
+      "maximum": 32.356163024902344,
+      "p50": 0.09211111068725586,
+      "p95": 0.7301170617341993
+    },
+    "alpha": 0.00047036612522788346,
+    "failure_stages": {
+      "carry": 15,
+      "retreat": 2
+    }
+  },
+  "vmc": {
+    "steps": 3362250,
+    "terminal_count": 2424,
+    "terminal_q_absolute_error": {
+      "count": 12120,
+      "mean": 0.6284347443690788,
+      "minimum": 1.9073486328125e-05,
+      "maximum": 68.52940368652344,
+      "p50": 0.09380340576171875,
+      "p95": 1.5820060729980443
+    },
+    "sampled_td_absolute_error": {
+      "count": 20480,
+      "mean": 0.16485119198823667,
+      "minimum": 1.1444091796875e-05,
+      "maximum": 43.38922119140625,
+      "p50": 0.08695507049560547,
+      "p95": 0.4694840431213376
+    },
+    "alpha": 0.0006739515229128301,
+    "failure_stages": {
+      "carry": 13
+    }
+  }
+}

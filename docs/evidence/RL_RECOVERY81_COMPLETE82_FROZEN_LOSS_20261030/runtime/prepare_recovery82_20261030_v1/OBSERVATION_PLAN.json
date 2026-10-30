@@ -1,0 +1,225 @@
+{
+  "time": 1793340800.8978248,
+  "duration_seconds": 600,
+  "interval_seconds": 30,
+  "jobs": [
+    {
+      "name": "impedance",
+      "identity": {
+        "controller": "impedance",
+        "command": [
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery81_20261030_v1/resume_recovery80.py",
+          "--runtime",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+          "--registration",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle81_20261029_v1/impedance/REGISTRATION.json",
+          "--resume",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle80_archive_20261029_v1/impedance/cycle_00080.pt",
+          "--output",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle81_20261029_v1/impedance/train",
+          "--controller",
+          "impedance",
+          "--cpus",
+          "13,14,15,16,17,18,19,20,21,22,23,24,25",
+          "--workers",
+          "30",
+          "--device",
+          "cuda:1"
+        ],
+        "pid": 1482723,
+        "proc_start_ticks": "571363030",
+        "time": 1793339820.092857
+      },
+      "terminal": null
+    },
+    {
+      "name": "admittance",
+      "identity": {
+        "controller": "admittance",
+        "command": [
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery81_20261030_v1/resume_recovery80.py",
+          "--runtime",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+          "--registration",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle81_20261029_v1/admittance/REGISTRATION.json",
+          "--resume",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle80_archive_20261029_v1/admittance/cycle_00080.pt",
+          "--output",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle81_20261029_v1/admittance/train",
+          "--controller",
+          "admittance",
+          "--cpus",
+          "26,27,28,29,30,31,32,33,34,35,36,37,38",
+          "--workers",
+          "30",
+          "--device",
+          "cuda:2"
+        ],
+        "pid": 1482724,
+        "proc_start_ticks": "571363030",
+        "time": 1793339820.0936928
+      },
+      "terminal": null
+    },
+    {
+      "name": "vmc",
+      "identity": {
+        "controller": "vmc",
+        "command": [
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery81_20261030_v1/resume_recovery80.py",
+          "--runtime",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+          "--registration",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle81_20261029_v1/vmc/REGISTRATION.json",
+          "--resume",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle80_archive_20261029_v1/vmc/cycle_00080.pt",
+          "--output",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle81_20261029_v1/vmc/train",
+          "--controller",
+          "vmc",
+          "--cpus",
+          "39,40,41,42,43,44,45,46,47,48,49,50,51",
+          "--workers",
+          "30",
+          "--device",
+          "cuda:3"
+        ],
+        "pid": 1482725,
+        "proc_start_ticks": "571363030",
+        "time": 1793339820.0945172
+      },
+      "terminal": null
+    },
+    {
+      "name": "archive",
+      "identity": {
+        "time": 1793339820.0956452,
+        "pid": 1482726,
+        "proc_start_ticks": "571363030",
+        "script_sha256": "e9c8f88b007396d78c6684ad2f3c206392235c1917a0081848f78def8fd4549b"
+      },
+      "terminal": null
+    },
+    {
+      "name": "startup",
+      "identity": {
+        "time": 1793339820.0972626,
+        "pid": 1482727,
+        "proc_start_ticks": "571363030",
+        "script_sha256": "117f46a6215fa203e1752e4afb380dfb2f9bda845a788187c25d3883d0eadbe5"
+      },
+      "terminal": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle81_20261029_v1/startup/REVIEW.json"
+    },
+    {
+      "name": "loss",
+      "identity": {
+        "time": 1793339820.1407087,
+        "pid": 1482729,
+        "proc_start_ticks": "571363035",
+        "plan_sha256": "a22bcf58e887fcfb38ca0d8822d9b086728efb09c768c52d4551b97bb7fcc386",
+        "automatic_training": false
+      },
+      "terminal": null
+    },
+    {
+      "name": "labels",
+      "identity": {
+        "pid": 1490003,
+        "proc_start_ticks": "571364245",
+        "time": 1793339832.24622,
+        "plan_sha256": "e6bc5de8de064c50f6baa155ba9c7dee62071de2b88a8791b675da73aef1e6ec",
+        "automatic_training": false
+      },
+      "terminal": null
+    },
+    {
+      "name": "vmc_terminal",
+      "identity": {
+        "pid": 1505816,
+        "proc_start_ticks": "571367718",
+        "time": 1793339866.976543,
+        "plan_sha256": "14424acc195a11ced5f2ca10649b4572cdc55f43f7417aa4806cdfdeaeb3ab96",
+        "automatic_training": false
+      },
+      "terminal": null
+    },
+    {
+      "name": "admittance_terminal",
+      "identity": {
+        "pid": 1537534,
+        "proc_start_ticks": "571371243",
+        "time": 1793339902.2257237,
+        "plan_sha256": "f8cbbfe23025cd418fe9deba327aa46d053aef4912da2702b6bcdf7e6677d5b2",
+        "automatic_training": false
+      },
+      "terminal": null
+    },
+    {
+      "name": "window79_81",
+      "identity": {
+        "pid": 213039,
+        "proc_start_ticks": "570535120",
+        "time": 1793331540.9911845,
+        "automatic_training": false
+      },
+      "terminal": null
+    },
+    {
+      "name": "restore82",
+      "identity": {
+        "pid": 2045281,
+        "proc_start_ticks": "571440516",
+        "time": 1793340594.9585392,
+        "registration_sha256": "21183beab10a31fe1a67df45ee816b5cdbf35f686b147ee1b4f3509c1252c9f7",
+        "automatic_training": false
+      },
+      "terminal": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery82_20261030_v1/FINISHED.json"
+    },
+    {
+      "name": "guard",
+      "identity": {
+        "pid": 97370,
+        "proc_start_ticks": "570509460"
+      },
+      "terminal": null
+    },
+    {
+      "name": "gpu0",
+      "identity": {
+        "pid": 97399,
+        "proc_start_ticks": "570509475"
+      },
+      "terminal": null
+    },
+    {
+      "name": "gpu1",
+      "identity": {
+        "pid": 97400,
+        "proc_start_ticks": "570509475"
+      },
+      "terminal": null
+    },
+    {
+      "name": "gpu2",
+      "identity": {
+        "pid": 97401,
+        "proc_start_ticks": "570509475"
+      },
+      "terminal": null
+    },
+    {
+      "name": "gpu3",
+      "identity": {
+        "pid": 97402,
+        "proc_start_ticks": "570509475"
+      },
+      "terminal": null
+    }
+  ],
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "automatic_restart": false
+}

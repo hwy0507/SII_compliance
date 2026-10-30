@@ -1,0 +1,10 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery81_completion_preparation_20261030_v1/deploy_loss81.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery82_completion_preparation_20261030_v1/deploy_loss82.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import json,time,hashlib,subprocess,os
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');R=B/'runs/parameter_partial75_recovery_cycle81_20261029_v1';L=B/'runs/parameter_recovery81_loss_20261029_v1'
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');R=B/'runs/parameter_partial75_recovery_cycle82_20261029_v1';L=B/'runs/parameter_recovery82_loss_20261029_v1'
+ read=lambda p:json.loads(p.read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ launch=read(R/'LAUNCH.json');assert not (L/'LAUNCH.json').exists() and not (L/'PLAN.json').exists()
+ for x in read(L/'SOURCE_REVIEW.json')['files']:assert sha(L/x['name'])==x['sha256']

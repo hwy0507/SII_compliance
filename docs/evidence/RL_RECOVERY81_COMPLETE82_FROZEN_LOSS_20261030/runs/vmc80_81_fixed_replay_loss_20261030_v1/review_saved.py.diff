@@ -1,0 +1,21 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_frozen_loss_sampling_20261030_v1/review_saved.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/review_saved.py
+@@ -17,14 +17,16 @@
+ assert sha(D/'audit.py')==plan['audit_source_sha256']
+ for v in plan['inputs'].values():assert sha(v['path'])==v['sha256']
+ ck=torch.load(plan['inputs']['checkpoint']['path'],map_location='cpu',weights_only=False)
+-a=ck['replay']['arrays'];size=ck['replay']['size']
++anchor=torch.load(plan['inputs']['anchor_checkpoint']['path'],map_location='cpu',weights_only=False)
++a=anchor['replay']['arrays'];size=anchor['replay']['size']
++for key,value in a.items():np.testing.assert_array_equal(value,ck['replay']['arrays'][key][:size])
+ indices=np.load(D/'sample_indices.npy',mmap_mode='r',allow_pickle=False)
+ assert indices.shape==(512,65536)
+ rows=[json.loads(l) for l in (D/'BATCHES.jsonl').read_text().splitlines()]
+ assert len(rows)==512 and [r['batch'] for r in rows]==list(range(512))
+ rng=np.random.default_rng(plan['seed']);rejections=0
+ with np.load(plan['inputs']['terminal_values']['path'],allow_pickle=False) as z:
+-    term_indices=z['indices'].copy();term_q=z['q_after'].astype(float);term_rewards=z['rewards'].astype(float);term_masks=z['masks'].astype(float)
++    term_indices=z['indices'][:2394].copy();term_q=z['q_after'][:,:2394].astype(float);term_rewards=z['rewards'][:2394].astype(float);term_masks=z['masks'][:,:2394].astype(float)
+ assert np.array_equal(term_indices,np.flatnonzero(a['dones'][:,0])) and len(term_indices)==2394
+ np.testing.assert_array_equal(term_masks,a['masks'][term_indices].T)
+ np.testing.assert_array_equal(term_rewards,a['rewards'][term_indices,0])
