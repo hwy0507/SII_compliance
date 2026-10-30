@@ -1,3 +1,9 @@
+## 2026-10-31 — final108 v2 零物理调度控制已复核
+
+- 新增并运行 `code/mujoco_6d_vmc_benchmark/experiments/check_contact_yield_unseen108_v2_controls_20261031.py`。针对已登记 v3、source/hash绑定的真实 v2 adapter，以合成 worker 检查完整108格有序调度、重复启动拒绝、第四格基础设施失败后前三条收据保留且禁止恢复重跑、107格独立复核拒绝；`CONTROL_AUDIT.json` 为 `passed_zero_physics_v2_adapter_controls`，物理调用0。登记SHA256仍为 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`。
+- 本轮真实环境仍不允许派发物理任务：user systemd bus不可访问；Chromium cgroup的`memory.max=max`、`memory.swap.max=max`、`cpu.max`及有效cpuset不可读，进程affinity为0–23；系统swap已使用2097112/2097148 KiB，GPU driver不可访问。v3目标目录仍只有登记文件、无`execution.json`，没有final108物理回合。零物理控制不代表资源预检、MuJoCo或科学指标通过。
+- GitHub本轮`ls-remote`因无法连接失败；本地`main`/缓存`origin/main=cea807d81619e8ceba3f3b9e963aebcb91d5bc1f`、缓存baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不能视为远端本轮最新核验。详见`docs/CONTACT_YIELD_FINAL108_LOCKED_V2_PROGRESS_20261031.md`及`outputs/contact_yield_unseen108_v2_controls_20261031_v1/CONTROL_AUDIT.json`。目标仍active；待可验证受限本机执行scope后再按原登记一次性运行。
+
 ## 2026-10-31 — 特化场景 final108 锁定比较等待受限执行环境
 
 - 已批准的75候选公平重训由既存完整收据覆盖（40条/21,500帧、75/75、FIT_AUDIT passed），未重复运行。MLP384 fixed27独立复核为Task 27/27、Strict 24/27、replay 27条精确；ESN/RNN各9/9双成功，MLP384 6/9。三条MLP棍推外穿透0.251768/0.243292/0.222516 mm超过冻结0.20 mm，失败保留；舒适度NA。

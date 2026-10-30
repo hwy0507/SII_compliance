@@ -1,5 +1,9 @@
 # 特化场景模型 final108 一次性比较进度
 
+## v2 启动控制复核
+
+新增零物理控制脚本 `code/mujoco_6d_vmc_benchmark/experiments/check_contact_yield_unseen108_v2_controls_20261031.py`，执行收据位于 `code/mujoco_6d_vmc_benchmark/outputs/contact_yield_unseen108_v2_controls_20261031_v1/CONTROL_AUDIT.json`。控制脚本对真实登记和 v2 adapter 执行合成worker验证：108格按登记顺序完整调度；重复启动被拒；第4格注入基础设施错误后状态为 `failed_preserved`、前三格收据保留且同目录重跑被拒；107格review未生成结果。物理调用为0。审计绑定登记SHA256 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6` 与测试源码SHA256 `4de8f7c048c7718d866a687ea2cc1705747c42f4be1581d4dbe7b851bf804f36`。这只验证协调器控制流，不验证受限资源scope、物理执行或科学结果。
+
 ## 已锁定结果
 
 本轮复用用户批准的 v7 公平重训，不重复执行已经完成的 75 个候选：40 条轨迹、21,500 帧，75/75 候选完成，FIT_AUDIT 通过，九个 checkpoint 已锁定。MLP 后续按相同六条 validation 和预算完成宽度容量诊断；三个 seed 均依既有 validation 规则选中宽度 384。拟合误差下降不作为闭环成功证据。
@@ -16,6 +20,6 @@
 
 ## 执行限制
 
-2026-10-31 本轮容器实际 cgroup 为 `app-org.chromium.Chromium-1534058.scope`：`memory.max=max`、`memory.swap.max=max`、`cpu.max` 不可读、affinity 为 CPU 0–23。`systemctl --user` 返回 bus `Operation not permitted`，NVIDIA driver不可访问。当前环境不符合登记的 CPU6、单线程、MemoryMax 3 GiB、swap 0 资源约束，故未运行物理 episode，也未生成任何 final108 结果。向自动审批申请建立无仿真的 user-systemd 资源预检 scope 被拒，给出的理由是当前环境显式只读且 approval policy=never；按拒绝要求没有改用其他执行通道。需在获准的受限本机执行环境通过资源检查后，才可以对v3登记运行一次；基础设施失败及科学失败都须保留，不得在同一目录自动重试。
+2026-10-31 本轮容器实际 cgroup 为 `app-org.chromium.Chromium-1534058.scope`：`memory.max=max`、`memory.swap.max=max`、`cpu.max`与有效cpuset不可读，affinity 为 CPU 0–23；读取时cgroup `memory.current=1089753088`、`memory.swap.current=5459968`，主机swap已使用2097112/2097148 KiB。`systemctl --user` 返回 bus `Operation not permitted`，NVIDIA driver不可访问。当前环境不符合登记的 CPU6、单线程、MemoryMax 3 GiB、swap 0 资源约束，故未运行物理 episode，也未生成任何 final108 结果。向自动审批申请建立无仿真的 user-systemd 资源预检 scope 被拒，给出的理由是当前环境显式只读且approval policy=never；按拒绝要求没有改用其他执行通道。需在获准的受限本机执行环境通过资源检查后，才可以对v3登记运行一次；基础设施失败及科学失败都须保留，不得在同一目录自动重试。
 
 最初一次 GitHub 查询失败；随后恢复只读查询并 fetch，读取到 `main=d9507f2f319856428246018c77922a9fc1425aaf`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。main 新增的 history89 RL 接口与证据更新未改本专题冻结条件、模型或登记，与本轮无冲突。本轮提交 `72d318a5a3a9cdbc94744da4b3c5964f670d3817` 已推送并从远端核验；登记 JSON 远端 SHA256 为 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`。baseline 未修改。
