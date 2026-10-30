@@ -1,3 +1,9 @@
+## 2026-10-30 — 原87继续；冻结86固定16回合seed诊断实际运行
+
+- [交接](RL_RECOVERY87_FROZEN86_SEEDS_20261030.md)。先复核已完成29的12回合敏感性证据；新完整86四个已知变化组合×原四seed，共16回合/22000动作上限/0更新，PLAN42dc5ea1，不是重新发现一般随机性或因果分解。
+- 四组全state恢复/52负例/实际startup及400保存行/MJB/CPU/原physics-action循环AST通过；180.0秒34身份观察保持，完整16/最终不变/图仍待。原87steps{'impedance': 3586349, 'admittance': 3588641, 'vmc': 3590297}、冻结82和原85—87继续，不自动88/Direct34，Goal active。
+- GPU243样本min[71, 67, 65, 69]%、低于50[0, 0, 0, 0]，科学结束仍保载；SSD113成员/SHA7f18a9cd已核，非HDD/arm1全备份。mainf7817a10/baselinef6e8f8c实际fetch/read；发布见收据，无子agent。
+
 ## 2026-10-30 — 完整86与固定2514已审；有限87实际续训
 
 - [交接](RL_RECOVERY86_COMPLETE87_RUNNING_20261030.md)。86各30×55/41250/noabort，旧replay/reward0误差/full loss/health/186标签/两终端/5实际图通过；reward−2.408941/−6.690040/−2.831542、Task/Strict18/17、15/15、17/17。A/V loss下降与旧失败拟合改善，I新Strict失败，未收敛。
