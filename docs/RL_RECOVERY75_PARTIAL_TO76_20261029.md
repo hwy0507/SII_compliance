@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整90与安全中止已审；冻结90全90实际启动
+
+- [交接](RL_COMPLETE90_FROZEN90_20261030.md)。I40752/A,V41250新步，全旧replay及新52输入/动作/reward0误差；Task/Strict17/16、14/14、17/17。I long0000在35.08s全局穿透安全中止（97.91mm），外部bit0不覆盖该失败；原分母保留。critic末段下降但I尖峰/actor漂移，未收敛。
+- 固定87旧终端all5 masked SSE：I−83.45%、A+9.70%、V+146.79%；所有退化保留，全state/RNG不变。全90训练对照及四实际图通过；首解释脚本路径类型失败/v2修复原件保留。完整90三份冻结check-only通过，有限全90实际派发及90.02s启动观察通过；最终raw/88→90配对/内存证明待。
+- 原90/archive/终端等待正常结束勿重启，无91/Direct34；GPU315样本min[77, 67, 67, 65]%、低于50[0, 0, 0, 0]，科研结束仍保载。SSD144成员/SHAd26d47a2核验、HDD仅254字节指针，非HDD/arm1全备份。maind8f15b89/baselinef6e8f8c2已query/fetch/read，正常发布见收据；Goal active，无子agent。
+
 ## 2026-10-30 — 冻结88全部90评测与raw/配对审计完成
 
 - [交接](RL_FROZEN88_COMPLETE_20261030.md)。原三路各30、123750动作/99000000子步，final full learner/replay不变、0updates；原evaluator/collector/postprocessor正常结束勿重启。Task/Strict分别[(18, 17), (16, 15), (17, 17)]，全90 raw/reward/力矩/接触分母与82→88配对/保存算术通过，实际图已查看，全部失败保留，非泛化/收敛。

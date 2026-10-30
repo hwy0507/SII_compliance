@@ -1,0 +1,44 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_frozen_dispatch_20261030_v1/review_frozen88.py
++++ review_frozen90.py
+@@ -1,4 +1,4 @@
+-"""Collect the registered ninety frozen88 episodes without extending their budget."""
++"""Collect the registered ninety frozen90 episodes without extending their budget."""
+ from pathlib import Path
+ import argparse
+ import hashlib
+@@ -27,7 +27,7 @@
+     assert sha(__file__) == waiting['source_sha256']
+     assert sha(root/'PLAN.json') == waiting['plan_sha256']
+     assert plan['episodes'] == 90 and plan['maximum_substeps'] == 99000000
+-    assert plan['action_seed'] == 2026102638 and plan['parent_cycle'] == 88
++    assert plan['action_seed'] == 2026102638 and plan['parent_cycle'] == 90
+     assert len(plan['case_ids']) == len(set(plan['case_ids'])) == 30
+     deadline = time.monotonic()+21600
+     while True:
+@@ -105,7 +105,7 @@
+             checkpoint_sha256=reg['checkpoint_sha256'])
+         xs = np.arange(30)
+         axes[index, 0].scatter(xs, rewards)
+-        axes[index, 0].set(title=method+' frozen88 reward', ylabel='Episode return')
++        axes[index, 0].set(title=method+' frozen90 reward', ylabel='Episode return')
+         axes[index, 1].scatter(xs, peaks)
+         axes[index, 1].axhline(.2, color='red', linestyle='--', label='Original0.2mm limit')
+         axes[index, 1].set(title=method+' external penetration', ylabel='mm')
+@@ -117,7 +117,7 @@
+         for name in ['REGISTRATION.json', 'CHECK_ONLY_REVIEW.json', 'STARTUP_REVIEW.json', 'EVALUATION.json', 'RESULTS.json', 'FINISHED.json']:
+             path = directory/name
+             inputs[str(path)] = sha(path)
+-    fig.suptitle('Frozen88: all30 training conditions, one action seed per method')
++    fig.suptitle('Frozen90: all30 training conditions, one action seed per method')
+     plot = root/'frozen_full30_results.png'
+     fig.savefig(plot, dpi=140)
+     plt.close(fig)
+@@ -125,7 +125,7 @@
+         total_episodes=90, total_actions=sum(r['actions'] for m in results.values() for r in m['episodes']),
+         total_substeps=sum(r['substeps'] for m in results.values() for r in m['episodes']),
+         new_physics=0, new_optimizer_updates=0, neural_forward_passes=0, convergence_claim=False,
+-        limitation='Complete88 was prospectively chosen while its training was incomplete, before its complete checkpoint and full reviews; all30 original training conditions and one external action seed per method were fixed in advance. Frozen full30 coverage does not by itself establish training convergence, generalization, independent training-seed robustness, or final SPT/ESN comparison. No condition exclusion, weight promotion, seed addition, or automatic extension.')
++        limitation='Complete90 was prospectively chosen while its training was incomplete, before its complete checkpoint and full reviews; all30 original training conditions and one external action seed per method were fixed in advance. Frozen full30 coverage does not by itself establish training convergence, generalization, independent training-seed robustness, or final SPT/ESN comparison. No condition exclusion, weight promotion, seed addition, or automatic extension.')
+     (root/'REVIEW.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
+ 
+ 

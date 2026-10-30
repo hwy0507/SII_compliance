@@ -1,0 +1,14 @@
+--- interpret90.py
++++ interpret90_v2.py
+@@ -11,9 +11,9 @@
+ def ref(p):return dict(path=str(p),sha256=sha(p))
+ def put(p,x):
+     with p.open('x') as f:json.dump(x,f,indent=2,allow_nan=False);f.write('\n')
+-plan=read(D/'COMPARISON_PLAN.json');assert sha(Path(__file__))==plan['source_sha256']
++plan=read(D/'COMPARISON_PLAN_V2.json');assert sha(Path(__file__))==plan['source_sha256']
+ assert read(O/'FINISHED.json')['completed']
+-for p,h in plan['prior_inputs'].items():assert sha(p)==h
++for p,h in plan['prior_inputs'].items():assert sha(Path(p))==h
+ old,new=read(P/'REVIEW.json'),read(O/'REVIEW.json')
+ a,b=read(P/'health/DIAGNOSIS.json'),read(O/'health/DIAGNOSIS.json')
+ loss=read(O/'loss/REVIEW.json');assert old['passed'] and new['passed'] and loss['passed']

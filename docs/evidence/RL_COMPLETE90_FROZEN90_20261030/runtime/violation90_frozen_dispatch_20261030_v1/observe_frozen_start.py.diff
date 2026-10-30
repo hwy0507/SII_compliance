@@ -1,0 +1,19 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_frozen_dispatch_20261030_v1/observe_frozen_start.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_frozen_dispatch_20261030_v1/observe_frozen_start.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import json,os,time,hashlib
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter88_history_frozen_full30_20261030_v1';P=B/'runtime/history88_frozen_postprocess_20261030_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter90_violation_frozen_full30_20261030_v1';P=B/'runtime/violation90_frozen_postprocess_20261030_v1'
+ os.sched_setaffinity(0,{10});read=lambda p:json.loads(p.read_text())
+ def put(p,x):
+  with p.open('x') as f:json.dump(x,f,indent=2);f.write('\n')
+@@ -17,7 +17,7 @@
+ for i in range(10):
+  methods={}
+  for j in jobs:
+-  live(j);m=j['controller'];folder=R/m;assert not (folder/'FAILURE.json').exists();startup=read(folder/'STARTUP_REVIEW.json');assert startup['passed'] and startup['validated_parent_cycle']==88
++  live(j);m=j['controller'];folder=R/m;assert not (folder/'FAILURE.json').exists();startup=read(folder/'STARTUP_REVIEW.json');assert startup['passed'] and startup['validated_parent_cycle']==90
+   reg=read(folder/'REGISTRATION.json');assert startup['checkpoint_sha256']==reg['checkpoint_sha256']
+   current=read(folder/'CURRENT_PHYSICS.json');pid=current['pid'];fields=Path(f'/proc/{pid}/stat').read_text().rsplit(')',1)[1].split();assert fields[0]!='Z' and os.sched_getaffinity(pid)=={reg['cpu']}
+   methods[m]=dict(current_physics=current,physics_start_ticks=fields[19],progress=read(folder/'PROGRESS.json') if (folder/'PROGRESS.json').exists() else None)
