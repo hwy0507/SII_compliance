@@ -1,3 +1,18 @@
+## 2026-10-31 — MLP384宿主live与棍推全九条核验；独立wide复核入口
+
+- 获批v7 75/75与容量36/36既有收据继续复用，不重复训练。原fixed27 v4宿主协调2517772及子worker live，scope CPU6/单线程/MemoryMax3221225472/swap0、OOM/kill0；哈希绑定前缀已完成13/27、Task13/13、Strict10/13。不是全矩阵结果。
+- rod00九条齐全：ESN/RNN各3/3双成功；MLP384 Task3/3、Strict0/3，峰穿透0.251768/0.243292/0.222516mm超过冻结0.20mm。拟合MSE改善未改善该训练身份安全；不删失败、不重选模型，final108未读/派发。详见docs/CONTACT_YIELD_MLP384_FIXED27_PROGRESS_20261031.md及绑定前缀JSON。
+- 修复旧loader拒绝v2契约的版本化worker/独立审计代码予以发布；新增独立full27 reviewer使末尾重放同样使用wide loader，不改运行中冻结source。只读prefix replay另留证据，完整27与最终比较仍待。
+- 已实际fetch/read main9207ff42、baselinef6e8f8c两分支日志；服务器归档SSH被自动审批拒绝，已请求具体授权，本轮仅本地、待同步。Goal active，未创建子agent。
+
+## 2026-10-31 — MLP384 fixed27 v4 接续运行中
+
+- 复用用户批准的40条/21,500帧v7公平重训收据（dataset SHA256 `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`；75/75 fits、九模型锁定、FIT_AUDIT passed），不重复相同75候选。固定27旧结果仍Task27/27、Strict25/27；旧MLP为7/9，final108继续封存。
+- MLP容量诊断36/36 complete，36个候选均32,000 updates，FIT_AUDIT passed；三个seed均选宽度384，validation MSE相对旧宽128下降`15.04% / 12.23% / 17.45%`。所选checkpoint SHA256：`de81b4d10a7e04b027edb1b0c3784a3be2224029c2b505a5f05ef43e9bd59945`、`2fe1f5c4d70c21b9483490a249ca442ada8a23c90837dee7e9df10bc0cce31f8`、`0e570f76faf996dcee72ac7a7fdcad290bd2c88cc43d3ea4198e744cc2852bf4`。拟合改善尚不能代表物理闭环改善。
+- fixed27 v1/v2因原部署loader不支持`proprio48_office_mlp_rnn_v2`而在宽MLP物理步前退出；v2额外确认subprocess不会继承monkey-patch。v3同进程worker成功产生一条宽MLP 20秒、400,000子步轨迹，actor/filter raw replay为零误差，但独立audit子进程仍走旧loader而停止，三个attempt和失败日志全部保留。v3物理原始行峰穿透`0.251768mm`，已超冻结0.20mm门槛；yield、持杆越过、回位时序通过，但Task true、Strict false、machine false，且v3资格审计不完整。
+- v4修复了仿真与独立action/filter replay的wide-loader路径。先对临时副本完成独立actor/filter replay预检（均零误差），之后注册新的27条train00、九模型固定组合，物理/MJB/gate/canonical48/filter/执行器限制/dt不变。v4在CPU6 affinity、单线程、MemoryMax3GiB、swap0下串行运行；当前4/27、seed02 RNN在途，MemoryCurrent约0.87GiB、OOM=0。v4首个MLP独立审核复核同样确认Task true、Strict/machine false及0.251768mm穿透失败；所有结果保留，其余回合按队列继续执行。
+- 证据与修复代码位于`code/mujoco_6d_vmc_benchmark/outputs/contact_yield_mlp_capacity_20261031_v1/`、`outputs/contact_yield_mlp384_fixed27_20261031_v1/`至`v4/`及新增版本化loader/coordinator。v4尚未完成；不进行test/final108访问，也不把早期或partial结果视作整组成功。开工实时GitHub `main=d8ef159fa84acbde264c1460453fa50153dc0b76`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；fetch失败，本地tracking cache main=`c5f5f9d7`。容量诊断提交`73a1f500`已本地commit，push因网络失败；本轮新代码和进度待commit/push。Goal active。
+
 ## 2026-10-31 — MLP容量诊断完成；新宽度模型尚未闭环验证
 
 - 用户批准的v7公平重训与已存在run逐项对应：统一40条/21,500帧数据（SHA256 `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`）、ESN/RNN/MLP各seed候选搜索、75/75完成、9个模型锁定，FIT_AUDIT通过。因此复用原始训练与审计收据，不重复消耗算力。该既有run的fixed27结果为Task 27/27、Strict 25/27；MLP 7/9，final108仍封存。
