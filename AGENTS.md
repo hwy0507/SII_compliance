@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 完整85全历史回放重建；86继续与87入口准备
+
+- [交接](docs/RL_RECOVERY85_HISTORY86_PROGRESS87_READY_20261030.md)。每路80祖先/81日志，全10,577,448保留transition逐位对齐；因果穿透sidecar/独立保存复核/全部90原84数组/实际四栏图通过。3117尾行与部分cohort保留，0physics/forward/update，不是独立物理重建或科学修订。
+- 87科学trainer同86、19+8负例/真实未完整86拒绝；restore-only267147、实际恢复=False。完整86/固定2514/all5三checkpoint/实际图强制入口与4拒绝通过，标签/终端2574→2604仅准备，无87决定/训练。原86steps{'impedance': 3558941, 'admittance': 3561104, 'vmc': 3561241}，11样本/29身份保持；冻结82/原85—87继续，Goal active。
+- GPU493样本min[76, 66, 66, 65]%、低于50[0, 0, 0, 0]，科学结束仍补载；SSD128成员/SHA1087dbae核验，非HDD/arm1全备份。main2679effb/baselinef6e8f8c已实际fetch/read，发布见收据，无子agent。
+
 ## 2026-10-30 — 完整85与固定2514已审；有限86实际续训
 
 - [交接](docs/RL_RECOVERY85_COMPLETE86_RUNNING_20261030.md)。85各30×55/41250/noabort、全replay/reward0误差/loss/health/185标签/两终端/五实际图通过；reward−.590930/−8.629324/−4.586652，Task/Strict18/18、15/14、17/16。A/V末段loss上升，VMC short0600恢复但short0000新Strict失败，未收敛。
