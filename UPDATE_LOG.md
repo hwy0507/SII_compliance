@@ -2,7 +2,7 @@
 
 - 新增只读诊断 `code/mujoco_6d_vmc_benchmark/experiments/diagnose_contact_yield_mlp_rod_support_v7_20261030.py` 与哈希绑定结果 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_MLP_ROD_SUPPORT_DIAGNOSIS_V7_20261030.json`。源数据绑定v7 dataset `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`、75候选FIT_AUDIT、9模型锁和完成的fixed27 review；对9条rod00开发轨迹使用相同18字段/训练集尺度/绝对值扩展对照训练支持域。
 - fixed27为Task 27/27、Strict 25/27，ESN/RNN各9/9，MLP 7/9。两个失败MLP为seed02/03，最大外部穿透0.2157/0.2456mm；冻结限值0.20mm未变。validation最近帧距离p95=0.18783。所有方法在杆接触附近都有短时支持域偏离；但失败MLP在5–8s全帧超过p95，8–12.76s仍分别44.5%/91.6%超阈值。成功ESN/RNN及MLP seed01在后段大多回到支持域内。证据支持“接触后的状态分布漂移可能参与失败”，不证明单一因果；最近训练教师标签不是同状态teacher动作。诊断零物理步、零拟合/更新/回放、零重选模、未读unseen108。
-- 检查 `py_compile` 和分析器实际运行通过；9轨迹与审计指标一致、注册与数据哈希自检通过。开工fetch/read远端`main=f47cd2386691ef6bb7e33f46e4359658ea6f2180`与`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支UPDATE_LOG；main含另一持续RL工作的18个本地缺失提交，baseline无本轮相关变化。final108继续封存。收工时本轮提交/推送状态待核；训练raw与checkpoint仍本地，不声称已共享。原有无关会议素材与MuJoCo日志保留、不提交。
+- 检查 `py_compile` 和分析器实际运行通过；9轨迹与审计指标一致、注册与数据哈希自检通过。开工fetch/read远端`main=f47cd2386691ef6bb7e33f46e4359658ea6f2180`与`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支UPDATE_LOG；main含另一持续RL工作的18个本地缺失提交，baseline无本轮相关变化。最终108继续封存。科学提交`820ea3e8`经普通合并提交`6e5923cd`整合至最新main，`git push origin main`成功；随后`ls-remote`核实main指向`6e5923cd0f462b57a994e41704d038d37c734e19`，baseline仍为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。训练raw与checkpoint仍本地，未声称已共享。原有无关会议素材与MuJoCo日志保留、不提交。
 
 ## 2026-10-30 19:37 CST — v6 MLP棍推四条VMC接管探针完成
 
