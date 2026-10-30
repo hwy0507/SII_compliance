@@ -55,4 +55,4 @@ v3使用显式`.venv-sii-local-rl/bin/python`（MuJoCo 3.11.0）和`taskset -c 6
 
 v1–v4的完整原始回合、失败收据、对应wrapper、诊断报告及三份分析证据已归档到服务器目录：
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_v7_handoff_diagnosis_20261030_v1/`。
-归档含226个文件、1,018,511,873字节；从incoming暂存区发布前，使用rsync checksum dry-run逐文件核验无差异。原始本机文件保留。首次GitHub fetch因TLS中断失败，改用HTTP/1.1后成功获取远端main `271ce4e4d4b58d4375f723a703e0af002e31739d`与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；main另含history88 RL进度。v7本地提交尚未完成合并和push。
+归档含226个文件、1,018,511,873字节；从incoming暂存区发布前，使用rsync checksum dry-run逐文件核验无差异。原始本机文件保留。首次GitHub fetch因TLS中断失败，改用HTTP/1.1后获取远端main `271ce4e4d4b58d4375f723a703e0af002e31739d`与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；main的history88 RL进度已保留。v7结果与最新main通过普通merge提交`3218397a43c2a8817481469e1ad1ae5976b9935b`推送成功，并经`ls-remote`核验。对应源码提交及本诊断报告另有`source/<commit SHA>/`快照。

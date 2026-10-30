@@ -3,7 +3,7 @@
 - 承接用户已批准的75候选公平重训：40条/21,500帧、75/75候选、九个冻结模型和九路actor replay通过FIT_AUDIT；fixed27仍为Task 27/27、Strict 25/27，ESN/RNN各9/9，MLP 7/9。没有重跑已完成的训练，也没有将任务成功等同安全成功。
 - v7 handoff v1–v4原始收据、失败轨迹、对应wrapper、诊断报告和三份证据JSON共226个文件/1,018,511,873字节，已归档到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_v7_handoff_diagnosis_20261030_v1/`。从服务器incoming到正式目录前，`rsync -aRnc --checksum`逐文件校验无差异；目录此前不存在，未覆盖旧run。大回合数据仍保留本机副本。
 - v3/v4八条teacher接管均完成Task，但八条最大穿透均超过冻结0.20 mm门槛（0.21565–0.25499 mm），Strict/安全资格失败；失败后缀不纳入训练。更早接管仍失败，故当前问题不能通过只提前切换teacher解决。详见`docs/CONTACT_YIELD_V7_HANDOFF_DIAGNOSIS_20261030.md`。物理/MJB、gate、canonical48、公共filter、执行器限制和dt均未改；unseen108未访问。
-- 本地验证：四个wrapper `py_compile`通过，3份JSON解析及`git diff --check`通过。GitHub实时main最终为`271ce4e4d4b58d4375f723a703e0af002e31739d`、baseline为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；初次TLS fetch失败后改用HTTP/1.1获取成功。远端main新增history88独立RL进度，已读并将安全合并；当前还未push。服务器SSH归档已核验。
+- 本地验证：四个wrapper `py_compile`通过，3份JSON解析及`git diff --check`通过。GitHub实时main `271ce4e4d4b58d4375f723a703e0af002e31739d`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`均已核对；main新增history88独立RL进度，已保留并通过普通merge整合。`git push origin main`成功，之后`ls-remote`核验main=`3218397a43c2a8817481469e1ad1ae5976b9935b`、baseline未变。服务器SSH归档已核验。
 
 ## 2026-10-30 — v7四条MLP棍推teacher接管审计完成；教师安全恢复仍失败
 
