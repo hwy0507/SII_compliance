@@ -33,3 +33,11 @@ v1/v2在首个宽MLP物理步前被旧loader拒绝；v3完成首个宽MLP物理�
 证据：`docs/evidence/CONTACT_YIELD_MLP384_FIXED27_PREFIX_20261031.json`，包含完整执行前缀、指标/资格/审计、hash与宿主资源读数。最初生成证据的shell字符串转义错误在运行前SyntaxError，修正后才生成该文件，0训练/物理步。
 
 前缀wide-loader实际重放已通过14条完成轨迹，actor/filter最大误差均0；独立证据为docs/evidence/CONTACT_YIELD_MLP384_PREFIX_REPLAY_20261031.json。该14条是稍后时刻快照，与13条资源/指标前缀分别绑定，不混作同一观察时刻。
+
+## 完整fixed27结果（独立wide-loader复核）
+
+2026-10-31完成27条train00开发回合的独立资格与重放复核：Task 27/27，Strict 24/27，失败仅为rod00 MLP384三个seed；actor/filter最大误差均0。ESN、RNN均9/9双成功；MLP384为6/9双成功，其中rod00为0/3、ball00和corner00各3/3。完整证据在对应run的`REVIEW_WIDE.json`，源码入口为`experiments/review_contact_yield_mlp384_fixed27_20261031.py`。
+
+按每个condition先对三seed取均值，双成功回合完成时间的描述性均值：ESN rod/ball/corner = 9.000/12.493/12.187s，RNN = 10.400/15.520/12.280s，MLP384 = N/A/11.080/12.280s。全矩阵开发回合最短双成功时间为8.800s；该数字只属当前27条开发身份，不能代替最终108的冻结共同`T_ref`。全回合峰值力矩均值（Nm）：ESN 44.470、RNN 44.859、MLP384 44.046。人体舒适度字段27/27均为null（场景只有接触代理），不能从代理接触比例推导人体舒适度。机器合规率由review记录为ESN 9/9、RNN 9/9、MLP384 6/9。
+
+因此MLP384改善的ball/corner开发回合不能抵消棍推三次穿透Strict失败；ESN/RNN在这27条上双成功全通过。以上是开发集描述统计，未计算或宣称正式最终SPT，也未访问冻结final108。原v7及历史主矩阵结果仍作为历史结果保留。

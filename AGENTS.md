@@ -2,7 +2,7 @@
 
 ## 2026-10-31 — MLP384当前接续（覆盖下方早期快照）
 
-原fixed27 v4 scope与PID2517772于02:55 CST宿主live核验，完成前缀22/27、Task22/22、Strict19/22；rod00 ESN/RNN各3/3，MLP384三个seed均穿透Strict失败（0.251768/0.243292/0.222516mm）。CPU6单线程、MemoryMax3GiB、swap0，OOM/kill0；原作业继续，不重复训练/物理派发。22条完成行的独立actor/filter replay最大误差均0。全27结束后用独立review_contact_yield_mlp384_fixed27_20261031.py运行wide-loader完整复核；旧v4 review直接入口仍调用legacy replay，不用它重试。详见docs/CONTACT_YIELD_MLP384_FIXED27_PROGRESS_20261031.md。final108未派发；完整矩阵未完成，不能宣称安全修复。
+原fixed27 v4已完成并独立wide-loader复核：27/27，Task27/27、Strict24/27；唯一失败为rod00 MLP384三个seed。27条actor/filter replay均精确重现（最大误差0），原资源scope正常结束；不重启此开发矩阵。ESN/RNN在该开发集各9/9双成功，MLP384为6/9；人体舒适度无实测，不能从接触代理推断。完整开发统计见docs/CONTACT_YIELD_MLP384_FIXED27_PROGRESS_20261031.md和run内REVIEW_WIDE.json。下一步仍需完成冻结final108评测及正式SPT/峰值力矩/舒适度/机器合规汇总，final108目前未派发。
 
 ## 2026-10-31 — MLP容量诊断完成；新模型闭环待验证
 

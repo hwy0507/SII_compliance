@@ -11919,3 +11919,11 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 - 单独CPU5对22条完整轨迹执行versioned wide-loader actor/filter replay，22/22通过，两个最大绝对误差均0。绑定快照证据`docs/evidence/CONTACT_YIELD_MLP384_LIVE_PREFIX_V2_20261031.json`，重放证据`docs/evidence/CONTACT_YIELD_MLP384_PREFIX_REPLAY_V3_20261031.json`。前次22行落盘后，campaign继续至当前快照；不把两份观察的完成数混同。
 - rod00三方法结果不变：ESN/RNN各3/3 Strict，MLP384为0/3，三seed峰穿透0.251768/0.243292/0.222516mm，超过冻结0.20mm。全部失败保留，不重选，不派发final108；完成full27后执行wide-loader独立复核，最终冻结测试结果仍待。
 - 同步：远端main 511fbd5f已由上轮推送核验，baseline f6e8f8c未变；当前无关未跟踪MUJOCO_LOG.TXT和会议提示文件保留，不纳入提交。Goal active。
+## 2026-10-31 — MLP384 fixed27完整开发闭环独立复核完成
+
+- 原协调器自然到27/27安全边界并写为`complete_development_diagnosis_pending_review`后退出；未重启或增加物理步。CPU6/单线程/3GiB/no-swap原scope在复核前已inactive。
+- 新wide-loader独立审查完成27条：Task27/27、Strict24/27、27条actor/filter replay均误差0。失败为rod00 MLP384三个seed，峰穿透0.251768/0.243292/0.222516mm；ESN/RNN在27条各9/9双成功，MLP384 6/9。所有失败原样保留。独立review收据在`code/mujoco_6d_vmc_benchmark/outputs/contact_yield_mlp384_fixed27_20261031_v4/REVIEW_WIDE.json`。
+- 双成功开发回合时间按condition/方法均值（仅描述性）：ESN rod/ball/corner 9.000/12.493/12.187s；RNN 10.400/15.520/12.280s；MLP384 rod无双成功、ball/corner 11.080/12.280s。开发27中最短双成功为8.800s，非final108共同T_ref。全回合峰值力矩均值44.470/44.859/44.046Nm；人体舒适度27条全为null，不推断人体舒适。机器合规9/9、9/9、6/9。详细限制见`docs/CONTACT_YIELD_MLP384_FIXED27_PROGRESS_20261031.md`。
+- 只读复核代码`experiments/review_contact_yield_mlp384_fixed27_20261031.py`解决final replay仍走legacy loader的问题。既有v7训练75/75收据继续复用，未重训；冻结final108未读/派发，正式指标与测试比较仍未完成。
+- 本轮在先前提交`da37535f`之后新增完整结果与方法/限制记录；当前远端main head `da37535f`、baseline `f6e8f8c`。其它RL会话于开工时已通过fetch读取并保留。Goal active。
+
