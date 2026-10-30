@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整84/原82—84已审；有限85运行
+
+- [交接](RL_RECOVERY84_COMPLETE85_RUNNING_20261030.md)。84各30×55/41250/noabort、完整replay/reward/loss/health/标签/两终端/四图通过；reward−.597524/−8.556481/−4.629474、Task/Strict18/18、14/14、17/16。原82—84/标量bootstrap及固定2454全部5critic已核；未收敛，历史失败保留。
+- 明确有限85决定/准确恢复/actual startup/120.0秒观察通过，steps{'impedance': 3486943, 'admittance': 3489172, 'vmc': 3490365}；全后续部署。新85—87在85启动前登记、原算法和新seed2858、统计等待不授权86/87。冻结82完整90仍在途，无Direct34，Goal active。
+- GPU539样本min[65, 60, 64, 60]%、低于50[0, 0, 0, 0]，科学结束仍合成保载；SSD590成员/SHAa8882b3e逐字核验，非HDD/arm1全备份。main30d2010b/baselinef6e8f8c已fetch/read，发布见SSD收据，无子agent。
+
 ## 2026-10-30 — 84前5000与83旧终端逐critic诊断
 
 - [交接](RL_RECOVERY84_PREFIX_CRITIC83_20261030.md)。84前5000原字节/连续step/独立算术/实际图通过，critic I2.949788→2.876221、A1.435059→1.349944、V1.098345→.901984，仅前缀非收敛；84steps{'impedance': 3462787, 'admittance': 3465037, 'vmc': 3466500}。

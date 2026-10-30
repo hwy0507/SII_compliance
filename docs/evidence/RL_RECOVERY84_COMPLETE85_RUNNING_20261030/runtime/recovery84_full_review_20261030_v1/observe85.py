@@ -1,0 +1,44 @@
+from pathlib import Path
+import json,time,os,hashlib
+os.sched_setaffinity(0,{54});D=Path(__file__).parent;B=D.parents[1];R=B/'runs/parameter_partial75_recovery_cycle85_20261029_v1'
+def read(p):return json.loads(Path(p).read_text())
+def put(p,x):
+ with p.open('x') as f:json.dump(x,f,indent=2);f.write('\n')
+def advance(v):
+ if isinstance(v,str):return v.replace('cycle84_','cycle85_').replace('recovery84_','recovery85_').replace('COMPLETE83_84','COMPLETE84_85')
+ if isinstance(v,list):return [advance(x) for x in v]
+ if isinstance(v,dict):return {k:advance(x) for k,x in v.items()}
+ return v
+old=read(B/'runtime/recovery84_completion_watch_20261030_v1/PLAN.json');jobs={j['controller']:j for j in read(R/'LAUNCH.json')['jobs']};paths={'archive84':R/'MONITOR_LAUNCH.json','loss84':B/'runs/parameter_recovery85_loss_20261029_v1/LAUNCH.json','labels84':B/'runs/parameter_recovery85_task_labels_20261029_v1/LAUNCH.json','vmc_terminal84':B/'runs/vmc_recovery85_terminal_followup_20261029_v1/LAUNCH.json','admittance_terminal84':B/'runs/admittance_recovery85_terminal_followup_20261029_v1/LAUNCH.json'}
+identities=[]
+for item in old['identities']:
+ name=item['name']
+ if name in jobs or name in paths:
+  j=jobs[name] if name in jobs else read(paths[name]);item=advance(item);item.update(name=name.replace('84','85'),pid=j['pid'],proc_start_ticks=j['proc_start_ticks'])
+ identities.append(item)
+for name,folder,receipts in [('window85_87',B/'runs/parameter_recovery85_87_reward_stability_20261030_v1',[('REVIEW.json','passed'),('SAVED_ARITHMETIC_REVIEW.json','passed')]),('bootstrap85_87',B/'runs/recovery85_87_bootstrap_scalar_review_20261030_v1',[('FINISHED.json','passed')])]:
+ j=read(folder/'LAUNCH.json');identities.append(dict(name=name,pid=j['pid'],proc_start_ticks=j['proc_start_ticks'],terminal_requirements=[dict(path=str(folder/n),key=k,value=True) for n,k in receipts],failure_paths=[str(folder/'FAILURE.json'),str(folder/'WAIT_FAILURE.json')]))
+def state(j):
+ for p in j['failure_paths']:assert not Path(p).exists(),p
+ p=Path(f'/proc/{j["pid"]}/stat')
+ if p.exists():
+  s=p.read_text().rsplit(')',1)[1].split()
+  if s[19]==j['proc_start_ticks'] and s[0]!='Z':return 'live'
+ assert j['terminal_requirements'],j['name']
+ for r in j['terminal_requirements']:assert read(r['path'])[r['key']]==r['value']
+ return 'verified_terminal'
+put(D/'OBSERVATION_PLAN.json',dict(time=time.time(),samples=7,interval_seconds=20,identities=identities,retained_original_completed_windows=True,automatic_training=False))
+start=time.monotonic();rows=[]
+try:
+ with (D/'OBSERVATIONS.jsonl').open('x') as f:
+  for n in range(7):
+   if n:time.sleep(max(0,start+20*n-time.monotonic()))
+   states={j['name']:state(j) for j in identities};progress={m:read(R/m/'train/PROGRESS.json') for m in jobs}
+   for m in progress:
+    assert states[m]=='live'
+    if rows:assert progress[m]['steps']>=rows[-1]['progress'][m]['steps']
+   g=json.loads(Path('/tmp/sii_gpu_util_guard_20261030_v7/samples.jsonl').read_text().splitlines()[-1]);assert time.time()-g['time']<20
+   row=dict(time=time.time(),elapsed=time.monotonic()-start,states=states,progress=progress,gpu=g);rows.append(row);f.write(json.dumps(row)+'\n');f.flush()
+ saved=[json.loads(l) for l in (D/'OBSERVATIONS.jsonl').read_text().splitlines()];assert saved==rows and len(saved)==7
+ put(D/'OBSERVATION_FINISHED.json',dict(passed=True,time=time.time(),samples=7,elapsed=rows[-1]['elapsed'],all_original_live_or_verified_terminal=True,all_saved_rows_read_back=True,new_physics=0,optimizer_updates=0));print(json.dumps(dict(passed=True,steps={m:r['steps'] for m,r in rows[-1]['progress'].items()})))
+except BaseException as e:put(D/'OBSERVATION_FAILURE.json',dict(time=time.time(),error=repr(e)));raise
