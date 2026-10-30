@@ -21,7 +21,7 @@
 ## 2026-10-30 — 75候选重训与独立拟合审计完成；固定27闭环诊断已启动
 
 - 本轮本地核对v3协调器在13:15 CST记录75/75 fit complete、无failed fit；`FIT_AUDIT.json`为passed（75条候选、9个锁定actor各18500观测精确replay、最大误差0），`MODEL_LOCK.json`冻结9个ESN/RNN/MLP模型。锁定规则仅用每场景两条共六个登记validation身份；32k neural updates是有限预算，不构成收敛声明。
-- 固定27开发诊断当前3/27完成，均为同一完整棍推`rod_00`、seed01。ESN与RNN Task/Strict/machine均通过，分别在9.16s/8.84s确认终态、峰值力矩35.03/34.92Nm；独立rod审计显示二者在回撤开始12.80s前已于7.52s/7.20s越杆并持续回位。MLP seed01 Task成功、Strict失败，完成16.36s、峰值力矩38.48Nm、machine仍通过；rod审计明确`crossed_rod_while_held=false`且`persistent_rejoin_before_withdrawal=false`，其首次终态晚于回撤开始。此证据定位为该MLP策略未学会及时蹭过，不是场景没有触发或teacher标签无效；其余24回合未完成。当前ESN seed02棍推20s回合在途、已10s；handoff cgroup约1.19GiB/3GiB、swap=0、OOM/OOM-kill=0。没有跑最终unseen108评测。
+- 固定27开发诊断当前4/27完成，均为完整棍推`rod_00`。ESN seed01/02均Task/Strict/machine通过，终态9.16s/8.88s、峰值力矩35.03/34.98Nm；独立rod审计显示seed01在回撤开始12.80s前于7.52s越杆并持续回位。RNN seed01也通过（8.84s，34.92Nm；7.20s越杆回位）。MLP seed01 Task成功、Strict失败，完成16.36s、峰值力矩38.48Nm、machine通过；rod审计明确`crossed_rod_while_held=false`且`persistent_rejoin_before_withdrawal=false`，终态晚于回撤开始。场景事件与门槛正常触发；当前证据指向MLP这一锁定模型未学会及时蹭过，但要区分模型记忆/表征、训练覆盖及选模影响，仍需剩余seed/场景对照，teacher标签是否充分也尚未独立判定。其余23回合未完成。当前RNN seed02棍推20s回合在途、已9s；handoff cgroup约1.30GiB/3GiB、swap=0、OOM/OOM-kill=0。没有跑最终unseen108评测。
 - 远端恢复81更新 `186f77aa` 已普通合并；本次将推送本地最新记录并核验。baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 未变。systemd bus不可用，但fit/handoff状态、execution和cgroup收据可直接读取。
 ## 2026-10-30 — 四条接管探针通过；较早训练快照为29/75
 
