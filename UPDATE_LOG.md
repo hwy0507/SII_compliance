@@ -22,6 +22,13 @@
 - 第二项只读分析对两条已参与选模的杆validation轨迹按canonical48估计wrench范数每episode的上20%分层。rod09高wrench 100/500帧的MLP seed01/02/03 action MSE为0.000738/0.000701/0.000805，ESN为0.0000495–0.0000591、RNN为0.0001195–0.0001898；rod08上MLP高负载误差较低（0.0000663–0.0000798）。证据`CONTACT_YIELD_V7_ROD_VALIDATION_FORCE_BINS_20261030_V2.json`，源码`code/mujoco_6d_vmc_benchmark/experiments/diagnose_contact_yield_v7_rod_validation_force_bins_20261030.py`。两条validation参与过模型选择，wrench只是接触负载代理，故结果是事后描述，不是独立泛化/因果证据，也未据此重选模型。
 - 当前证据不支持推理/公共filter错位bug；杆推MLP高负载状态覆盖/拟合值得继续查，尚未证明唯一根因。未派发新物理probe，final108继续封存。本轮成功fetch并读取GitHub：main `80de539b27bc629b1aa0a73869dd3bed55d97843`，baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；main含两条RL状态提交，已检查其日志且本轮不改RL文件。工作区将安全快进整合main后再提交。旧main缓存`49fb9ae13b5dafc3e2c24e459f05079dffba3f58`不是最新。无关untracked文件保留。
 
+## 2026-10-30 — v7 MLP 穿透首发子步复核；下一步探针待合规宿主
+
+- 对v7 fixed27两条MLP棍推失败的原始400,000行`substeps.npz`直接复核冻结0.20 mm门：seed2026102802在子步95609、4.78050 s首次超过门槛，峰值0.215665 mm；seed2026102803在子步93979、4.69900 s首次超过，峰值0.245621 mm。各自之前的最大穿透为0.199708/0.199810 mm。结果与已有27条review/汇总一致，失败证据保留。
+- 4.48 s和4.60 s都早于两条首次违规时刻；但seed03的4.60 s接管只领先99 ms，需在结果中明确这是窄裕量探针，不能假定teacher一定来得及消除已经形成的接触速度。拟用当前v7锁定MLP seed02/03，四条完整20 s student-prefix→冻结VMC teacher回合，严格复用现有物理/MJB、canonical48、公共filter、执行器限制、dt及Task/Strict门；只有实际执行且独立通过资格审计的teacher suffix可进入下一轮共同数据，任何失败均保留。
+- 本轮运行容器cgroup为`app-org.chromium.Chromium-1534058.scope`，不暴露memory.max/swap.max，CPU亲和为0–23；systemd用户D-Bus调用被策略拒绝。容器当前不满足/无法核验项目登记要求CPU6单核、MemoryMax 3 GiB、swap 0，故未派发物理仿真。`git ls-remote`因GitHub网络不可达失败；仅知本地HEAD/cache `a62ddb87bcfeb2dc42766f652e8815e5c770eba1`与baseline缓存`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不声称远端最新。
+- v7训练75候选/九模型锁及fixed27已完成；Task 27/27、Strict 25/27，MLP两条穿透失败仍未修复。无新训练、无新仿真、无模型重选；final108未读取/未派发。下一步只在可验证单核/3 GiB/no-swap的本地宿主接续上述开发探针，不用当前不合规容器绕过资源限制。
+
 ## 2026-10-30 — v7 MLP棍推失败的状态支持诊断
 
 - 新增只读诊断 `code/mujoco_6d_vmc_benchmark/experiments/diagnose_contact_yield_mlp_rod_support_v7_20261030.py` 与哈希绑定结果 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_MLP_ROD_SUPPORT_DIAGNOSIS_V7_20261030.json`。源数据绑定v7 dataset `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`、75候选FIT_AUDIT、9模型锁和完成的fixed27 review；对9条rod00开发轨迹使用相同18字段/训练集尺度/绝对值扩展对照训练支持域。
