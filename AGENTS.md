@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — History89前5000已审；完整89固定87终端跟踪等待
+
+- [交接](docs/RL_HISTORY89_PREFIX_FOLLOWUP_20261030.md)。三方法固定5000原字节/独立保存算术/实际六栏图通过；critic首末均值I1.850637→1.681222、A1.193333→1.186347、V.777596→.785050，尖峰及I actor上移保留，非完整loss/reward稳定。
+- 同原87全部终端/all5/原masks的87/88/89跟踪已在完整89前登记；已保存87/88算术精确、真实缺89前置拒绝，等待器4055969按原archive截止运行，0新forward/physics/update，实际89结果待。原89与冻结88持续，180.048秒/105身份观察通过，总steps{'impedance': 3660477, 'admittance': 3662709, 'vmc': 3663789}。
+- GPU105采样min[68, 62, 69, 68]%、低于50[0, 0, 0, 0]，科研结束继续守护；共享SSD42成员/SHA6e77ef8d，非HDD/arm1全备份。mainb17dfd17/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，无自动90/Direct34，历史失败保留。
+
 ## 2026-10-30 — 完整88精确恢复；有限history89实际运行
 
 - [交接](docs/RL_HISTORY89_ONLINE_20261030.md)。完整88含Ashort0900及三critic退化证据后单独登记89，同history51/actor49与全部物理、LR、reward契约；84负例、6原生clone更新重复/恢复、精确全state/replay通过。trainer仅两恢复seam变化，未重置已学history权重/Adam，不自动90/Direct34。
