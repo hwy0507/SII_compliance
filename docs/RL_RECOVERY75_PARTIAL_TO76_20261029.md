@@ -1,3 +1,9 @@
+## 2026-10-30 — 违规位 critic 有限90实际训练
+
+- [交接](RL_VIOLATION90_ONLINE_20261030.md)。完整89退化与原88—90 A/V失败均保留；单独登记一个52维违规位在线90，不导入离线权重，保持已学history/Adam/双marker、actor49及原全部科学协议。93负例/6原生clone重复恢复通过；新90—92仅统计预登记，不自动91/92/Direct34。
+- 实际startup全部旧52维前缀/新current-next bit/30MJB/CPU/reward0误差通过；120.041秒/99身份保持，总steps{'impedance': 3693373, 'admittance': 3695763, 'vmc': 3696815}。完整archive/review/health/loss消费者继续，未收敛。首次注册路径错误原件保留。
+- 原冻结88完成数{'impedance': 25, 'admittance': 25, 'vmc': 24}继续，最终全90/raw/paired待。GPU162样本min[78, 68, 66, 68]%、低于50[0, 0, 0, 0]，科研结束仍保载；SSD136成员/SHA477cbcc2核验，非HDD/arm1全备份。mainef822738/baselinef6e8f8c已query/fetch/read，发布见收据；无子agent，Goal active。
+
 ## 2026-10-30 — 完整89违规位训练恢复、原生更新及消费端预检通过
 
 - [交接](RL_HISTORY89_VIOLATION_PIPELINE_20261030.md)。准确89科学元数据逆迁移、52全state/replay落盘、生成训练器原样恢复AST通过；源码仅新增bit保存、准备拒绝和修订floor90。69拒绝，三份真实batch65536共6次clone更新重复/序列化精确、bit梯度和target引用通过，最终全state/RNG恢复；没有执行完整物理训练循环。

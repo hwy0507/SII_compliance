@@ -1,0 +1,101 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_review_20261030_v1/review89.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_review_20261030_v1/review90.py
+@@ -5,7 +5,7 @@
+ import torch
+ torch.set_num_threads(1)
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-OUT=B/'runs/parameter_history_cycle89_review_20261030_v1'
++OUT=B/'runs/parameter_violation_cycle90_review_20261030_v1'
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+ sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle75_20261026_v1'))
+ from parameter_replay_capacity_20261026 import MARKER as CAPACITY_MARKER
+@@ -28,24 +28,24 @@
+     return True
+ methods={}
+ for m in ['impedance', 'admittance', 'vmc']:
+-    run=B/'runs/parameter_history_cycle89_20261030_v1'/m/'train'
+-    cp=B/'runs/parameter_history_cycle89_archive_20261030_v1'/m/'cycle_00089.pt'
++    run=B/'runs/parameter_violation_cycle90_20261030_v1'/m/'train'
++    cp=B/'runs/parameter_violation_cycle90_archive_20261030_v1'/m/'cycle_00090.pt'
+     deadline=time.monotonic()+7200
+     while not cp.exists():
+-        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle89 archive unavailable: '+m)
++        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle90 archive unavailable: '+m)
+         time.sleep(2)
+     x=torch.load(cp,map_location='cpu',weights_only=False)
+     execution=read(run/'EXECUTION.json');parent=Path(execution['resumed_from'])
+     assert sha(parent)==execution['resumed_checkpoint_sha256']
+     stage_parent=parent
+-    # Exact parent is complete history88; incomplete75 remains absent from complete-cycle history.
++    # Exact parent is complete migrated89; incomplete75 remains absent from complete-cycle history.
+     old=torch.load(parent,map_location='cpu',weights_only=False)
+     assert x['replay']['capacity']==4_000_000 and x['replay']['replay_capacity_followup']==FOLLOWUP_MARKER and x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     assert old['replay']['capacity']==4_000_000 and old['replay']['replay_capacity_extension']==CAPACITY_MARKER and old['replay']['replay_capacity_followup']==FOLLOWUP_MARKER
+     assert x['replay']['size']==x['replay']['cursor']==x['steps'] and x['steps']>1_000_000
+-    assert x['cycle']==89 and x['boundary']=='complete_condition_cycle'
++    assert x['cycle']==90 and x['boundary']=='complete_condition_cycle'
+     assert x['learner']['target_pair_reduction']==dict(version=1,target={'impedance':'minimum','admittance':'mean','vmc':'mean'}[m],actor='minimum',sampled_targets=2)
+-    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==89
++    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==90
+     assert finite(x['learner']) and x['learner']['critic_clock']
+     assert x['learner']['terminal_loss_weight']==128
+     assert x['learner']['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9995,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
+@@ -61,7 +61,7 @@
+     followup=reg['replay_capacity_followup_stage']
+     assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47
+     assert followup==previous['replay_capacity_followup_stage']
+-    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==88
++    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==89
+     baseline_deps=previous['batch_size_stage']['dependency_hashes'];deps=reg['batch_size_stage']['dependency_hashes']
+     assert deps==baseline_deps
+     assert all(deps[k]==v for k,v in baseline_deps.items())
+@@ -73,22 +73,27 @@
+     assert read(run.parent/'CHECK_ONLY_REVIEW.json')['passed'] and read(run.parent/'INITIAL_STATE_REVIEW.json')['passed']
+     assert sha(recovery['partial_audit']['path'])==recovery['partial_audit']['sha256']
+     continuation=reg['post_interruption_continuation']
+-    assert x['recovery_continuation']==continuation and continuation['parent_cycle']==88 and continuation['new_cycle']==89
++    assert x['recovery_continuation']==continuation and continuation['parent_cycle']==89 and continuation['new_cycle']==90
+     assert old['interruption_recovery']==recovery and sha(parent)==continuation['checkpoint']['sha256']
+     n=old['replay']['size'];arr=x['replay']['arrays']
+     for k,v in old['replay']['arrays'].items():assert np.array_equal(v,arr[k][:n])
+     from persisted_history_critic import marker,feature,KEY
+     h=reg['history_critic_amendment'];assert x['history_critic_amendment']==h and x['learner'][KEY]==x['replay'][KEY]==marker(h['binding'])
+     assert old['history_critic_amendment']==h and old['learner'][KEY]==old['replay'][KEY]==marker(h['binding'])
+-    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==89]
+-    assert len(transitions)==x['steps']-old['steps']
++    from persisted_violation_critic import marker as violation_marker, KEY as VK
++    v=reg['violation_critic_amendment'];assert x['violation_critic_amendment']==old['violation_critic_amendment']==execution['violation_critic_amendment']==v
++    assert x['learner'][VK]==x['replay'][VK]==old['learner'][VK]==old['replay'][VK]==violation_marker(v['binding'])
++    assert arr['observations'].shape[1]==arr['next_observations'].shape[1]==52
++    assert execution['replay_observation_dimension']==52 and execution['actor_observation_dimension']==49 and execution['protocol_sha256']==x['protocol_sha256']
++    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==90]
++    assert 0<len(transitions)<=41250 and len(transitions)==x['steps']-old['steps']
+     assert [t['step'] for t in transitions]==list(range(old['steps']+1,x['steps']+1))
+     assert x['learner']['num_gradient_steps']-old['learner']['num_gradient_steps']==len(transitions)
+     np.testing.assert_array_equal(arr['rewards'][n:,0],np.array([t['reward'] for t in transitions],np.float32))
+     np.testing.assert_array_equal(arr['dones'][n:,0],np.array([t['done'] for t in transitions],np.float32))
+     by_case=collections.defaultdict(list)
+     for t in transitions:by_case[t['condition']].append(t)
+-    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==89]
++    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==90]
+     assert len(episodes)==30 and {e['condition'] for e in episodes}==set(conditions)
+     max_reward_error=0.
+     for e in episodes:
+@@ -111,6 +116,8 @@
+             k=t['step']-1
+             assert arr['observations'][k,50]==feature(0. if j['interval'] is None else j['interval']['external_penetration_peak_m'])
+             assert arr['next_observations'][k,50]==feature(nxt['interval']['external_penetration_peak_m'])
++            assert arr['observations'][k,51]==float((0. if j['interval'] is None else j['interval']['external_penetration_peak_m'])>.0002)
++            assert arr['next_observations'][k,51]==float(nxt['interval']['external_penetration_peak_m']>.0002)
+             expected_current=np.r_[np.asarray(j['observation'],np.float32)/x['learner']['observation_scale'],np.float32(t['context']),np.float32((1375-i)/1375)].astype(np.float32)
+             np.testing.assert_array_equal(arr['observations'][k,:50],expected_current)
+             if t['done']:expected_next=np.r_[expected_current[:49],np.float32((1374-i)/1375)].astype(np.float32)
+@@ -121,7 +128,7 @@
+         assert abs(sum(t['reward'] for t in ts)-e['reward'])<1e-8
+     assert sha(reg['reference_plan'])==reg['reference_plan_sha256']
+     result=dict(steps=x['steps'],updates=x['learner']['num_gradient_steps'],checkpoint_sha256=sha(cp),
+-        replay_capacity_extension=CAPACITY_MARKER, replay_capacity_followup=FOLLOWUP_MARKER, current_replay_capacity=4_000_000, historical_entry_cycle=23, crossed_second_capacity=x['replay']['size']>2_000_000, rows_beyond_second_capacity=max(0,x['replay']['size']-2_000_000), replay_size=x['replay']['size'], crossed_original_capacity=True, new_transitions=len(transitions),retained_replay_rows=n,retained_replay_all_old_fields_exact=True,retained_history_features_exact=True,new_current_next51_and_raw_mixed_action_exact=True,
++        replay_capacity_extension=CAPACITY_MARKER, replay_capacity_followup=FOLLOWUP_MARKER, current_replay_capacity=4_000_000, historical_entry_cycle=23, crossed_second_capacity=x['replay']['size']>2_000_000, rows_beyond_second_capacity=max(0,x['replay']['size']-2_000_000), replay_size=x['replay']['size'], crossed_original_capacity=True, new_transitions=len(transitions),retained_replay_rows=n,retained_replay_all_old_fields_exact=True,retained_history_features_exact=True,retained_violation_features_exact=True,new_current_next52_and_raw_mixed_action_exact=True,
+         conditions=30,task=sum(e['task_success'] for e in episodes),strict=sum(e['strict_success'] for e in episodes),
+         reward_mean=float(np.mean([e['reward'] for e in episodes])),
+         full_horizon_count=sum(e['full_task_horizon_completed'] for e in episodes),

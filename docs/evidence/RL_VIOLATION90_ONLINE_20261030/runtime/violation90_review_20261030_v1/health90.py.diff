@@ -1,0 +1,28 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_review_20261030_v1/health89.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_review_20261030_v1/health90.py
+@@ -110,7 +110,15 @@
+         protocol = json.loads((folder.resolve().parent/'REGISTRATION.json').read_text())
+         binding = protocol['history_critic_amendment']['binding']
+         assert state[KEY] == checkpoint['replay'][KEY] == history_marker(binding)
+-        learner = history_class(PublishedLearner, binding)(root, dimension=dimension, direct=method == 'direct',
++        from persisted_violation_critic import violation_class, marker as violation_marker, KEY as VK
++        bit = protocol['violation_critic_amendment']['binding']
++        assert state[VK] == checkpoint['replay'][VK] == violation_marker(bit)
++        assert checkpoint['history_critic_amendment'] == execution['history_critic_amendment'] == protocol['history_critic_amendment']
++        assert checkpoint['violation_critic_amendment'] == execution['violation_critic_amendment'] == protocol['violation_critic_amendment']
++        assert checkpoint['protocol_sha256'] == sha(folder.resolve().parent/'REGISTRATION.json')
++        assert execution['replay_observation_dimension'] == 52 and execution['actor_observation_dimension'] == 49
++        assert checkpoint['replay']['arrays']['observations'].shape[1] == checkpoint['replay']['arrays']['next_observations'].shape[1] == 52
++        learner = violation_class(history_class(PublishedLearner, binding), bit)(root, dimension=dimension, direct=method == 'direct',
+             seed=42, device='cpu', algorithm=state['algorithm'],
+             **{key: state[key] for key in ('critic_layer_norm', 'numerical_amendments', 'critic_clock') if key in state})
+         # Load policy/critics only. Do not restore optimizer or host CUDA RNG.
+@@ -175,7 +183,7 @@
+                                 in_bag_mae=summary(selected_error[selected_mask]),
+                                 out_of_bag_mae=summary(selected_error[~selected_mask]))
+                 metrics['terminal_error_limitation'] = (
+-                    ('Critic includes remaining time and causal history; actor directly receives neither feature. '
++                    ('Critic includes remaining time, causal history and raw violation bit; actor directly receives neither feature. '
+                      if state.get('critic_clock', False) else
+                      'Observation lacks remaining time; terminal MAE can include hidden-clock aliasing. ') +
+                     'It is a diagnostic, not a required zero-error convergence gate.')
