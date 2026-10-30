@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整87历史critic持久化与原生接口通过
+
+- [交接](docs/RL_HISTORY87_PERSISTENT_CRITIC_INTERFACE_20261030.md)。51维critic/replay、actor49隔离、全10critic/Adam零列迁移、原投影/foreach/全部stream历史恢复实现；完整87三份旧learner和10824948旧行精确，Q初始误差0/0，45负例、下一65536/RNG通过。
+- 完整迁移快照写盘重载、实际GPU cache及3次可丢弃合成append通过；两维随机fixture12次native update重复恢复精确。原87三条完整记录1375+terminal/外部RNG、all5终端health及投影通过；0新physics/正式update，不是新评测或reward改善。完整trainer/eval/health调度接入和有限88登记仍待，Goal active，无Direct34。
+- GPU141采样min[76, 76, 77, 76]%、低于50[0, 0, 0, 0]，科研结束继续守护；共享SSD71成员/SHAb0be2078，完整迁移快照仅SSD、非HDD/arm1全备份。main89b3025e/baselinef6e8f8c已fetch/read，发布见收据，无子agent。
+
 ## 2026-10-30 — 半std全16与87历史已审；匹配critic拟合完成
 
 - [交接](docs/RL_HALF_STD86_COMPLETE_HISTORY87_FIT_20261030.md)。半std原16全55s/0更新/最终全state及1760万raw子步审计通过，Strict I2→0、Ashort3→2、Along3→4、V4→4；两实际图、所有失败保留，不推广统一降熵。

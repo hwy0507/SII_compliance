@@ -1,0 +1,96 @@
+{
+  "passed": true,
+  "binding": {
+    "method": "admittance",
+    "checkpoint_sha256": "819d9c29d202909f7760b38ec1bf2ecd72305c819ee11f87634eb986027c6579",
+    "learner_digest": "6f5a97fd0e3d9879be8da9e5eb2f0d073aaccf763cba98f335332adbd24f0a83",
+    "replay_digest": "71a02a3f1e254236bbcf406526a884136d82ec785745481da3a171a91c90c4ba",
+    "sidecar_sha256": "8c1bd3f9c9c6760e6993f50df14aa16ec29f54cfb41a4fea957b54922b900a80",
+    "rows": 3608750,
+    "action_dimension": 7
+  },
+  "initial_q_max_errors": {
+    "ensemble": 0.0,
+    "ensemble_targets": 0.0
+  },
+  "prediction_rows": 6697,
+  "old_full_learner_inverse_exact": true,
+  "new_weight_moment_zero": true,
+  "actor_native_actions_context_rng_exact": true,
+  "all_old_replay_fields_exact": true,
+  "all_added_history_features_exact": true,
+  "next65536_sample_and_rng_exact": true,
+  "learner_serialization_roundtrip_exact": true,
+  "replay_roundtrip_exact": true,
+  "all_streams_reset": true,
+  "negative_rejections": [
+    {
+      "case": "unmarked old load",
+      "error": "History state requires its exact persisted marker"
+    },
+    {
+      "case": "changed clock index",
+      "error": "History state requires its exact persisted marker"
+    },
+    {
+      "case": "wrong learner parent",
+      "error": "Only the exact registered complete87 learner may migrate"
+    },
+    {
+      "case": "missing completed interval",
+      "error": "Only the initial observation may have no interval"
+    },
+    {
+      "case": "unconsumed interval",
+      "error": "Consume completed interval before constructing next observation"
+    },
+    {
+      "case": "decreasing peak",
+      "error": "Cumulative external penetration decreased"
+    },
+    {
+      "case": "duplicate interval",
+      "error": "Interval must follow exactly one completed action"
+    },
+    {
+      "case": "invalid peak -1.0",
+      "error": "Finite nonnegative external penetration required"
+    },
+    {
+      "case": "invalid peak nan",
+      "error": "Finite nonnegative external penetration required"
+    },
+    {
+      "case": "invalid peak inf",
+      "error": "Finite nonnegative external penetration required"
+    },
+    {
+      "case": "unmarked replay",
+      "error": "History replay marker changed or absent"
+    },
+    {
+      "case": "changed replay marker",
+      "error": "History replay marker changed or absent"
+    },
+    {
+      "case": "wrong replay parent",
+      "error": "Exact parent replay and reviewed sidecar required"
+    },
+    {
+      "case": "wrong sidecar",
+      "error": "Exact parent replay and reviewed sidecar required"
+    },
+    {
+      "case": "wrong replay width",
+      "error": "History replay dimensions changed"
+    }
+  ],
+  "terminal_clock_history_exact": true,
+  "original_checkpoint_unchanged": true,
+  "migrated_learner_snapshot": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history87_critic_interface_20261030_v1/admittance_migrated_learner.pt",
+    "sha256": "21250ac57594c8510e5efd5d8618ecd7c2d73c7a7e8fe774c5d470ba20bdc12e"
+  },
+  "actual_parent_optimizer_updates": 0,
+  "new_physics": 0
+}
