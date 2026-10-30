@@ -3,7 +3,7 @@
 - 承接已批准并完成的 v7 公平重训（40条/21,500帧、75候选、9个锁定模型）；本轮没有重复训练。新增只读动作复放，核验`rod_00`的500帧观测和requested-action标签与原teacher逐位相同，均为正权重训练行；通过训练完成收据、FIT_AUDIT、模型锁、数据和checkpoint哈希检查。
 - 在4.2–4.7秒棍接触前窗口，ESN/RNN/MLP三个seed的requested-action RMSE分别为0.001646–0.001770、0.001578–0.001661、0.003568–0.005281；MLP该窗口中位数约为ESN的2.70倍、RNN的2.94倍。结果直接表明MLP在这个已见teacher序列上拟合更差，但不能证明它导致fixed27的两条穿透失败；MLP seed01也在同窗口有较大误差却通过Strict。详细限制与所有窗口见`docs/CONTACT_YIELD_V7_LOCKED_ROD_TRAIN_FIT_20261031.md`及哈希绑定JSON。
 - 新增脚本已`py_compile`并实际运行；9模型/5窗口结果收据完成。0新物理步、0 optimizer更新、无重选模、未访问final108。fixed27仍Task 27/27、Strict 25/27，ESN/RNN各9/9、MLP 7/9；全部失败保留。后续若调整训练应先登记新的development-only方案，并报告训练集拟合与Task/Strict闭环结果，不能从本诊断宣称安全根因或进入final108。
-- 开工首次远端查询因网络失败；随后成功fetch并读取实时main `7ae9d9af196f0740556b19f4d1f9b0e054952dc6` 与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 的UPDATE_LOG。main新增history88进度，已审阅并与本地进度并列保留；baseline无本轮相关改动。无关未跟踪文件保留。
+- 开工首次远端查询因网络失败；随后成功fetch并读取实时main `7ae9d9af196f0740556b19f4d1f9b0e054952dc6` 与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 的UPDATE_LOG。main新增history88进度，已审阅并与本地进度并列保留；baseline无本轮相关改动。诊断提交`b9bb36bd`经普通merge提交`84d31711`推送成功；远端指针核验为main=`84d3171129a63272323fa2ebf2b63083a87486c5`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。无关未跟踪文件保留。
 
 ## 2026-10-31 — 首次穿透子步与MLP动作/关节时间对齐
 
