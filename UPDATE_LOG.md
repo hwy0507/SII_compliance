@@ -9,6 +9,12 @@
 - [交接](docs/RL_COMPLETE87_HALF_STD86_RUNNING_20261030.md)。87三路各30×55/41250/noabort、全replay/reward0误差/loss/health/187标签/两终端已审；Task/Strict18/16、15/14、17/16。原85—87全失败稳定性，固定2514 V1158.553→2829.904退化、A2110.926→1036.234改善但critic3退化，六实际图保留；未收敛，无自动88/Direct34。
 - 原冻结86全16与1760万raw子步独立审计/最终全state不变/图通过，I Strict2/4、A两组3/4、V4/4。唯一std×0.5固定86同16配对已启动，PLAN0d857019，v1/v2零物理接口预检失败保留，v3四真实恢复/56负例/实际400行与native循环通过；180.0秒40身份观察通过，最终16/paired图待。序列化state不变但sampler有意改变，非训练熵目标等价，Goal active。
 - GPU363样本min[74, 63, 63, 63]%、低于50[0, 0, 0, 0]，科学完成仍保载；SSD521成员/SHAabd952ef核验、非HDD/arm1全备份。mainf47cd238/baselinef6e8f8c实际fetch/read，正常发布见收据，无子agent。
+## 2026-10-30 — v7 棍推接触动作分歧与高负载误差诊断
+
+- 对9个锁定actor逐序列重放固定27的9条rod00观测并重放原action filter：81条actor trace、324组模型pairwise；源actor请求动作及其滤波clip/twist/scale逐位复现。0 physics、0 optimizer update、0 reselection、final108未访问。哈希绑定证据为`docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_COMMON_OBSERVATION_ACTIONS_V7_20261030_V3.json`；V2初次完整回放收据也保留。
+- 两个失败MLP在自身状态序列上，相对通过MLP seed01的请求动作RMS从手接触前4.4–4.72s的0.0031/0.0024升到接触起始4.72–5.0s的0.0829/0.1011；滤波后yield-twist RMS差相应为0.00136/0.00092和0.03648/0.04927。此时段包含手接触首发（seed02 4.91535s、seed03 4.87370s）；不据此宣称动作导致穿透。两失败仍是Task pass/Strict fail，峰值穿透0.2157/0.2456mm，限值0.20mm。
+- 第二项只读分析对两条已参与选模的杆validation轨迹按canonical48估计wrench范数每episode的上20%分层。rod09高wrench 100/500帧的MLP seed01/02/03 action MSE为0.000738/0.000701/0.000805，ESN为0.0000495–0.0000591、RNN为0.0001195–0.0001898；rod08上MLP高负载误差较低（0.0000663–0.0000798）。证据`CONTACT_YIELD_V7_ROD_VALIDATION_FORCE_BINS_20261030_V2.json`，源码`code/mujoco_6d_vmc_benchmark/experiments/diagnose_contact_yield_v7_rod_validation_force_bins_20261030.py`。两条validation参与过模型选择，wrench只是接触负载代理，故结果是事后描述，不是独立泛化/因果证据，也未据此重选模型。
+- 当前证据不支持推理/公共filter错位bug；杆推MLP高负载状态覆盖/拟合值得继续查，尚未证明唯一根因。未派发新物理probe，final108继续封存。本轮成功fetch并读取GitHub：main `80de539b27bc629b1aa0a73869dd3bed55d97843`，baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；main含两条RL状态提交，已检查其日志且本轮不改RL文件。工作区将安全快进整合main后再提交。旧main缓存`49fb9ae13b5dafc3e2c24e459f05079dffba3f58`不是最新。无关untracked文件保留。
 
 ## 2026-10-30 — v7 MLP棍推失败的状态支持诊断
 
