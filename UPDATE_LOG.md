@@ -1,3 +1,17 @@
+## 2026-10-31 — v7接管证据已共享归档；MLP安全恢复问题未解决
+
+- 承接用户已批准的75候选公平重训：40条/21,500帧、75/75候选、九个冻结模型和九路actor replay通过FIT_AUDIT；fixed27仍为Task 27/27、Strict 25/27，ESN/RNN各9/9，MLP 7/9。没有重跑已完成的训练，也没有将任务成功等同安全成功。
+- v7 handoff v1–v4原始收据、失败轨迹、对应wrapper、诊断报告和三份证据JSON共226个文件/1,018,511,873字节，已归档到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_v7_handoff_diagnosis_20261030_v1/`。从服务器incoming到正式目录前，`rsync -aRnc --checksum`逐文件校验无差异；目录此前不存在，未覆盖旧run。大回合数据仍保留本机副本。
+- v3/v4八条teacher接管均完成Task，但八条最大穿透均超过冻结0.20 mm门槛（0.21565–0.25499 mm），Strict/安全资格失败；失败后缀不纳入训练。更早接管仍失败，故当前问题不能通过只提前切换teacher解决。详见`docs/CONTACT_YIELD_V7_HANDOFF_DIAGNOSIS_20261030.md`。物理/MJB、gate、canonical48、公共filter、执行器限制和dt均未改；unseen108未访问。
+- 本地验证：四个wrapper `py_compile`通过，`git diff --check`通过。GitHub实时`ls-remote`读到main `628bf1b824520e3f98cfe385c48f6225e163e32d`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；当前沙箱下fetch仍失败，故不能安全整合或推送。服务器SSH归档已核验；GitHub发布待网络恢复。
+
+## 2026-10-30 — v7四条MLP棍推teacher接管审计完成；教师安全恢复仍失败
+
+- 75候选公平重训已完成并独立FIT_AUDIT通过：40条/21,500帧、九模型锁定与九路actor replay。fixed27为Task 27/27、Strict 25/27；ESN/RNN各9/9，MLP 7/9。final108保持封存。
+- 保留v1错误MuJoCo解释器失败、v2 CPU affinity preflight零物理步失败；不重用失败登记。新v3/v4以MuJoCo3.11.0、`taskset -c 6`、MemoryMax 3GiB、swap0共完成八条500步/400k子步teacher接管；两轮scope均exit0、OOM0、actor/filter replay误差0。4.48/4.60 s交接最大穿透0.21599/0.22387/0.25499/0.24257mm；更早4.20/4.32 s交接最大0.23565/0.24574/0.24165/0.24904mm。八条Task均完成但均Strict/安全资格失败；学生前缀零穿透，越限发生在teacher后缀，八条失败后缀不入训练集。yield/越杆/回位均早于撤杆完成。保存子步摘要独立数值复算不等于重新积分动力学。详见`docs/CONTACT_YIELD_V7_HANDOFF_DIAGNOSIS_20261030.md`。
+- 同一rod00纯teacher原始演示通过qualification，峰值外部穿透0.07140mm；所以不能概括为teacher标称动作普遍错误。失败MLP与teacher逐帧对齐显示关节位置差在碰撞事件前已增长（seed02于2.44s、seed03于3.68s首次超过0.01rad；请求动作0.04s已有差异），是关联诊断而非因果证明。下一步沿保存轨迹定位动作/关节/滤波twist分歧机制，不重复只提前teacher切换时点。物理/MJB、gate、canonical48、filter、执行器限制、dt冻结；最终108未读/派发。
+- 本轮开工本地main=`89b3025e1b4660e40ac3a7b42fa3fabd27489638`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。GitHub fetch受网络限制，以上是本地缓存，不称为实时远端状态；当前代码和完整回合证据尚未push/共享。
+
 ## 2026-10-30 — 半std全16与87历史已审；匹配critic拟合完成
 
 - [交接](docs/RL_HALF_STD86_COMPLETE_HISTORY87_FIT_20261030.md)。半std原16全55s/0更新/最终全state及1760万raw子步审计通过，Strict I2→0、Ashort3→2、Along3→4、V4→4；两实际图、所有失败保留，不推广统一降熵。
