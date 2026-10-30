@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,time
+B=Path(__file__).resolve().parents[2];D=Path(__file__).parent;F=B/'runs/parameter82_frozen_full30_20261030_v1'
+def read(p):return json.loads(p.read_text())
+refs=[F/'LAUNCH.json',F/'REVIEW_LAUNCH.json',F/'comparison55_82/LAUNCH.json',B/'runs/parameter82_frozen_full_saved_audit_20261030_v1/LAUNCH.json']
+jobs=read(refs[0])['jobs']+[read(p) for p in refs[1:]]
+for j in jobs:
+ p=Path(f'/proc/{j["pid"]}/stat');s=p.read_text().rsplit(')',1)[1].split();assert s[19]==j['proc_start_ticks'] and s[0]!='Z'
+progress={}
+for m in ['impedance','admittance','vmc']:
+ root=F/m
+ # Runtime paths are discovered from the original job command, preserving original identities.
+ paths=list(root.rglob('PROGRESS.json')); assert len(paths)==1,(m,paths)
+ progress[m]=dict(path=str(paths[0]),progress=read(paths[0]))
+out=dict(time=time.time(),identities=jobs,all_original_identities_live=True,progress=progress,full90_complete=False,automatic_training=False)
+with (D/'FROZEN82_SNAPSHOT.json').open('x') as f:json.dump(out,f,indent=2);f.write('\n')
+print(json.dumps(out))
