@@ -1,0 +1,13 @@
+--- actual88
++++ registered89
+@@ -239,8 +239,8 @@
+         validate_resume_protocol(checkpoint['protocol_sha256'], protocol, pdigest)
+         if (checkpoint['controller'], checkpoint['seed']) != (args.controller, args.seed):
+             raise ValueError('Resume controller/seed mismatch')
+-        learner.migrate_parent(checkpoint['learner'])
+-        replay.migrate_parent(checkpoint['replay'], protocol['history_critic_amendment']['sidecar']['path'])
++        learner.load_state_dict(checkpoint['learner'])
++        replay.load_state_dict(checkpoint['replay'])
+         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
+         _verify_initial_state(learner, replay, checkpoint, out.parent)
+     stage = protocol.get('completed_stage_continuation')

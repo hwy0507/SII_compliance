@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整88精确恢复；有限history89实际运行
+
+- [交接](RL_HISTORY89_ONLINE_20261030.md)。完整88含Ashort0900及三critic退化证据后单独登记89，同history51/actor49与全部物理、LR、reward契约；84负例、6原生clone更新重复/恢复、精确全state/replay通过。trainer仅两恢复seam变化，未重置已学history权重/Adam，不自动90/Direct34。
+- 真实startup全旧51维回放/30MJB/CPU/新映射/reward0误差通过，120.042秒/99身份观察保持；总steps{'impedance': 3652305, 'admittance': 3654609, 'vmc': 3655743}。唯一archive/full review/health/loss消费者已部署，完整89与稳定性待；原冻结88三路/collector/后处理继续，最终90及raw/配对待。
+- GPU172采样min[75, 65, 65, 69]%、低于50[0, 0, 0, 0]，科学完成仍保载，非科研吞吐。共享SSD105成员/SHA4fd6d62e，HDD仅254字节指针、非全备份。mainaac53b19/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，所有历史失败保留。
+
 ## 2026-10-30 — 完整history88已审；冻结88全90实际运行
 
 - [交接](RL_COMPLETE88_FROZEN88_20261030.md)。88三路各30×55s/41250/0abort，全旧replay及新51维映射/reward0误差/full loss/health已审；Task/Strict18/17、16/16、17/17，reward−2.375354/−5.201837/−2.815046。critic首末均值下降但尖峰/actor漂移保留，单轮未收敛；Ashort0900从通过退化至carry失败，所有90配对保留。
