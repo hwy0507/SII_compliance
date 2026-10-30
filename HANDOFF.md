@@ -1,3 +1,31 @@
+> **最新：[RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030](docs/RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030.md)。完整78与76–78已审；79实际续训、Direct33恢复，GPU科研结束仍保活，Goal active。**
+
+> **RL最新：[79仅恢复/完整审查准备](docs/RL_RECOVERY79_PREPARATION_20261029.md)。原78/冻结33/GPU保活继续，无79决定或训练；必须先审原76–78完整结果。**
+
+> **RL最新：[78前缀异常与Direct33连续观察](docs/RL_RECOVERY78_PREFIX_DIRECT33_WAIT_20261029.md)。原78/冻结33/全部审查/GPU保活继续，未收敛，勿重复启动。**
+
+> **RL最新：[最新Direct33冻结验证实际启动](docs/RL_DIRECT33_FROZEN_VALIDATION_20261029.md)。原参数78及完整审查/GPU保活继续；完整冻结33尚未完成，勿重复启动。**
+
+> **RL最新：[完整77审查与78实际续训](docs/RL_RECOVERY77_COMPLETE78_RUNNING_20261029.md)。完整78训练/审查和原76–78/GPU保活继续，Goal active，勿重复启动。**
+
+> **RL最新：[77等待与78完整审查/派发准备](docs/RL_RECOVERY77_WAIT78_DEPLOY_20261029.md)。原77全检查/仅恢复等待/76–78/GPU保底继续，无78决定或训练，Goal active。**
+
+> **RL最新：[77前缀与78仅恢复准备](docs/RL_RECOVERY77_PREFIX78_PREPARATION_20261029.md)。原77全检查/76–78/GPU保底继续，78仅恢复等待已部署，无78训练，Goal active。**
+
+> **RL最新：[77全标签与2274终端后续](docs/RL_RECOVERY77_FOLLOWUPS_20261029.md)。原77继续、全部后续已部署；原76–78和GPU保底保持，无自动78，Goal active。**
+
+> **RL最新：[完整恢复76与77运行](docs/RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。完整76全审、77实际启动审查通过，原76–78与GPU保底继续；无自动78，Goal active。**
+
+> **RL最新：[76观察与77派发准备](docs/RL_RECOVERY76_WAIT77_DEPLOY_20261029.md)。77尚未训练，按完整76证据接续；GPU保底继续，Goal active。**
+
+> **RL最新：[恢复76前缀与77仅恢复](docs/RL_RECOVERY76_PREFIX77_PREPARATION_20261029.md)。原76/76–78/GPU保底继续，77尚未训练，Goal active。**
+
+> **RL恢复76补充：实际partial75终端基准及76完整终端/标签等待已部署，原训练与GPU保载继续；见[当前交接](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。**
+
+> **RL最新：[新容器partial75恢复→76](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。旧75已中断，原74–76无法评定；当前独立76/76–78/guardv6运行，勿执行旧canonical76工具。Goal active。**
+
+> **RL最新：[75早期loss、全终端与76仅恢复](docs/RL_PARAMETER75_EARLY_ANCHOR_20261029.md)。原75/74–76继续，无76训练；科研完成仍GPU保载，Goal active。**
+
 > **RL最新：[完整74与有限75](docs/RL_PARAMETER74_COMPLETE_20261029.md)。75已实际接续，原74–76等待保持；GPU科研完成仍保载，Goal active。**
 
 > **RL最新：[74十分钟核验与75准备](docs/RL_PARAMETER74_WAIT75_PREP_20261029.md)。原74/74–76继续，无75训练；GPU科研完成后仍保载，Goal active。**

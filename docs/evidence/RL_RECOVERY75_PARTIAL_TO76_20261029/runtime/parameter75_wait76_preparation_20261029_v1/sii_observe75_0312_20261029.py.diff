@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,12 +1,12 @@
+ from pathlib import Path
+ import json,time,subprocess,hashlib,os
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-O=B/'runtime/parameter74_verified_wait_0156_20261029_v1';O.mkdir(exist_ok=False)
++O=B/'runtime/parameter75_verified_wait_0312_20261029_v1';O.mkdir(exist_ok=False)
+ os.sched_setaffinity(0,{54})
+ read=lambda p:json.loads(p.read_text())
+ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ def write(p,v):p.write_text(json.dumps(v,indent=2)+'\n')
+-snap=read(B/'runtime/parameter74_followups_snapshot_20261029_v1/SNAPSHOT.json')
++snap=read(B/'runtime/parameter75_followups_snapshot_20261029_v1/SNAPSHOT.json')
+ jobs=[*snap['learners'],snap['archive_monitor'],*snap['waiters'].values(),*snap['guard_processes']]
+ start=time.time();registration=dict(time=start,seconds=600,interval_seconds=30,jobs=jobs,source_sha256=sha(Path(__file__)),automatic_training=False,scientific_restart=False)
+ write(O/'REGISTRATION.json',registration)
+@@ -21,7 +21,7 @@
+    p=Path(f'/proc/{j["pid"]}/stat');f=p.read_text().rsplit(')',1)[1].split() if p.exists() else None
+    live=f is not None and f[19]==j['proc_start_ticks'] and f[0]!='Z'
+    row['identities'].append(dict(pid=j['pid'],proc_start_ticks=j['proc_start_ticks'],live=live,state=f[0] if f else None))
+-  root=B/'runs/parameter_capacity_pool30_cycle74_20261026_v1'
++  root=B/'runs/parameter_capacity_pool30_cycle75_20261026_v1'
+   for m in ['impedance','admittance','vmc']:
+    p=root/m/'train';row['progress'][m]=read(p/'PROGRESS.json');assert not (p/'FAILURE.json').exists()
+   row['archive_finished']=(root/'ARCHIVE_REVIEW_FINISHED.json').exists()

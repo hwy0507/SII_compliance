@@ -1,0 +1,22 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery76_first5000_20261029_v1/audit.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery77_first5000_20261029_v1/audit.py
+@@ -6,9 +6,9 @@
+ def sha(p):
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ try:
+- plan=json.loads((out/'PLAN.json').read_text());assert plan['cycle']==76 and plan['prefix_rows']==5000
++ plan=json.loads((out/'PLAN.json').read_text());assert plan['cycle']==77 and plan['prefix_rows']==5000
+  assert all(sha(Path(r['path']))==r['sha256'] for r in plan['registration'].values())
+- root=B/'runs/parameter_partial75_recovery_cycle76_20261029_v1';jobs=json.loads((root/'LAUNCH.json').read_text())['jobs'];deadline=time.monotonic()+3600;inputs={}
++ root=B/'runs/parameter_partial75_recovery_cycle77_20261029_v1';jobs=json.loads((root/'LAUNCH.json').read_text())['jobs'];deadline=time.monotonic()+3600;inputs={}
+  for job in jobs:
+   m=job['controller'];run=root/m/'train';source=run/'optimizer.jsonl'
+   while True:
+@@ -36,6 +36,6 @@
+    v=np.array([r[key] for r in rows]);assert np.isfinite(v).all();stats[key]=dict(first1000=float(v[:1000].mean()),last1000=float(v[-1000:].mean()),maximum=float(v.max()),mean=float(v.mean()),nonfinite=0)
+    ax=axes[i,col];ax.plot(v,alpha=.2,lw=.4);ax.plot(np.arange(999,5000),np.convolve(v,np.ones(1000)/1000,mode='valid'));ax.set_title(m+' '+key);ax.grid(alpha=.2)
+   result[m]=dict(first_step=rows[0]['step'],last_step=rows[-1]['step'],metrics=stats)
+- fig.savefig(out/'loss.png',dpi=120);(out/'REVIEW.json').write_text(json.dumps(dict(time=time.time(),passed=True,methods=result,inputs=inputs,new_physics=0,optimizer_updates=0,convergence_claim=False,scope='Descriptive first5000 of recovery76, registered after training launch and prefix availability. Same original5000 length; all prior53-55/56-58/59-61/62-64/65-67 results retained; completed68-70 retained; completed71-73 failures retained; original74-76 unassessable due incomplete75; prospective76-78 plan unchanged. Partial75 retained exposure is not a complete cycle.',plot_sha256=sha(out/'loss.png')),indent=2)+'\n')
++ fig.savefig(out/'loss.png',dpi=120);(out/'REVIEW.json').write_text(json.dumps(dict(time=time.time(),passed=True,methods=result,inputs=inputs,new_physics=0,optimizer_updates=0,convergence_claim=False,scope='Descriptive first5000 of recovery77, registered after training launch and prefix availability. Same original5000 length; all prior53-55/56-58/59-61/62-64/65-67 results retained; completed68-70 retained; completed71-73 failures retained; original74-76 unassessable due incomplete75; prospective76-78 plan unchanged. Partial75 retained exposure is not a complete cycle.',plot_sha256=sha(out/'loss.png')),indent=2)+'\n')
+ except BaseException as e:
+  (out/'FAILURE.json').write_text(json.dumps(dict(time=time.time(),error=repr(e))));raise

@@ -1,0 +1,23 @@
+--- /tmp/sii_audit74_prefix_20261028.py
++++ /tmp/sii_audit75_prefix_20261028.py
+@@ -1,9 +1,9 @@
+ from pathlib import Path
+ import json,hashlib,ast,difflib,time,subprocess,os
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');old=B/'runs/parameter73_first5000_20261028_v1';new=B/'runs/parameter74_first5000_20261028_v1';new.mkdir(exist_ok=False)
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');old=B/'runs/parameter74_first5000_20261028_v1';new=B/'runs/parameter75_first5000_20261028_v1';new.mkdir(exist_ok=False)
+ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ read=lambda p:json.loads(p.read_text())
+-changes={'parameter_capacity_pool30_cycle73_20261026_v1':'parameter_capacity_pool30_cycle74_20261026_v1',"plan['cycle']==73":"plan['cycle']==74",'Descriptive first5000 of73':'Descriptive first5000 of74'}
++changes={'parameter_capacity_pool30_cycle74_20261026_v1':'parameter_capacity_pool30_cycle75_20261026_v1',"plan['cycle']==74":"plan['cycle']==75",'Descriptive first5000 of74':'Descriptive first5000 of75'}
+ files=[]
+ for name in ['audit.py','review_saved.py']:
+  a=(old/name).read_text();s=a;counts={}
+@@ -14,7 +14,7 @@
+  assert back==a;ast.parse(s);(new/name).write_text(s)
+  (new/(name+'.diff')).write_text(''.join(difflib.unified_diff(a.splitlines(True),s.splitlines(True),fromfile=str(old/name),tofile=str(new/name))))
+  files.append(dict(name=name,parent_sha256=sha(old/name),sha256=sha(new/name),counts=counts,inverse_exact=True))
+-root=B/'runs/parameter_capacity_pool30_cycle74_20261026_v1';plan=read(old/'PLAN.json');plan.update(time=time.time(),cycle=74,source_sha256=sha(new/'audit.py'),parent_source_sha256=sha(old/'audit.py'))
++root=B/'runs/parameter_capacity_pool30_cycle75_20261026_v1';plan=read(old/'PLAN.json');plan.update(time=time.time(),cycle=75,source_sha256=sha(new/'audit.py'),parent_source_sha256=sha(old/'audit.py'))
+ plan['registration']={m:dict(path=str(root/m/'REGISTRATION.json'),sha256=sha(root/m/'REGISTRATION.json')) for m in plan['methods']}
+ (new/'PLAN.json').write_text(json.dumps(plan,indent=2)+'\n')
+ (new/'SOURCE_REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),files=files,context_replacements=changes,ast_passed=True,original68_70_completed_and_current71_73_window_unchanged=True,automatic_training=False),indent=2)+'\n')

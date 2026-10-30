@@ -1,0 +1,23 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery78_20261029_v1/observe77.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery78_completion_preparation_20261029_v1/observe77.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import json,time,hashlib,os,subprocess
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=B/'runtime/prepare_recovery78_20261029_v1';O=B/'runtime/recovery77_prepare78_verified_wait_20261029_v1';O.mkdir(exist_ok=False);R=B/'runs/parameter_partial75_recovery_cycle77_20261029_v1';G=Path('/tmp/sii_gpu_util_guard_20261029_v6')
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=B/'runtime/prepare_recovery78_20261029_v1';O=B/'runtime/recovery77_completion_verified_wait_20261029_v1';O.mkdir(exist_ok=False);R=B/'runs/parameter_partial75_recovery_cycle77_20261029_v1';G=Path('/tmp/sii_gpu_util_guard_20261029_v6')
+ os.sched_setaffinity(0,{54})
+ read=lambda p:json.loads(p.read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ def write(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
+@@ -13,10 +13,10 @@
+ for pid in [g['pid'],*g['workers'].values()]:
+  f=Path(f'/proc/{pid}/stat').read_text().rsplit(')',1)[1].split();jobs.append(dict(pid=pid,proc_start_ticks=f[19]))
+ assert all(identity(j)['live'] for j in jobs)
+-start=time.time();write(O/'REGISTRATION.json',dict(time=start,seconds=300,interval_seconds=30,jobs=jobs,source=dict(path=str(Path(__file__)),sha256=sha(Path(__file__))),automatic_training=False,scientific_restart=False));write(O/'LAUNCH.json',dict(pid=os.getpid(),proc_start_ticks=Path(f'/proc/{os.getpid()}/stat').read_text().rsplit(')',1)[1].split()[19],registration_sha256=sha(O/'REGISTRATION.json')))
++start=time.time();write(O/'REGISTRATION.json',dict(time=start,seconds=600,interval_seconds=30,jobs=jobs,source=dict(path=str(Path(__file__)),sha256=sha(Path(__file__))),automatic_training=False,scientific_restart=False));write(O/'LAUNCH.json',dict(pid=os.getpid(),proc_start_ticks=Path(f'/proc/{os.getpid()}/stat').read_text().rsplit(')',1)[1].split()[19],registration_sha256=sha(O/'REGISTRATION.json')))
+ rows=[]
+ try:
+- for i in range(11):
++ for i in range(21):
+   if i:time.sleep(max(0,start+30*i-time.time()))
+   row=dict(time=time.time(),identities=[identity(j) for j in jobs],progress={})
+   for m in ['impedance','admittance','vmc']:

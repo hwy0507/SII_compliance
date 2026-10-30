@@ -1,0 +1,17 @@
+--- observe.py
++++ observe_v2.py
+@@ -26,7 +26,7 @@
+   gate=read(folder/'EXTERNAL_ACTION_RNG_GATE.json');assert gate['passed'] and gate['full_state_unchanged'];e=read(folder/'EVALUATION.json')
+   assert e['checkpoint_sha256']==reg['inputs']['checkpoint']['sha256'] and e['case_ids']==j['case_ids'] and e['registration_sha256']==reg['inputs']['training_registration']['sha256'] and e['action_seed']==2026102626 and not e['deterministic'] and e['audit_substeps'] and e['optimizer_updates_during_evaluation']==0
+   assert e['learner_cpu']==0 and e['physics_cpu'] in [1,2] and e['inference_device']=='cuda:0'
+-  case=folder/j['case_ids'][0];c=next(c for c in plan['conditions'] if c['id']==case.name);assert sha(case/'rollout.mjb')==c['model_sha256'];assert sha(case/'executed_evaluator.py.txt')==e['episode_entrypoint_sha256']
++  case=folder/j['case_ids'][0];c=next(c for c in plan['conditions'] if c['id']==case.name);assert sha(case/'rollout.mjb')==c['model_sha256'];assert sha(case/'executed_evaluator.py.txt')==read(case/'ADAPTER.json')['executed_evaluator_function_sha256'];assert sha(case/'executed_evaluator.py.txt')==sha(B/'runs/serl_take29_frozen_full30_20261027_v1'/folder.name/case.name/'executed_evaluator.py.txt');assert sha(e['episode_entrypoint'])==e['episode_entrypoint_sha256']
+   with (case/'actor_intervals.jsonl').open() as f:first=json.loads(f.readline())
+   import math
+   assert len(first['observation'])==48 and len(first['action'])==7 and all(math.isfinite(x) and abs(x)<=1.000001 for x in first['action']);assert first['action']==first['executed_action']
+@@ -48,4 +48,4 @@
+    row=dict(time=time.time(),states=states,parameter_steps={m:read(P/m/'train/PROGRESS.json')['steps'] for m in ['impedance','admittance','vmc']},frozen_shards=shards,guard=g);rows.append(row);f.write(json.dumps(row)+'\n');f.flush()
+    if i<4:time.sleep(max(0,started+30*(i+1)-time.monotonic()))
+  write(D/'OBSERVATION_FINISHED.json',dict(passed=True,time=time.time(),samples=len(rows),elapsed=time.monotonic()-started,identities=len(jobs),all_original_identities_live=True,first_parameter_steps=rows[0]['parameter_steps'],last_parameter_steps=rows[-1]['parameter_steps'],first_frozen_shards=rows[0]['frozen_shards'],last_frozen_shards=rows[-1]['frozen_shards'],scientific_restart=False));print('Actual startup and120-second original process observation passed')
+-except BaseException as e:write(D/'OBSERVATION_FAILURE.json',dict(time=time.time(),error=repr(e)));raise
++except BaseException as e:write(D/'OBSERVATION_RETRY_FAILURE.json',dict(time=time.time(),error=repr(e)));raise

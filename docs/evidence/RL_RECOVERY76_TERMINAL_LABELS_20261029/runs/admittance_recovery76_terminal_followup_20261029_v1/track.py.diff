@@ -1,0 +1,36 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance75_terminal_anchor_followup_20261028_v1/track.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance_recovery76_terminal_followup_20261029_v1/track.py
+@@ -1,4 +1,4 @@
+-"""Read-only complete75 followup of all2244 fixed74 admittance terminal rows."""
++"""Read-only complete76 followup of all2244 partial75 admittance terminal rows."""
+ from pathlib import Path
+ import hashlib,json,os,sys,time
+ os.sched_setaffinity(0,{53})
+@@ -24,7 +24,7 @@
+     idx,features,rewards,masks,oldq,oldden=[anchor[k].copy() for k in ['indices','features','rewards','masks','q_after','denominator']]
+ assert len(idx)==2244 and features.shape==(2244,57)
+ ck=torch.load(binding['checkpoint']['path'],map_location='cpu',weights_only=False)
+-assert ck['cycle']==75 and ck['boundary']=='complete_condition_cycle' and ck['controller']=='admittance'
++assert ck['cycle']==76 and ck['boundary']=='complete_condition_cycle' and ck['controller']=='admittance'
+ a=ck['replay']['arrays'];state=ck['learner'];terminal=np.flatnonzero(a['dones'][:,0]==1)
+ assert len(terminal)==2274 and np.array_equal(terminal[:2244],idx)
+ np.testing.assert_array_equal(a['observations'][idx],features[:,:50])
+@@ -65,7 +65,7 @@
+     old2244_after_using_old_denominator=float((128*new_sse[:,:2244]/oldden[:,None]).sum()),
+     new30_contribution=float((128*new_sse[:,2244:]/den[:,None]).sum()),
+     all_terminal_contribution=float((128*new_sse/den[:,None]).sum()),focus=focus,
+-    weights_and_forward_rng_unchanged=True,health75_terminal_values_reproduced=True,
++    weights_and_forward_rng_unchanged=True,health76_terminal_values_reproduced=True,
+     new_physics=0,optimizer_updates=0,replay_writes=0,convergence_claim=False,causal_claim=False,
+     values_sha256=sha(OUT/'values.npz'),limitation=plan['limitation'])
+ import matplotlib
+@@ -76,7 +76,7 @@
+ for f in focus:
+     k=int(np.flatnonzero(idx==f['replay_index'])[0]);ax.scatter([x[k]],[y[k]],color='red');ax.annotate(str(f['replay_index']),(x[k],y[k]),fontsize=8)
+ limit=max(x.max(),y.max());ax.plot([0,limit],[0,limit],'--',color='gray')
+-ax.set_xlabel('Complete74 masked terminal SSE');ax.set_ylabel('Complete75 masked terminal SSE');ax.set_title('All 2244 fixed terminal rows\nOriginal complete66 short0600 focus marked')
+-fig.savefig(OUT/'follow75.png',dpi=130,bbox_inches='tight');report['plot_sha256']=sha(OUT/'follow75.png')
++ax.set_xlabel('Partial75 masked terminal SSE');ax.set_ylabel('Complete76 masked terminal SSE');ax.set_title('All 2244 fixed terminal rows\nOriginal complete66 short0600 focus marked')
++fig.savefig(OUT/'follow76.png',dpi=130,bbox_inches='tight');report['plot_sha256']=sha(OUT/'follow76.png')
+ for v in list(plan['inputs'].values())+list(binding.values()):assert sha(v['path'])==v['sha256']
+ (OUT/'REVIEW.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

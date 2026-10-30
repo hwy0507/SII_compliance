@@ -1,0 +1,128 @@
+{
+  "time": 1793254581.546313,
+  "host": "rltest-1025--a6ed2ff39b3c-nvfdwjhzzw",
+  "learners": [
+    {
+      "pid": 360532,
+      "proc_start_ticks": "44757345",
+      "method": "impedance",
+      "progress": {
+        "cycle": 76,
+        "steps": 3137135,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3132136,
+        "wall_time_utc": 1793254573.5939949
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 360533,
+      "proc_start_ticks": "44757345",
+      "method": "admittance",
+      "progress": {
+        "cycle": 76,
+        "steps": 3138193,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3133194,
+        "wall_time_utc": 1793254580.6007965
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 360534,
+      "proc_start_ticks": "44757346",
+      "method": "vmc",
+      "progress": {
+        "cycle": 76,
+        "steps": 3141366,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3136367,
+        "wall_time_utc": 1793254580.6214597
+      },
+      "samplers": 30
+    }
+  ],
+  "waiters": {
+    "parameter_recovery76_loss_20261029_v1": {
+      "pid": 436146,
+      "proc_start_ticks": "44768306"
+    },
+    "parameter_recovery76_78_reward_stability_20261029_v1": {
+      "pid": 436148,
+      "proc_start_ticks": "44768306"
+    },
+    "parameter_recovery76_task_labels_20261029_v1": {
+      "pid": 939351,
+      "proc_start_ticks": "44835780"
+    },
+    "vmc_recovery76_terminal_followup_20261029_v1": {
+      "pid": 986781,
+      "proc_start_ticks": "44842133"
+    },
+    "admittance_recovery76_terminal_followup_20261029_v1": {
+      "pid": 986787,
+      "proc_start_ticks": "44842133"
+    }
+  },
+  "archive": {
+    "pid": 360535,
+    "proc_start_ticks": "44757346"
+  },
+  "prepare77": {
+    "pid": 1622287,
+    "proc_start_ticks": "44924848"
+  },
+  "guard": {
+    "samples": 233,
+    "minimum": [
+      74,
+      69,
+      69,
+      68
+    ],
+    "below50": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "last": {
+      "time": 1793254580.214241,
+      "gpus": [
+        {
+          "gpu": 0,
+          "utilization": 82,
+          "memory_mib": 564,
+          "duty": 0.8
+        },
+        {
+          "gpu": 1,
+          "utilization": 72,
+          "memory_mib": 4463,
+          "duty": 0.7
+        },
+        {
+          "gpu": 2,
+          "utilization": 97,
+          "memory_mib": 4493,
+          "duty": 0.7
+        },
+        {
+          "gpu": 3,
+          "utilization": 95,
+          "memory_mib": 4502,
+          "duty": 0.7
+        }
+      ],
+      "synthetic_guard_included": true
+    },
+    "synthetic": true,
+    "keep_after_science": true
+  }
+}

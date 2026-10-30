@@ -1,0 +1,42 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity74_76_reward_stability_20261029_v1/wait_register_and_audit.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery76_78_reward_stability_20261029_v1/wait_register_and_audit.py
+@@ -1,4 +1,4 @@
+-"""Wait for the registered74-76 window; no training or automatic stop."""
++"""Wait for the registered76-78 window; no training or automatic stop."""
+ from pathlib import Path
+ import hashlib
+ import json
+@@ -16,18 +16,18 @@
+ 
+ def main():
+     plan = json.loads((root/'PLAN.json').read_text())
+-    assert plan['cycles'] == [74, 75, 76]
+-    source = root/'audit_parameter74_76_reward_stability_20261028.py'
++    assert plan['cycles'] == [76, 77, 78]
++    source = root/'audit.py'
+     assert sha(source) == plan['source_sha256']
+     deadline = time.monotonic() + plan['wait_deadline_seconds']
+     while True:
+         complete = True
+         for cycle in plan['cycles']:
+-            review = B/'runs'/f'parameter_capacity_pool30_cycle{cycle}_review_20261026_v1'
++            review = Path(plan['review_paths'][str(cycle)])
+             for failure in review.rglob('*FAILURE.json'):
+                 raise RuntimeError(f'Original review failed: {failure}')
+             for method in ['impedance', 'admittance', 'vmc']:
+-                failure = B/'runs'/f'parameter_capacity_pool30_cycle{cycle}_20261026_v1'/method/'train/FAILURE.json'
++                failure = Path(plan['run_paths'][str(cycle)])/method/'train/FAILURE.json'
+                 assert not failure.exists(), str(failure)
+             finished = review/'FINISHED.json'
+             if not finished.exists():
+@@ -45,8 +45,8 @@
+     assert reg['source_sha256'] == plan['source_sha256']
+     for method in ['impedance', 'admittance', 'vmc']:
+         for cycle in plan['cycles']:
+-            run = B/'runs'/f'parameter_capacity_pool30_cycle{cycle}_20261026_v1'/method
+-            review = B/'runs'/f'parameter_capacity_pool30_cycle{cycle}_review_20261026_v1'
++            run = Path(plan['run_paths'][str(cycle)])/method
++            review = Path(plan['review_paths'][str(cycle)])
+             refs = dict(protocol=run/'REGISTRATION.json', review=review/'REVIEW.json',
+                         health=review/'health/DIAGNOSIS.json', finished=review/'FINISHED.json',
+                         episodes=run/'train/episodes.jsonl', optimizer=run/'train/optimizer.jsonl')

@@ -1,12 +1,66 @@
-## 2026-10-30 — 四条teacher接管探针通过；恢复增强公平重训推进至15/75
+## 2026-10-30 — 四条teacher接管探针通过；恢复增强公平重训推进至19/75
 
-- 开工用 `git ls-remote` 核实 GitHub main `a798f53e6c30ed69bd2dc3ff81d6038726bdf496`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与本地 tracking refs 一致，阅读两分支日志及根 `AGENTS.md`。随后 `git fetch` 因连接 GitHub 失败；baseline 缓存日志停留在2026-10-08，push前需重新核对。
+- 开工用 `git ls-remote` 核实 GitHub main `a798f53e6c30ed69bd2dc3ff81d6038726bdf496`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与当时tracking refs一致，阅读两分支日志及根 `AGENTS.md`。sandbox fetch失败；发布前远端main前进到 `21c580a99cd8613fa06a12164f05aff1d86d200b`，随后fetch/read成功并安全合并，远端新改动未触及本训练源码。baseline日志仍停留在2026-10-08。
 - 已完成并独立核查用户批准的四条接管探针：MLP棍推7s、RNN球撞10s/20s、MLP球撞10s；四条Task/Strict/机器gate和actor/filter replay均通过，student prefix 精确匹配原 rollout，teacher监督仅覆盖suffix。完整证据位于忽略目录 `code/mujoco_6d_vmc_benchmark/outputs/contact_yield_recovery_development_20261030_v1/`；最高峰矩约46.97 Nm，最大穿透0.03777 mm，均以各自收据为准。探针不替代学生策略闭环评测。
 - 已用30条新纯teacher轨迹+四条真实接管轨迹登记恢复增强数据（18500帧；teacher有效suffix 1575行；RNN prefix warmup 1175行、零loss权重），SHA256 `e75f3ed8b2eca8cd78143705e6caa3e35c6d9b62865568429c12feacf88d9b5b`。75候选公平fit、同六条纯teacher validation选择及独立FIT_AUDIT均未结束，未声称学生收敛或修复。
-- 唯一fit unit `sii-contact-yield-recovery-fit-v3-20261030.service` 同Invocation `60cde9546d8a4e039e18b7b7c9f93d35`仍active，12:05 CST快照为15/75，RNN seed2026102801 candidate02在途；CPU6/1线程、MemoryMax 3221225472、MemorySwapMax及cgroup swap.current为0、OOM/OOM-kill为0、MemoryCurrent约1.15 GiB。被动fixed27 handoff unit `sii-contact-yield-recovery-student-handoff-v1-20261030.service` active但dispatch_attempted=false，约62 MiB；FIT_AUDIT通过且父unit inactive前不会派发。
+- 唯一fit unit `sii-contact-yield-recovery-fit-v3-20261030.service` 同Invocation `60cde9546d8a4e039e18b7b7c9f93d35`仍active，12:10 CST快照为19/75，RNN seed2026102803 candidate02在途；CPU6/1线程、MemoryMax 3221225472、MemorySwapMax及cgroup swap.current为0、OOM/OOM-kill为0、MemoryCurrent约1.15 GiB。被动fixed27 handoff unit `sii-contact-yield-recovery-student-handoff-v1-20261030.service` active但dispatch_attempted=false，约62 MiB；FIT_AUDIT通过且父unit inactive前不会派发。
 - 新增 recovery fixed27诊断 wrapper及有限handoff，CLI smoke test和 `git diff --check` 通过；恢复完成后才基于新九模型跑27个train00开发回合。unseen108条件未读取/未注册/未派发；旧失败与不完整收据保留。未改物理、gate、actor接口、filter、执行器限制或最终指标；raw/checkpoint仅本地，尚未共享归档。
-- **未完成：** 75-fit、FIT_AUDIT、恢复后fixed27及失败分析、必要修复、最终108与六指标报告/媒体、共享归档、commit/push。新增源码与进度准备随本轮提交；无关untracked `MUJOCO_LOG.TXT` 与 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md` 保留。
+- 本地代码提交 `dcdf5b3c12a4181c5237427f78fc9be0701044cc` 已生成。发布前发现main前进到 `21c580a99cd8613fa06a12164f05aff1d86d200b`，已fetch/read并开始安全整合；merge commit及push仍待。
+- **未完成：** 75-fit、FIT_AUDIT、恢复后fixed27及失败分析、必要修复、最终108与六指标报告/媒体、共享归档、merge commit/push。无关untracked `MUJOCO_LOG.TXT` 与 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md` 保留。
 
+## 2026-10-30 — 完整78/原76–78已审；新主机79实际续训与Direct33恢复
+
+- [最新交接](docs/RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030.md)。78全30×55/41250、reward/replay/全loss/health/标签/终端与五图完成；原76–78 I近零不可判、A失败5%、V reward通过但loss异常，未收敛。新主机三路准确恢复、DECISION79和actual startup通过，79 steps{'impedance': 3251451, 'admittance': 3253055, 'vmc': 3254465}；全后续及前瞻79–81部署，无自动80/Direct34，Goal active。
+- 原Direct33中断28/30保留，只补两条件；新2全state不变、原28全部动作精确复现，旧最终内存不变证明明确缺失。启动环境/taskset错误及只读Path错误失败均保留并修复，无28重跑。合并审查完成=True、描述比较完成=True，最终范围仍待。79前5000真实日志/算术/图核验，I/V尖峰18.15/18.07；120秒8身份观察通过。
+- guardv7298样本，预热后min[75, 68, 67, 69]%、低于50[0, 0, 0, 0]；历史v6的31/33/44低谷和停机/预热0保留，科研结束仍合成保载。SSD1079成员/SHA9ea3de26已核，非HDD/arm1全备份。maina798f53e/baselinef6e8f8c2已fetch/read并保留非RL，科学提交954ebf03已push并核远端一致，首次TLS/RPC失败和重试成功保留，无子agent。
+
+## 2026-10-29 — 恢复79仅恢复及完整审查准备
+
+- [交接](docs/RL_RECOVERY79_PREPARATION_20261029.md)。79科学trainer与78逐字同一、五metadata插入可逆，递归保留原78/77/76/partial75；三路正例与每路19协议+8边界拒绝、真实未完整78拒绝通过。仅恢复等待4005471部署，准确恢复完成=False，无79决定/训练。
+- startup/archive/fullreview/health依赖实际导入及完整79loss历史/78→79配对准备；新decision须完整78和原76–78结果/五张实际图。两个准备错误均已修正保留，无科学重启。原78steps{'impedance': 3235898, 'admittance': 3237227, 'vmc': 3238500}/完成{'impedance': 30, 'admittance': 22, 'vmc': 30}、冻结33 runtime16/30；观察21样本/600.005秒19身份live或核验终态，Goal active、Direct34false。
+- guard214样本min[73, 71, 69, 65]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。SSD94成员/114183字节/SHAf451290a逐成员/AST核验，非HDD/arm1全备份；main69d656d6/baselinef6e8f8c2已读不变，认证发布待收据，无子agent。
+
+## 2026-10-29 — 恢复78前缀异常与原Direct33继续
+
+- [交接](docs/RL_RECOVERY78_PREFIX_DIRECT33_WAIT_20261029.md)。78前三路5000原字节/连续步号/全部有限/独立算术和实际图通过；VMC critic185.416763→55.847782尖峰及actor漂移、阻抗反复尖峰保留，日志不能归因minibatch。仅描述性前缀、未收敛，原全loss/终端/labels/health和76–78保持。
+- 11样本/300.005秒18原身份live，steps{'impedance': 3221641, 'admittance': 3222537, 'vmc': 3225962}，冻结33 runtime8/30、完整审查待；观察器自然结束，科学不重启。Goal active，无79/Direct34，指定ESN/最终比较仍待。
+- guard144样本min[76, 71, 69, 69]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。SSD35成员/936009字节/SHA81878110逐成员/AST核验，非HDD/arm1全备份；main69d656d6/baselinef6e8f8c2已读安全合并非RL新增，认证发布以收据为准，无子agent。
+
+## 2026-10-29 — 最新Direct33冻结验证实际启动
+
+- [交接](docs/RL_DIRECT33_FROZEN_VALIDATION_20261029.md)。原Direct33数值阶段/不启动34保持；新全30冻结验证固定最新33、原29条件和动作seed2026102626/41250动作/3300万子步，明确训练后选最新checkpoint。703原依赖/物理loop/动作函数保持，真实33全state/replay/930隔离/RNG恢复和两分片实际启动核验通过；当前2/30，完整审查未完。
+- 两evaluator2686848/2686852、rootreview2686856及只读29→33配对等待2754155；CPU0–3/GPU0，原参数78steps{'impedance': 3210972, 'admittance': 3212243, 'vmc': 3214623}与全审/76–78继续。观察器哈希对象误配失败保留并修正，无科学重启；5样本/120.004秒18原身份保持。Goal active、指定ESN/最终比较未完成。
+- guard171样本min[76, 70, 69, 67]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。SSD86成员/249770字节/SHA145626a4逐成员/AST核验，非HDD/arm1全备份；mainb1deda65/baselinef6e8f8c已读，发布待实际收据，无子agent。
+
+## 2026-10-29 — 完整77、诊断/恢复环境修复与78实际续训
+
+- [交接](docs/RL_RECOVERY77_COMPLETE78_RUNNING_20261029.md)。完整77三路30×55/41250、旧回放保持/新reward0误差；全loss/180标签/90reward对/health/2274+30终端和实际图全审，尖峰/actor漂移与导纳long0200改善、long0500退化保留，未收敛。
+- 缺health依赖按76原字节补齐，仅接缺失审查；空CUDA可见性导致仅恢复RNG误判已对照定位，原driver不变、三路准确state/replay/next65536和实际78startup通过。原失败链保留，无科学重启。78当前steps{'impedance': 3198395, 'admittance': 3199837, 'vmc': 3201243}，各30sampler，全loss/标签/2304终端锚点后续及原76–78窗口已部署，Goal active、无自动79/Direct34。
+- guard376样本min[75, 67, 67, 66]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。SSD383成员/3205500字节/SHAe0333625逐成员/AST核验，非HDD/arm1全备份；mainb1deda65/baselinef6e8f8c已读，认证发布待，无子agent。
+
+## 2026-10-29 — 恢复77等待与78完整审查/派发准备
+
+- [交接](docs/RL_RECOVERY77_WAIT78_DEPLOY_20261029.md)。78 startup/archive/reward-replay-health、完整loss及77→78配对源码准备，保留49–74/76/77历史、75拒绝和原算术/gate。decision78绑定完整77全审/四张实际图/准确恢复/全部历史和原76–78PLAN；真实未完整77、缺决定、缺78LAUNCH拒绝通过，无78决定/训练。
+- 原77连续21样本/600.002秒15身份live，当前steps{'impedance': 3188312, 'admittance': 3188942, 'vmc': 3192992}；观察器自然结束，原科学与78仅恢复等待继续，终态依FINISHED。guard184样本min[76, 69, 70, 66]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。Goal active、Direct34false。
+- SSD48成员/47887字节/SHAb9772cf4逐成员/AST核验，非HDD/arm1全备份；mainb1deda65/baselinef6e8f8c已读，认证发布待，无子agent。
+
+## 2026-10-29 — 恢复77前缀审查与78仅恢复准备
+
+- [交接](docs/RL_RECOVERY77_PREFIX78_PREPARATION_20261029.md)。77前5000原字节/连续步号/所有数值/独立算术和实际六栏图通过；I/V尖峰保留，仅前缀非收敛。原77steps{'impedance': 3176605, 'admittance': 3177603, 'vmc': 3180779}、各30sampler，原全loss/标签/终端/76–78保持。
+- 78driver科学trainer与77逐字同一，五metadata插入可逆；准确77父continuation和原77/76/partial75历史递归验证。三路metadata正例、每路19协议+8边界拒绝通过，真实未完整77拒绝。仅恢复等待110433部署，实际78恢复/训练尚未运行，须完整77证据才决定，Goal active。
+- 11样本/300.002秒15原身份保持，observer自然结束科学继续；guard143样本min[72, 71, 67, 68]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。SSD55成员/990257字节/SHA8cbf9884已核，非HDD/arm1全备份；main1f581096后b1deda65/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
+
+## 2026-10-29 — 恢复77全标签与2274终端后续
+
+- [交接](docs/RL_RECOVERY77_FOLLOWUPS_20261029.md)。77全180标签/90reward配对自动等待已部署，真实未完成77拒绝；V/A完整76全部2274终端锚点hash/独立标量通过，SSE3883.440215203/2815.605065203，无新forward/物理/更新。两路77终端等待已部署，预计2304、原focus及两分母保留；当前无77结果、无自动78，Goal active。
+- 原77连续11样本/300.002秒14身份均live，当前steps{'impedance': 3167637, 'admittance': 3168965, 'vmc': 3171126}、各30sampler；观察器自然结束、科学不重启。guard120样本min[76, 72, 68, 68]%、低于50[0, 0, 0, 0]；全部科研完成仍保载，合成非科学吞吐。
+- SSD59成员/954249字节/SHAd670aed2逐字节/AST已核，非HDD/arm1全备份。mainba9748b1后1f581096/baselinef6e8f8c已读，非RL新增逐字保留安全合并；68f3e0b4全316提交blob核验，push128缺HTTPS认证，无子agent。
+
+## 2026-10-29 — 完整恢复76与有限77实际接续
+
+- [最新交接](docs/RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。76三路各30×55/41250/noabort，旧partial75 replay/history全部保留、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2244+30终端/实际图全审。I尖峰、Vactor漂移和short0600 Strict退化、A总体改善及long0200退化全部保留，未收敛。
+- DECISION77绑定96证据，三路准确全state/replay/next65536和actual INITIAL_STATE/startup通过，当前steps3160279/3161595/3163135、各30sampler。原科学参数/75中断/76–78准确PLAN保持，无自动78、Direct34false，Goal active。77全loss和归档health已部署，77标签/2274锚点待补。
+- guard280样本min[75, 67, 62, 63]%、低于50[0, 0, 0, 0]，审查空档含合成保载、科研完成仍继续。SSD317成员/2677677字节/SHA9fe6df28逐成员/AST已核，大数据SSD非HDD/arm1全备份。main6492ab17后c1e2bf02/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
 ## 2026-10-30 — 球撞九模型诊断：训练拟合好仍可能闭环恢复失败
 
 - 新只读脚本与JSON/PNG/PDF基于本次真实ball00九轨迹，逐模型750帧actor精确重放和原数据/模型/review/指标hash核验，无新物理/优化/test。RNN全train-history MSE1.05–1.09e-5低于ESN1.14–1.27e-5，球开发却0/3对3/3；三RNN后期向上requested residual明显高于同历史反事实teacher，低整体MSE不能证明恢复。距离分析显示失败RNN02仍接近训练样本，不能把全部失败归为简单逐帧分布外；成功MLP03反事实误差亦可高于失败RNN02，禁止以此新选模/改gate。
@@ -454,24 +508,48 @@
 - 06:09:13–06:24:13UTC31次原1172675/start32623702及1201537/start32942337保持loaded/active，86→89、接续MLP3条件009。最高1871986688bytes/3GiB、OOM/实验swap0，全机swap仍近满。observer68766满900秒自然exit0，原科学继续，不重启。
 - 三新增完整55s/TaskStrictfalse，MLP2穿透0.955mm；ESN3途中误差约1.21m，RNN3未完成搬运。第十条件尚未完整，非新独立子步审计，失败保留。60692bytes/SHA c5eae7e5的31样本与源码已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0609_20261029_v1/V8_CONDITION009_RUNTIME_AND_WAIT.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
 - 开工main6492ab17/baselinef6e8f8c实际fetch/read，上一轮progress、本轮verified wait，Goal active、主矩阵未修复。原完整审查归档→唯一v6八球及实际运动核查→正式三场景补采/公平重训保持；无新增物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
+## 2026-10-29 — 恢复76观察与77完整审查/派发准备
+
+- [交接](docs/RL_RECOVERY76_WAIT77_DEPLOY_20261029.md)。77全loss保留49–74/76历史、75拒绝、新76→77配对；独立算术/原gate保持，路径及AST检查通过。新decision/launcher绑定完整76全审/实际图/准确77恢复/历史证据/原76–78PLAN，实际不完整76、缺DECISION77、缺77LAUNCH拒绝，无新训练或决定。
+- 原观察21样本/600.001s，全部原身份live=True，当前steps{'impedance': 3151526, 'admittance': 3152338, 'vmc': 3156000}；终态须按FINISHED核验，不重启科学。guard231样本min[75, 72, 69, 69]%、低于50[0, 0, 0, 0]，科研完成仍保载。SSD29成员/27972字节/SHAb640edd4已核，非HDD/arm1全备份；main6492ab17/baselinef6e8f8c已读，认证发布待，Goal active、Direct34false。
 
 ## 2026-10-29 — 非RL球示范真实搬运核查与后继复用
 
 - [报告](docs/NONRL_V8_BALL_ACTUAL_MOTION_20261029.md)：八train球实际物体搬运89.288–90.138mm，非仅目标移动；仍同一方向，不证明联合覆盖充分。新增独立实际位移/相对位置描述工具，八球v6原review后追加使用，正式数据亦可复用；不改变原198绑定源/资格/模型。
 - 四手算情形、四错误拒绝及真实32阶段标量核验通过，无新物理或拟合。四成员25290bytes/SHA6e070fc8已逐字节及暂存/最终核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_ball_actual_motion_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
 - 开工main7445692e/baselinef6e8f8c实际fetch/read；06:03原1172675/1201537仍active，06:05原108到85、RNN2条件009在途；v6未启动。上一轮证据提交progress，本轮实际运动诊断progress，Goal active，主矩阵未修复；完整审查归档/覆盖补采/公平重训仍待，无RL/子agent/服务器计算，可选004审计未重试。
+## 2026-10-29 — 恢复76早期审查与77仅恢复
+
+- [交接](docs/RL_RECOVERY76_PREFIX77_PREPARATION_20261029.md)。前5000原字节/连续步号/全数值/独立算术和实际图核验；I/V尖峰保留，仅前缀非收敛。原76steps3137135/3138193/3141366、各30sampler，原全loss/标签/终端/76–78继续。
+- 新77driver显式完整76父边界和原partial75历史，五metadata插入逆变换等于原trainer；每路17协议+7边界负例、实际不完整76拒绝通过。仅恢复等待1622287部署，77实际恢复/训练未执行；启动/归档review源码仅准备。两次构建失败原件保留，无科学重启。
+- 11样本/300.002s全部原身份保持、observer自然结束。guard233样本min[74, 69, 69, 68]%、低于50[0, 0, 0, 0]，科研完成仍保载。SSD63成员/956256字节/SHA88f12597已核，非HDD/arm1全备份；main7445692e/baselinef6e8f8c已读并安全合并，push认证仍待，Goal active、Direct34false。
 
 ## 2026-10-29 — 非RL第九条件完整，原矩阵81/108
 
 - 05:38:57–05:48:27UTC共20样本原1172675/start32623702及1201537/start32942337 loaded/active，79→81并接续条件009；最大2084233216bytes/3GiB、OOM/实验swap0。observer20511自然exit0，科学继续，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
 - 第九九条runtime Task/Strict全false，ESN1/3分别9.24/16.16秒global penetration abort，其余七条55s；ESN2/MLP2另有穿透超限，MLP1/ESN3舒适NA。前九81条runtime全失败，SPT NA。九AUDIT/metrics小文件hash和标签一致，非新独立子步审计；004–008待原完整后处理，全部失败保留。
 - 20样本/九结果/计数/源码62390bytes/SHA76a41613已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition008_runtime_20261029_v1/V8_CONDITION008_RUNTIME_AND_WAIT.json`。开工main9defd6a4/baselinef6e8f8c实际fetch/read，Goal active，主矩阵未修复，唯一v6未启动；后继完整审查归档/覆盖修复/补采/公平重训仍待。无新物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
+## 2026-10-29 — 恢复76全终端与标签后续
+
+- [交接](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。partial75的2244终端基准用真实恢复权重重新CPU前向并独立算术通过，V/A SSE 475.481157404/2078.809356365，旧feature/reward/masks精确、原focus与两分母保留。完整76两终端及全180标签等待已部署，真实不完整76拒绝，74→76额外partial75曝光明确；初次审计schema错误和等待器失败文件名修正原件保留，无科学重启。
+- 原76/归档/全loss/76–78/guard保持，steps3122627/3123989/3125869、各30sampler；guard预热后301样本min[75, 68, 66, 66]%、低于50[0, 0, 0, 0]，科研完成仍保载。证据65成员/938013字节/SHA5938fe7c已核SSD，非HDD/arm1全备份。main9defd6a4/baselinef6e8f8c已读，认证失败仅本地发布，Goal active、无77/Direct34/子agent。
+
+## 2026-10-29 — RL恢复证据本地保存与发布状态
+
+发布补充：恢复证据提交 a48d16cc、安全合并提交 359c6cebdfff466c103c21c907e560f86f22fd36 已保存在本地。重新 fetch/read main 9defd6a4（非RL77→79）与 baseline f6e8f8c，双方新增日志逐字保留。禁交互 push 返回128，缺GitHub HTTPS用户名认证；远端发布尚未完成。101项manifest均已与提交Git blob逐大小/SHA核验，SSD归档保持。
 
 ## 2026-10-29 — 非RL原108核验77→79
 
 - 05:31:37–05:36:07UTC共10样本原1172675/start32623702及1201537/start32942337 loaded/active，77→79、MLP2→ESN3→RNN3；最高2077904896bytes/3GiB、OOM/实验swap0。MLP2 runtime55s/carry失败，ESN3 runtime16.16s/lift/global penetration abort失败，全部保留；非新独立子步审计。observer61682自然exit0，科学继续。
 - 21965bytes/SHAaf4f76d0观察含源码，已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0531_20261029_v1/V8_VERIFIED_WAIT_0531.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。开工main08437d86/baselinef6e8f8c实际fetch/read。
 - 本轮verified wait，Goal active，主矩阵未修复；原完整108/后处理→审查归档→唯一v6八球→正式补采/公平重训仍待。无新物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
+## 2026-10-29 — 新容器partial75精确恢复与完整76
+
+- [最新交接](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。05:30发现容器主机更换、旧75/全部等待/guardv5消失，无FINISHED75；旧21样本观察当时有效，不能冒充当前live。旧75明确中断，原74–76无法评定，旧canonical76准备全部superseded，勿重复启动。
+- 三partial75 checkpoint保留新增23000/24000/24000；完整旧回放/history、全新增物理间隔reward/action/clock及有限网络optimizer审查通过，reward误差0。全state/next65536检查及每路9拒绝通过；新独立76实际INITIAL_STATE与startup通过，当前steps3118043/3119533/3120901，无回退或伪造terminal/完整75。
+- 原科学参数/4m markers/65536/UTD1/terminal128保持，只登记一轮76无自动77；新76全loss/归档health和前瞻76–78窗口已部署，原5%/近零1/bootstrap/anchor55及全部历史结论保持。Direct34false、Goal active。
+- guardv6同v5源码独立恢复，约10.210秒后四卡≥50；其后227样本min75/70/69/66%、低于50[0, 0, 0, 0]，保留最初2空闲样本和重启空档，科研完成仍保载，非自启服务。
+- SSD包102成员/141890字节/SHA855ec9c5逐字节/AST核验，大数据SSD非HDD/arm1全备份；实际fetch/read main08437d86/baselinef6e8f8c，安全合并非RL双方日志，无子agent。GitHub此前认证缺失，发布须以实际push为准。
 
 ## 2026-10-29 — 非RL原108八分钟核验75→77
 
@@ -562,6 +640,12 @@
 - 第五条件的新审计派发遇自动权限复核两次deadline超时，工具允许的一次重试已用完；只读确认unit not-found/MainPID0、无输出。已请求用户明确回复，记录时未收到；无回复勿再尝试同动作。不是安全性或科学审计失败。原108与既有完整后处理继续，03:08:42原PID1172675/1201537 loaded/active、48/108，Goal active；第五条件独立审计仍待，四条旧结果不替代新审计。
 - 四成员源码/检查/派发记录包6453bytes/SHA4294f6e6df5b0f6502c505f675c5a58390ec9538d699fd1326f094b80dd7ff34已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_streaming_audit_preparation_20261029_v1/SOURCE_AND_CHECKS.tar.gz`；不含在途物理全集。
 - 开工main334835c93d5de14b318fed673cb2182b2d3c11c7/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d实际fetch/read；收尾3b159dcf独立RL更新已读并快进整合。本轮准备progress，上轮verified wait，主矩阵尚未修复，原后继八球v5/三场景补采/公平训练/冻结回归保持；无RL/子agent/服务器计算/用户数据删除。
+## 2026-10-29 — 参数75早期loss、全2244锚点与76仅恢复
+
+- [交接](docs/RL_PARAMETER75_EARLY_ANCHOR_20261029.md)。原75身份保持，02:58:46steps3096507/3097205/3098191，各30sampler无失败。前5000原字节/连续步号/全数值/独立算术及实际图通过；I/A critic略升、V略降，I连续尖峰保留，仅前缀非收敛。
+- 全74的2244×57 V/A锚点精确，独立SSE1044.718845/4229.352470，含74新增30、0新前向；75预期2274，原focus/两分母保持。两终端及标签等待器已部署，真实不完整75拒绝。一次V只读复核exit143记录保留、确认终态后重跑通过，无科学重启。
+- 76仅恢复等待中，原wait源保持，无76训练，真实缺DECISION76拒绝；原68–70/71–73全审和原74–76PLAN保持，不提前要求未来结果。原75全loss与74–76等待继续，阈值不变。
+- 66guard样本min80/68/69/63%、低于50[0, 0, 0, 0]，科研完成仍保载。SSD包112成员/1976600字节/SHA59afb93b逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工main3b159dcf/baselinef6e8f8c实际fetch/read，无子agent，Goal active、Direct34false。
 
 ## 2026-10-29 — 完整74审查与准确有限75
 

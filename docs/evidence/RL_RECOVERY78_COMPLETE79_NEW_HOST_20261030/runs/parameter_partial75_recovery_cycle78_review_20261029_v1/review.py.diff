@@ -1,0 +1,71 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle77_review_20261029_v1/review.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle78_review_20261029_v1/review.py
+@@ -28,24 +28,24 @@
+     return True
+ methods={}
+ for m in ['impedance', 'admittance', 'vmc']:
+-    run=B/'runs/parameter_partial75_recovery_cycle77_20261029_v1'/m/'train'
+-    cp=B/'runs/parameter_partial75_recovery_cycle77_archive_20261029_v1'/m/'cycle_00077.pt'
++    run=B/'runs/parameter_partial75_recovery_cycle78_20261029_v1'/m/'train'
++    cp=B/'runs/parameter_partial75_recovery_cycle78_archive_20261029_v1'/m/'cycle_00078.pt'
+     deadline=time.monotonic()+7200
+     while not cp.exists():
+-        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle77 archive unavailable: '+m)
++        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle78 archive unavailable: '+m)
+         time.sleep(2)
+     x=torch.load(cp,map_location='cpu',weights_only=False)
+     execution=read(run/'EXECUTION.json');parent=Path(execution['resumed_from'])
+     assert sha(parent)==execution['resumed_checkpoint_sha256']
+     stage_parent=parent
+-    # Exact parent is complete recovery76; incomplete75 remains absent from complete-cycle history.
++    # Exact parent is complete recovery77; incomplete75 remains absent from complete-cycle history.
+     old=torch.load(parent,map_location='cpu',weights_only=False)
+     assert x['replay']['capacity']==4_000_000 and x['replay']['replay_capacity_followup']==FOLLOWUP_MARKER and x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     assert old['replay']['capacity']==4_000_000 and old['replay']['replay_capacity_extension']==CAPACITY_MARKER and old['replay']['replay_capacity_followup']==FOLLOWUP_MARKER
+     assert x['replay']['size']==x['replay']['cursor']==x['steps'] and x['steps']>1_000_000
+-    assert x['cycle']==77 and x['boundary']=='complete_condition_cycle'
++    assert x['cycle']==78 and x['boundary']=='complete_condition_cycle'
+     assert x['learner']['target_pair_reduction']==dict(version=1,target={'impedance':'minimum','admittance':'mean','vmc':'mean'}[m],actor='minimum',sampled_targets=2)
+-    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==77
++    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==78
+     assert finite(x['learner']) and x['learner']['critic_clock']
+     assert x['learner']['terminal_loss_weight']==128
+     assert x['learner']['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9995,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
+@@ -55,12 +55,13 @@
+     reg=read(run.parent/'REGISTRATION.json');conditions={r['id']:r for r in reg['conditions']}
+     assert x['protocol_sha256']==sha(run.parent/'REGISTRATION.json')
+     previous=read(reg['post_interruption_continuation']['parent_registration']['path'])
++    assert old['recovery_continuation']==previous['post_interruption_continuation']
+     assert sha(reg['post_interruption_continuation']['parent_registration']['path'])==reg['post_interruption_continuation']['parent_registration']['sha256']
+     assert reg['replay_capacity_stage']==previous['replay_capacity_stage'] and reg['replay_capacity_stage']['parent_cycle']==23
+     followup=reg['replay_capacity_followup_stage']
+     assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47
+     assert followup==previous['replay_capacity_followup_stage']
+-    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==76
++    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==77
+     baseline_deps=previous['batch_size_stage']['dependency_hashes'];deps=reg['batch_size_stage']['dependency_hashes']
+     assert deps==baseline_deps
+     assert all(deps[k]==v for k,v in baseline_deps.items())
+@@ -72,11 +73,11 @@
+     assert read(run.parent/'CHECK_ONLY_REVIEW.json')['passed'] and read(run.parent/'INITIAL_STATE_REVIEW.json')['passed']
+     assert sha(recovery['partial_audit']['path'])==recovery['partial_audit']['sha256']
+     continuation=reg['post_interruption_continuation']
+-    assert x['recovery_continuation']==continuation and continuation['parent_cycle']==76 and continuation['new_cycle']==77
++    assert x['recovery_continuation']==continuation and continuation['parent_cycle']==77 and continuation['new_cycle']==78
+     assert old['interruption_recovery']==recovery and sha(parent)==continuation['checkpoint']['sha256']
+     n=old['replay']['size'];arr=x['replay']['arrays']
+     for k,v in old['replay']['arrays'].items():assert np.array_equal(v,arr[k][:n])
+-    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==77]
++    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==78]
+     assert len(transitions)==x['steps']-old['steps']
+     assert [t['step'] for t in transitions]==list(range(old['steps']+1,x['steps']+1))
+     assert x['learner']['num_gradient_steps']-old['learner']['num_gradient_steps']==len(transitions)
+@@ -84,7 +85,7 @@
+     np.testing.assert_array_equal(arr['dones'][n:,0],np.array([t['done'] for t in transitions],np.float32))
+     by_case=collections.defaultdict(list)
+     for t in transitions:by_case[t['condition']].append(t)
+-    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==77]
++    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==78]
+     assert len(episodes)==30 and {e['condition'] for e in episodes}==set(conditions)
+     max_reward_error=0.
+     for e in episodes:

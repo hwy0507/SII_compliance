@@ -1,0 +1,24 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery78_completion_preparation_20261029_v1/decision78_before_dependency_fix.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery78_completion_preparation_20261029_v1/decision78.py
+@@ -9,6 +9,13 @@
+ def collect():
+  assert (PARENT/'ARCHIVE_REVIEW_FINISHED.json').exists(),'Complete77 archive/review not ready'
+  assert read(PARENT/'ARCHIVE_REVIEW_FINISHED.json')['completed'] and read(REV/'FINISHED.json')['completed'] and read(REV/'REVIEW.json')['passed']
++ fix=B/'runtime/recovery77_health_dependency_fix_20261029_v1'
++ assert read(fix/'HEALTH_RECOVERY_REVIEW.json')['passed']
++ completion=read(PARENT/'ARCHIVE_REVIEW_FINISHED.json')
++ assert sha(completion['original_failure']['path'])==completion['original_failure']['sha256']
++ assert completion['recovery']==ref(fix/'HEALTH_RECOVERY_REVIEW.json')
++ for item in read(fix/'DEPENDENCY_REPAIR.json')['destinations']:assert sha(item['path'])==item['sha256']
++ for role in ['labels','vmc','admittance','restore78']:assert read(fix/(role+'_RECOVERY_REVIEW.json'))['passed']
+  assert read(PREP/'FINISHED.json')['prepared'] and read(OUT/'CHECK_ONLY_COMPLETE.json')['passed']
+  assert all(x==0 for x in read(OUT/'CHECK_ONLY_EXIT_CODES.json').values())
+  evidence={}
+@@ -16,6 +23,7 @@
+   d=read(path);assert d['passed'];evidence[prefix+'decision']=ref(path)
+   for k,v in d['evidence'].items():assert sha(v['path'])==v['sha256'];evidence[prefix+k]=v
+  required=dict(parent_review=REV/'REVIEW.json',health=REV/'health/DIAGNOSIS.json',health_plot=REV/'health/PLOT_INSPECTION.json',loss=LOSS/'REVIEW.json',paired_gate=LOSS/'PAIRED_GATE_REVIEW.json',saved_loss=LOSS/'SAVED_REVIEW.json',loss_plot=LOSS/'PLOT_INSPECTION.json',all_labels=LABEL/'COMPLETE76_77.json',all_labels_saved=LABEL/'COMPLETE76_77_SAVED_REVIEW.json',labels_finished=LABEL/'FINISHED.json',check_only=OUT/'CHECK_ONLY_COMPLETE.json',prepare_finished=PREP/'FINISHED.json',current_window76_78_plan=WINDOW/'PLAN.json',interrupted_window=B/'runtime/parameter75_interruption_recovery_20261029_v1/ORIGINAL_WINDOW_INTERRUPTED.json',launcher_sources=D/'LAUNCH_SOURCE_REVIEW.json')
++ for n in ['DEPENDENCY_REPAIR.json','HEALTH_RECOVERY_REVIEW.json','labels_RECOVERY_REVIEW.json','vmc_RECOVERY_REVIEW.json','admittance_RECOVERY_REVIEW.json','restore78_RECOVERY_REVIEW.json']:required['recovery77_'+n]=fix/n
+  for m in ['impedance','admittance','vmc']:required['restore_'+m]=OUT/m/'CHECK_ONLY_REVIEW.json'
+  for m in ['vmc','admittance']:
+   p=B/f'runs/{m}_recovery77_terminal_followup_20261029_v1'

@@ -1,0 +1,18 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery77_completion_preparation_20261029_v1/observe77_0705.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery78_20261029_v1/observe77.py
+@@ -1,13 +1,13 @@
+ from pathlib import Path
+ import json,time,hashlib,os,subprocess
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=B/'runtime/prepare_recovery77_20261029_v1';O=B/'runtime/recovery77_verified_wait_0705_20261029_v1';O.mkdir(exist_ok=False);R=B/'runs/parameter_partial75_recovery_cycle77_20261029_v1';G=Path('/tmp/sii_gpu_util_guard_20261029_v6')
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=B/'runtime/prepare_recovery78_20261029_v1';O=B/'runtime/recovery77_prepare78_verified_wait_20261029_v1';O.mkdir(exist_ok=False);R=B/'runs/parameter_partial75_recovery_cycle77_20261029_v1';G=Path('/tmp/sii_gpu_util_guard_20261029_v6')
+ os.sched_setaffinity(0,{54})
+ read=lambda p:json.loads(p.read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ def write(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
+ def identity(j):
+  p=Path(f'/proc/{j["pid"]}/stat');f=p.read_text().rsplit(')',1)[1].split() if p.exists() else None
+  return dict(pid=j['pid'],proc_start_ticks=j['proc_start_ticks'],live=f is not None and f[19]==j['proc_start_ticks'] and f[0]!='Z',state=f[0] if f else None)
+-jobs=read(R/'LAUNCH.json')['jobs']+[read(R/'MONITOR_LAUNCH.json')]
++jobs=read(R/'LAUNCH.json')['jobs']+[read(R/'MONITOR_LAUNCH.json'),read(D/'LAUNCH.json')]
+ for n in ['parameter_recovery77_loss_20261029_v1','parameter_recovery76_78_reward_stability_20261029_v1','parameter_recovery77_task_labels_20261029_v1','vmc_recovery77_terminal_followup_20261029_v1','admittance_recovery77_terminal_followup_20261029_v1']:jobs.append(read(B/'runs'/n/'LAUNCH.json'))
+ g=read(G/'LAUNCH.json')
+ for pid in [g['pid'],*g['workers'].values()]:

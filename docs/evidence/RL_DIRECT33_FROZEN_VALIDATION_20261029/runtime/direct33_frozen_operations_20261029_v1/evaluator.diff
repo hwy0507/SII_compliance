@@ -1,0 +1,13 @@
+--- frozen29_evaluator
++++ frozen33_evaluator
+@@ -57,8 +57,8 @@
+         raise ValueError('Stochastic evaluation needs an explicit nonnegative external seed')
+     if not args.stochastic and args.noise_schedule != 'independent':
+         raise ValueError('A noise schedule applies only to stochastic evaluation')
+-    if not args.check_only and args.expected_cycle != 29:
+-        raise ValueError('Physical evaluation is registered only for complete29')
++    if not args.check_only and args.expected_cycle != 33:
++        raise ValueError('Physical evaluation is registered only for complete33')
+     if args.expected_cycle < 27:
+         raise ValueError('Complete recovered take27 or later checkpoints only')
+     torch.set_num_threads(1)

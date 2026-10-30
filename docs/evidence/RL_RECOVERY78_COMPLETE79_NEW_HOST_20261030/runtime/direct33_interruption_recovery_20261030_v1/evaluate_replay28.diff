@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -214,6 +214,9 @@
+         replay_size=replay.size, historical_capacity_entry=23,
+         optimizer_updates=0, new_physics=0, replay_writes=0))
+     if args.check_only:
++        # Independent saved-action replay; no physical simulator or optimizer call.
++        from replay_saved28 import verify
++        verify(learner, output, case_action_seed, seeded_action, digest)
+         assert digest(replay.state_dict()) == replay_digest
+         assert digest(learner.state_dict()) == initial_state
+         write(output/'CHECK_ONLY_REVIEW.json', dict(passed=True,

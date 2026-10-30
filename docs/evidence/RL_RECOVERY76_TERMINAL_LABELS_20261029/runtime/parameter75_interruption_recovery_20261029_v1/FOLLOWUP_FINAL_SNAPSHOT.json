@@ -1,0 +1,131 @@
+{
+  "time": 1793253395.108533,
+  "host": "rltest-1025--a6ed2ff39b3c-nvfdwjhzzw",
+  "learners": [
+    {
+      "pid": 360532,
+      "proc_start_ticks": "44757345",
+      "method": "impedance",
+      "progress": {
+        "cycle": 76,
+        "steps": 3122627,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3117628,
+        "wall_time_utc": 1793253394.6213894
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 360533,
+      "proc_start_ticks": "44757345",
+      "method": "admittance",
+      "progress": {
+        "cycle": 76,
+        "steps": 3123989,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3118990,
+        "wall_time_utc": 1793253394.9635615
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 360534,
+      "proc_start_ticks": "44757346",
+      "method": "vmc",
+      "progress": {
+        "cycle": 76,
+        "steps": 3125869,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3120870,
+        "wall_time_utc": 1793253394.8424592
+      },
+      "samplers": 30
+    }
+  ],
+  "followups": {
+    "vmc_recovery76_terminal_followup_20261029_v1": {
+      "pid": 986781,
+      "proc_start_ticks": "44842133",
+      "plan_sha256": "3f5a73280bccd22f9296b7dbf14cf9a67c5b2484926b8f8f682ac251331e76ee"
+    },
+    "admittance_recovery76_terminal_followup_20261029_v1": {
+      "pid": 986787,
+      "proc_start_ticks": "44842133",
+      "plan_sha256": "7c3d8380c90eebceb7f2e623af94d675e39cc4c1761022ebdb6ad85b74ac9f72"
+    },
+    "parameter_recovery76_task_labels_20261029_v1": {
+      "pid": 939351,
+      "proc_start_ticks": "44835780",
+      "plan_sha256": "bff0affca4c1d5839be68805d5e7788c109c527e4ef1962a687bf0dd8769ba88"
+    },
+    "parameter_recovery76_loss_20261029_v1": {
+      "pid": 436146,
+      "proc_start_ticks": "44768306",
+      "plan_sha256": "434f09ceb0c3b91e41b5006eaa84dafb1b37d2f2f7b6d0ba004f7953c94410e2"
+    },
+    "parameter_recovery76_78_reward_stability_20261029_v1": {
+      "pid": 436148,
+      "proc_start_ticks": "44768306",
+      "plan_sha256": "57b3d6be84b8b384922a35879ddfd5cd1c6e7a6b71b35ca5652c2ddfc8cd4e85"
+    }
+  },
+  "guard": {
+    "path": "/tmp/sii_gpu_util_guard_20261029_v6",
+    "first_warmup_samples": 2,
+    "post_warmup_samples": 301,
+    "post_warmup_min": [
+      75,
+      68,
+      66,
+      66
+    ],
+    "post_warmup_below50": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "last": {
+      "time": 1793253390.2976918,
+      "gpus": [
+        {
+          "gpu": 0,
+          "utilization": 80,
+          "memory_mib": 564,
+          "duty": 0.8
+        },
+        {
+          "gpu": 1,
+          "utilization": 98,
+          "memory_mib": 4463,
+          "duty": 0.7
+        },
+        {
+          "gpu": 2,
+          "utilization": 94,
+          "memory_mib": 4493,
+          "duty": 0.7
+        },
+        {
+          "gpu": 3,
+          "utilization": 94,
+          "memory_mib": 4502,
+          "duty": 0.7
+        }
+      ],
+      "synthetic_guard_included": true
+    },
+    "synthetic": true,
+    "keep_after_science": true
+  },
+  "archive": {
+    "pid": 360535,
+    "proc_start_ticks": "44757346"
+  }
+}
