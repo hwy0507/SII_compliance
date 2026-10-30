@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 完整80已审；有限81实际续训
+
+- [交接](docs/RL_RECOVERY80_COMPLETE81_RUNNING_20261030.md)。80三路各30×55/41250/noabort、旧回放/reward0误差/全loss/health/180标签/两终端/四实际图通过；reward−2.390438/−8.491851/−4.588756，Task/Strict18/17、14/14、17/16。I/V short0600 Strict退化、A Task退化、V74.12尖峰及Q超界保留，未收敛。
+- 三路准确81恢复和实际startup通过；明确DECISION81、全后续及2394锚点已部署，steps{'impedance': 3321695, 'admittance': 3323993, 'vmc': 3325157}。79阻抗安全中止及75不完整保留；80已知案例成功不证明修复。原76–78/79–81窗口、Direct33限制与指定ESN范围保持，无自动82/Direct34，Goal active。
+- GPU430样本min[76, 60, 65, 68]%、低于50[0, 0, 0, 0]，科研完成仍合成保载；SSD303成员/SHA34a808ba逐字核验，非HDD/arm1全备份。main450dcce3/baselinef6e8f8c已fetch/read并快进保留非RL9/27；发布见SSD PUBLICATION收据，无子agent。
+
 ## 2026-10-30 — 原80继续；81完整审查与派发准备
 
 - [交接](docs/RL_RECOVERY81_DISPATCH_PREPARATION_20261030.md)。81决定绑定完整80/四实际图/准确恢复、版本2 DECISION80及79失败、原76–78完整结果和79–81准确PLAN；缺完整80/决定/LAUNCH实际拒绝。launcher父80/driver80引用核验，81标签/2394→2424终端helper准备但未部署，无81决定/训练、无Direct34。

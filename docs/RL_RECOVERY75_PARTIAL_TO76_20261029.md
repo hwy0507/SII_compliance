@@ -1,3 +1,5 @@
+> **最新：[完整80已审、81实际运行](RL_RECOVERY80_COMPLETE81_RUNNING_20261030.md)。Goal active，81及GPU保载继续，无自动82/Direct34。**
+
 > **最新：[81完整审查/派发准备与原80观测](RL_RECOVERY81_DISPATCH_PREPARATION_20261030.md)。无81决定/训练，原80和GPU保活继续。**
 
 > **最新：[80前缀与81仅恢复准备](RL_RECOVERY80_PREFIX81_PREPARATION_20261030.md)。原80运行，无81训练决定，GPU保活继续。**
