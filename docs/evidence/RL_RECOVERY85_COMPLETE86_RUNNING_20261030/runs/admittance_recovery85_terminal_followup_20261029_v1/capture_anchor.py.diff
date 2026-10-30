@@ -1,0 +1,37 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance_recovery84_terminal_followup_20261029_v1/capture_anchor.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance_recovery85_terminal_followup_20261029_v1/capture_anchor.py
+@@ -1,4 +1,4 @@
+-"""Capture complete83 terminal anchor from reviewed saved Q; no network forward or training."""
++"""Capture complete84 terminal anchor from reviewed saved Q; no network forward or training."""
+ from pathlib import Path
+ import hashlib,json,time,os,math
+ os.sched_setaffinity(0,{53})
+@@ -16,20 +16,20 @@
+ assert binding['checkpoint']==p['inputs']['checkpoint'] and prior['values_sha256']==p['inputs']['prior_values']['sha256']
+ assert read(p['inputs']['complete_review']['path'])['passed']
+ ck=torch.load(p['inputs']['checkpoint']['path'],map_location='cpu',weights_only=False)
+-assert ck['cycle']==83 and ck['boundary']=='complete_condition_cycle' and ck['controller']==p['method']
+-a=ck['replay']['arrays'];idx=np.flatnonzero(a['dones'][:,0]==1);assert len(idx)==2484
++assert ck['cycle']==84 and ck['boundary']=='complete_condition_cycle' and ck['controller']==p['method']
++a=ck['replay']['arrays'];idx=np.flatnonzero(a['dones'][:,0]==1);assert len(idx)==2514
+ features=np.concatenate([a['observations'][idx],a['actions'][idx]],axis=1);rewards=a['rewards'][idx,0];masks=a['masks'][idx].T
+ with np.load(p['inputs']['prior_values']['path'],allow_pickle=False) as old:
+  for k,v in [('indices',idx),('rewards',rewards),('masks',masks)]:np.testing.assert_array_equal(v,old[k])
+  q=old['q_after'].copy();den=old['denominator'].copy()
+ np.testing.assert_array_equal(den,a['masks'].sum(axis=0,dtype=float)+127*masks.sum(axis=1,dtype=float))
+-assert features.shape==(2484,57) and q.shape==(5,2484) and np.isfinite(q).all()
++assert features.shape==(2514,57) and q.shape==(5,2514) and np.isfinite(q).all()
+ assert ck['replay']['capacity']==4000000 and ck['learner']['terminal_loss_weight']==128
+-sse=math.fsum(float(masks[i,j])*(float(q[i,j])-float(rewards[j]))**2 for i in range(5) for j in range(2484))
+-contribution=math.fsum(128*float(masks[i,j])*(float(q[i,j])-float(rewards[j]))**2/float(den[i]) for i in range(5) for j in range(2484))
++sse=math.fsum(float(masks[i,j])*(float(q[i,j])-float(rewards[j]))**2 for i in range(5) for j in range(2514))
++contribution=math.fsum(128*float(masks[i,j])*(float(q[i,j])-float(rewards[j]))**2/float(den[i]) for i in range(5) for j in range(2514))
+ assert math.isclose(contribution,prior['all_terminal_contribution'],rel_tol=1e-12,abs_tol=1e-12)
+-assert not (OUT/'anchor83.npz').exists()
+-np.savez_compressed(OUT/'anchor83.npz',indices=idx,features=features,rewards=rewards,masks=masks,q_after=q,denominator=den)
++assert not (OUT/'anchor84.npz').exists()
++np.savez_compressed(OUT/'anchor84.npz',indices=idx,features=features,rewards=rewards,masks=masks,q_after=q,denominator=den)
+ for x in p['inputs'].values():assert sha(x['path'])==x['sha256']
+-r=dict(passed=True,time=time.time(),method=p['method'],terminal_rows=2484,features_shape=[2484,57],groups=dict(all2484=dict(masked_sse_after=sse)),all_terminal_contribution=contribution,anchor_sha256=sha(OUT/'anchor83.npz'),checkpoint=p['inputs']['checkpoint'],source_sha256=sha(Path(__file__)),new_network_forward=0,new_physics=0,optimizer_updates=0,replay_writes=0,limitation='Reuse complete83 independently audited Q and denominator for all2484 terminals; features read from exact complete83 checkpoint, including its30 new terminals. Historical partial75 remains interrupted.')
++r=dict(passed=True,time=time.time(),method=p['method'],terminal_rows=2514,features_shape=[2514,57],groups=dict(all2514=dict(masked_sse_after=sse)),all_terminal_contribution=contribution,anchor_sha256=sha(OUT/'anchor84.npz'),checkpoint=p['inputs']['checkpoint'],source_sha256=sha(Path(__file__)),new_network_forward=0,new_physics=0,optimizer_updates=0,replay_writes=0,limitation='Reuse complete84 independently audited Q and denominator for all2514 terminals; features read from exact complete84 checkpoint, including its30 new terminals. Historical partial75 remains interrupted.')
+ (OUT/'ANCHOR_REVIEW.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r))

@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 完整85与固定2514已审；有限86实际续训
+
+- [交接](docs/RL_RECOVERY85_COMPLETE86_RUNNING_20261030.md)。85各30×55/41250/noabort、全replay/reward0误差/loss/health/185标签/两终端/五实际图通过；reward−.590930/−8.629324/−4.586652，Task/Strict18/18、15/14、17/16。A/V末段loss上升，VMC short0600恢复但short0000新Strict失败，未收敛。
+- 固定2514/all5 V总SSE9046.061→3556.825，A1283.626→3932.823；改善退化分项全部保留。新85V short0000/A short0600仍5113/5331更新机会，实际抽样未知。明确有限86决定/精确恢复/实际startup/120.0秒28身份观察通过，steps{'impedance': 3528493, 'admittance': 3530701, 'vmc': 3531577}；全后续及84—86固定2514跟踪已部署，无自动87，Goal active。
+- GPU346样本min[75, 66, 66, 64]%、低于50[0, 0, 0, 0]，科学完成仍补载；SSD388成员/SHAb1e98771核验，非HDD/arm1全备份。main74b2d54e/baselinef6e8f8c已实际fetch/read，发布见收据，无子agent。
+
 ## 2026-10-30 — 84因果历史信息审查完成；85继续、86入口仅准备
 
 - [交接](docs/RL_RECOVERY85_CAUSAL_HISTORY86_READY_20261030.md)。完整84全部90回合/123750动作的preaction历史穿透、原观测/动作/时间/标签/hash及独立标量回读与四栏实际图通过。A/V short0600均row96/3.84s已知超限、后1279动作可用；非独立物理重建/全历史replay覆盖或模型修订。
