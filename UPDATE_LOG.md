@@ -1,9 +1,9 @@
-## 2026-10-30 — 四条teacher接管探针通过；恢复增强公平重训推进至25/75
+## 2026-10-30 — 四条teacher接管探针通过；恢复增强公平重训推进至27/75
 
 - 开工用 `git ls-remote` 核实 GitHub main `a798f53e6c30ed69bd2dc3ff81d6038726bdf496`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与当时tracking refs一致，阅读两分支日志及根 `AGENTS.md`。sandbox fetch失败；发布前远端main前进到 `21c580a99cd8613fa06a12164f05aff1d86d200b`，随后fetch/read成功并安全合并，远端新改动未触及本训练源码。baseline日志仍停留在2026-10-08。
 - 已完成并独立核查用户批准的四条接管探针：MLP棍推7s、RNN球撞10s/20s、MLP球撞10s；四条Task/Strict/机器gate和actor/filter replay均通过，student prefix 精确匹配原 rollout，teacher监督仅覆盖suffix。完整证据位于忽略目录 `code/mujoco_6d_vmc_benchmark/outputs/contact_yield_recovery_development_20261030_v1/`；最高峰矩约46.97 Nm，最大穿透0.03777 mm，均以各自收据为准。探针不替代学生策略闭环评测。
 - 已用30条新纯teacher轨迹+四条真实接管轨迹登记恢复增强数据（18500帧；teacher有效suffix 1575行；RNN prefix warmup 1175行、零loss权重），SHA256 `e75f3ed8b2eca8cd78143705e6caa3e35c6d9b62865568429c12feacf88d9b5b`。75候选公平fit、同六条纯teacher validation选择及独立FIT_AUDIT均未结束，未声称学生收敛或修复。
-- 唯一fit unit `sii-contact-yield-recovery-fit-v3-20261030.service` 同Invocation `60cde9546d8a4e039e18b7b7c9f93d35`仍active，12:17 CST快照为25/75，RNN seed2026102803 candidate03在途；CPU6/1线程、MemoryMax 3221225472、MemorySwapMax及cgroup swap.current为0、OOM/OOM-kill为0、MemoryCurrent约1.15 GiB。被动fixed27 handoff unit `sii-contact-yield-recovery-student-handoff-v1-20261030.service` active但dispatch_attempted=false，约62 MiB；FIT_AUDIT通过且父unit inactive前不会派发。
+- 唯一fit unit `sii-contact-yield-recovery-fit-v3-20261030.service` 同Invocation `60cde9546d8a4e039e18b7b7c9f93d35`仍active，12:20 CST快照为27/75，RNN seed2026102801 candidate04在途；CPU6/1线程、MemoryMax 3221225472、MemorySwapMax及cgroup swap.current为0、OOM/OOM-kill为0、MemoryCurrent约1.16 GiB。被动fixed27 handoff unit `sii-contact-yield-recovery-student-handoff-v1-20261030.service` active但dispatch_attempted=false，约62 MiB；FIT_AUDIT通过且父unit inactive前不会派发。
 - 新增 recovery fixed27诊断 wrapper及有限handoff，CLI smoke test和 `git diff --check` 通过；恢复完成后才基于新九模型跑27个train00开发回合。unseen108条件未读取/未注册/未派发；旧失败与不完整收据保留。未改物理、gate、actor接口、filter、执行器限制或最终指标；raw/checkpoint仅本地，尚未共享归档。
 - 本地源码提交 `dcdf5b3c12a4181c5237427f78fc9be0701044cc` 已安全整合远端 `21c580a99cd8613fa06a12164f05aff1d86d200b`；merge commit `d50fc71b90807548245808e17aa297d78eb9f1b1` 的 `git push origin main` 返回成功（21c580a9→d50fc71b）。
 - **未完成：** 75-fit、FIT_AUDIT、恢复后fixed27及失败分析、必要修复、最终108与六指标报告/媒体、共享归档。无关untracked `MUJOCO_LOG.TXT` 与 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md` 保留。
