@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 接管探针全通过；恢复增强公平重训进行中（15/75）
+
+- 开工核对 GitHub main `a798f53e6c30ed69bd2dc3ff81d6038726bdf496`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，`git ls-remote` 与本地 tracking refs 一致；阅读两分支更新日志及本文件。baseline 日志当前停留在 2026-10-08，不能代表本轮新结果。
+- 用户明确批准的四条 teacher 接管探针已由独立回放审计：MLP 棍推 7s、RNN 球撞 10s/20s、MLP 球撞 10s，四条 Task/Strict/machine gates 均通过；各自 student prefix 与原 student rollout 精确配对，只有 VMC teacher suffix 作监督标签。收据在 `code/mujoco_6d_vmc_benchmark/outputs/contact_yield_recovery_development_20261030_v1/`。这些证明 teacher 能完成接管后缀，不证明学生策略已学会恢复。
+- 原固定27 train00诊断的失败已保留。新公平重训使用原30条纯 teacher 特化场景数据加四条实测接管轨迹：18500帧、1575条 teacher suffix 有效监督行、1175条实际 student prefix 仅作零权重 RNN warmup；原六条纯 teacher validation 身份固定不变。数据 SHA256 `e75f3ed8b2eca8cd78143705e6caa3e35c6d9b62865568429c12feacf88d9b5b`。
+- 唯一训练 unit `sii-contact-yield-recovery-fit-v3-20261030.service` 活跃，Invocation `60cde9546d8a4e039e18b7b7c9f93d35`，本机 CPU6/单线程/3 GiB/禁 swap；12:05 CST 快照为15/75完成、RNN seed2026102801 candidate02在途，MemoryCurrent约1.15 GiB，cgroup memory.swap.current=0、OOM/OOM-kill=0。FIT_AUDIT、九模型锁定、固定27重评尚未完成。
+- 新 fixed27 wrapper/handoff 已登记并由 unit `sii-contact-yield-recovery-student-handoff-v1-20261030.service` 被动等待；MainPID2065413，约62 MiB，CPU6/单线程/3 GiB/禁 swap，`dispatch_attempted=false`。只有75候选审计通过且fit unit退出后才允许运行新模型的27个train00开发回合；原unseen108条件未读取、未登记、未派发。
+- 新增接续源码 `experiments/diagnose_contact_yield_recovery_students_20261030.py` 与 `experiments/handoff_contact_yield_recovery_students_20261030.py`；CLI导入检查通过。新训练/接续代码与本进度随本轮提交；raw与checkpoint仅本机，未做服务器计算或共享归档。保留全部旧失败；不改物理、Task/Strict gate、action filter、actor输入、dt、测试集或指标。
+
 ## 2026-10-30 — 当前108正式六指标报告入口准备完成，真实训练13/75
 
 - 读[最终报告入口及限制](docs/NONRL_CONTACT_YIELD_FINAL_REPORT_READINESS_20261030.md)。新增experiments/report_contact_yield_final108_20261030.py，仅允许固定新运行完整独立108报告，核adapter注册/执行/reviewer hash、全部身份/replay和原汇总；输出四CSV/六指标PNG-PDF/MD/hash收据，无拟合/物理/选模。family36回合pooling与九seed模型表明确分开；SPT仅双成功、峰矩含失败、人舒适NA/代理分列，无成功或无接触保持NA。

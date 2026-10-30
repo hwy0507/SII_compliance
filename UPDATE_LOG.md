@@ -1,3 +1,12 @@
+## 2026-10-30 — 四条teacher接管探针通过；恢复增强公平重训推进至15/75
+
+- 开工用 `git ls-remote` 核实 GitHub main `a798f53e6c30ed69bd2dc3ff81d6038726bdf496`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与本地 tracking refs 一致，阅读两分支日志及根 `AGENTS.md`。随后 `git fetch` 因连接 GitHub 失败；baseline 缓存日志停留在2026-10-08，push前需重新核对。
+- 已完成并独立核查用户批准的四条接管探针：MLP棍推7s、RNN球撞10s/20s、MLP球撞10s；四条Task/Strict/机器gate和actor/filter replay均通过，student prefix 精确匹配原 rollout，teacher监督仅覆盖suffix。完整证据位于忽略目录 `code/mujoco_6d_vmc_benchmark/outputs/contact_yield_recovery_development_20261030_v1/`；最高峰矩约46.97 Nm，最大穿透0.03777 mm，均以各自收据为准。探针不替代学生策略闭环评测。
+- 已用30条新纯teacher轨迹+四条真实接管轨迹登记恢复增强数据（18500帧；teacher有效suffix 1575行；RNN prefix warmup 1175行、零loss权重），SHA256 `e75f3ed8b2eca8cd78143705e6caa3e35c6d9b62865568429c12feacf88d9b5b`。75候选公平fit、同六条纯teacher validation选择及独立FIT_AUDIT均未结束，未声称学生收敛或修复。
+- 唯一fit unit `sii-contact-yield-recovery-fit-v3-20261030.service` 同Invocation `60cde9546d8a4e039e18b7b7c9f93d35`仍active，12:05 CST快照为15/75，RNN seed2026102801 candidate02在途；CPU6/1线程、MemoryMax 3221225472、MemorySwapMax及cgroup swap.current为0、OOM/OOM-kill为0、MemoryCurrent约1.15 GiB。被动fixed27 handoff unit `sii-contact-yield-recovery-student-handoff-v1-20261030.service` active但dispatch_attempted=false，约62 MiB；FIT_AUDIT通过且父unit inactive前不会派发。
+- 新增 recovery fixed27诊断 wrapper及有限handoff，CLI smoke test和 `git diff --check` 通过；恢复完成后才基于新九模型跑27个train00开发回合。unseen108条件未读取/未注册/未派发；旧失败与不完整收据保留。未改物理、gate、actor接口、filter、执行器限制或最终指标；raw/checkpoint仅本地，尚未共享归档。
+- **未完成：** 75-fit、FIT_AUDIT、恢复后fixed27及失败分析、必要修复、最终108与六指标报告/媒体、共享归档、commit/push。新增源码与进度准备随本轮提交；无关untracked `MUJOCO_LOG.TXT` 与 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md` 保留。
+
 ## 2026-10-30 — 球撞九模型诊断：训练拟合好仍可能闭环恢复失败
 
 - 新只读脚本与JSON/PNG/PDF基于本次真实ball00九轨迹，逐模型750帧actor精确重放和原数据/模型/review/指标hash核验，无新物理/优化/test。RNN全train-history MSE1.05–1.09e-5低于ESN1.14–1.27e-5，球开发却0/3对3/3；三RNN后期向上requested residual明显高于同历史反事实teacher，低整体MSE不能证明恢复。距离分析显示失败RNN02仍接近训练样本，不能把全部失败归为简单逐帧分布外；成功MLP03反事实误差亦可高于失败RNN02，禁止以此新选模/改gate。
