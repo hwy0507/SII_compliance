@@ -1,0 +1,94 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation91_continuation_20261030_v1/driver.py
++++ driver92.py
+@@ -1,37 +1,37 @@
+-"""One finite continuation91 from exact trained90; preserve learned52 and no automatic92."""
++"""One finite continuation92 from exact trained91; preserve learned52 and no automatic93."""
+ from pathlib import Path
+ import argparse,copy,hashlib,importlib.util,json,os,sys,time
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=Path(__file__).parent;RUN=B/'runs/parameter_violation_cycle91_20261030_v1'
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=Path(__file__).parent;RUN=B/'runs/parameter_violation_cycle92_20261030_v1'
+ read=lambda p:json.loads(Path(p).read_text())
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def put(p,x):
+  with Path(p).open('x') as f:json.dump(x,f,indent=2,allow_nan=False);f.write('\n')
+ def transform(source):
+- # Same52 revision: exact actual90 trainer bytes, no numerical/source changes.
++ # Same52 revision: exact actual91 trainer bytes, no numerical/source changes.
+  for seam,count in [("learner.load_state_dict(checkpoint['learner'])",1),("replay.load_state_dict(checkpoint['replay'])",1),("violation_critic_amendment=protocol['violation_critic_amendment']",2),("learner.consume_interval(event['interval'], stream=slot)",1),("plateau_status([c for c in cycles if c['cycle'] >= 90])",1)]:
+-  if source.count(seam)!=count:raise ValueError('Exact90 trainer seam drift: '+seam)
+- if 'require_online_launch' in source or 'migrate_parent(' in source:raise ValueError('Migration trainer forbidden for learned90')
++  if source.count(seam)!=count:raise ValueError('Exact91 trainer seam drift: '+seam)
++ if 'require_online_launch' in source or 'migrate_parent(' in source:raise ValueError('Migration trainer forbidden for learned91')
+  return source
+ 
+ def validate_protocol(parent_digest,p,current_digest=None):
+  st=p['post_interruption_continuation'];previous=read(st['parent_registration']['path'])
+- if sha(st['parent_registration']['path'])!=parent_digest or st['parent_registration']['sha256']!=parent_digest:raise ValueError('Exact trained90 registration required')
++ if sha(st['parent_registration']['path'])!=parent_digest or st['parent_registration']['sha256']!=parent_digest:raise ValueError('Exact trained91 registration required')
+  if {k:v for k,v in p.items() if k!='post_interruption_continuation'}!={k:v for k,v in previous.items() if k!='post_interruption_continuation'}:raise ValueError('Scientific/historical contract changed')
+- if (st['parent_cycle'],st['new_cycle'],st['new_cycles'],st['maximum_new_actions'],st['automatic_followup'],st['optimizer_settings_changed'],st['old_window_continuity_claim'],st['environment_state_saved'])!=(90,91,1,41250,False,False,False,False):raise ValueError('Finite91 budget contract drift')
++ if (st['parent_cycle'],st['new_cycle'],st['new_cycles'],st['maximum_new_actions'],st['automatic_followup'],st['optimizer_settings_changed'],st['old_window_continuity_claim'],st['environment_state_saved'])!=(91,92,1,41250,False,False,False,False):raise ValueError('Finite92 budget contract drift')
+  if sha(__file__)!=st['driver_sha256']:raise ValueError('Driver drift')
+  for key in ('cycle_review','health_review','previous_driver','loss_review','fixed_terminal_review','training_pair_review','scientific_decision','stability_plan','old_window_failure','abort_review'):
+   if sha(st[key]['path'])!=st[key]['sha256']:raise ValueError('Evidence drift: '+key)
+  decision=read(st['scientific_decision']['path'])
+- if (decision['parent_cycle'],decision['new_cycle'],decision['new_cycles'],decision['maximum_new_actions_per_method'],decision['automatic_followup'],decision['offline_weights_promoted'],decision['critic_revision'])!=(90,91,1,41250,False,False,'raw_violation52'):raise ValueError('Scientific decision drift')
++ if (decision['parent_cycle'],decision['new_cycle'],decision['new_cycles'],decision['maximum_new_actions_per_method'],decision['automatic_followup'],decision['offline_weights_promoted'],decision['critic_revision'])!=(91,92,1,41250,False,False,'raw_violation52'):raise ValueError('Scientific decision drift')
+  for item in decision['evidence']:
+   if sha(item['path'])!=item['sha256']:raise ValueError('Decision evidence drift')
+- spec=importlib.util.spec_from_file_location('validated_scientific90_driver',st['previous_driver']['path']);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
++ spec=importlib.util.spec_from_file_location('validated_scientific91_driver',st['previous_driver']['path']);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+  old=previous['post_interruption_continuation'];module.validate_protocol(old['parent_registration']['sha256'],previous)
+  m=st['controller'];review=read(st['cycle_review']['path']);health=read(st['health_review']['path']);loss=read(st['loss_review']['path'])
+- if not review['passed'] or not loss['passed'] or health['cycle']!=90 or health['optimizer_updates_performed']!=0:raise ValueError('Complete90 evidence missing')
+- if review['methods'][m]['checkpoint_sha256']!=st['checkpoint']['sha256'] or health['methods'][m]['checkpoint_sha256']!=st['checkpoint']['sha256']:raise ValueError('Complete90 checkpoint binding mismatch')
+- if loss['methods'][m]['rows']!=review['methods'][m]['new_transitions'] or not loss['methods'][m]['all_finite']:raise ValueError('Complete90 loss rows mismatch')
++ if not review['passed'] or not loss['passed'] or health['cycle']!=91 or health['optimizer_updates_performed']!=0:raise ValueError('Complete91 evidence missing')
++ if review['methods'][m]['checkpoint_sha256']!=st['checkpoint']['sha256'] or health['methods'][m]['checkpoint_sha256']!=st['checkpoint']['sha256']:raise ValueError('Complete91 checkpoint binding mismatch')
++ if loss['methods'][m]['rows']!=review['methods'][m]['new_transitions'] or not loss['methods'][m]['all_finite']:raise ValueError('Complete91 loss rows mismatch')
+  if read(st['fixed_terminal_review']['path'])['methods'][m]['checkpoint_sha256']!=st['checkpoint']['sha256']:raise ValueError('Fixed-terminal parent mismatch')
+  window=read(st['stability_plan']['path'])
+  if window['cycles']!=[90,91,92] or window['relative_limit']!=.05 or window['near_zero_guard']!=1. or window['replicates']!=5000 or window['bootstrap_seed']!=2026102861 or window['automatic_training']:raise ValueError('Revision stability registration changed')
+@@ -44,10 +44,11 @@
+  from parameter_replay_capacity_20261026 import MARKER as OLD_CAP
+  from parameter_replay_capacity4m_20261027 import MARKER as CAP
+  st=p['post_interruption_continuation'];previous=read(st['parent_registration']['path']);review=read(st['cycle_review']['path'])['methods'][st['controller']];v=p['violation_critic_amendment'];h=p['history_critic_amendment'];n=review['steps']
+- if ck['protocol_sha256']!=st['parent_registration']['sha256'] or ck['controller']!=st['controller'] or ck['controller']!=v['binding']['method'] or ck['seed']!=20261025:raise ValueError('Exact trained90 identity required')
+- if ck['cycle']!=90 or ck['boundary']!='complete_condition_cycle' or ck['environment_state_saved'] or ck['steps']!=n:raise ValueError('Complete trained90 boundary required')
+- if n!=v['binding']['rows']+review['new_transitions'] or not 0<review['new_transitions']<=41250:raise ValueError('Actual complete90 rows including abort required')
+- if ck['cycles'][-1]['cycle']!=90 or any(c['cycle']==75 for c in ck['cycles']):raise ValueError('Historical complete cycles changed')
++ if ck['protocol_sha256']!=st['parent_registration']['sha256'] or ck['controller']!=st['controller'] or ck['controller']!=v['binding']['method'] or ck['seed']!=20261025:raise ValueError('Exact trained91 identity required')
++ if ck['cycle']!=91 or ck['boundary']!='complete_condition_cycle' or ck['environment_state_saved'] or ck['steps']!=n:raise ValueError('Complete trained91 boundary required')
++ parent_review=read(previous['post_interruption_continuation']['cycle_review']['path'])['methods'][st['controller']]
++ if n!=parent_review['steps']+review['new_transitions'] or not 0<review['new_transitions']<=41250:raise ValueError('Actual complete91 rows from exact complete90 including abort required')
++ if ck['cycles'][-1]['cycle']!=91 or any(c['cycle']==75 for c in ck['cycles']):raise ValueError('Historical complete cycles changed')
+  if ck['recovery_continuation']!=previous['post_interruption_continuation'] or ck['interruption_recovery']!=p['interrupted_episode_recovery']:raise ValueError('Recovery metadata drift')
+  if ck['history_critic_amendment']!=h or ck['violation_critic_amendment']!=v:raise ValueError('Trained architecture amendments changed')
+  for key in ('learner','replay'):
+@@ -61,7 +62,7 @@
+  from validate_published_finite_check_20261025 import digest
+  ls=learner.state_dict();rs=replay.state_dict()
+  assert digest(ls)==digest(ck['learner']) and digest(rs)==digest(ck['replay'])
+- put(out/'INITIAL_STATE_REVIEW.json',dict(passed=True,time=time.time(),learner_digest=digest(ls),replay_digest=digest(rs),full_trained90_learner_and_replay_exact=True,learned_history_weights_and_adam_retained=True,learned_violation_weights_and_adam_retained=True,history_digest=digest(ck['cycles']),new_physics=0,optimizer_updates=0))
++ put(out/'INITIAL_STATE_REVIEW.json',dict(passed=True,time=time.time(),learner_digest=digest(ls),replay_digest=digest(rs),full_trained91_learner_and_replay_exact=True,learned_history_weights_and_adam_retained=True,learned_violation_weights_and_adam_retained=True,history_digest=digest(ck['cycles']),new_physics=0,optimizer_updates=0))
+ 
+ def validate_actor_rates(actual, expected):
+  import math
+@@ -97,14 +98,14 @@
+   assert digest(replay.state_dict())==digest(ck['replay']) and sha(args.resume)==st['checkpoint']['sha256']
+   put(args.output.parent/'CHECK_ONLY_REVIEW.json',dict(passed=True,time=time.time(),checkpoint_sha256=sha(args.resume),registration_sha256=sha(args.registration),actual_native_batch=65536,disposable_restored_clone_updates=2,repeat_native_update_full_state_exact=True,original_state_restored=True,clone_weights_promoted=False,new_physics=0,actual_formal_updates=0));return
+  gate=read(RUN/'PRELAUNCH_REVIEW.json');assert gate['passed'] and gate['registration_hashes'][args.controller]==sha(args.registration);assert read(args.output.parent/'CHECK_ONLY_REVIEW.json')['passed']
+- trainer=root/'source/tools/train_published_compliance_20261025.py';spec=importlib.util.spec_from_file_location('violation91_trainer',trainer);module=importlib.util.module_from_spec(spec);exec(compile(modified,str(trainer),'exec'),module.__dict__)
++ trainer=root/'source/tools/train_published_compliance_20261025.py';spec=importlib.util.spec_from_file_location('violation92_trainer',trainer);module=importlib.util.module_from_spec(spec);exec(compile(modified,str(trainer),'exec'),module.__dict__)
+  def stage_check(checkpoint,stage,cycle_budget,rates):
+   validate_parent(checkpoint,p);assert stage==p['completed_stage_continuation'] and cycle_budget==1;_,expected=module.registered_stage_actor_rates(stage);validate_actor_rates(rates,expected)
+  import published_replay_device_cache_20261025 as cm
+  cm.DeviceReplayCache=cache_class(cm.DeviceReplayCache)
+  module.Replay=replay_cls;module.PublishedLearner=cls;module.validate_resume_protocol=validate_protocol;module.validate_completed_stage_checkpoint=stage_check;module._parameter_sampler_affinity=sampler_affinity;module._validate_parameter_sampler_pool=validate_pool;module._verify_initial_state=verify_initial
+  args.algorithm='cheq';args.seed=20261025;args.cycles=1;(args.output.parent/'trainer_registered.py').write_text(modified)
+- put(args.output.parent/'VIOLATION_EXECUTION.json',dict(time=time.time(),pid=os.getpid(),registration_sha256=sha(args.registration),driver_sha256=sha(__file__),trainer_sha256=hashlib.sha256(modified.encode()).hexdigest(),cycle=91,automatic_followup=False,maximum_new_actions=41250))
++ put(args.output.parent/'VIOLATION_EXECUTION.json',dict(time=time.time(),pid=os.getpid(),registration_sha256=sha(args.registration),driver_sha256=sha(__file__),trainer_sha256=hashlib.sha256(modified.encode()).hexdigest(),cycle=92,automatic_followup=False,maximum_new_actions=41250))
+  del ck;module.main(args)
+ if __name__=='__main__':
+  parser=argparse.ArgumentParser()
