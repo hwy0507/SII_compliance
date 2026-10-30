@@ -1,0 +1,43 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_review_20261030_v1/health89.py
++++ health_violation_preparation.py
+@@ -101,16 +101,20 @@
+                 or checkpoint['cycle'] != args.cycle):
+             raise ValueError('Archive is not the requested complete-cycle snapshot')
+         execution = json.loads((folder/'EXECUTION.json').read_text())
+-        if checkpoint['protocol_sha256'] != execution['protocol_sha256']:
++        protocol = json.loads((args.registrations/method/'REGISTRATION.json').read_text())
++        from violation_pipeline import validate_migrated
++        validate_migrated(checkpoint, protocol, args.registrations/method/'REGISTRATION.json')
++        if protocol['violation_critic_amendment']['parent_registration']['sha256'] != execution['protocol_sha256']:
+             raise ValueError('Checkpoint/execution registration mismatch')
+         state = checkpoint['learner']
+         assert state['target_pair_reduction']==dict(version=1,target={'impedance':'minimum','admittance':'mean','vmc':'mean'}[method],actor='minimum',sampled_targets=2)
+         dimension = 7 if method == 'direct' else prior['methods'][method]['action_dimension']
+         from persisted_history_critic import history_class, marker as history_marker, KEY
+-        protocol = json.loads((folder.resolve().parent/'REGISTRATION.json').read_text())
++        from persisted_violation_critic import violation_class
++        vb = protocol['violation_critic_amendment']['binding']
+         binding = protocol['history_critic_amendment']['binding']
+         assert state[KEY] == checkpoint['replay'][KEY] == history_marker(binding)
+-        learner = history_class(PublishedLearner, binding)(root, dimension=dimension, direct=method == 'direct',
++        learner = violation_class(history_class(PublishedLearner, binding), vb)(root, dimension=dimension, direct=method == 'direct',
+             seed=42, device='cpu', algorithm=state['algorithm'],
+             **{key: state[key] for key in ('critic_layer_norm', 'numerical_amendments', 'critic_clock') if key in state})
+         # Load policy/critics only. Do not restore optimizer or host CUDA RNG.
+@@ -175,7 +179,7 @@
+                                 in_bag_mae=summary(selected_error[selected_mask]),
+                                 out_of_bag_mae=summary(selected_error[~selected_mask]))
+                 metrics['terminal_error_limitation'] = (
+-                    ('Critic includes remaining time and causal history; actor directly receives neither feature. '
++                    ('Critic includes remaining time, causal history and raw violation bit; actor directly receives neither feature. '
+                      if state.get('critic_clock', False) else
+                      'Observation lacks remaining time; terminal MAE can include hidden-clock aliasing. ') +
+                     'It is a diagnostic, not a required zero-error convergence gate.')
+@@ -294,6 +298,7 @@
+ if __name__ == '__main__':
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--runtime', type=Path, required=True)
++    parser.add_argument('--registrations', type=Path, required=True)
+     parser.add_argument('--run', type=Path, required=True)
+     parser.add_argument('--output', type=Path, required=True)
+     parser.add_argument('--cycle-archive', type=Path)

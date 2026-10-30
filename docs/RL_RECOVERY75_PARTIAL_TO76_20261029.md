@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整89违规位训练恢复、原生更新及消费端预检通过
+
+- [交接](RL_HISTORY89_VIOLATION_PIPELINE_20261030.md)。准确89科学元数据逆迁移、52全state/replay落盘、生成训练器原样恢复AST通过；源码仅新增bit保存、准备拒绝和修订floor90。69拒绝，三份真实batch65536共6次clone更新重复/序列化精确、bit梯度和target引用通过，最终全state/RNG恢复；没有执行完整物理训练循环。
+- 实际完整冻结evaluator check-only三路及原完整health诊断通过，原89 terminal/sample诊断字段精确、实际图已查看。0正式update/physics；真正有限90科学决定/driver/startup/full消费者仍待，无90/Direct34，失败窗口保持、未收敛。
+- 原冻结88完成数{'impedance': 22, 'admittance': 22, 'vmc': 21}，原评测/后处理继续；GPU137样本min[69, 75, 65, 76]%、低于50[0, 0, 0, 0]，科研结束仍守护。SSD83成员/SHAea381917核验，非HDD/arm1全备份。main46772a18/baselinef6e8f8c已query/fetch/read，发布见收据，无子agent，Goal active。
+
 ## 2026-10-30 — 完整89违规位全量保存、GPU cache及完整消费者通过
 
 - [交接](RL_HISTORY89_VIOLATION_CONSUMERS_20261030.md)。三份52维full snapshot磁盘重载、11072448旧行/learner/Adam逆迁移精确、实际4m GPU cache下一65536/RNG、可丢弃append/mask/fallback通过；大快照SSD、非在线90 checkpoint。

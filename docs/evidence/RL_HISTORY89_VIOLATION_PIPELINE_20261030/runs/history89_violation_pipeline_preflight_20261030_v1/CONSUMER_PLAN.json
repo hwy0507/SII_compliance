@@ -1,0 +1,71 @@
+{
+  "time": 1793389796.5761964,
+  "commands": [
+    {
+      "name": "frozen_impedance",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_pipeline_20261030_v1/evaluate_violation_preparation.py",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_violation_pipeline_preflight_20261030_v1/frozen/impedance/REGISTRATION.json",
+        "--check-only",
+        "--validation-cycle",
+        "89"
+      ]
+    },
+    {
+      "name": "frozen_admittance",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_pipeline_20261030_v1/evaluate_violation_preparation.py",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_violation_pipeline_preflight_20261030_v1/frozen/admittance/REGISTRATION.json",
+        "--check-only",
+        "--validation-cycle",
+        "89"
+      ]
+    },
+    {
+      "name": "frozen_vmc",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_pipeline_20261030_v1/evaluate_violation_preparation.py",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_violation_pipeline_preflight_20261030_v1/frozen/vmc/REGISTRATION.json",
+        "--check-only",
+        "--validation-cycle",
+        "89"
+      ]
+    },
+    {
+      "name": "health",
+      "command": [
+        "taskset",
+        "-c",
+        "12",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_pipeline_20261030_v1/health_violation_preparation.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--run",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle89_view_20261030_v1",
+        "--registrations",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_violation_pipeline_preflight_20261030_v1",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_violation_pipeline_preflight_20261030_v1/health",
+        "--cycle-archive",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_violation_pipeline_preflight_20261030_v1/archive",
+        "--cycle",
+        "89"
+      ]
+    }
+  ],
+  "scope": "Actual evaluator restore/check-only and full readonly health; no new physical evaluation",
+  "physics": 0,
+  "formal_updates": 0,
+  "budget_seconds": 1800,
+  "source_plan": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_pipeline_20261030_v1/PLAN.json",
+    "sha256": "76acc7cc48756063067e2199e346d45e36b94e7eb6c600afbbaa12cdfdb82dab"
+  }
+}
