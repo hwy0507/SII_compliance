@@ -1,0 +1,53 @@
+from pathlib import Path
+import json,hashlib,time,math,os
+import numpy as np
+os.sched_setaffinity(0,{3})
+D=Path(__file__).parent;B=D.parents[1]
+def read(p):return json.loads(Path(p).read_text())
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def put(p,r):
+ with p.open('x') as f:json.dump(r,f,indent=2);f.write('\n')
+plan=read(D/'PLAN.json')
+for r in plan['inputs'].values():assert sha(r['path'])==r['sha256']
+full=B/'runs/parameter_partial75_recovery_cycle84_review_20261029_v1';assert read(full/'REVIEW.json')['passed'] and read(full/'FINISHED.json')['completed']
+methods={};bindings={}
+for m in plan['methods']:
+ old=B/f'runs/{m}_recovery83_terminal_followup_20261029_v1';new=B/f'runs/{m}_recovery84_terminal_followup_20261029_v1'
+ assert read(new/'FINISHED.json')['completed'] and read(new/'REVIEW.json')['passed'] and read(new/'SAVED_VALUES_REVIEW.json')['passed']
+ for name in ['REVIEW.json','SAVED_VALUES_REVIEW.json','FINAL_BINDING.json','values.npz']:bindings[m+'_'+name]=dict(path=str(new/name),sha256=sha(new/name))
+ binding=read(new/'FINAL_BINDING.json');assert binding['checkpoint']['sha256']==read(full/'REVIEW.json')['methods'][m]['checkpoint_sha256']
+ with np.load(old/'anchor82.npz',allow_pickle=False) as z:a={k:z[k].copy() for k in z.files}
+ with np.load(old/'values.npz',allow_pickle=False) as z:prior={k:z[k].copy() for k in z.files}
+ with np.load(new/'anchor83.npz',allow_pickle=False) as z:anchor={k:z[k].copy() for k in z.files}
+ with np.load(new/'values.npz',allow_pickle=False) as z:v={k:z[k].copy() for k in z.files}
+ for key in ['indices','features','rewards']:np.testing.assert_array_equal(a[key],anchor[key][:2454])
+ for key in ['indices','rewards']:np.testing.assert_array_equal(a[key],v[key][:2454])
+ np.testing.assert_array_equal(a['masks'],v['masks'][:,:2454]);np.testing.assert_array_equal(a['masks'],anchor['masks'][:,:2454]);np.testing.assert_array_equal(prior['q_after'],v['q_before']);np.testing.assert_array_equal(anchor['q_after'],v['q_before'])
+ assert len(v['indices'])==2514 and len(v['q_before'][0])==2484
+ q={'82':a['q_after'].astype(float),'83':prior['q_after'][:,:2454].astype(float),'84':v['q_after'][:,:2454].astype(float)};mask=a['masks'].astype(float);reward=a['rewards'].astype(float)
+ percritic=[];rows=[]
+ for c in range(5):
+  rec=dict(critic=c,inmask_rows=int(mask[c].sum()))
+  for cycle,arr in q.items():
+   val=math.fsum(float(mask[c,j])*(float(arr[c,j])-float(reward[j]))**2 for j in range(2454));npval=float((mask[c]*(arr[c]-reward)**2).sum());assert math.isclose(val,npval,rel_tol=1e-12,abs_tol=1e-9);rec['sse'+cycle]=val;rec['opposite_sign'+cycle]=int(((arr[c]*reward<0)&(mask[c]==1)).sum())
+  rec['delta83_to84']=rec['sse84']-rec['sse83'];rec['delta82_to84']=rec['sse84']-rec['sse82'];percritic.append(rec)
+ for j,idx in enumerate(a['indices']):
+  rec=dict(replay_index=int(idx),reward=float(reward[j]),masks=mask[:,j].tolist())
+  for cycle,arr in q.items():rec['q'+cycle]=arr[:,j].tolist();rec['sse'+cycle]=math.fsum(mask[c,j]*(arr[c,j]-reward[j])**2 for c in range(5))
+  rows.append(rec)
+ with (D/(m+'_all2454.jsonl')).open('x') as f:
+  for row in rows:f.write(json.dumps(row)+'\n')
+ totals={cycle:math.fsum(x['sse'+cycle] for x in percritic) for cycle in q}
+ for cycle in q:assert math.isclose(totals[cycle],math.fsum(x['sse'+cycle] for x in rows),rel_tol=1e-12)
+ methods[m]=dict(critics=percritic,total_sse=totals,old2454_features_actions_rewards_masks_exact=True,checkpoint84=read(full/'REVIEW.json')['methods'][m]['checkpoint_sha256'],allrows_sha256=sha(D/(m+'_all2454.jsonl')))
+for r in plan['inputs'].values():assert sha(r['path'])==r['sha256']
+for r in bindings.values():assert sha(r['path'])==r['sha256']
+put(D/'REVIEW.json',dict(passed=True,time=time.time(),methods=methods,bindings=bindings,new_physics=0,optimizer_updates=0,new_network_forward=0,convergence_claim=False,limitation='Fixed2454 old terminal rows across82/83/84. Registered during84 after full83 degradation known; both methods/all5critics retained. Compare errors descriptively, no invented health gate, no historical minibatch or causal explanation.'))
+# Re-read serialized rows; independent scalar validation against serialized critic and totals.
+for m,rec in methods.items():
+ saved=[json.loads(l) for l in (D/(m+'_all2454.jsonl')).read_text().splitlines()];assert len(saved)==2454
+ for cycle in ['82','83','84']:
+  for c,x in enumerate(rec['critics']):
+   val=math.fsum(row['masks'][c]*(row['q'+cycle][c]-row['reward'])**2 for row in saved);assert math.isclose(val,x['sse'+cycle],rel_tol=1e-12,abs_tol=1e-9)
+  assert math.isclose(math.fsum(row['sse'+cycle] for row in saved),rec['total_sse'][cycle],rel_tol=1e-12)
+put(D/'SAVED_REVIEW.json',dict(passed=True,time=time.time(),all_saved_rows_scalar_recomputed=True,source_sha256=sha(__file__),new_physics=0,optimizer_updates=0))

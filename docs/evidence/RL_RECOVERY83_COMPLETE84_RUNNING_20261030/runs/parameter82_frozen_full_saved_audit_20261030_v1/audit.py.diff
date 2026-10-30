@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -1,4 +1,4 @@
+-"""Audit the first2 registered conditions from each method after availability, without new physics."""
++"""Audit the all30 registered conditions from each method after availability, without new physics."""
+ from pathlib import Path
+ import json,time,hashlib,math,os,sys
+ import numpy as np
+@@ -9,7 +9,10 @@
+ def ref(p):return dict(path=str(p),sha256=sha(p))
+ def put(p,x):
+  with p.open('x') as f:json.dump(x,f,indent=2,allow_nan=False);f.write('\n')
+-plan=read(D/'PLAN.json');assert sha(Path(__file__))==plan['source']['sha256'];cases=plan['case_ids'];assert cases==read(O/'PLAN.json')['case_ids'][:2]
++assert read(O/'REVIEW.json')['passed'] and read(O/'REVIEW.json')['total_episodes']==90
++for m in ['impedance','admittance','vmc']:
++ f=read(O/m/'FINISHED.json');assert f['passed'] and f['full_learner_state_unchanged'] and f['full_replay_state_unchanged'] and f['initial_learner_digest']==f['final_learner_digest']
++plan=read(D/'PLAN.json');assert sha(Path(__file__))==plan['source']['sha256'];cases=plan['case_ids'];assert cases==read(O/'PLAN.json')['case_ids']
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+ from spt_rl_reward_20261025 import SPTReward
+ from training_comparison_metrics_20261025 import completion_bonus
+@@ -47,7 +50,7 @@
+   rows.append(dict(condition=case,actions=r['actions'],physical_samples=count,task=row['task_success'],strict=row['strict_success'],machine_violation=safety,stage=row['final_task_stage'],reward=r['reward'],prior55_reward=a['reward'],reward_delta=r['reward']-a['reward'],prior55_task=a['physical']['row']['task_success'],prior55_strict=a['physical']['row']['strict_success'],human_contact_s=contact,human_compliant_s=below,human_compliance_ratio=ratio,peak_torque_nm_per_joint=peaks,external_penetration_mm=r['external_penetration_mm'],reward_reconstruction_abs_error=abs(reward-r['reward']),full_horizon=row['full_horizon'],abort=row['abort_reason'],evidence_files=len(hashed)))
+   inputs[m+':'+case]=dict(current=ref(p),prior55=ref(P/m/f'{case}_REVIEW.json'),raw=ref(folder/'audit_substeps.npy'))
+  results[m]=rows
+-put(D/'REVIEW.json',dict(passed=True,time=time.time(),methods=results,inputs=inputs,total_cases=6,total_substeps=sum(x['physical_samples'] for v in results.values() for x in v),new_physics=0,optimizer_updates=0,new_network_forward=0,convergence_claim=False,limitation='Post-availability first2 registered passive conditions per method; not full30 outcome or success-rate estimate. Exact raw hashes, count-times-dt physical metrics, frozen reward formula with scalar fsum, unchanged saved action/filter/torque receipts; no rerun native action replay or independent physics. Same-seed55 comparison descriptive only. Per-episode state proof does not replace final whole-evaluation learner/replay invariance.'))
++put(D/'REVIEW.json',dict(passed=True,time=time.time(),methods=results,inputs=inputs,total_cases=90,total_substeps=sum(x['physical_samples'] for v in results.values() for x in v),new_physics=0,optimizer_updates=0,new_network_forward=0,convergence_claim=False,limitation='All30 original registered conditions per method, all failures retained; supplementary audit registered during ongoing82 frozen evaluation. Exact raw hashes, count-times-dt physical metrics, frozen reward formula with scalar fsum, unchanged saved action/filter/torque receipts; no rerun native action replay or independent physics. Same-seed55 comparison descriptive only. Final whole-evaluation full learner/replay invariance receipts explicitly required, without repeating their memory digest calculation after evaluator exit.'))
+ saved=read(D/'REVIEW.json');assert saved['methods']==results
+-put(D/'SAVED_REVIEW.json',dict(passed=True,time=time.time(),all_rows_read_back=True,total_cases=6,total_substeps=saved['total_substeps'],source=ref(Path(__file__)),review=ref(D/'REVIEW.json')))
++put(D/'SAVED_REVIEW.json',dict(passed=True,time=time.time(),all_rows_read_back=True,total_cases=90,total_substeps=saved['total_substeps'],source=ref(Path(__file__)),review=ref(D/'REVIEW.json')))
+ print(json.dumps(results,indent=2))

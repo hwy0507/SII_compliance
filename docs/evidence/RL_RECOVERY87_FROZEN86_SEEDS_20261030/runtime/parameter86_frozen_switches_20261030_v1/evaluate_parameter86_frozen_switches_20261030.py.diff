@@ -1,0 +1,165 @@
+--- frozen82_source
++++ evaluate_parameter86_frozen_switches_20261030.py
+@@ -1,6 +1,6 @@
+-"""Frozen complete82 parameter policies on all30 registered training conditions.
+-
+-One external action seed per method; no optimization or formal replay writes.
++"""Frozen complete86 parameter policies on four prospectively selected method/case groups.
++
++Four fixed external action seeds per group; no optimization or formal replay writes.
+ Reuse the independently exercised external RNG and native replay implementation
+ from the completed frozen29 diagnostic, whose source is pinned in registration.
+ """
+@@ -18,7 +18,7 @@
+ 
+ 
+ def validate_recovery(ck, protocol, expected_cycle):
+-    assert expected_cycle in (81, 82)
++    assert expected_cycle == 86
+     assert ck['cycle'] == expected_cycle and ck['boundary'] == 'complete_condition_cycle'
+     assert ck['environment_state_saved'] is False
+     assert ck['interruption_recovery'] == protocol['interrupted_episode_recovery']
+@@ -30,11 +30,39 @@
+     assert all(c['cycle'] != 75 for c in ck['cycles']) and ck['cycles'][-1]['cycle'] == expected_cycle
+ 
+ 
+-def main(registration, check_only, expected_cycle=82):
+-    if expected_cycle != 82 and not check_only:
+-        raise ValueError("Only planned82 may execute physics; validation81 is check-only")
+-    if expected_cycle not in (81, 82):
+-        raise ValueError("Unregistered parent cycle")
++SEEDS = [2026102633, 2026102634, 2026102635, 2026102636]
++GROUPS = {
++    'impedance_short0600': ('impedance', 'active_short_train_0600', 7),
++    'admittance_short0900': ('admittance', 'active_short_train_0900', 8),
++    'admittance_long0200': ('admittance', 'active_long_train_0200', 9),
++    'vmc_short0000': ('vmc', 'active_short_train_0000', 10),
++}
++
++def validate_design(reg):
++    plan_path = Path(reg['plan'])
++    assert sha(plan_path) == reg['plan_sha256']
++    plan = json.loads(plan_path.read_text())
++    assert plan['parent_cycle'] == reg['parent_cycle'] == 86
++    assert plan['action_seeds'] == reg['action_seeds'] == SEEDS
++    assert plan['episodes'] == 16 and plan['maximum_actions'] == 22000
++    assert plan['maximum_substeps'] == 17600000 and plan['optimizer_updates'] == 0
++    assert plan['automatic_extension'] is False
++    assert set(plan['groups']) == set(GROUPS)
++    for key, (method, case, cpu) in GROUPS.items():
++        group = plan['groups'][key]
++        assert group['controller'] == method and group['case_ids'] == [case] and group['cpu'] == cpu
++    entry = plan['groups'][reg['group']]
++    for key in ['controller', 'case_ids', 'cpu', 'device', 'checkpoint', 'checkpoint_sha256',
++                'training_registration', 'training_registration_sha256', 'required_review',
++                'required_review_sha256', 'gate_observations', 'gate_observations_sha256',
++                'gate_case_id', 'runtime', 'audit_runtime', 'source_hashes']:
++        assert reg[key] == entry[key], key
++    assert reg['gate_case_id'] == reg['case_ids'][0]
++
++
++def main(registration, check_only, expected_cycle=86):
++    if expected_cycle != 86:
++        raise ValueError("Only registered complete86 is allowed")
+     reg = json.loads(registration.read_text())
+     os.sched_setaffinity(0, {reg['cpu']})
+     os.nice(10)
+@@ -46,8 +74,7 @@
+     for name, expected in reg['source_hashes'].items():
+         assert sha(runtime/name) == expected, name
+     assert reg['parent_cycle'] == expected_cycle
+-    assert len(reg['case_ids']) == len(set(reg['case_ids'])) == 30
+-    assert reg['action_seed'] == 2026102638
++    validate_design(reg)
+     assert sha(reg['checkpoint']) == reg['checkpoint_sha256']
+     assert sha(reg['training_registration']) == reg['training_registration_sha256']
+     protocol = json.loads(Path(reg['training_registration']).read_text())
+@@ -55,7 +82,7 @@
+     for name, expected in json.loads((root/'SOURCE_HASHES.json').read_text()).items():
+         assert sha(root/'source'/name) == expected, name
+     assert sha(protocol['reference_plan']) == protocol['reference_plan_sha256']
+-    assert reg['case_ids'] == [c['id'] for c in protocol['conditions']]
++    assert reg['case_ids'][0] in [c['id'] for c in protocol['conditions']]
+     conditions = {c['id']: c for c in protocol['conditions']}
+     for condition in conditions.values():
+         assert sha(condition['path']) == condition['sha256']
+@@ -99,7 +126,7 @@
+     assert sha(journal) == reg['gate_observations_sha256']
+     with journal.open() as stream:
+         observations = [json.loads(next(stream))['observation'] for _ in range(3)]
+-    result = gate(learner, ck, observations, reg['action_seed'], reg['gate_case_id'], digest)
++    result = gate(learner, ck, observations, reg['action_seeds'][0], reg['gate_case_id'], digest)
+     result.update(full_replay_restored_exact=True, replay_digest=replay_digest,
+                   full_learner_digest=initial, checkpoint_sha256=sha(reg['checkpoint']),
+                   replay_capacity=4_000_000, historical_entry_cycle=23, followup_entry_cycle=47, validated_parent_cycle=expected_cycle)
+@@ -110,25 +137,25 @@
+     assert json.loads((output/'CHECK_ONLY_REVIEW.json').read_text())['passed']
+     assert not (output/'EVALUATION.json').exists()
+     write(output/'EVALUATION.json', dict(registration_sha256=sha(registration),
+-        checkpoint_sha256=sha(reg['checkpoint']), action_seed=reg['action_seed'], case_ids=reg['case_ids'],
+-        full_learner_digest=initial, full_replay_digest=replay_digest, expected_episodes=30,
+-        maximum_actions=41250, maximum_substeps=33000000, optimizer_updates=0,
+-        scope='Prospectively selected complete82 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
++        checkpoint_sha256=sha(reg['checkpoint']), action_seeds=reg['action_seeds'], case_ids=reg['case_ids'],
++        full_learner_digest=initial, full_replay_digest=replay_digest, expected_episodes=4,
++        maximum_actions=5500, maximum_substeps=4400000, optimizer_updates=0,
++        scope='Complete86 selected method/case sensitivity: four predeclared action seeds, no updates; not all30, independent training seeds, generalization, entropy intervention, historical causal attribution or final ESN comparison'))
+     results = []
+-    seed = reg['action_seed']
+-    for case in reg['case_ids']:
++    case = reg['case_ids'][0]
++    for seed in reg['action_seeds']:
+         condition = conditions[case]
+         assert digest(learner.state_dict()) == initial
+         external = ExternalActions(learner, seed, case)
+         external.call(learner.reset_episode)
+-        folder = output/case
++        folder = output/f'seed_{seed}'
+         command = ['taskset', '-c', str(reg['cpu']), sys.executable,
+             str(runtime/'audit_published_episode_20261025.py'), '--runtime', str(root),
+             '--output', str(folder), '--fixture', condition['path'], '--reference-plan',
+             protocol['reference_plan'], '--controller', reg['controller'], '--ipc']
+         env = dict(os.environ, CUDA_VISIBLE_DEVICES='', OMP_NUM_THREADS='1',
+                    OPENBLAS_NUM_THREADS='1', MKL_NUM_THREADS='1', MUJOCO_GL='disable')
+-        with (output/f'{case}.stderr.log').open('x') as log:
++        with (output/f'seed_{seed}.stderr.log').open('x') as log:
+             child = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                 stderr=log, text=True, bufsize=1, env=env)
+             write(output/'CURRENT_PHYSICS.json', dict(pid=child.pid, seed=seed, condition=case, time=time.time(), command=command))
+@@ -159,7 +186,7 @@
+                     actions += 1
+                     if actions % 100 == 0:
+                         write(output/'PROGRESS.json', dict(seed=seed, actions=actions,
+-                            completed_conditions=len(results), condition=case, physics_pid=child.pid, time=time.time()))
++                            completed_episodes=len(results), condition=case, physics_pid=child.pid, time=time.time()))
+             finally:
+                 child.stdin.close()
+                 selector.close()
+@@ -171,15 +198,15 @@
+         assert digest(learner.state_dict()) == initial
+         reviewed = review_episode(learner, ck, seed, case, folder, digest)
+         assert reviewed['actions'] == actions
+-        write(output/f'{case}_REVIEW.json', reviewed)
++        write(output/f'seed_{seed}_REVIEW.json', reviewed)
+         results.append(reviewed)
+-        write(output/'RESULTS.json', dict(episodes=results, completed=len(results), expected=30))
++        write(output/'RESULTS.json', dict(episodes=results, completed=len(results), expected=4))
+     assert digest(learner.state_dict()) == initial
+     assert digest(replay.state_dict()) == replay_digest
+     assert sha(reg['checkpoint']) == reg['checkpoint_sha256']
+     for name, expected in reg['source_hashes'].items():
+         assert sha(runtime/name) == expected
+-    write(output/'FINISHED.json', dict(passed=True, time=time.time(), episodes=30,
++    write(output/'FINISHED.json', dict(passed=True, time=time.time(), episodes=4,
+         actions=sum(r['actions'] for r in results), substeps=sum(r['physical']['samples'] for r in results),
+         task=sum(r['physical']['row']['task_success'] for r in results),
+         strict=sum(r['physical']['row']['strict_success'] for r in results),
+@@ -192,7 +219,7 @@
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--registration', type=Path, required=True)
+     parser.add_argument('--check-only', action='store_true')
+-    parser.add_argument('--validation-cycle', type=int, choices=[81,82], default=82)
++    parser.add_argument('--validation-cycle', type=int, choices=[86], default=86)
+     args = parser.parse_args()
+     try:
+         main(args.registration, args.check_only, args.validation_cycle)

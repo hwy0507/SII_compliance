@@ -1,0 +1,45 @@
+完整81已完成且三路各30条件/55s/41250新增、无abort，所有旧replay字段精确保留，新reward重算0误差、optimizer/network有限；完整loss/health/180标签/两终端保存算术和实际图通过。原79–81按原seed2026102855、5000 bootstrap、nearzero1、relative5%完成：I相邻4.8285%/0.9120%、首尾3.9606%，描述性reward通过；A相邻16.2642%/20.6832%、V59.6307%/38.3836%，reward失败，不能仅取较近首尾。I条件收益相抵、79真实安全abort、81 actor趋势及critic波动保留，尚不满足reward与loss健康的联合目标。原74–76不完整不可判、原76–78 I近零/A失败/V仅reward通过、partial75及全部历史失败不变。
+81 reward I−2.412238584/A−10.248240876/V−2.827427950，Task/Strict18/17、15/13、17/17。A short0600 Task改善但physical退化，short0000 Strict退化，long0900再次Task失败；V short0600 Strict改善，非根因修复。I critic首末2.795769→2.032017/max28.399206，A1.193168→1.809006/max39.658913且末段升高，V1.091015→0.955214/max14.953114。sampled Q超全局上界I0%、A0.01953125%、V0.09765625%；满足上界也不证明校准，mask外误差不设新零门槛。
+完整81旧2394 terminal SSE：V5563.107010→6034.491314，A1538.721694→3046.945864；新30贡献V0.001794186、A0.441469055，A short0600/short0000/long0900占61.0398%/28.9170%/7.8880%。V80 short0600旧误差明显改善但其他旧行恶化，不能只看改善行。冻结80和81-on-fixed80只读诊断固定512批/65536/相同索引和target pairs；实际原loss截获在第一optimizer mutation之前，全state/replay保持。有限尖峰可由抽样引起，不把每个有限尖峰当新失败门槛，不声称解释在线74.12峰值或纯critic因果效应。
+因此在用户持续训练授权内，明确登记仅一个有限82：完全恢复81 learner/optimizer/alpha/replay/masks/RNG，4m append-only、历史23/47marker、terminal128、batch65536、UTD1、LR、物理、reward、gates及action filter保持。每路30×最多55s、最多41250新增，用完整后续审查判断真实新数据学习及任务/物理波动，不预设成功。已在82启动前另登记82–84相同数学的前瞻审计，仅条件性观察，不自动授权83/84；保留原79–81失败，不事后挑窗口。
+Direct33数值阶段接受及冻结30 Task/Strict0/0、原28最终内存不变证明缺失继续披露，不启动Direct34；指定ESN仍缺和最终完整冻结比较尚待，Goal active。GPU保活按用户要求在科研结束后继续，合成利用率不当作科学吞吐。本决定不改变算法或收敛阈值，不自动83。
+
+完整冻结配对独立复核已通过，81-on-fixed80 mean1.019130040对80的0.923266662，451/512批增加；focus9批均值7.576754→0.861958但其他旧行变差。实际两图已看。补充绑定证据：
+[
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/PRE_REGISTRATION.json",
+    "sha256": "796a54b72bdac7ffe8b3ea01d4cdfccdb762a77ddfab5094631aec0b08f7d7ea"
+  },
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/PLAN.json",
+    "sha256": "27561e6199ecc3bbf52feed97fd0b443cbdd203c10b704c1bd35eea2e8e18f12"
+  },
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/REVIEW.json",
+    "sha256": "071836d9be9396ec57d8d78f7b58ad5cdff0eddb8e2b595f5f5de812db62dae5"
+  },
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/SAVED_REVIEW.json",
+    "sha256": "663bfdf122ca45e2eab98f2f2ea93f478e6fc0944b5ff373daf64725d5d2bb86"
+  },
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/PAIRED_REVIEW.json",
+    "sha256": "7186212c0c93c37651380dd6bcb660a42c1ac4faae16e39f2e9c631b6d9dfc71"
+  },
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/PLOT_INSPECTION.json",
+    "sha256": "22b00040043977e084a5240c7164ba1517107a83f5362fd3287330503ed578f2"
+  },
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/PAIRED_PLOT_INSPECTION.json",
+    "sha256": "cfd40494911639366f2aebf95160bb384ba774541485863043e80c74c2288866"
+  },
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery81_full_review_20261030_v1/NEW81_TERMINAL_CASE_REVIEW.json",
+    "sha256": "a3ff486ef30ba181f055c4994f67ec6a877ae31991dc3623ac1830106d5b9801"
+  },
+  {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery82_84_reward_stability_20261030_v1/PLAN.json",
+    "sha256": "ec47d7a5d8b3f04f1fcb88f5901888baa1e20931bdee97a12021316b8c8e728c"
+  }
+]

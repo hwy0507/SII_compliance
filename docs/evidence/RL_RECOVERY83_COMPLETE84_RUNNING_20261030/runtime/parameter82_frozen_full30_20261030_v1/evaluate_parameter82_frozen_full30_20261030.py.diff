@@ -1,0 +1,62 @@
+--- evaluate_parameter55_frozen_full30_20261028.py
++++ evaluate_parameter82_frozen_full30_20261030.py
+@@ -1,4 +1,4 @@
+-"""Frozen complete55 parameter policies on all30 registered training conditions.
++"""Frozen complete82 parameter policies on all30 registered training conditions.
+ 
+ One external action seed per method; no optimization or formal replay writes.
+ Reuse the independently exercised external RNG and native replay implementation
+@@ -17,10 +17,23 @@
+ )
+ 
+ 
+-def main(registration, check_only, expected_cycle=55):
+-    if expected_cycle != 55 and not check_only:
+-        raise ValueError("Only planned55 may execute physics; validation53 is check-only")
+-    if expected_cycle not in (53, 55):
++def validate_recovery(ck, protocol, expected_cycle):
++    assert expected_cycle in (81, 82)
++    assert ck['cycle'] == expected_cycle and ck['boundary'] == 'complete_condition_cycle'
++    assert ck['environment_state_saved'] is False
++    assert ck['interruption_recovery'] == protocol['interrupted_episode_recovery']
++    assert ck['recovery_continuation'] == protocol['post_interruption_continuation']
++    stage = protocol['post_interruption_continuation']
++    assert stage['parent_cycle'] == expected_cycle - 1 and stage['new_cycle'] == expected_cycle
++    assert stage['new_cycles'] == 1 and stage['maximum_new_actions'] == 41250
++    assert stage['automatic_followup'] is False and stage['optimizer_settings_changed'] is False
++    assert all(c['cycle'] != 75 for c in ck['cycles']) and ck['cycles'][-1]['cycle'] == expected_cycle
++
++
++def main(registration, check_only, expected_cycle=82):
++    if expected_cycle != 82 and not check_only:
++        raise ValueError("Only planned82 may execute physics; validation81 is check-only")
++    if expected_cycle not in (81, 82):
+         raise ValueError("Unregistered parent cycle")
+     reg = json.loads(registration.read_text())
+     os.sched_setaffinity(0, {reg['cpu']})
+@@ -59,6 +72,7 @@
+     ck = torch.load(reg['checkpoint'], map_location='cpu', weights_only=False)
+     assert ck['cycle'] == expected_cycle and ck['boundary'] == 'complete_condition_cycle'
+     assert ck['controller'] == reg['controller'] and ck['protocol_sha256'] == sha(reg['training_registration'])
++    validate_recovery(ck, protocol, expected_cycle)
+     assert ck['replay']['replay_capacity_extension'] == MARKER
+     assert protocol['replay_capacity_stage']['parent_cycle'] == 23
+     followup = protocol['replay_capacity_followup_stage']
+@@ -99,7 +113,7 @@
+         checkpoint_sha256=sha(reg['checkpoint']), action_seed=reg['action_seed'], case_ids=reg['case_ids'],
+         full_learner_digest=initial, full_replay_digest=replay_digest, expected_episodes=30,
+         maximum_actions=41250, maximum_substeps=33000000, optimizer_updates=0,
+-        scope='Prospectively selected complete55 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
++        scope='Prospectively selected complete82 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
+     results = []
+     seed = reg['action_seed']
+     for case in reg['case_ids']:
+@@ -178,7 +192,7 @@
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--registration', type=Path, required=True)
+     parser.add_argument('--check-only', action='store_true')
+-    parser.add_argument('--validation-cycle', type=int, choices=[53,55], default=55)
++    parser.add_argument('--validation-cycle', type=int, choices=[81,82], default=82)
+     args = parser.parse_args()
+     try:
+         main(args.registration, args.check_only, args.validation_cycle)

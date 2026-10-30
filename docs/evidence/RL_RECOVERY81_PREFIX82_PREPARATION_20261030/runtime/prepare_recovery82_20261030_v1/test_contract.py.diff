@@ -1,0 +1,56 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery81_20261030_v1/test_contract.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery82_20261030_v1/test_contract.py
+@@ -1,16 +1,16 @@
+-"""Small metadata fixtures test validators; not an actual full80 restore."""
++"""Small metadata fixtures test validators; not an actual full81 restore."""
+ from pathlib import Path
+ import json,time,copy,hashlib,importlib.util,subprocess,ast
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=Path(__file__).parent;T=D/'contract_fixtures_retry';T.mkdir(exist_ok=False);RUN=B/'runs/parameter_partial75_recovery_cycle80_20261029_v1'
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=Path(__file__).parent;T=D/'contract_fixtures_retry';T.mkdir(exist_ok=False);RUN=B/'runs/parameter_partial75_recovery_cycle81_20261029_v1'
+ def write(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
+ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+ def ref(p):return dict(path=str(p),sha256=sha(p))
+-spec=importlib.util.spec_from_file_location('test_recovery81',D/'resume_recovery80.py');mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
++spec=importlib.util.spec_from_file_location('test_recovery82',D/'resume_recovery81.py');mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
+ results={}
+ for method in ['impedance','admittance','vmc']:
+  parent=RUN/method/'REGISTRATION.json';previous=json.loads(parent.read_text());h='fixture-only-not-real-checkpoint-'+method
+  review=T/(method+'_review.json');health=T/(method+'_health.json');write(review,dict(fixture_only=True,passed=True,methods={method:dict(checkpoint_sha256=h,steps=123)}));write(health,dict(fixture_only=True,methods={method:dict(checkpoint_sha256=h)}))
+- st=dict(parent_cycle=80,new_cycle=81,new_cycles=1,maximum_new_actions=41250,environment_state_saved=False,old_window_continuity_claim=False,automatic_followup=False,optimizer_settings_changed=False,parent_registration=ref(parent),checkpoint=dict(path='fixture_only_no_file',sha256=h),cycle_review=ref(review),health_review=ref(health),controller=method,recovery_driver=ref(B/'runtime/parameter75_interruption_recovery_20261029_v1/resume_partial75.py'),previous_driver=ref(B/'runtime/prepare_recovery80_20261029_v1/resume_recovery79.py'))
++ st=dict(parent_cycle=81,new_cycle=82,new_cycles=1,maximum_new_actions=41250,environment_state_saved=False,old_window_continuity_claim=False,automatic_followup=False,optimizer_settings_changed=False,parent_registration=ref(parent),checkpoint=dict(path='fixture_only_no_file',sha256=h),cycle_review=ref(review),health_review=ref(health),controller=method,recovery_driver=ref(B/'runtime/parameter75_interruption_recovery_20261029_v1/resume_partial75.py'),previous_driver=ref(B/'runtime/prepare_recovery81_20261030_v1/resume_recovery80.py'))
+  p=copy.deepcopy(previous);p['post_interruption_continuation']=st;assert mod.validate_protocol(sha(parent),p,'')==previous
+  rejected=[]
+  mutations=[('learner_batch_size',256),('learner_updates_per_transition',2),('critic_clock',False)]
+@@ -19,7 +19,7 @@
+   try:mod.validate_protocol(sha(parent),bad,'')
+   except ValueError:rejected.append(k)
+   else:raise AssertionError(k)
+- for k,v in [('parent_cycle',75),('new_cycle',80),('new_cycles',2),('maximum_new_actions',82500),('environment_state_saved',True),('old_window_continuity_claim',True),('automatic_followup',True),('optimizer_settings_changed',True)]:
++ for k,v in [('parent_cycle',75),('new_cycle',81),('new_cycles',2),('maximum_new_actions',82500),('environment_state_saved',True),('old_window_continuity_claim',True),('automatic_followup',True),('optimizer_settings_changed',True)]:
+   bad=copy.deepcopy(p);bad['post_interruption_continuation'][k]=v
+   try:mod.validate_protocol(sha(parent),bad,'')
+   except ValueError:rejected.append(k)
+@@ -33,10 +33,10 @@
+  try:mod.validate_protocol(sha(parent),bad,'')
+  except ValueError:rejected.append('historical_recovery')
+  else:raise AssertionError('historical recovery mutation accepted')
+- ck=dict(cycle=80,boundary='complete_condition_cycle',environment_state_saved=False,steps=123,seed=20261025,cycles=[dict(cycle=74),dict(cycle=80)],interruption_recovery=previous['interrupted_episode_recovery'],recovery_continuation=previous['post_interruption_continuation'])
++ ck=dict(cycle=81,boundary='complete_condition_cycle',environment_state_saved=False,steps=123,seed=20261025,cycles=[dict(cycle=74),dict(cycle=81)],interruption_recovery=previous['interrupted_episode_recovery'],recovery_continuation=previous['post_interruption_continuation'])
+  mod.validate_parent(ck,st)
+  badparents=[]
+- for key,val in [('cycle',75),('boundary','partial_episode_valid_replay_reset_environment_on_resume'),('environment_state_saved',True),('steps',124),('seed',0),('cycles',[dict(cycle=74),dict(cycle=75),dict(cycle=80)]),('interruption_recovery',{}),('recovery_continuation',{})]:
++ for key,val in [('cycle',75),('boundary','partial_episode_valid_replay_reset_environment_on_resume'),('environment_state_saved',True),('steps',124),('seed',0),('cycles',[dict(cycle=74),dict(cycle=75),dict(cycle=81)]),('interruption_recovery',{}),('recovery_continuation',{})]:
+   bad=copy.deepcopy(ck);bad[key]=val
+   try:mod.validate_parent(bad,st)
+   except ValueError:badparents.append(key)
+@@ -48,7 +48,7 @@
+  except ValueError:rejected.append('historical_continuation_chain')
+  else:raise AssertionError('Changed historical continuation accepted')
+  results[method]=dict(protocol_positive_fixture=True,protocol_negative_rejections=rejected,parent_positive_fixture=True,parent_negative_rejections=badparents)
+-cmd=[str(B/'env/bin/python'),str(D/'prepare.py')];r=subprocess.run(cmd,capture_output=True,text=True);assert r.returncode!=0 and 'Incomplete recovery80' in r.stderr and not (B/'runs/parameter_partial75_recovery_cycle81_20261029_v1').exists();write(D/'INCOMPLETE80_REJECTION.json',dict(passed=True,time=time.time(),command=cmd,returncode=r.returncode,stderr=r.stderr,no81_output=True))
+-write(D/'CONTRACT_REVIEW.json',dict(passed=True,time=time.time(),methods=results,fixture_only=True,actual_full80_restore=False,new_physics=0,optimizer_updates=0,source_sha256=sha(Path(__file__))))
++cmd=[str(B/'env/bin/python'),str(D/'prepare.py')];r=subprocess.run(cmd,capture_output=True,text=True);assert r.returncode!=0 and 'Incomplete recovery81' in r.stderr and not (B/'runs/parameter_partial75_recovery_cycle82_20261029_v1').exists();write(D/'INCOMPLETE81_REJECTION.json',dict(passed=True,time=time.time(),command=cmd,returncode=r.returncode,stderr=r.stderr,no82_output=True))
++write(D/'CONTRACT_REVIEW.json',dict(passed=True,time=time.time(),methods=results,fixture_only=True,actual_full81_restore=False,new_physics=0,optimizer_updates=0,source_sha256=sha(Path(__file__))))
+ for p in D.glob('*.py'):ast.parse(p.read_text())
+-print('3 metadata positive protocol/parent fixtures; per method19 protocol +8 boundary negatives; actual incomplete80 rejected')
++print('3 metadata positive protocol/parent fixtures; per method19 protocol +8 boundary negatives; actual incomplete81 rejected')

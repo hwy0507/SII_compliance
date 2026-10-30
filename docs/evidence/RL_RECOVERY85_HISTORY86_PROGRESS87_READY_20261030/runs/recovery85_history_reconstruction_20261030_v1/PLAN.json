@@ -1,0 +1,70 @@
+{
+  "time": 1793362906.9262125,
+  "methods": [
+    "impedance",
+    "admittance",
+    "vmc"
+  ],
+  "checkpoint_cycle": 85,
+  "inventory": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery85_history_lineage_inventory_20261030_v1/REVIEW.json",
+  "budget_seconds": 1800,
+  "cpu": 53,
+  "torch_threads": 1,
+  "expected_total_retained_transitions": 10577448,
+  "inputs": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery85_history_lineage_inventory_20261030_v1/PLAN.json",
+      "sha256": "2fc536d8c8c08eceba9cab20c39e63386395b73309b82b9e24d2c304c7698389"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery85_history_lineage_inventory_20261030_v1/REVIEW.json",
+      "sha256": "d920ccf4165e12770e0fa4b9481179cf925d551dd127e16ffa324c8b3f3ec700"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery85_history_lineage_inventory_20261030_v1/SAVED_REVIEW.json",
+      "sha256": "630902661bdadccae9c68423fa3d976f4ff1352c0171da89d7541e8119a73a0e"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/SOURCE_HASHES.json",
+      "sha256": "9d0078e25e669a7dff9549ef2395de27b4673c32eecfd511416e23ab7964fe90"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_compliance_episode_20261025.py",
+      "sha256": "05917e897b694a3fdff2f22b4867380dc2a4882fbce36f0e3107b09ab3590e59"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_compliance_learner_20261025.py",
+      "sha256": "af69a88150d8d2480c4f5201e00b2d9f8a8b2639f6baa19c123caa85d268b656"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/scripts/validate_office_apparatus_v5_20260917.py",
+      "sha256": "75be184dfd5f39f89d2058311e1701c0bef7a2b95128653f772920a0e0ec249b"
+    }
+  ],
+  "preaction_history_definition": "journal row0 intervalNone gives0; later row own interval is already available before its action. Next history uses next journal interval or TERMINAL.interval only for done transition. No terminal history leaked into preaction.",
+  "checkpoint_fields_to_verify": [
+    "all current observations50: scaled raw48/context/criticclock",
+    "all mixed raw replay actions against journal action",
+    "all next observations raw48 and criticclock; terminal next copies previous obs except clock",
+    "all rewards and dones against transition log",
+    "next context where next transition context exists, report unavailable cases explicitly"
+  ],
+  "outputs": "Separate float64 .npy per method shape(retained_steps,2): preaction cumulative peak,next cumulative peak. No changed replay/checkpoint/optimizer/physics/input.",
+  "checks": [
+    "Original checkpoint SHA before/after and input source hashes",
+    "Every retained row exactly once",
+    "Full journals hashed and finite monotone peaks",
+    "Current and next replay field equality using exact float32 operations",
+    "Partial episodes preserved, no fabricated terminal",
+    "Saved sidecar scalar/monotonic checks and separate saved review"
+  ],
+  "not_claimed": [
+    "No independent physical-substep penetration re-simulation",
+    "No model amendment, actor/critic change, or convergence claim",
+    "No full next-context reconstruction where corresponding transition context absent"
+  ],
+  "new_physics": 0,
+  "new_network_forward": 0,
+  "optimizer_updates": 0,
+  "replay_writes": 0
+}

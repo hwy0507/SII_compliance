@@ -1,0 +1,18 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery84_85_fixed_terminal_input_followup_20261030_v1/wait.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery84_86_fixed_terminal_critic_followup_20261030_v1/wait.py
+@@ -14,13 +14,13 @@
+   checks=[(root/'ARCHIVE_REVIEW_FINISHED.json','completed'),(rev/'FINISHED.json','completed')];jobs=[plan['monitor']]+plan['learners']
+   for p in [root/'ARCHIVE_REVIEW_FAILURE.json']+[root/m/'train/FAILURE.json' for m in ['impedance','admittance','vmc']]:assert not p.exists(),str(p)
+   for m in plan['methods']:
+-   t=B/f'runs/{m}_recovery85_terminal_followup_20261029_v1';jobs.append(read(t/'LAUNCH.json'));checks.extend([(t/'FINISHED.json','completed'),(t/'SAVED_VALUES_REVIEW.json','passed')])
++   t=B/f'runs/{m}_recovery86_terminal_followup_20261029_v1';jobs.append(read(t/'LAUNCH.json'));checks.extend([(t/'FINISHED.json','completed'),(t/'SAVED_VALUES_REVIEW.json','passed')])
+    for n in ['FAILURE.json','WAIT_FAILURE.json']:assert not (t/n).exists(),str(t/n)
+   for p,k in checks:
+    if not p.exists():ready=False
+    else:assert read(p)[k]
+   if ready and not any(live(j) for j in jobs):break
+-  assert time.time()<plan['original_deadline_unix'],'Original85 monitor+14400 deadline expired; no extension'
++  assert time.time()<plan['original_deadline_unix'],'Original86 monitor+14400 deadline expired; no extension'
+   time.sleep(5)
+  subprocess.run([sys.executable,str(D/'audit.py')],check=True)
+  assert read(D/'REVIEW.json')['passed'] and read(D/'SAVED_REVIEW.json')['passed']

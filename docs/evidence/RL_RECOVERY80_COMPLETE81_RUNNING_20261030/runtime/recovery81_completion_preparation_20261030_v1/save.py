@@ -1,0 +1,97 @@
+from pathlib import Path
+import json,time,hashlib,ast,tarfile,subprocess,socket,datetime,os
+B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');R=B/'repository/SII_compliance';D=Path(__file__).parent;PREP=B/'runtime/prepare_recovery81_20261030_v1';F=B/'runtime/recovery81_followups_20261030_v1';RUN=B/'runs/parameter_partial75_recovery_cycle80_20261029_v1';TAG='RL_RECOVERY81_DISPATCH_PREPARATION_20261030';E=R/'docs/evidence'/TAG;A=B/'repository'/TAG
+read=lambda p:json.loads(Path(p).read_text())
+def sha(p):
+ with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+def put(p,x):
+ with p.open('x') as f:json.dump(x,f,indent=2,ensure_ascii=False);f.write('\n')
+def live(j):
+ p=Path(f'/proc/{j["pid"]}/stat')
+ if not p.exists():return False
+ s=p.read_text().rsplit(')',1)[1].split();return s[19]==j['proc_start_ticks'] and s[0]!='Z'
+for p in [D/'PREPARATION_REVIEW.json',D/'FINAL_SOURCE_REVIEW.json',D/'OBSERVATION_FINISHED.json',D/'KNOWN_CASE_SAVED_REVIEW.json',F/'PREPARATION_REVIEW.json']:assert read(p)['passed']
+for x in read(D/'FINAL_SOURCE_REVIEW.json')['files']:assert sha(x['path'])==x['sha256']
+assert not (D/'DECISION81.json').exists() and not (D/'CONTINUATION_REASON.txt').exists() and not (B/'runs/parameter_partial75_recovery_cycle81_20261029_v1/LAUNCH.json').exists()
+obs=read(D/'OBSERVATION_FINISHED.json');rows=[json.loads(l) for l in (D/'OBSERVATIONS.jsonl').read_text().splitlines()];assert len(rows)==obs['samples'] and obs['elapsed']>=600 and obs['saved_rows_verified']
+for m in ['impedance','admittance','vmc']:assert obs['last_steps'][m]==rows[-1]['parameter'][m]['steps']
+progress={}
+for j in read(RUN/'LAUNCH.json')['jobs']:
+ assert live(j) or (RUN/j['controller']/'train/FINISHED.json').exists();assert not (RUN/j['controller']/'train/FAILURE.json').exists();progress[j['controller']]=read(RUN/j['controller']/'train/PROGRESS.json')
+assert live(read(PREP/'LAUNCH.json')) or (PREP/'FINISHED.json').exists()
+g=Path('/tmp/sii_gpu_util_guard_20261030_v7');allrows=[json.loads(l) for l in (g/'samples.jsonl').read_text().splitlines()];since=read(PREP/'SAVE_SNAPSHOT.json')['time'];gpu=[v for v in allrows if v['time']>since];assert gpu and time.time()-gpu[-1]['time']<20
+(D/'GUARD_SAMPLES.jsonl').write_text(''.join(json.dumps(v)+'\n' for v in gpu));guard=dict(samples=len(gpu),minimum=[min(v['gpus'][i]['utilization'] for v in gpu) for i in range(4)],below50=[sum(v['gpus'][i]['utilization']<50 for v in gpu) for i in range(4)],last=[v['utilization'] for v in gpu[-1]['gpus']],synthetic_included=True,keep_after_science=True)
+snap=dict(time=time.time(),host=socket.gethostname(),parameter80=progress,prepare81=read(PREP/'LAUNCH.json'),actual81_restore_complete=(PREP/'FINISHED.json').exists(),decision81=False,training81=False,direct34=False,guard=guard,goal='active');put(D/'SAVE_SNAPSHOT.json',snap)
+files=set()
+for folder in [D,F]:
+ for p in folder.rglob('*'):
+  if p.is_file() and '__pycache__' not in p.parts and p.suffix in ['.py','.json','.jsonl','.log','.diff','.txt']:files.add(p)
+E.mkdir(exist_ok=False);A.mkdir(exist_ok=False);manifest=[]
+for p in sorted(files):
+ data=p.read_bytes();assert len(data)<10_000_000;rel=p.relative_to(B);q=E/rel;q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes(data)
+ if p.suffix=='.py':ast.parse(data)
+ manifest.append(dict(source=str(p),relative=str(rel),bytes=len(data),sha256=sha(q)))
+put(E/'MANIFEST.json',dict(time=time.time(),files=manifest,active_logs_are_snapshots=True,large_artifacts_retained_shared_ssd=True,depends_on_prior_packages=['RL_RECOVERY79_ABORT80_RUNNING_20261030','RL_RECOVERY80_PREFIX81_PREPARATION_20261030']))
+tar=A/'SMALL_EVIDENCE.tar.gz'
+with tarfile.open(tar,'w:gz') as t:
+ for p in sorted(E.rglob('*')):
+  if p.is_file():t.add(p,arcname=str(p.relative_to(E)),recursive=False)
+with tarfile.open(tar,'r:gz') as t:
+ assert len(t.getmembers())==len(manifest)+1
+ for member in t.getmembers():assert t.extractfile(member).read()==(E/member.name).read_bytes()
+receipt=dict(time=time.time(),archive=str(tar),bytes=tar.stat().st_size,sha256=sha(tar),members=len(manifest)+1,all_members_bytes_and_ast_verified=True,source_base_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip(),start_main='186f77aac09a2f06e8fc8a39f59a3a8f759f4845',remote_main=subprocess.check_output(['git','rev-parse','origin/main'],cwd=R,text=True).strip(),baseline=subprocess.check_output(['git','rev-parse','origin/baseline'],cwd=R,text=True).strip(),host=snap['host'],large_artifacts='Shared SSD; not full HDD/arm1 backup');put(A/'RECEIPT.json',receipt);put(R/'docs'/(TAG+'_SAVE.json'),receipt)
+steps={m:v['steps'] for m,v in progress.items()};case=read(D/'KNOWN_CASE_SAVED_REVIEW.json')['values'];first=case['FIRST'];last=case['LAST']
+doc=f'''# 第81轮完整审查及派发入口准备；原80继续
+
+{datetime.datetime.fromtimestamp(snap['time'],datetime.timezone.utc).isoformat()}。Goal active。上一轮完成80前5000审计与81仅恢复准备；本轮补齐81完整决定/启动/loss派发和标签/终端后续工具，并连续观察原80与上轮失败条件。**原80steps {steps}；没有DECISION81/CONTINUATION_REASON，没有81训练，准确81恢复完成={snap['actual81_restore_complete']}。**
+
+执行主机`{snap['host']}`，共享SSD`{B}`，解释器`{B}/env/bin/python`。沿用已读sii-research-sync流程，无子agent。开工真实查询/fetch/read main`{receipt['start_main']}`、baseline`{receipt['baseline']}`及日志，后续最新已读main`{receipt['remote_main']}`；并行非RL工作保留，最新状态见共享日志，不代替另一主机派发。
+
+## 81决定与派发工具
+
+目录`runtime/recovery81_completion_preparation_20261030_v1`。`decision81.py`要求完整80 archive/review/health/loss、独立算术、全部79→80任务标签、V/A旧2364+新30终端、四张实际完整80图、准确81全learner/replay/next65536恢复及原learner退出。它精确绑定实际版本2 DECISION80及全部历史证据，明确保留79安全失败；不会把原80 no-abort入口的拒绝抹掉。
+
+原76–78 PLAN及完整结果/实际图继续绑定，SHA `57b3d6be84b8b384922a35879ddfd5cd1c6e7a6b71b35ca5652c2ddfc8cd4e85`；前瞻79–81 PLAN SHA `5cf5efb87a63b432091276c3b96a3b16126c2ab891a2e195b6c857e93cf110a0`、cycles[79,80,81]不变，未错误推进窗口或修改阈值。当前准备入口要求最新80各30full/41250/无abort；若80出现短回合，它应拒绝，之后必须保留拒绝、审清失败并另行记录科学决定，不能静默放宽。
+
+`launch81.py`沿用实际成功80 launcher，父轮次80/new81与`prepare_recovery81_20261030_v1/resume_recovery80.py`路径已静态核验，避免前轮旧父78/driver78引用问题；所有派发源码和startup81/archive81绑定SHA。必须存在明确决定且重算全部证据一致，才可创建PRELAUNCH并启动一次有限81及startup/archive/loss等待；无自动82。实际缺完整80、缺DECISION81、缺81 LAUNCH三个入口均已拒绝，未创建81运行目录。当前没有预写续训理由，更没有把准备通过当真实81启动通过。
+
+`runtime/recovery81_followups_20261030_v1/prepare.py`准备完整80→81标签与终端后续，固定锚点使用未来完整80全部2394终端、完整81预计2424；保留旧focus、全部总体和两个回放分母。依赖实际完整80Q/特征/独立终端审计；目前未生成锚点或部署后续。真实缺81 LAUNCH拒绝发生在建目录之前，三个81标签/终端目录均不存在。未来数据就绪后仍须实际验证，不以静态AST替代运行证据。
+
+原81仅恢复等待器PID{snap['prepare81']['pid']}/start{snap['prepare81']['proc_start_ticks']}继续；原startup/archive/fullreview/health和完整loss准备见[前次交接](RL_RECOVERY80_PREFIX81_PREPARATION_20261030.md)。科学trainer、30条件/55s上限/最多41250新增、4m append-only、markers23/47、terminal128、batch65536/UTD1、LR/reward/masks/物理/gates不变。
+
+## 第79轮失败条件在80的描述性观测
+
+`KNOWN_CASE_CAPTURE_PLAN.json`明确在80该条件越过原27s失败时刻、首次捕获之后登记，是按已知79失败选择的描述性观测，非预注册新验证。80的impedance long0000 MJB SHA `757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7`及执行evaluator SHA `8055fa94381a3096dcce73a405261ced4f2e3a37d6ea86250d230601a8303e9a`与79相同。训练过程中策略和采样动作变化，不能作冻结策略或因果比较。
+
+600秒原进程观测中，保存的已完成interval从{first['elapsed_s']:.2f}s/{first['substeps']}子步推进至{last['elapsed_s']:.2f}s/{last['substeps']}子步；末次terminal存在={last['terminal_exists']}。原始journal首行interval=None，后续每行800子步、0.04s；两份原字节前缀完整保留，首份是后份的精确前缀，独立标量elapsed/substep核验通过。一次只读检查误把首行None相加产生TypeError已记录、更正为原日志语义，未改科学数据。
+
+已记录interval中的机器人外部穿透峰值为{last['robot_external_penetration_peak_m']*1000:.6f}mm，**这不是全局穿透峰值**；journal不提供该global统计，不能据此排除物块—角台穿透。越过27s只能说明本条训练轨迹没有在相同时刻终止，不能证明79失败根因已解决、80回合安全/成功或泛化改善。原79的27s/675动作/97.689mm全子步global峰值、Task/Strict/physical false、40550新增/29full、失败惩罚及所有回放保持。
+
+完整80 all-condition审计仍须等原回合结束。80前5000仅描述、仍有尖峰；原76–78 I近零不可判/A不满足5%/V仅reward满足但loss未证保持。nearzero保护不构成改变reward方向的目标。75完整历史仍缺失，原74–76不可判，不改写已有窗口。
+
+## 连续观察、保存与后续
+
+{obs['samples']}样本/{obs['elapsed']:.3f}秒，{obs['identities']}个原训练/archive/loss/labels/两terminal/79–81、81仅恢复及GPU supervisor/四worker身份live或完整终态核验，steps {obs['first_steps']}→{obs['last_steps']}；源码绑定保持、保存行独立核验，观察器结束后原科学继续，不重启。
+
+上次保存以来GPU{guard['samples']}样本，最低{guard['minimum']}%，低于50次数{guard['below50']}，最后{guard['last']}%。含合成保活，不当科学吞吐；科研全部完成后仍保载。guardv7 CPU4–6、target70%/floor50%保持，历史停机/预热0及v6低谷保留，非重启自启服务。
+
+SSD补充包`{tar}`，{receipt['members']}成员/{receipt['bytes']}字节，SHA`{receipt['sha256']}`，全部成员字节/hash与AST核验；[保存收据]({TAG}_SAVE.json)。依赖前两轮完整79与80前缀/81恢复准备包，大checkpoint/replay/raw仍共享SSD，非HDD/arm1全量备份。HDD既有254字节LATEST原位更新回读；发布后收据保存在本归档目录`PUBLICATION.json`，与包内保存时快照区分。
+
+下一步继续原80到完整审计和准确81恢复，实际查看完整图、解释物理失败和损失后再决定有限81；不得重复派发80或仅恢复作业。Direct33接受的数值阶段及全30冻结Task/Strict0/0、旧最终内存证明缺失保持；不启动34。指定ESN及最终冻结比较范围仍待，Goal active。
+'''
+(R/'docs'/(TAG+'.md')).write_text(doc);(A/'HANDOFF.md').write_text(doc)
+entry=f'''## 2026-10-30 — 原80继续；81完整审查与派发准备
+
+- [交接](docs/{TAG}.md)。81决定绑定完整80/四实际图/准确恢复、版本2 DECISION80及79失败、原76–78完整结果和79–81准确PLAN；缺完整80/决定/LAUNCH实际拒绝。launcher父80/driver80引用核验，81标签/2394→2424终端helper准备但未部署，无81决定/训练、无Direct34。
+- 原80 steps{steps}；{obs['samples']}样本/{obs['elapsed']:.3f}s共{obs['identities']}身份保持，观察器自然结束。已知79失败条件80记录从{first['elapsed_s']:.2f}→{last['elapsed_s']:.2f}s，原字节前缀/独立子步算术通过、末terminal={last['terminal_exists']}；仅描述进度，global穿透未知，不能称修复/安全/成功。Goal active。
+- GPU{guard['samples']}样本min{guard['minimum']}%、低于50{guard['below50']}，科研结束仍合成保载；SSD{receipt['members']}成员/SHA{receipt['sha256'][:8]}核验，非HDD/arm1全备份。main186f77aa后{receipt['remote_main'][:8]}/baselinef6e8f8c已fetch/read，非RL保留，发布见SSD PUBLICATION收据，无子agent。
+
+'''
+for name in ['AGENTS.md','UPDATE_LOG.md']:
+ p=R/name;s=p.read_text()
+ if name=='AGENTS.md':h,t=s.split('\n',1);p.write_text(h+'\n\n'+entry+t.lstrip('\n'))
+ else:p.write_text(entry+s)
+for p,link in [(R/'HANDOFF.md','docs/'+TAG+'.md'),(R/'docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md',TAG+'.md')]:p.write_text(f'> **最新：[81完整审查/派发准备与原80观测]({link})。无81决定/训练，原80和GPU保活继续。**\n\n'+p.read_text())
+p=Path('/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/LATEST_RL_HANDOFF.md');n=p.stat().st_size;v=f'# RL {datetime.datetime.fromtimestamp(snap["time"],datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")}\n80;prep81;guardv7.\nSSD {B}\nRead repository/SII_compliance/docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md\nLarge data SSD. No reboot service.\n'.encode();assert n==254 and len(v)<=n
+with p.open('r+b') as f:f.write(v+b' '*(n-len(v)));f.flush();os.fsync(f.fileno())
+assert p.read_bytes()==v+b' '*(n-len(v));print(json.dumps(receipt));print(json.dumps(dict(steps=steps,guard=guard,known_case=case)))

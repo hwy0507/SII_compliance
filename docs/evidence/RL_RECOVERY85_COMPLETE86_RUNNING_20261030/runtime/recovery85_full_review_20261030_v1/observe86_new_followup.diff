@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -16,6 +16,7 @@
+  if name in jobs or name in paths:
+   j=jobs[name] if name in jobs else read(paths[name]);item=advance(item);item.update(name=name.replace('85','86'),pid=j['pid'],proc_start_ticks=j['proc_start_ticks'])
+  identities.append(item)
++folder=B/'runs/recovery84_86_fixed_terminal_critic_followup_20261030_v1';j=read(folder/'LAUNCH.json');identities.append(dict(name='fixed2514_84_86',pid=j['pid'],proc_start_ticks=j['proc_start_ticks'],terminal_requirements=[dict(path=str(folder/'FINISHED.json'),key='passed',value=True)],failure_paths=[str(folder/'FAILURE.json')]))
+ def state(j):
+  for p in j['failure_paths']:assert not Path(p).exists(),p
+  p=Path(f'/proc/{j["pid"]}/stat')

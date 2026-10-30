@@ -1,0 +1,28 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery86_task_labels_20261029_v1/wait.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery87_task_labels_20261029_v1/wait.py
+@@ -1,4 +1,4 @@
+-"""Wait for the registered recovery cycle86; run only saved-label audit."""
++"""Wait for the registered recovery cycle87; run only saved-label audit."""
+ from pathlib import Path
+ import hashlib
+ import json
+@@ -51,15 +51,15 @@
+         time.sleep(5)
+     for name, digest in plan['sources'].items():
+         assert sha(HERE / name) == digest
+-    subprocess.run([sys.executable, str(HERE / 'audit_labels.py'), '--before', '85', '--after', '86',
+-                    '--output', str(OUT / 'COMPLETE85_86.json')], check=True)
++    subprocess.run([sys.executable, str(HERE / 'audit_labels.py'), '--before', '86', '--after', '87',
++                    '--output', str(OUT / 'COMPLETE86_87.json')], check=True)
+     (OUT / 'LABELS_FINISHED.json').write_text(json.dumps(dict(completed=True, time=time.time())) + '\n')
+-    loss = BASE / 'runs/parameter_recovery86_loss_20261029_v1'
++    loss = BASE / 'runs/parameter_recovery87_loss_20261029_v1'
+     while not (loss / 'SAVED_REVIEW.json').exists():
+         assert not (loss / 'FAILURE.json').exists()
+         assert time.monotonic() < deadline, 'Saved loss review wait expired'
+         time.sleep(5)
+-    subprocess.run([sys.executable, str(HERE / 'review_labels86.py')], check=True)
++    subprocess.run([sys.executable, str(HERE / 'review_labels87.py')], check=True)
+     (OUT / 'FINISHED.json').write_text(json.dumps(dict(completed=True, time=time.time())) + '\n')
+ except BaseException as error:
+     (OUT / 'WAIT_FAILURE.json').write_text(json.dumps(dict(time=time.time(), error=repr(error))) + '\n')

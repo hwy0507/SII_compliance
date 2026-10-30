@@ -1,0 +1,28 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance_recovery79_terminal_followup_20261029_v1/review_values.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance_recovery80_terminal_followup_20261029_v1/review_values.py
+@@ -5,17 +5,17 @@
+ OUT=Path(__file__).resolve().parent
+ r=json.loads((OUT/'REVIEW.json').read_text())
+ assert hashlib.sha256((OUT/'values.npz').read_bytes()).hexdigest()==r['values_sha256']
+-assert hashlib.sha256((OUT/'follow79.png').read_bytes()).hexdigest()==r['plot_sha256']
++assert hashlib.sha256((OUT/'follow80.png').read_bytes()).hexdigest()==r['plot_sha256']
+ with np.load(OUT/'values.npz',allow_pickle=False) as v:
+     def sse(q,js):return math.fsum(float(v['masks'][i,j])*(float(q[i,j])-float(v['rewards'][j]))**2 for i in range(5) for j in js)
+     def contribution(q,js,den):return math.fsum(128*float(v['masks'][i,j])*(float(q[i,j])-float(v['rewards'][j]))**2/float(den[i]) for i in range(5) for j in js)
+-    old=sse(v['q_before'],range(2334));after=sse(v['q_after'],range(2334))
+-    expected=dict(old2334_sse_before=old,old2334_sse_after=after,old2334_sse_ratio=after/old,
+-        old2334_contribution_before=contribution(v['q_before'],range(2334),v['old_denominator']),
+-        old2334_contribution_after=contribution(v['q_after'],range(2334),v['denominator']),
+-        old2334_after_using_old_denominator=contribution(v['q_after'],range(2334),v['old_denominator']),
+-        new30_contribution=contribution(v['q_after'],range(2334,2364),v['denominator']),
+-        all_terminal_contribution=contribution(v['q_after'],range(2364),v['denominator']))
++    old=sse(v['q_before'],range(2364));after=sse(v['q_after'],range(2364))
++    expected=dict(old2364_sse_before=old,old2364_sse_after=after,old2364_sse_ratio=after/old,
++        old2364_contribution_before=contribution(v['q_before'],range(2364),v['old_denominator']),
++        old2364_contribution_after=contribution(v['q_after'],range(2364),v['denominator']),
++        old2364_after_using_old_denominator=contribution(v['q_after'],range(2364),v['old_denominator']),
++        new30_contribution=contribution(v['q_after'],range(2364,2394),v['denominator']),
++        all_terminal_contribution=contribution(v['q_after'],range(2394),v['denominator']))
+     for k,value in expected.items():assert math.isclose(value,r[k],rel_tol=1e-12,abs_tol=1e-12)
+     for focus in r['focus']:
+         k=int(np.flatnonzero(v['indices']==focus['replay_index'])[0]);assert math.isclose(sse(v['q_before'],[k]),focus['sse_before'],rel_tol=1e-12,abs_tol=1e-12);assert math.isclose(sse(v['q_after'],[k]),focus['sse_after'],rel_tol=1e-12,abs_tol=1e-12)

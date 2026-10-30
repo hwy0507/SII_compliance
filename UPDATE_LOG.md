@@ -167,7 +167,101 @@
 - 本地固定诊断 `outputs/contact_yield_recovery_student_development_20261030_v1` 于13:40 CST核到15/27完整回合：棍推`rod_00` 9/9，球撞`ball_00`前6/9；下一条为ESN seed03。前15条全部完整episode receipt及METRICS存在。棍推ESN/RNN分别3/3同时Task+Strict且machine-compliant；棍推MLP仍为Task 3/3、Strict 1/3、machine 2/3，两个失败分别是杆保持时未及时越杆回位和最大穿透0.23546mm超0.2mm。球撞已完成的ESN/RNN/MLP各2/2同时Task+Strict且machine-compliant，穿透为0。
 - 同一 handoff unit `sii-contact-yield-recovery-student-handoff-v1-20261030.service` 只读核为active/running，MainPID 2065413、InvocationID `afadc65e7edf43f8a4e8ece3056f0587`、NRestarts=0；协调器/当前video helper PID 2111882/2124805/2124806。单路CPU6运行，cgroup MemoryCurrent约1.38GB / MemoryMax 3GiB，swap=0，memory.events的high/max/oom/oom_kill/group均为0。没有发起新物理worker。
 - GitHub fetch/`ls-remote`本轮因网络不可达失败；本地HEAD与缓存`origin/main`为`450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`，缓存baseline为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不得据此声称远端最新。工作区既有无关未跟踪文件保留。当前15/27仅开发集部分结果，尚未完成诊断、修复归因或冻结测试；unseen108未派发。
+## 2026-10-30 — 冻结82完整90已审；87与冻结86多seed继续
 
+- [交接](docs/RL_FROZEN82_COMPLETE87_PROGRESS_20261030.md)。冻结82全90×55s/123750动作/9900万子步、全部最终learner/replay不变、raw独立审计/55→82全90配对/两实际图通过。I/A/V Task/Strict18/17、14/14、17/17，改善和退化均保留，开发单动作seed，非收敛/泛化。
+- 新同2514/all5的84—87保存值跟踪在完整87前登记，真实缺前置拒绝/已知anchor输入及86预测逐位核验，等待PID1474，无新forward/physics/update；原87steps{'impedance': 3597197, 'admittance': 3599489, 'vmc': 3601331}、冻结86固定16与原85—87继续，无自动88/Direct34，Goal active。
+- 540.2秒原34身份观察完成，最后35身份核验；GPU180样本min[64, 66, 63, 68]%、低于50[0, 0, 0, 0]，科学结束仍保载。SSD317成员/SHAdc7bb240核验、非HDD/arm1全备份；main80e94020/baselinef6e8f8c实际fetch/read，发布见收据，无子agent。
+
+## 2026-10-30 — 原87继续；冻结86固定16回合seed诊断实际运行
+
+- [交接](docs/RL_RECOVERY87_FROZEN86_SEEDS_20261030.md)。先复核已完成29的12回合敏感性证据；新完整86四个已知变化组合×原四seed，共16回合/22000动作上限/0更新，PLAN42dc5ea1，不是重新发现一般随机性或因果分解。
+- 四组全state恢复/52负例/实际startup及400保存行/MJB/CPU/原physics-action循环AST通过；180.0秒34身份观察保持，完整16/最终不变/图仍待。原87steps{'impedance': 3586349, 'admittance': 3588641, 'vmc': 3590297}、冻结82和原85—87继续，不自动88/Direct34，Goal active。
+- GPU243样本min[71, 67, 65, 69]%、低于50[0, 0, 0, 0]，科学结束仍保载；SSD113成员/SHA7f18a9cd已核，非HDD/arm1全备份。mainf7817a10/baselinef6e8f8c实际fetch/read；发布见收据，无子agent。
+
+## 2026-10-30 — 完整86与固定2514已审；有限87实际续训
+
+- [交接](docs/RL_RECOVERY86_COMPLETE87_RUNNING_20261030.md)。86各30×55/41250/noabort，旧replay/reward0误差/full loss/health/186标签/两终端/5实际图通过；reward−2.408941/−6.690040/−2.831542、Task/Strict18/17、15/15、17/17。A/V loss下降与旧失败拟合改善，I新Strict失败，未收敛。
+- 固定2514 V3556.825→1158.553全5改善，A3932.823→2110.926但c4退化；新85群体V6434.188→14.076/A4198.207→495.941。明确有限87决定/全state准确恢复/actual startup/120.0秒29身份观察通过，steps{'impedance': 3571619, 'admittance': 3573937, 'vmc': 3575105}，全后续部署，无自动88。原85—87 A/V相邻已超5%，不靠87追认通过；Goal active。
+- GPU380样本min[73, 64, 65, 65]%、低于50[0, 0, 0, 0]，科学完成仍保载；SSD372成员/SHA7700e822核验，非HDD/arm1全备份。mainf3a48112/baselinef6e8f8c实际fetch/read，发布见收据，无子agent。
+
+## 2026-10-30 — 完整85全历史回放重建；86继续与87入口准备
+
+- [交接](docs/RL_RECOVERY85_HISTORY86_PROGRESS87_READY_20261030.md)。每路80祖先/81日志，全10,577,448保留transition逐位对齐；因果穿透sidecar/独立保存复核/全部90原84数组/实际四栏图通过。3117尾行与部分cohort保留，0physics/forward/update，不是独立物理重建或科学修订。
+- 87科学trainer同86、19+8负例/真实未完整86拒绝；restore-only267147、实际恢复=False。完整86/固定2514/all5三checkpoint/实际图强制入口与4拒绝通过，标签/终端2574→2604仅准备，无87决定/训练。原86steps{'impedance': 3558941, 'admittance': 3561104, 'vmc': 3561241}，11样本/29身份保持；冻结82/原85—87继续，Goal active。
+- GPU493样本min[76, 66, 66, 65]%、低于50[0, 0, 0, 0]，科学结束仍补载；SSD128成员/SHA1087dbae核验，非HDD/arm1全备份。main2679effb/baselinef6e8f8c已实际fetch/read，发布见收据，无子agent。
+
+## 2026-10-30 — 完整85与固定2514已审；有限86实际续训
+
+- [交接](docs/RL_RECOVERY85_COMPLETE86_RUNNING_20261030.md)。85各30×55/41250/noabort、全replay/reward0误差/loss/health/185标签/两终端/五实际图通过；reward−.590930/−8.629324/−4.586652，Task/Strict18/18、15/14、17/16。A/V末段loss上升，VMC short0600恢复但short0000新Strict失败，未收敛。
+- 固定2514/all5 V总SSE9046.061→3556.825，A1283.626→3932.823；改善退化分项全部保留。新85V short0000/A short0600仍5113/5331更新机会，实际抽样未知。明确有限86决定/精确恢复/实际startup/120.0秒28身份观察通过，steps{'impedance': 3528493, 'admittance': 3530701, 'vmc': 3531577}；全后续及84—86固定2514跟踪已部署，无自动87，Goal active。
+- GPU346样本min[75, 66, 66, 64]%、低于50[0, 0, 0, 0]，科学完成仍补载；SSD388成员/SHAb1e98771核验，非HDD/arm1全备份。main74b2d54e/baselinef6e8f8c已实际fetch/read，发布见收据，无子agent。
+
+## 2026-10-30 — 84因果历史信息审查完成；85继续、86入口仅准备
+
+- [交接](docs/RL_RECOVERY85_CAUSAL_HISTORY86_READY_20261030.md)。完整84全部90回合/123750动作的preaction历史穿透、原观测/动作/时间/标签/hash及独立标量回读与四栏实际图通过。A/V short0600均row96/3.84s已知超限、后1279动作可用；非独立物理重建/全历史replay覆盖或模型修订。
+- 86decision强制完整85/全部图/精确恢复/原82—84及固定2514输入85结果，四缺前置真实拒绝通过；生成器误匹配由断言挡下后修复并留证。86标签/终端2544→2574仅准备未部署，无86决定/训练。原85steps{'impedance': 3517142, 'admittance': 3519229, 'vmc': 3521004}，17样本/27身份保持；冻结82/85—87继续，Goal active。
+- GPU211样本min[70, 63, 63, 67]%、低于50[0, 0, 0, 0]，科学完成仍补载；SSD189成员/SHA994e3b9c核验、非HDD/arm1全备份。main3d3b5cae/baselinef6e8f8c实际fetch/read，发布见收据，无子agent。
+
+## 2026-10-30 — 85前缀、86仅恢复准备与84终端输入/梯度诊断
+
+- [交接](docs/RL_RECOVERY85_PREFIX86_INPUT_DIAGNOSIS_20261030.md)。85首5000原字节/独立算术/实际图核验；critic I2.205659→2.091351、A1.203930→1.180240、V1.052628→1.110197，非收敛。86科学trainer同85、每路19+8负例及未完整85拒绝通过，仅恢复等待1064870，无86训练。
+- 83→84全90行为/更新机会、全60终端及2514输入检查：V short0600仍7573更新机会，历史Strict标记不显式入critic。冻结84只读974forward/964autograd、权重/RNG不变，三个异号邻居局部梯度余弦−.766/−.971/−.798；全482配对/图/标量已核，非历史Adam因果。新完整85固定2514/all5跟踪登记等待，不自动86。
+- 原85steps{'impedance': 3504212, 'admittance': 3506439, 'vmc': 3508029}；11样本/300.0s原26身份保持，最终27身份核验，冻结82与原85—87继续。GPU281样本min[54, 63, 68, 67]%、低于50[0, 0, 0, 0]，科学结束仍补载；SSD163成员/SHA9d510904核验，非HDD/arm1全备份。mainab8cbd7b/baselinef6e8f8c已fetch/read，发布见收据，Goal active，无子agent。
+
+## 2026-10-30 — 完整84/原82—84已审；有限85运行
+
+- [交接](docs/RL_RECOVERY84_COMPLETE85_RUNNING_20261030.md)。84各30×55/41250/noabort、完整replay/reward/loss/health/标签/两终端/四图通过；reward−.597524/−8.556481/−4.629474、Task/Strict18/18、14/14、17/16。原82—84/标量bootstrap及固定2454全部5critic已核；未收敛，历史失败保留。
+- 明确有限85决定/准确恢复/actual startup/120.0秒观察通过，steps{'impedance': 3486943, 'admittance': 3489172, 'vmc': 3490365}；全后续部署。新85—87在85启动前登记、原算法和新seed2858、统计等待不授权86/87。冻结82完整90仍在途，无Direct34，Goal active。
+- GPU539样本min[65, 60, 64, 60]%、低于50[0, 0, 0, 0]，科学结束仍合成保载；SSD590成员/SHAa8882b3e逐字核验，非HDD/arm1全备份。main30d2010b/baselinef6e8f8c已fetch/read，发布见SSD收据，无子agent。
+
+## 2026-10-30 — 84前5000与83旧终端逐critic诊断
+
+- [交接](docs/RL_RECOVERY84_PREFIX_CRITIC83_20261030.md)。84前5000原字节/连续step/独立算术/实际图通过，critic I2.949788→2.876221、A1.435059→1.349944、V1.098345→.901984，仅前缀非收敛；84steps{'impedance': 3462787, 'admittance': 3465037, 'vmc': 3466500}。
+- 全2454旧终端×两方法×5critic标量/原数组/图核验：V退化集中critic3，SSE47.424→21831.057，其余4改善；更早2424退化而82新增30改善。A原82long0300同一旧行6648.778→.802，实际抽样未知，不作因果。新84同2454/all5跟踪已登记等待、缺完整84真实拒绝通过；无自动85/Direct34，Goal active。
+- 11样本/300.004秒原17身份保持，最终含新等待器/worker共22身份；GPU270样本min[64, 66, 66, 66]%、低于50[0, 0, 0, 0]，科学完成仍合成保载。SSD86成员/SHA8dfe5bd2核验、非HDD/arm1全备份；main00dad983/baselinef6e8f8c已fetch/read，发布见SSD收据，无子agent。
+
+## 2026-10-30 — 完整83已审；84续训与终端时序诊断
+
+- [交接](docs/RL_RECOVERY83_COMPLETE84_RUNNING_20261030.md)。83各30×55/41250/noabort、全replay/reward/loss/health/标签/两终端/四图已审；I/A/V reward−4.174417/−13.596636/−2.810608、Task/Strict18/16、12/11、17/17。阻抗新Strict失败、导纳改善与退化并存，尖峰55.21/78.69/43.24全部保留，未收敛。
+- 81→82全90行为/60终端与实际图核验：A82 long0300写入后仅一次更新机会，实际抽样未知，不据末误差断言充分拟合失败。明确有限84决定/准确恢复/actual startup/120.0秒观察通过，steps{'impedance': 3445940, 'admittance': 3448151, 'vmc': 3449245}，全部后续已部署。冻结82及原82–84继续，新全90保存审计等最终内存不变证明；无自动85/Direct34，Goal active。
+- GPU416样本min[62, 64, 67, 63]%、低于50[0, 0, 0, 0]，科学结束仍合成保载；SSD475成员/SHA4cbf46c4逐字核验，非HDD/arm1全备份。main155a4c4c/baselinef6e8f8c已fetch/read，发布见SSD收据，保留非RL，无子agent。
+
+## 2026-10-30 — 原83前5000已审；84恢复准备及冻结82前两条件核验
+
+- [交接](docs/RL_RECOVERY83_PREFIX84_PREPARATION_20261030.md)。83固定前5000原字节/独立算术/实际图通过，critic首→末I2.388605→2.287125、A1.362929→1.279100、V0.863753→0.855569，有限尖峰保留、非收敛。原83steps{'impedance': 3429507, 'admittance': 3431833, 'vmc': 3433559}。
+- 84科学trainer逐字同83、每路19协议+8边界拒绝及实际未完整83拒绝通过；仅恢复等待391261部署，准确恢复=False。完整84审查/明确决定/helper准备、缺前置真实拒绝，无84训练/Direct34。冻结82原前2条件×3方法660万子步保存指标/reward/hash复核，均carry任务失败、与55同标签、无人体接触故舒适NA；完整90仍在途，Goal active。
+- 16样本/300.004秒共21身份保持；GPU282样本min[63, 65, 67, 60]%、低于50[0, 0, 0, 0]，科研完成仍合成保载。SSD133成员/SHA21725ad2核验，非HDD/arm1全备份；main538b1f9c/baselinef6e8f8c已fetch/read，发布见SSD收据，无子agent。
+
+## 2026-10-30 — 完整82已审；83续训与冻结82全90实际运行
+
+- [交接](docs/RL_RECOVERY82_COMPLETE83_RUNNING_20261030.md)。82各30×55/41250/noabort、旧replay/reward0误差、完整loss/health/182保存标签/两终端与四实际图已审；I/A/V reward−2.389068/−13.677125/−2.805262，Task/Strict18/17、11/11、17/17。导纳loss降而Task15→11；新30终端误差long0300占90.97%，不作因果或收敛声明。
+- 原76–81全部5000bootstrap抽样/标量区间独立复核通过，不改原结论；明确有限83决定/三路精确恢复/实际startup及120秒观察通过，steps{'impedance': 3412187, 'admittance': 3414479, 'vmc': 3415697}，全后续已部署。冻结82预登记后全state/RNG检查与36负例通过、全90评测已实际启动及60秒观察通过，结果/最终不变证明/55→82比较待；启动前helper字段错误修正保留，无重复科学。无自动84/Direct34，Goal active。
+- GPU740样本min[64, 65, 65, 65]%、低于50[0, 0, 0, 0]，科研结束仍合成保载；SSD432成员/SHA6ba6d73b逐字核验，非HDD/arm1全备份。main034889ab/baselinef6e8f8c已fetch/read，发布以SSD PUBLICATION收据为准，保留非RL，无子agent。
+
+## 2026-10-30 — 原82前5000与旧终端变化已审；83仅恢复及派发准备
+
+- [交接](docs/RL_RECOVERY82_PREFIX83_PREPARATION_20261030.md)。82最早5000原字节/独立算术/实际图通过；critic首→末I2.520469→2.425130、A1.673723→1.574762、V0.789073→1.066072，有限尖峰保留、非收敛。旧2394完整标量分解V1539增/855减、A1579增/814减/1不变，部分原成功条件误差变大，非因果结论。
+- 83科学trainer与82逐字相同、每路19协议+8边界拒绝及未完整82拒绝通过；仅恢复等待862327部署、准确恢复=False。完整83审查/决策/helper准备，继承275证据及精确82–84PLAN；生成数字负例/Path错误修正保留，无83训练/Direct34，Goal active。
+- 原82steps{'impedance': 3381934, 'admittance': 3384180, 'vmc': 3385739}；16样本/300.002s共15身份保持。GPU314样本min[76, 68, 67, 69]%、低于50[0, 0, 0, 0]，科研完成仍合成保载。SSD112成员/SHA33d83d52已核，非HDD/arm1全备份；main784af219/baselinef6e8f8c已fetch/read，发布见SSD收据，无子agent。
+
+## 2026-10-30 — 完整81/原79–81与冻结loss配对已审；有限82实际续训
+
+- [交接](docs/RL_RECOVERY81_COMPLETE82_FROZEN_LOSS_20261030.md)。81三路30×55/41250/noabort、reward0误差/旧回放/full loss/health/180标签/两终端/实际图全审；reward−2.412239/−10.248241/−2.827428、Task/Strict18/17、15/13、17/17。原79–81及全部历史失败保留，未收敛。
+- 冻结80和81-on-fixed80各512×65536真实原loss只读诊断、全索引/分母/终端独立复核及实际配对图完成；有限尖峰可以来自采样，不重建在线74.12原因、不新增健康门槛。明确DECISION82/三路精确恢复/实际startup通过，全后续和前瞻82–84审计已部署，steps{'impedance': 3362035, 'admittance': 3364279, 'vmc': 3365495}；无自动83/Direct34，Goal active。
+- GPU408样本min[59, 67, 68, 67]%、低于50[0, 0, 0, 0]，科研完成仍合成保载。SSD387成员/SHA6815bb64已核，非HDD/arm1全备份；main1c5154e1/baselinef6e8f8c已fetch/read，发布见SSD PUBLICATION收据，无子agent。
+
+## 2026-10-30 — 原81前5000已审；82恢复与完整窗口决策准备
+
+- [交接](docs/RL_RECOVERY81_PREFIX82_PREPARATION_20261030.md)。81固定前5000原字节/独立算术/实际图通过；critic首→尾I2.795769→2.513341、A1.193168→1.146491、V1.091015→1.018133，I/V尖峰19.475/14.953及actor漂移保留，非收敛。原81steps{'impedance': 3336680, 'admittance': 3338993, 'vmc': 3340850}。
+- 82科学trainer逐字同81、三路metadata正例/每路19协议+8边界拒绝、真实未完整81拒绝通过；仅恢复等待2045281部署，准确恢复=False。决定入口要求完整81和完整原79–81结果/实际图，238既有证据重核；缺三个前置真实拒绝，82后续helper仅准备。生成helper路径错误修正保留，无82训练/Direct34，Goal active。
+- 21样本/600.052s共16身份保持；GPU240样本min[76, 67, 67, 68]%、低于50[0, 0, 0, 0]，科研完成仍合成保载。SSD96成员/SHA8d19a31f核验，非HDD/arm1全备份；main1f0b9b72后1f0b9b72/baselinef6e8f8c已读，发布见SSD PUBLICATION收据，无子agent。
+
+## 2026-10-30 — 完整80已审；有限81实际续训
+
+- [交接](docs/RL_RECOVERY80_COMPLETE81_RUNNING_20261030.md)。80三路各30×55/41250/noabort、旧回放/reward0误差/全loss/health/180标签/两终端/四实际图通过；reward−2.390438/−8.491851/−4.588756，Task/Strict18/17、14/14、17/16。I/V short0600 Strict退化、A Task退化、V74.12尖峰及Q超界保留，未收敛。
+- 三路准确81恢复和实际startup通过；明确DECISION81、全后续及2394锚点已部署，steps{'impedance': 3321695, 'admittance': 3323993, 'vmc': 3325157}。79阻抗安全中止及75不完整保留；80已知案例成功不证明修复。原76–78/79–81窗口、Direct33限制与指定ESN范围保持，无自动82/Direct34，Goal active。
+- GPU430样本min[76, 60, 65, 68]%、低于50[0, 0, 0, 0]，科研完成仍合成保载；SSD303成员/SHA34a808ba逐字核验，非HDD/arm1全备份。main450dcce3/baselinef6e8f8c已fetch/read并快进保留非RL9/27；发布见SSD PUBLICATION收据，无子agent。
 ## 2026-10-30 — 原80继续；81完整审查与派发准备
 
 - [交接](docs/RL_RECOVERY81_DISPATCH_PREPARATION_20261030.md)。81决定绑定完整80/四实际图/准确恢复、版本2 DECISION80及79失败、原76–78完整结果和79–81准确PLAN；缺完整80/决定/LAUNCH实际拒绝。launcher父80/driver80引用核验，81标签/2394→2424终端helper准备但未部署，无81决定/训练、无Direct34。

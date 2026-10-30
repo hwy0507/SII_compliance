@@ -1,0 +1,63 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_frozen_loss_sampling_20261030_v1/audit.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc80_81_fixed_replay_loss_20261030_v1/audit.py
+@@ -34,9 +34,13 @@
+     from published_replay_device_cache_20261025 import DeviceReplayCache
+     from validate_published_finite_check_20261025 import digest
+     ck = torch.load(plan['inputs']['checkpoint']['path'], map_location='cpu', weights_only=False)
+-    assert ck['cycle'] == 80 and ck['boundary'] == 'complete_condition_cycle' and ck['controller'] == 'vmc'
+-    assert ck['replay']['size'] == 3321000 and ck['replay']['capacity'] == 4000000
+-    arrays = ck['replay']['arrays']
++    assert ck['cycle'] == 81 and ck['boundary'] == 'complete_condition_cycle' and ck['controller'] == 'vmc'
++    assert ck['replay']['size'] > 3321000 and ck['replay']['capacity'] == 4000000
++    anchor = torch.load(plan['inputs']['anchor_checkpoint']['path'], map_location='cpu', weights_only=False)
++    assert anchor['cycle']==80 and anchor['replay']['size']==3321000
++    arrays = anchor['replay']['arrays']
++    for key,value in arrays.items(): np.testing.assert_array_equal(value, ck['replay']['arrays'][key][:3321000])
++    anchor_digest = digest(anchor['replay'])
+     assert int(arrays['dones'].sum()) == 2394
+     state = ck['learner']
+     assert state['terminal_loss_weight'] == 128 and state['target_pair_reduction']['target'] == 'mean'
+@@ -67,7 +71,9 @@
+         def integers(self, *args, **kwargs):
+             self.last=self.generator.integers(*args, **kwargs); self.calls+=1; return self.last
+     sample_rng = RecordingRNG(plan['seed'])
+-    replay = SimpleNamespace(arrays=arrays, size=ck['replay']['size'], rng=sample_rng)
++    replay = SimpleNamespace(arrays=arrays, size=anchor['replay']['size'], rng=sample_rng)
++    paired_indices=np.load(plan['inputs']['prior_indices']['path'],mmap_mode='r',allow_pickle=False)
++    paired_rows=[json.loads(line) for line in Path(plan['inputs']['prior_batches']['path']).read_text().splitlines()]
+     cache = cache_class(DeviceReplayCache)(replay, 'cuda:0')
+     np.random.seed(plan['seed']+1)
+     torch.manual_seed(plan['seed']+2)
+@@ -83,6 +89,7 @@
+         independent_diagnostic_rng=True, original_checkpoint_rng_and_files_unchanged=True))
+     for number in range(512):
+         sample=cache.sample(65536); indices=sample_rng.last.copy(); indices_file[number]=indices
++        assert np.array_equal(indices,paired_indices[number])
+         batch=BernoulliMaskReplayBufferSamples(**{k:v.unsqueeze(0) for k,v in sample.items()})
+         caught=None
+         try:
+@@ -93,6 +100,7 @@
+                 if tb.tb_frame.f_code is train_code: caught=tb.tb_frame.f_locals.copy(); break
+                 tb=tb.tb_next
+         assert caught is not None and set(['q_loss','q_losses','q_a_values','next_q_value','indices','data']) <= caught.keys()
++        assert caught['indices'].tolist()==paired_rows[number]['target_pair']
+         q=torch.stack(caught['q_a_values']).detach().cpu().numpy()
+         target=caught['next_q_value'].detach().cpu().numpy()
+         masks=sample['masks'].detach().cpu().numpy().T
+@@ -135,6 +143,7 @@
+         del caught,batch,sample,q,target,masks,weights,squared,evidence
+     indices_file.flush();del indices_file
+     assert digest(frozen_state())==before and digest(ck['replay'])==replay_before
++    assert digest(anchor['replay'])==anchor_digest
+     assert all(p.grad is None for p in learner.agent.parameters())
+     for ref in plan['inputs'].values(): assert sha(ref['path'])==ref['sha256']
+     losses=np.asarray([r['native_loss'] for r in rows]);focus=np.asarray([r['focus_draws']>0 for r in rows])
+@@ -160,7 +169,7 @@
+     axes[0].scatter(np.flatnonzero(focus),losses[focus],s=16,color='red',label='short0600 sampled')
+     axes[0].set(xlabel='Diagnostic batch',ylabel='Original weighted critic loss');axes[0].legend(fontsize=8)
+     axes[1].hist(losses,bins=40);axes[1].set(xlabel='Frozen total loss',ylabel='Batch count')
+-    fig.suptitle('VMC complete80: 512 frozen diagnostic batches; no optimizer updates')
++    fig.suptitle('VMC complete81 on fixed80 replay: 512 batches; no optimizer updates')
+     fig.savefig(D/'frozen_loss.png',dpi=140);plt.close(fig);result['plot_sha256']=sha(D/'frozen_loss.png')
+     put(D/'REVIEW.json',result);put(D/'FINISHED.json',dict(passed=True,time=time.time(),batches=512,new_physics=0,optimizer_updates=0))
+     print(json.dumps(result),flush=True)

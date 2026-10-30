@@ -1,0 +1,19 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc_recovery81_terminal_followup_20261029_v1/review_anchor.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc_recovery82_terminal_followup_20261029_v1/review_anchor.py
+@@ -4,11 +4,11 @@
+ import numpy as np
+ p=Path(__file__).parent;plan=json.loads((p/'ANCHOR_PLAN.json').read_text());r=json.loads((p/'ANCHOR_REVIEW.json').read_text())
+ def sha(x):return hashlib.sha256(x.read_bytes()).hexdigest()
+-assert sha(p/'anchor80.npz')==r['anchor_sha256']
+-with np.load(p/'anchor80.npz',allow_pickle=False) as a,np.load(plan['inputs']['prior_values']['path'],allow_pickle=False) as old:
+- assert a['features'].shape==(2394,57) and a['q_after'].shape==(5,2394)
++assert sha(p/'anchor81.npz')==r['anchor_sha256']
++with np.load(p/'anchor81.npz',allow_pickle=False) as a,np.load(plan['inputs']['prior_values']['path'],allow_pickle=False) as old:
++ assert a['features'].shape==(2424,57) and a['q_after'].shape==(5,2424)
+  for k in ['indices','rewards','masks','q_after','denominator']:np.testing.assert_array_equal(a[k],old[k])
+  assert np.isfinite(a['q_after']).all() and np.isfinite(a['features']).all()
+- sse=math.fsum(float(a['masks'][i,j])*(float(a['q_after'][i,j])-float(a['rewards'][j]))**2 for i in range(5) for j in range(2394));assert math.isclose(sse,r['groups']['all2394']['masked_sse_after'],rel_tol=1e-12,abs_tol=1e-12)
+- out=dict(passed=True,time=time.time(),all2394_saved_values_exact=True,independent_scalar_sse=sse,complete80_denominator=a['denominator'].tolist(),anchor_sha256=sha(p/'anchor80.npz'),source_sha256=sha(Path(__file__)),new_physics=0,optimizer_updates=0)
++ sse=math.fsum(float(a['masks'][i,j])*(float(a['q_after'][i,j])-float(a['rewards'][j]))**2 for i in range(5) for j in range(2424));assert math.isclose(sse,r['groups']['all2424']['masked_sse_after'],rel_tol=1e-12,abs_tol=1e-12)
++ out=dict(passed=True,time=time.time(),all2424_saved_values_exact=True,independent_scalar_sse=sse,complete81_denominator=a['denominator'].tolist(),anchor_sha256=sha(p/'anchor81.npz'),source_sha256=sha(Path(__file__)),new_physics=0,optimizer_updates=0)
+ (p/'ANCHOR_SAVED_REVIEW.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

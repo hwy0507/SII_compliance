@@ -1,0 +1,195 @@
+{
+  "passed": true,
+  "time": 1793343717.527863,
+  "all90_reward_pairs_and_counts_match": true,
+  "strict_abort_changes_match_original": true,
+  "methods": {
+    "impedance": {
+      "counts": {
+        "80": {
+          "task": 18,
+          "strict": 17,
+          "physical_valid": 29
+        },
+        "81": {
+          "task": 18,
+          "strict": 17,
+          "physical_valid": 29
+        }
+      },
+      "changes": [],
+      "task_only_changes": []
+    },
+    "admittance": {
+      "counts": {
+        "80": {
+          "task": 14,
+          "strict": 14,
+          "physical_valid": 30
+        },
+        "81": {
+          "task": 15,
+          "strict": 13,
+          "physical_valid": 28
+        }
+      },
+      "changes": [
+        {
+          "condition": "active_long_train_0900",
+          "fields": [
+            "task",
+            "strict"
+          ],
+          "cases": [
+            {
+              "cycle": 80,
+              "task": true,
+              "strict": true,
+              "physical_valid": true,
+              "penetration_mm": 0.03558439558688763,
+              "reward": 18.49887306954681
+            },
+            {
+              "cycle": 81,
+              "task": false,
+              "strict": false,
+              "physical_valid": true,
+              "penetration_mm": 0.03517964165166985,
+              "reward": -31.890323783026552
+            }
+          ]
+        },
+        {
+          "condition": "active_short_train_0000",
+          "fields": [
+            "strict",
+            "physical_valid"
+          ],
+          "cases": [
+            {
+              "cycle": 80,
+              "task": true,
+              "strict": true,
+              "physical_valid": true,
+              "penetration_mm": 0.1429276995685758,
+              "reward": 17.495964382273456
+            },
+            {
+              "cycle": 81,
+              "task": true,
+              "strict": false,
+              "physical_valid": false,
+              "penetration_mm": 0.23134246516961257,
+              "reward": -34.91861088233668
+            }
+          ]
+        },
+        {
+          "condition": "active_short_train_0600",
+          "fields": [
+            "task",
+            "physical_valid"
+          ],
+          "cases": [
+            {
+              "cycle": 80,
+              "task": false,
+              "strict": false,
+              "physical_valid": true,
+              "penetration_mm": 0.18829453061352525,
+              "reward": -34.57567347625797
+            },
+            {
+              "cycle": 81,
+              "task": true,
+              "strict": false,
+              "physical_valid": false,
+              "penetration_mm": 0.20670358597631927,
+              "reward": -34.70315704697678
+            }
+          ]
+        },
+        {
+          "condition": "active_short_train_0900",
+          "fields": [
+            "task",
+            "strict"
+          ],
+          "cases": [
+            {
+              "cycle": 80,
+              "task": false,
+              "strict": false,
+              "physical_valid": true,
+              "penetration_mm": 0.0941358523367157,
+              "reward": -33.2324276327793
+            },
+            {
+              "cycle": 81,
+              "task": true,
+              "strict": true,
+              "physical_valid": true,
+              "penetration_mm": 0.11634783189958657,
+              "reward": 16.4723181073695
+            }
+          ]
+        }
+      ],
+      "task_only_changes": [
+        "active_short_train_0600"
+      ]
+    },
+    "vmc": {
+      "counts": {
+        "80": {
+          "task": 17,
+          "strict": 16,
+          "physical_valid": 29
+        },
+        "81": {
+          "task": 17,
+          "strict": 17,
+          "physical_valid": 30
+        }
+      },
+      "changes": [
+        {
+          "condition": "active_short_train_0600",
+          "fields": [
+            "strict",
+            "physical_valid"
+          ],
+          "cases": [
+            {
+              "cycle": 80,
+              "task": true,
+              "strict": false,
+              "physical_valid": false,
+              "penetration_mm": 0.22128864091329148,
+              "reward": -34.796707957539766
+            },
+            {
+              "cycle": 81,
+              "task": true,
+              "strict": true,
+              "physical_valid": true,
+              "penetration_mm": 0.17976553666302694,
+              "reward": 17.90970459226574
+            }
+          ]
+        }
+      ],
+      "task_only_changes": []
+    }
+  },
+  "source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery81_task_labels_20261029_v1/COMPLETE80_81.json",
+    "sha256": "ced10ca3822f5faea46089237f2f7a3aeae926e4b7a7383e565e6e12016b59ac"
+  },
+  "reviewer_source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery81_task_labels_20261029_v1/review_labels81.py",
+    "sha256": "686f7dc414d299d32e4e4e9a09901794e319a6ce7437fcd0ef3062715c46c6f5"
+  },
+  "new_physics": 0,
+  "optimizer_updates": 0
+}

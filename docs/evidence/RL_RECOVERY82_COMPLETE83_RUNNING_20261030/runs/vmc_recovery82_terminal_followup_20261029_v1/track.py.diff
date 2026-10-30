@@ -1,0 +1,78 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc_recovery81_terminal_followup_20261029_v1/track.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc_recovery82_terminal_followup_20261029_v1/track.py
+@@ -1,4 +1,4 @@
+-"""Read-only complete81 followup of all2394 complete80 VMC terminal rows."""
++"""Read-only complete82 followup of all2424 complete81 VMC terminal rows."""
+ from pathlib import Path
+ import hashlib,json,os,sys,time
+ os.sched_setaffinity(0,{53})
+@@ -22,11 +22,11 @@
+ assert sha(helper/'validate_published_finite_check_20261025.py')==plan['digest_helper_sha256']
+ with np.load(plan['inputs']['anchor_values']['path'],allow_pickle=False) as anchor:
+     idx,features,rewards,masks,oldq,oldden=[anchor[k].copy() for k in ['indices','features','rewards','masks','q_after','denominator']]
+-assert len(idx)==2394 and features.shape==(2394,57)
++assert len(idx)==2424 and features.shape==(2424,57)
+ ck=torch.load(binding['checkpoint']['path'],map_location='cpu',weights_only=False)
+-assert ck['cycle']==81 and ck['boundary']=='complete_condition_cycle' and ck['controller']=='vmc'
++assert ck['cycle']==82 and ck['boundary']=='complete_condition_cycle' and ck['controller']=='vmc'
+ a=ck['replay']['arrays'];state=ck['learner'];terminal=np.flatnonzero(a['dones'][:,0]==1)
+-assert len(terminal)==2424 and np.array_equal(terminal[:2394],idx)
++assert len(terminal)==2454 and np.array_equal(terminal[:2424],idx)
+ np.testing.assert_array_equal(a['observations'][idx],features[:,:50])
+ np.testing.assert_array_equal(a['actions'][idx],features[:,50:])
+ np.testing.assert_array_equal(a['rewards'][idx,0],rewards)
+@@ -42,7 +42,7 @@
+     q=torch.stack([agent.get_q_value(obs,action,i,target=False).reshape(-1) for i in range(5)]).numpy()
+ assert np.isfinite(q).all() and digest(agent.state_dict())==before and torch.equal(rng,torch.get_rng_state())
+ target=a['rewards'][terminal,0];mask=a['masks'][terminal].T.astype(float)
+-health=read(binding['health']['path'])['methods']['vmc'];assert health['terminal_count']==2424 and health['checkpoint_sha256']==binding['checkpoint']['sha256']
++health=read(binding['health']['path'])['methods']['vmc'];assert health['terminal_count']==2454 and health['checkpoint_sha256']==binding['checkpoint']['sha256']
+ err=np.abs(q-target[None]).astype(float)
+ assert np.isclose(err.mean(),health['terminal_q_absolute_error']['mean'],rtol=0,atol=1e-9)
+ assert np.isclose(err[mask.astype(bool)].mean(),health['terminal_q_in_bag_absolute_error']['mean'],rtol=0,atol=1e-9)
+@@ -50,33 +50,33 @@
+ old_sse=masks*(oldq.astype(float)-rewards.astype(float)[None])**2
+ new_sse=mask*(q.astype(float)-target.astype(float)[None])**2
+ anchor_review=read(plan['inputs']['anchor_review']['path'])
+-assert np.isclose(old_sse.sum(),anchor_review['groups']['all2394']['masked_sse_after'],rtol=1e-12,atol=1e-12)
++assert np.isclose(old_sse.sum(),anchor_review['groups']['all2424']['masked_sse_after'],rtol=1e-12,atol=1e-12)
+ focus=[]
+ for index in plan['focus_replay_indices']:
+     k=int(np.flatnonzero(idx==index)[0])
+     focus.append(dict(replay_index=index,reward=float(rewards[k]),masks=masks[:,k].tolist(),q_before=oldq[:,k].tolist(),q_after=q[:,k].tolist(),sse_before=float(old_sse[:,k].sum()),sse_after=float(new_sse[:,k].sum())))
+ np.savez_compressed(OUT/'values.npz',indices=terminal,rewards=target,masks=mask,q_before=oldq,q_after=q,denominator=den,old_denominator=oldden)
+-report=dict(passed=True,time=time.time(),fixed_anchor_rows=2394,new_terminal_rows=30,
++report=dict(passed=True,time=time.time(),fixed_anchor_rows=2424,new_terminal_rows=30,
+     original_fixed_observations_actions_rewards_masks_exact=True,
+-    old2394_sse_before=float(old_sse.sum()),old2394_sse_after=float(new_sse[:,:2394].sum()),
+-    old2394_sse_ratio=float(new_sse[:,:2394].sum()/old_sse.sum()),
+-    old2394_contribution_before=float((128*old_sse/oldden[:,None]).sum()),
+-    old2394_contribution_after=float((128*new_sse[:,:2394]/den[:,None]).sum()),
+-    old2394_after_using_old_denominator=float((128*new_sse[:,:2394]/oldden[:,None]).sum()),
+-    new30_contribution=float((128*new_sse[:,2394:]/den[:,None]).sum()),
++    old2424_sse_before=float(old_sse.sum()),old2424_sse_after=float(new_sse[:,:2424].sum()),
++    old2424_sse_ratio=float(new_sse[:,:2424].sum()/old_sse.sum()),
++    old2424_contribution_before=float((128*old_sse/oldden[:,None]).sum()),
++    old2424_contribution_after=float((128*new_sse[:,:2424]/den[:,None]).sum()),
++    old2424_after_using_old_denominator=float((128*new_sse[:,:2424]/oldden[:,None]).sum()),
++    new30_contribution=float((128*new_sse[:,2424:]/den[:,None]).sum()),
+     all_terminal_contribution=float((128*new_sse/den[:,None]).sum()),focus=focus,
+-    weights_and_forward_rng_unchanged=True,health81_terminal_values_reproduced=True,
++    weights_and_forward_rng_unchanged=True,health82_terminal_values_reproduced=True,
+     new_physics=0,optimizer_updates=0,replay_writes=0,convergence_claim=False,causal_claim=False,
+     values_sha256=sha(OUT/'values.npz'),limitation=plan['limitation'])
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+ fig,ax=plt.subplots(figsize=(6,5),constrained_layout=True)
+-x=old_sse.sum(axis=0);y=new_sse[:,:2394].sum(axis=0);ax.scatter(x,y,s=12,alpha=.5)
++x=old_sse.sum(axis=0);y=new_sse[:,:2424].sum(axis=0);ax.scatter(x,y,s=12,alpha=.5)
+ for f in focus:
+     k=int(np.flatnonzero(idx==f['replay_index'])[0]);ax.scatter([x[k]],[y[k]],color='red');ax.annotate(str(f['replay_index']),(x[k],y[k]),fontsize=8)
+ limit=max(x.max(),y.max());ax.plot([0,limit],[0,limit],'--',color='gray')
+-ax.set_xlabel('Complete80 masked terminal SSE');ax.set_ylabel('Complete81 masked terminal SSE');ax.set_title('All 2394 fixed terminal rows\nHistorical and cycle58 focus rows marked')
+-fig.savefig(OUT/'follow81.png',dpi=130,bbox_inches='tight');report['plot_sha256']=sha(OUT/'follow81.png')
++ax.set_xlabel('Complete81 masked terminal SSE');ax.set_ylabel('Complete82 masked terminal SSE');ax.set_title('All 2424 fixed terminal rows\nHistorical and cycle58 focus rows marked')
++fig.savefig(OUT/'follow82.png',dpi=130,bbox_inches='tight');report['plot_sha256']=sha(OUT/'follow82.png')
+ for v in list(plan['inputs'].values())+list(binding.values()):assert sha(v['path'])==v['sha256']
+ (OUT/'REVIEW.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

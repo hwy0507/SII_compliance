@@ -1,0 +1,263 @@
+{
+  "impedance": {
+    "counts": {
+      "80": {
+        "task": 18,
+        "strict": 17,
+        "physical_valid": 29
+      },
+      "81": {
+        "task": 18,
+        "strict": 17,
+        "physical_valid": 29
+      }
+    },
+    "changes": []
+  },
+  "admittance": {
+    "counts": {
+      "80": {
+        "task": 14,
+        "strict": 14,
+        "physical_valid": 30
+      },
+      "81": {
+        "task": 15,
+        "strict": 13,
+        "physical_valid": 28
+      }
+    },
+    "changes": [
+      [
+        "active_long_train_0900",
+        [
+          "task",
+          "strict"
+        ]
+      ],
+      [
+        "active_short_train_0000",
+        [
+          "strict",
+          "physical_valid"
+        ]
+      ],
+      [
+        "active_short_train_0600",
+        [
+          "task",
+          "physical_valid"
+        ]
+      ],
+      [
+        "active_short_train_0900",
+        [
+          "task",
+          "strict"
+        ]
+      ]
+    ]
+  },
+  "vmc": {
+    "counts": {
+      "80": {
+        "task": 17,
+        "strict": 16,
+        "physical_valid": 29
+      },
+      "81": {
+        "task": 17,
+        "strict": 17,
+        "physical_valid": 30
+      }
+    },
+    "changes": [
+      [
+        "active_short_train_0600",
+        [
+          "strict",
+          "physical_valid"
+        ]
+      ]
+    ]
+  }
+}
+{
+  "impedance": {
+    "counts": {
+      "80": {
+        "task": 18,
+        "strict": 17,
+        "physical_valid": 29
+      },
+      "81": {
+        "task": 18,
+        "strict": 17,
+        "physical_valid": 29
+      }
+    },
+    "changes": [],
+    "task_only_changes": []
+  },
+  "admittance": {
+    "counts": {
+      "80": {
+        "task": 14,
+        "strict": 14,
+        "physical_valid": 30
+      },
+      "81": {
+        "task": 15,
+        "strict": 13,
+        "physical_valid": 28
+      }
+    },
+    "changes": [
+      {
+        "condition": "active_long_train_0900",
+        "fields": [
+          "task",
+          "strict"
+        ],
+        "cases": [
+          {
+            "cycle": 80,
+            "task": true,
+            "strict": true,
+            "physical_valid": true,
+            "penetration_mm": 0.03558439558688763,
+            "reward": 18.49887306954681
+          },
+          {
+            "cycle": 81,
+            "task": false,
+            "strict": false,
+            "physical_valid": true,
+            "penetration_mm": 0.03517964165166985,
+            "reward": -31.890323783026552
+          }
+        ]
+      },
+      {
+        "condition": "active_short_train_0000",
+        "fields": [
+          "strict",
+          "physical_valid"
+        ],
+        "cases": [
+          {
+            "cycle": 80,
+            "task": true,
+            "strict": true,
+            "physical_valid": true,
+            "penetration_mm": 0.1429276995685758,
+            "reward": 17.495964382273456
+          },
+          {
+            "cycle": 81,
+            "task": true,
+            "strict": false,
+            "physical_valid": false,
+            "penetration_mm": 0.23134246516961257,
+            "reward": -34.91861088233668
+          }
+        ]
+      },
+      {
+        "condition": "active_short_train_0600",
+        "fields": [
+          "task",
+          "physical_valid"
+        ],
+        "cases": [
+          {
+            "cycle": 80,
+            "task": false,
+            "strict": false,
+            "physical_valid": true,
+            "penetration_mm": 0.18829453061352525,
+            "reward": -34.57567347625797
+          },
+          {
+            "cycle": 81,
+            "task": true,
+            "strict": false,
+            "physical_valid": false,
+            "penetration_mm": 0.20670358597631927,
+            "reward": -34.70315704697678
+          }
+        ]
+      },
+      {
+        "condition": "active_short_train_0900",
+        "fields": [
+          "task",
+          "strict"
+        ],
+        "cases": [
+          {
+            "cycle": 80,
+            "task": false,
+            "strict": false,
+            "physical_valid": true,
+            "penetration_mm": 0.0941358523367157,
+            "reward": -33.2324276327793
+          },
+          {
+            "cycle": 81,
+            "task": true,
+            "strict": true,
+            "physical_valid": true,
+            "penetration_mm": 0.11634783189958657,
+            "reward": 16.4723181073695
+          }
+        ]
+      }
+    ],
+    "task_only_changes": [
+      "active_short_train_0600"
+    ]
+  },
+  "vmc": {
+    "counts": {
+      "80": {
+        "task": 17,
+        "strict": 16,
+        "physical_valid": 29
+      },
+      "81": {
+        "task": 17,
+        "strict": 17,
+        "physical_valid": 30
+      }
+    },
+    "changes": [
+      {
+        "condition": "active_short_train_0600",
+        "fields": [
+          "strict",
+          "physical_valid"
+        ],
+        "cases": [
+          {
+            "cycle": 80,
+            "task": true,
+            "strict": false,
+            "physical_valid": false,
+            "penetration_mm": 0.22128864091329148,
+            "reward": -34.796707957539766
+          },
+          {
+            "cycle": 81,
+            "task": true,
+            "strict": true,
+            "physical_valid": true,
+            "penetration_mm": 0.17976553666302694,
+            "reward": 17.90970459226574
+          }
+        ]
+      }
+    ],
+    "task_only_changes": []
+  }
+}
