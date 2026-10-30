@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 完整86与固定2514已审；有限87实际续训
+
+- [交接](docs/RL_RECOVERY86_COMPLETE87_RUNNING_20261030.md)。86各30×55/41250/noabort，旧replay/reward0误差/full loss/health/186标签/两终端/5实际图通过；reward−2.408941/−6.690040/−2.831542、Task/Strict18/17、15/15、17/17。A/V loss下降与旧失败拟合改善，I新Strict失败，未收敛。
+- 固定2514 V3556.825→1158.553全5改善，A3932.823→2110.926但c4退化；新85群体V6434.188→14.076/A4198.207→495.941。明确有限87决定/全state准确恢复/actual startup/120.0秒29身份观察通过，steps{'impedance': 3571619, 'admittance': 3573937, 'vmc': 3575105}，全后续部署，无自动88。原85—87 A/V相邻已超5%，不靠87追认通过；Goal active。
+- GPU380样本min[73, 64, 65, 65]%、低于50[0, 0, 0, 0]，科学完成仍保载；SSD372成员/SHA7700e822核验，非HDD/arm1全备份。mainf3a48112/baselinef6e8f8c实际fetch/read，发布见收据，无子agent。
+
 ## 2026-10-30 — 完整85全历史回放重建；86继续与87入口准备
 
 - [交接](docs/RL_RECOVERY85_HISTORY86_PROGRESS87_READY_20261030.md)。每路80祖先/81日志，全10,577,448保留transition逐位对齐；因果穿透sidecar/独立保存复核/全部90原84数组/实际四栏图通过。3117尾行与部分cohort保留，0physics/forward/update，不是独立物理重建或科学修订。
