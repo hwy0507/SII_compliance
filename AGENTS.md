@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 冻结88全部90评测与raw/配对审计完成
+
+- [交接](docs/RL_FROZEN88_COMPLETE_20261030.md)。原三路各30、123750动作/99000000子步，final full learner/replay不变、0updates；原evaluator/collector/postprocessor正常结束勿重启。Task/Strict分别[(18, 17), (16, 15), (17, 17)]，全90 raw/reward/力矩/接触分母与82→88配对/保存算术通过，实际图已查看，全部失败保留，非泛化/收敛。
+- 原90/归档/固定87终端等待器继续，总steps{'impedance': 3720281, 'admittance': 3722579, 'vmc': 3723505}；完整90与健康稳定待。无自动91/Direct34，指定ESN仍缺。GPU176采样min[75, 68, 67, 66]%、低于50[0, 0, 0, 0]，科研结束仍保载，非科研吞吐。
+- SSD164成员/SHAe709de07核验，HDD仅254字节指针、非HDD/arm1全备份。maindd548140/baselinef6e8f8c2已query/fetch/read；正常发布见收据，Goal active，无子agent，全部历史失败保留。
+
 ## 2026-10-30 — 原90继续；固定87全部终端跟踪90已登记
 
 - [交接](docs/RL_VIOLATION90_TERMINAL_FOLLOWUP_20261030.md)。固定原87全部7813终端/all5/原masks，旧87/88/89保存算术精确；新增52输入与raw bit/历史逐位绑定通过，真实缺完整90拒绝。唯一等待器2283008沿原archive截止等待，无新forward/physics/update、无90新终端结果或自动91。

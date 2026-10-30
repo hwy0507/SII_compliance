@@ -1,0 +1,25 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter82_frozen_full_saved_audit_20261030_v1/audit.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter88_history_frozen_saved_audit_20261030_v1/audit.py
+@@ -2,7 +2,7 @@
+ from pathlib import Path
+ import json,time,hashlib,math,os,sys
+ import numpy as np
+-B=Path(__file__).resolve().parents[2];D=Path(__file__).parent;O=B/'runs/parameter82_frozen_full30_20261030_v1';P=B/'runs/parameter55_frozen_full30_20261028_v1';os.sched_setaffinity(0,{3})
++B=Path(__file__).resolve().parents[2];D=Path(__file__).parent;O=B/'runs/parameter88_history_frozen_full30_20261030_v1';P=B/'runs/parameter82_frozen_full30_20261030_v1';os.sched_setaffinity(0,{3})
+ def read(p):return json.loads(p.read_text())
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+@@ -47,10 +47,10 @@
+   reward=math.fsum(vals);assert math.isclose(reward,r['reward'],abs_tol=1e-10)
+   safety=bool(not rollout['physical_valid'] or rollout['abort_reason'] is not None or any(x>l+1e-8 for x,l in zip(peaks,lim)) or not rollout.get('unexpected_edge_safe',True));assert safety==row['machine_safety_violation']
+   assert row['task_success']==rollout['task_success'] and row['strict_success']==rollout['strict_success']
+-  rows.append(dict(condition=case,actions=r['actions'],physical_samples=count,task=row['task_success'],strict=row['strict_success'],machine_violation=safety,stage=row['final_task_stage'],reward=r['reward'],prior55_reward=a['reward'],reward_delta=r['reward']-a['reward'],prior55_task=a['physical']['row']['task_success'],prior55_strict=a['physical']['row']['strict_success'],human_contact_s=contact,human_compliant_s=below,human_compliance_ratio=ratio,peak_torque_nm_per_joint=peaks,external_penetration_mm=r['external_penetration_mm'],reward_reconstruction_abs_error=abs(reward-r['reward']),full_horizon=row['full_horizon'],abort=row['abort_reason'],evidence_files=len(hashed)))
+-  inputs[m+':'+case]=dict(current=ref(p),prior55=ref(P/m/f'{case}_REVIEW.json'),raw=ref(folder/'audit_substeps.npy'))
++  rows.append(dict(condition=case,actions=r['actions'],physical_samples=count,task=row['task_success'],strict=row['strict_success'],machine_violation=safety,stage=row['final_task_stage'],reward=r['reward'],prior82_reward=a['reward'],reward_delta=r['reward']-a['reward'],prior82_task=a['physical']['row']['task_success'],prior82_strict=a['physical']['row']['strict_success'],human_contact_s=contact,human_compliant_s=below,human_compliance_ratio=ratio,peak_torque_nm_per_joint=peaks,external_penetration_mm=r['external_penetration_mm'],reward_reconstruction_abs_error=abs(reward-r['reward']),full_horizon=row['full_horizon'],abort=row['abort_reason'],evidence_files=len(hashed)))
++  inputs[m+':'+case]=dict(current=ref(p),prior82=ref(P/m/f'{case}_REVIEW.json'),raw=ref(folder/'audit_substeps.npy'))
+  results[m]=rows
+-put(D/'REVIEW.json',dict(passed=True,time=time.time(),methods=results,inputs=inputs,total_cases=90,total_substeps=sum(x['physical_samples'] for v in results.values() for x in v),new_physics=0,optimizer_updates=0,new_network_forward=0,convergence_claim=False,limitation='All30 original registered conditions per method, all failures retained; supplementary audit registered during ongoing82 frozen evaluation. Exact raw hashes, count-times-dt physical metrics, frozen reward formula with scalar fsum, unchanged saved action/filter/torque receipts; no rerun native action replay or independent physics. Same-seed55 comparison descriptive only. Final whole-evaluation full learner/replay invariance receipts explicitly required, without repeating their memory digest calculation after evaluator exit.'))
++put(D/'REVIEW.json',dict(passed=True,time=time.time(),methods=results,inputs=inputs,total_cases=90,total_substeps=sum(x['physical_samples'] for v in results.values() for x in v),new_physics=0,optimizer_updates=0,new_network_forward=0,convergence_claim=False,limitation='All30 original registered conditions per method, all failures retained; supplementary audit registered during ongoing88 training before frozen dispatch. Exact raw hashes, count-times-dt physical metrics, frozen reward formula with scalar fsum, unchanged saved action/filter/torque receipts; no rerun native action replay or independent physics. Same-seed82 comparison descriptive only. Final whole-evaluation full learner/replay invariance receipts explicitly required, without repeating their memory digest calculation after evaluator exit.'))
+ saved=read(D/'REVIEW.json');assert saved['methods']==results
+ put(D/'SAVED_REVIEW.json',dict(passed=True,time=time.time(),all_rows_read_back=True,total_cases=90,total_substeps=saved['total_substeps'],source=ref(Path(__file__)),review=ref(D/'REVIEW.json')))
+ print(json.dumps(results,indent=2))

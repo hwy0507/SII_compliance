@@ -1,0 +1,39 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/recovery82_full_review_20261030_v1/compare_frozen55_82.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_frozen_postprocess_20261030_v1/compare82_88.py
+@@ -1,7 +1,7 @@
+ """Finite read-only same-seed comparison; all90 cases retained, no policy selection."""
+ from pathlib import Path
+ import json,time,hashlib,os,math
+-B=Path(__file__).resolve().parents[2];O=B/'runs/parameter82_frozen_full30_20261030_v1';D=O/'comparison55_82'
++B=Path(__file__).resolve().parents[2];O=B/'runs/parameter88_history_frozen_full30_20261030_v1';D=O/'comparison82_88'
+ def read(p):return json.loads(p.read_text())
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+@@ -14,15 +14,9 @@
+  s=p.read_text().rsplit(')',1)[1].split();return s[19]==j['proc_start_ticks'] and s[0]!='Z'
+ def main():
+  os.sched_setaffinity(0,{3});plan=read(D/'PLAN.json');assert sha(__file__)==plan['source']['sha256']
+- old=B/'runs/parameter55_frozen_full30_20261028_v1';assert sha(old/'REVIEW.json')==plan['prior_review']['sha256'];assert sha(O/'PLAN.json')==plan['evaluation_plan']['sha256']
+- deadline=read(O/'REVIEW_REGISTRATION.json')['time']+21600
+- while True:
+-  assert not (O/'REVIEW_FAILURE.json').exists()
+-  assert all(not (O/m/'FAILURE.json').exists() for m in ['impedance','admittance','vmc'])
+-  if (O/'REVIEW.json').exists() and not live(plan['reviewer']):break
+-  assert time.time()<deadline,'Original review deadline expired; no extension'
+-  assert live(plan['reviewer']),'Original reviewer exited before receipt'
+-  time.sleep(5)
++ old=B/'runs/parameter82_frozen_full30_20261030_v1';assert sha(old/'REVIEW.json')==plan['prior_review']['sha256'];assert sha(O/'PLAN.json')==plan['evaluation_plan']['sha256']
++ assert read(O/'REVIEW.json')['passed']
++ assert not (O/'REVIEW_FAILURE.json').exists()
+  before,after=read(old/'REVIEW.json'),read(O/'REVIEW.json');assert before['passed'] and after['passed'] and before['total_episodes']==after['total_episodes']==90
+  results={}
+  for m in ['impedance','admittance','vmc']:
+@@ -40,7 +34,7 @@
+    rows.append(dict(condition=case,before=x,after=y,reward_delta=y['reward']-x['reward'],task_change=int(y['task'])-int(x['task']),strict_change=int(y['strict'])-int(x['strict']),machine_violation_change=int(y['machine_safety_violation'])-int(x['machine_safety_violation'])))
+   assert len(rows)==30
+   results[m]=dict(rows=rows,mean_reward_delta=math.fsum(r['reward_delta'] for r in rows)/30,task_before=a['task'],task_after=b['task'],strict_before=a['strict'],strict_after=b['strict'],task_gained=[r['condition'] for r in rows if r['task_change']>0],task_lost=[r['condition'] for r in rows if r['task_change']<0],strict_gained=[r['condition'] for r in rows if r['strict_change']>0],strict_lost=[r['condition'] for r in rows if r['strict_change']<0],abort_before=[r['condition'] for r in rows if r['before']['abort_reason']],abort_after=[r['condition'] for r in rows if r['after']['abort_reason']])
+- put(D/'REVIEW.json',dict(passed=True,time=time.time(),methods=results,inputs=[ref(old/'REVIEW.json'),ref(O/'REVIEW.json')],all90_pairs_retained=True,new_physics=0,optimizer_updates=0,convergence_claim=False,limitation='Descriptive same external action seed and original30 training conditions, frozen55 vs frozen82 with additional training exposure including partial75. No independent training seeds, unseen evaluation, convergence test, causal claim or specified ESN/final SPT ranking. Actual-contact denominator and no-contact NA preserved from audited per-case metrics; no pooled equal-episode comfort average.'))
++ put(D/'REVIEW.json',dict(passed=True,time=time.time(),methods=results,inputs=[ref(old/'REVIEW.json'),ref(O/'REVIEW.json')],all90_pairs_retained=True,new_physics=0,optimizer_updates=0,convergence_claim=False,limitation='Descriptive same external action seed and original30 training conditions, frozen82 vs frozen88 with additional training exposure and the history51 critic amendment. No independent training seeds, unseen evaluation, convergence test, causal claim or specified ESN/final SPT ranking. Actual-contact denominator and no-contact NA preserved from audited per-case metrics; no pooled equal-episode comfort average.'))
+  saved=read(D/'REVIEW.json');assert saved['methods']==results
+  for m,r in saved['methods'].items():
+   assert math.isclose(r['mean_reward_delta'],math.fsum(x['after']['reward'] for x in r['rows'])/30-math.fsum(x['before']['reward'] for x in r['rows'])/30,abs_tol=1e-12)
