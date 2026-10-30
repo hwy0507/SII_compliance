@@ -3,7 +3,7 @@
 - 承接已批准并完成的 v7 公平重训（40条/21,500帧、75候选、9个锁定模型）；本轮没有重复训练。新增只读动作复放，核验`rod_00`的500帧观测和requested-action标签与原teacher逐位相同，均为正权重训练行；通过训练完成收据、FIT_AUDIT、模型锁、数据和checkpoint哈希检查。
 - 在4.2–4.7秒棍接触前窗口，ESN/RNN/MLP三个seed的requested-action RMSE分别为0.001646–0.001770、0.001578–0.001661、0.003568–0.005281；MLP该窗口中位数约为ESN的2.70倍、RNN的2.94倍。结果直接表明MLP在这个已见teacher序列上拟合更差，但不能证明它导致fixed27的两条穿透失败；MLP seed01也在同窗口有较大误差却通过Strict。详细限制与所有窗口见`docs/CONTACT_YIELD_V7_LOCKED_ROD_TRAIN_FIT_20261031.md`及哈希绑定JSON。
 - 新增脚本已`py_compile`并实际运行；9模型/5窗口结果收据完成。0新物理步、0 optimizer更新、无重选模、未访问final108。fixed27仍Task 27/27、Strict 25/27，ESN/RNN各9/9、MLP 7/9；全部失败保留。后续若调整训练应先登记新的development-only方案，并报告训练集拟合与Task/Strict闭环结果，不能从本诊断宣称安全根因或进入final108。
-- 开工首次远端查询因网络失败；随后成功fetch并读取实时main `7ae9d9af196f0740556b19f4d1f9b0e054952dc6` 与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 的UPDATE_LOG。main新增history88进度，已审阅，准备以普通merge整合；baseline无本轮相关改动。无关未跟踪文件保留。
+- 开工首次远端查询因网络失败；随后成功fetch并读取实时main `7ae9d9af196f0740556b19f4d1f9b0e054952dc6` 与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 的UPDATE_LOG。main新增history88进度，已审阅并与本地进度并列保留；baseline无本轮相关改动。无关未跟踪文件保留。
 
 ## 2026-10-31 — 首次穿透子步与MLP动作/关节时间对齐
 
@@ -23,6 +23,11 @@
 - 审计排除了此前怀疑的预处理/加载器错位：checkpoint契约`proprio48_office_mlp_rnn_v1`由`load_current()`分派到`OfficeMLPRNN`；18字段、train-only scale、[-12,12] clip、绝对值扩展与训练一致。神经候选训练目标是`requested`动作，部署在同一requested输出后使用公共action filter；固定27运行端及独立actor/filter replay均逐值通过。通用旧`CurrentMLP`类不负责加载该checkpoint。
 - 因而MLP两条棍推Strict失败目前没有已证实的软件/数据通道bug。仍观察到MLP验证动作MSE约`1.64e-4–1.72e-4`，高于同seed ESN/RNN约`3.3e-5–4.0e-5`；单帧MLP缺少显式时序状态、teacher含接触进度记忆，是待检验的表征假设，不是已证因果。fixed27仍Task 27/27、Strict 25/27；final108继续封存。
 - 本轮只读核对；GitHub网络不可达，远端未刷新。依据本地HEAD/cache `9df3bf3d` 与`f6e8f8c2`；无训练、仿真或测试集访问。核验细节见`docs/CONTACT_YIELD_V7_PREPROCESSING_AUDIT_20261031.md`。
+## 2026-10-30 — History88更新后冻结接口通过；原训练继续
+
+- [交接](docs/RL_HISTORY88_FROZEN_READY_20261030.md)。三份实际更新partial88全learner/replay恢复、非零history权重/Adam、1375连续native与外部RNG重放/terminal/actor49隔离精确，8271记录动作、0physics/update；全state/RNG/hash不变。partial不能冒充完整88，非新性能/收敛。
+- 完整88冻结90预登记及完整review/health/loss/实际图强制入口已准备，真实缺前置拒绝；最终恢复/物理评测仍待。固定原87全部终端all5对完整88跟踪已预登记并有限等待PID1346975，只用initial_control，不晋升拟合权重。
+- 原88三路及archive7296持续，总steps{'impedance': 3634672, 'admittance': 3633037, 'vmc': 3638651}。GPU185样本min[76, 68, 68, 69]%、低于50[0, 0, 0, 0]，科研结束继续合成保载；旧低谷/所有失败保留。SSD51成员/SHAde1e896a，非HDD/arm1全备份。main271ce4e4→9df3bf3d及baselinef6e8f8c已fetch/read/fast-forward，发布见收据；Goal active，无子agent，无自动89/Direct34。
 
 ## 2026-10-31 — v7接管证据已共享归档；MLP安全恢复问题未解决
 

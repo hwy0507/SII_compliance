@@ -1,3 +1,9 @@
+## 2026-10-30 — History88更新后冻结接口通过；原训练继续
+
+- [交接](docs/RL_HISTORY88_FROZEN_READY_20261030.md)。三份实际更新partial88全learner/replay恢复、非零history权重/Adam、1375连续native与外部RNG重放/terminal/actor49隔离精确，8271记录动作、0physics/update；全state/RNG/hash不变。partial不能冒充完整88，非新性能/收敛。
+- 完整88冻结90预登记及完整review/health/loss/实际图强制入口已准备，真实缺前置拒绝；最终恢复/物理评测仍待。固定原87全部终端all5对完整88跟踪已预登记并有限等待PID1346975，只用initial_control，不晋升拟合权重。
+- 原88三路及archive7296持续，总steps{'impedance': 3634672, 'admittance': 3633037, 'vmc': 3638651}。GPU185样本min[76, 68, 68, 69]%、低于50[0, 0, 0, 0]，科研结束继续合成保载；旧低谷/所有失败保留。SSD51成员/SHAde1e896a，非HDD/arm1全备份。main271ce4e4→9df3bf3d及baselinef6e8f8c已fetch/read/fast-forward，发布见收据；Goal active，无子agent，无自动89/Direct34。
+
 ## 2026-10-30 — History critic有限88三路实际运行
 
 - [交接](docs/RL_HISTORY88_ONLINE_20261030.md)。完整87为父，单一51维history修订/actor49不变，原LR/reward/物理/30×55/41250/batch65536/UTD1保持。完整链预检66拒绝、实际health/冻结gate/6 clone更新通过，明确有限88，未来88—90统计预登记不授权89/90。

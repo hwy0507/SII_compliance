@@ -26,4 +26,4 @@
 - 哈希绑定结果：[CONTACT_YIELD_V7_LOCKED_ROD_TRAIN_FIT_20261031.json](evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_V7_LOCKED_ROD_TRAIN_FIT_20261031.json)
 - 结果 JSON 绑定数据集 SHA256 `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`。逐模型逐窗口七动作通道 RMSE、最大绝对误差、4.68 s 动作和模型 checkpoint hash 均在 JSON 中。
 - `new_physics_steps=0`、`new_optimizer_updates=0`、`model_reselection=false`。六条纯 teacher validation仍是原登记选模依据；本分析没有据结果重选模型。
-- 本轮已重新 fetch 并读取 GitHub：实时 `main=7ae9d9af`，`baseline=f6e8f8c2`；远端 main 的新增内容是独立 history88 进度，当前正安全整合。
+- 本轮已重新 fetch 并读取 GitHub：实时 `main=7ae9d9af`，`baseline=f6e8f8c2`；远端 main 的独立 history88 进度已通过普通 merge 与本地记录共同保留。
