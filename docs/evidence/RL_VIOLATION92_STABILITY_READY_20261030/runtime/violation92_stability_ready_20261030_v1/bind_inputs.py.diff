@@ -1,0 +1,61 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation91_stability_preparation_20261030_v1/bind_inputs.py
++++ bind_inputs.py
+@@ -8,7 +8,19 @@
+ def ref(p):return dict(path=str(p),sha256=sha(p))
+ def put(p,x):
+  with p.open('x') as f:json.dump(x,f,indent=2,allow_nan=False);f.write('\n')
++def bind_visual_evidence(cycle,review,inspection,loss):
++ assert inspection['actual_visual_inspection'] is True
++ expected={'loss_plot':review/'loss'/f'loss{cycle}.png','health_plot':review/'health/training_diagnostics.png'}
++ items=inspection['plots'];assert len(items)==2
++ by_path={Path(x['path']).resolve():x for x in items}
++ assert len(by_path)==2 and set(by_path)=={p.resolve() for p in expected.values()}
++ for p in expected.values():
++  item=by_path[p.resolve()];assert item['inspected'] is True and sha(p)==item['sha256']
++ assert sha(expected['loss_plot'])==loss['plot_sha256']
++ return {k:ref(p) for k,p in expected.items()}
++
+ def setup():
++ binding=read(D/'BINDING_PLAN.json');assert sha(__file__)==binding['binding_sha256'] and sha(S/'EARLY_WINDOW_FAILURE_91.json')==binding['original_early_failure_sha256']
+  plan=read(S/'PLAN.json');assert plan['cycles']==[90,91,92] and plan['bootstrap_seed']==2026102861 and plan['replicates']==5000 and plan['near_zero_guard']==1 and plan['relative_limit']==.05 and not plan['automatic_training']
+  assert sha(S/'audit.py')==plan['source_sha256'] and sha(S/'review_saved.py')==plan['review_source_sha256']
+  for k in ['original88_90_plan','original_failure','revision_boundary']:assert sha(plan[k]['path'])==plan[k]['sha256']
+@@ -19,6 +31,7 @@
+ def bind_cycle(cycle,run,review,plan,previous):
+  full=read(review/'REVIEW.json');health=read(review/'health/DIAGNOSIS.json');loss=read(review/'loss/REVIEW.json');finished=read(review/'FINISHED.json');inspection=read(review/'PLOT_INSPECTION.json')
+  assert full['passed'] and loss['passed'] and finished['completed'] and inspection['actual_visual_inspection']
++ visual_refs=bind_visual_evidence(cycle,review,inspection,loss)
+  result={}
+  for m in ['impedance','admittance','vmc']:
+   p=read(run/m/'REGISTRATION.json');row=full['methods'][m];anchor=read(previous['anchor_protocol55'][m]['path'])
+@@ -50,19 +63,24 @@
+   assert len(records)==row['new_transitions'] and [x['step'] for x in records]==list(range(parent['steps']+1,row['steps']+1))
+   assert all(math.isfinite(v) for x in records for v in x.values() if isinstance(v,(float,int)))
+   result[f'{m}:{cycle}']={name:ref(path) for name,path in dict(protocol=run/m/'REGISTRATION.json',review=review/'REVIEW.json',health=review/'health/DIAGNOSIS.json',finished=review/'FINISHED.json',episodes=episodes,optimizer=optimizer).items()}
++  result[f'{m}:{cycle}'].update(visual_refs,loss_review=ref(review/'loss/REVIEW.json'),plot_inspection=ref(review/'PLOT_INSPECTION.json'),window_plan=ref(S/'PLAN.json'),early_window_failure=ref(S/'EARLY_WINDOW_FAILURE_91.json'))
+  return result
+ if __name__=='__main__':
+  parser=argparse.ArgumentParser();parser.add_argument('--check-only',action='store_true');parser.add_argument('--cycle92-run',type=Path);parser.add_argument('--cycle92-review',type=Path);args=parser.parse_args();plan,previous=setup()
+  inputs=bind_cycle(90,B/'runs/parameter_violation_cycle90_20261030_v1',B/'runs/parameter_violation_cycle90_review_20261030_v1',plan,previous)
+  if args.check_only:
+-  try:bind_cycle(91,B/'runs/parameter_violation_cycle91_20261030_v1',B/'runs/parameter_violation_cycle91_review_20261030_v1',plan,previous)
++  inputs.update(bind_cycle(91,B/'runs/parameter_violation_cycle91_20261030_v1',B/'runs/parameter_violation_cycle91_review_20261030_v1',plan,previous))
++  try:bind_cycle(92,B/'runs/parameter_violation_cycle92_20261030_v1',B/'runs/parameter_violation_cycle92_review_20261030_v1',plan,previous)
+   except FileNotFoundError:missing=True
+-  else:raise AssertionError('91 complete; inspect before changing preparation status')
+-  full=read(B/'runs/parameter_violation_cycle90_review_20261030_v1/REVIEW.json')
+-  actual={m:dict(steps=x['steps'],new_transitions=x['new_transitions'],full_horizon=x['full_horizon_count'],aborts=x['aborts'],reward_mean=x['reward_mean']) for m,x in full['methods'].items()}
+-  put(D/'INPUT90_REVIEW.json',dict(passed=True,time=time.time(),inputs90=inputs,actual90=actual,exact_history_and_violation_revision=True,scientific_contract55_exact=True,actual_incomplete91_rejected=missing,original_plan_sha256=sha(S/'PLAN.json'),binding_source_sha256=sha(__file__),physical_steps=0,optimizer_updates=0,statistics_evaluated=False,automatic_training=False));print('Actual complete90 including I safety abort bound; incomplete91 rejected; no full90-92 statistics')
++  else:raise AssertionError('92 already complete; inspect before changing preparation status')
++  original=read(B/'runtime/violation91_completion_20261030_v1/COMPLETE91_BINDING_REVIEW.json');assert original['passed']
++  for key,group in original['inputs90_91'].items():
++   assert all(inputs[key][k]==v for k,v in group.items())
++  early=read(S/'EARLY_WINDOW_FAILURE_91.json');assert early['original_plan_sha256']==sha(S/'PLAN.json') and early['failed_methods']==['impedance','admittance']
++  assert sha(early['source_report']['path'])==early['source_report']['sha256']
++  put(D/'INPUT90_91_READY_REVIEW.json',dict(passed=True,time=time.time(),inputs90_91=inputs,previous_six_input_groups_exact=True,actual_missing_complete92_rejected=missing,actual_plots_and_loss_receipts_bound=True,original_plan_sha256=sha(S/'PLAN.json'),original_early_failure_sha256=sha(S/'EARLY_WINDOW_FAILURE_91.json'),binding_source_sha256=sha(__file__),physical_steps=0,optimizer_updates=0,statistics_evaluated=False,automatic_training=False));print('Complete90/91 core refs unchanged; plots/loss/plan/failure now bound; actual incomplete92 rejected; no full statistics')
+  else:
+   if args.cycle92_run is None or args.cycle92_review is None:raise ValueError('Actual separately registered and reviewed complete92 paths required')
+   inputs.update(bind_cycle(91,B/'runs/parameter_violation_cycle91_20261030_v1',B/'runs/parameter_violation_cycle91_review_20261030_v1',plan,previous));inputs.update(bind_cycle(92,args.cycle92_run,args.cycle92_review,plan,previous))
+-  registration=dict(cycles=plan['cycles'],seed=plan['bootstrap_seed'],bootstrap_replicates=plan['replicates'],near_zero_guard=plan['near_zero_guard'],relative_limit=plan['relative_limit'],source_sha256=sha(S/'audit.py'),followup_marker=previous['followup_marker'],anchor_protocol55=previous['anchor_protocol55'],history_amendment=plan['history_amendment'],violation_amendment=plan['violation_amendment'],inputs=inputs,original_prospective_plan=ref(S/'PLAN.json'),binding_source=ref(Path(__file__)),automatic_training=False)
++  registration=dict(cycles=plan['cycles'],seed=plan['bootstrap_seed'],bootstrap_replicates=plan['replicates'],near_zero_guard=plan['near_zero_guard'],relative_limit=plan['relative_limit'],source_sha256=sha(S/'audit.py'),followup_marker=previous['followup_marker'],anchor_protocol55=previous['anchor_protocol55'],history_amendment=plan['history_amendment'],violation_amendment=plan['violation_amendment'],inputs=inputs,original_prospective_plan=ref(S/'PLAN.json'),binding_source=ref(Path(__file__)),original_early_failure=ref(S/'EARLY_WINDOW_FAILURE_91.json'),automatic_training=False)
+   put(S/'REGISTRATION.json',registration);print('All complete90-92 bound; run original audit/review_saved then inspect actual plot. No training launched.')
