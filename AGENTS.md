@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 完整78/原76–78已审；新主机79实际续训与Direct33恢复
+
+- [最新交接](docs/RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030.md)。78全30×55/41250、reward/replay/全loss/health/标签/终端与五图完成；原76–78 I近零不可判、A失败5%、V reward通过但loss异常，未收敛。新主机三路准确恢复、DECISION79和actual startup通过，79 steps{'impedance': 3251451, 'admittance': 3253055, 'vmc': 3254465}；全后续及前瞻79–81部署，无自动80/Direct34，Goal active。
+- 原Direct33中断28/30保留，只补两条件；新2全state不变、原28全部动作精确复现，旧最终内存不变证明明确缺失。启动环境/taskset错误及只读Path错误失败均保留并修复，无28重跑。合并审查完成=True、描述比较完成=True，最终范围仍待。79前5000真实日志/算术/图核验，I/V尖峰18.15/18.07；120秒8身份观察通过。
+- guardv7298样本，预热后min[75, 68, 67, 69]%、低于50[0, 0, 0, 0]；历史v6的31/33/44低谷和停机/预热0保留，科研结束仍合成保载。SSD1079成员/SHA9ea3de26已核，非HDD/arm1全备份。maina798f53e/baselinef6e8f8c2已fetch/read并保留非RL，发布依最终收据，无子agent。
+
 ## 2026-10-29 — 恢复79仅恢复及完整审查准备
 
 - [交接](docs/RL_RECOVERY79_PREPARATION_20261029.md)。79科学trainer与78逐字同一、五metadata插入可逆，递归保留原78/77/76/partial75；三路正例与每路19协议+8边界拒绝、真实未完整78拒绝通过。仅恢复等待4005471部署，准确恢复完成=False，无79决定/训练。

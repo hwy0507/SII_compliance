@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/direct33_interruption_recovery_20261030_v1/review_combined_v2.py", line 27, in <module>
+    protocol=read(registration['inputs']['training_registration']['path']);conditions={x['id']:x for x in protocol['conditions']};sys.path[:0]=[registration['evaluation_runtime'],str(Path(protocol['runtime'])/'source/tools')]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/direct33_interruption_recovery_20261030_v1/review_combined_v2.py", line 5, in read
+    def read(p):return json.loads(p.read_text())
+                                  ^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'read_text'
