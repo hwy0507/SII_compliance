@@ -1,3 +1,12 @@
+## 2026-10-30 — 完整89匹配因果违规位离线拟合完成
+
+- [交接](docs/RL_HISTORY89_VIOLATION_BIT_FIT_20261030.md)。准确完整89两组同52维/新列零/原已学history及Adam保留，三方法实际恢复与初始Q误差0；原87全部7813终端/原masks/all5，每臂固定500步共3000 clone更新，actor/alpha/target/正式checkpoint与RNG不变，0physics/无权重推广。
+- 固定500步I/A/V总masked loss比同容量对照低约53.4%/.83%/1.52%；Icritic0/Acritic1略差，A/V早期尖峰保留。 全初末保存值独立标量复算/六栏实际图通过，仅已见终端拟合；选择准备因果违规位52维持久化/全量回放迁移，尚未实现正式迁移或登记在线90。 原88—90失败窗口保持，未收敛、无90/Direct34。
+- 原冻结88完成数{'impedance': 13, 'admittance': 14, 'vmc': 13}，原evaluator/collector/postprocessor继续，最终全90/raw/配对待。GPU59采样min[71, 76, 67, 76]%、低于50[0, 0, 0, 0]，科研结束仍保载；SSD43成员/SHA06ab306a核验，非HDD/arm1全备份。main8610fd8e/baselinef6e8f8c已query/fetch/read，发布见收据，无子agent，Goal active。
+
+发布前远端main前进到511fbd5f5a671b203f8265636a8bcc143860a264，已fetch/read最新日志、AGENTS和MLP384专题报告：另一主机非RL容量拟合改善但rod00三seed Strict均失败，保留其原作业/失败及wide-loader修复。本机冻结runtime不受这些checkout修改影响；正常整合双方记录，不合并baseline。
+
+
 ## 2026-10-31 — MLP384宿主live与棍推全九条核验；独立wide复核入口
 
 - 获批v7 75/75与容量36/36既有收据继续复用，不重复训练。原fixed27 v4宿主协调2517772及子worker live，scope CPU6/单线程/MemoryMax3221225472/swap0、OOM/kill0；哈希绑定前缀已完成13/27、Task13/13、Strict10/13。不是全矩阵结果。

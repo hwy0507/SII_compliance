@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整89匹配因果违规位离线拟合完成
+
+- [交接](docs/RL_HISTORY89_VIOLATION_BIT_FIT_20261030.md)。准确完整89两组同52维/新列零/原已学history及Adam保留，三方法实际恢复与初始Q误差0；原87全部7813终端/原masks/all5，每臂固定500步共3000 clone更新，actor/alpha/target/正式checkpoint与RNG不变，0physics/无权重推广。
+- 固定500步I/A/V总masked loss比同容量对照低约53.4%/.83%/1.52%；Icritic0/Acritic1略差，A/V早期尖峰保留。 全初末保存值独立标量复算/六栏实际图通过，仅已见终端拟合；选择准备因果违规位52维持久化/全量回放迁移，尚未实现正式迁移或登记在线90。 原88—90失败窗口保持，未收敛、无90/Direct34。
+- 原冻结88完成数{'impedance': 13, 'admittance': 14, 'vmc': 13}，原evaluator/collector/postprocessor继续，最终全90/raw/配对待。GPU59采样min[71, 76, 67, 76]%、低于50[0, 0, 0, 0]，科研结束仍保载；SSD43成员/SHA06ab306a核验，非HDD/arm1全备份。main8610fd8e/baselinef6e8f8c已query/fetch/read，发布见收据，无子agent，Goal active。
+
 ## 2026-10-30 — 完整89与边界诊断已审；原88—90 A/V稳定性失败
 
 - [交接](docs/RL_COMPLETE89_BOUNDARY_DIAGNOSIS_20261030.md)。89三路正常完成，各30×55/41250/0abort，全旧replay及新51映射/reward0误差；Task/Strict18/17、13/12、17/16，mean−2.360402/−11.989807/−4.601530。完整loss末段均值上升/尖峰，全90配对A丢4 Strict、V丢1，无新增通过；四实际图已查看，未收敛。
