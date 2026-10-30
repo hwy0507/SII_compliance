@@ -29,3 +29,5 @@
 SSD证据包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_RECOVERY80_PREPARATION_20261030/SMALL_EVIDENCE.tar.gz`，75成员/96493字节，SHA `c29bc3a52e7a736e8743e51e81309e12962efc8d0c33c60586748cf01549c449`，逐成员字节/hash及Python AST核验；收据[RL_RECOVERY80_PREPARATION_20261030_SAVE.json](RL_RECOVERY80_PREPARATION_20261030_SAVE.json)。运行log是当时快照，大checkpoint/replay/raw继续留共享SSD，非HDD/arm1完整备份。现有HDD LATEST按原长度原位更新，入口仍指向主交接；GitHub发布以本轮实际收据为准。
 
 下一步先收齐正在运行的79完整科学结果与实际图、核80准确恢复，再决定是否有限80。不得重复派发79、仅恢复检查或原Direct33评测。Goal active，GPU保活继续。
+
+发布前远端main前进至`133778dd03778c53b0fdaed8f8d8afada3465c32`，已实际fetch/read新非RL四探针与恢复增强重训23/75记录。首次push非快进拒绝；随后安全合并`c00e90648d5e3ce37e45085fbd4bd897b8eb16e8`，AGENTS/UPDATE_LOG双方完整行序列均保留，七个非RL源码逐远端blob相同。科学提交`4b43a849`全部74项manifest重新逐Git blob核验通过。没有改变正在运行的RL或替另机派发任务。详情[RL_RECOVERY80_PREPARATION_20261030_MERGE.json](RL_RECOVERY80_PREPARATION_20261030_MERGE.json)。
