@@ -1,0 +1,75 @@
+{
+  "time": 1793401132.2849874,
+  "actual_visual_inspection": true,
+  "plots": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation91_fixed87_terminal_followup_20261030_v1/fixed87_terminal_87_88_89_90_91.png",
+      "sha256": "448798a2f1143a54394b6178d7b7cd2627754f5593770b20fb9441dd3feeaf62",
+      "inspected": true
+    }
+  ],
+  "summary": {
+    "impedance": {
+      "total_masked_sse90": 3362.887087466863,
+      "total_masked_sse91": 2254.573676832908,
+      "relative_total_change": -0.329571996266103,
+      "per_critic_delta": [
+        -952.9169793857782,
+        156.3935800786021,
+        -16.506782438638766,
+        42.76593740843964,
+        -338.04916629657964
+      ],
+      "all_row_delta": [
+        -19688.05023181747,
+        -11410.265027137815,
+        -26616.611980816804,
+        -19222.477525307928,
+        -20507.412988923883
+      ]
+    },
+    "admittance": {
+      "total_masked_sse90": 1550.0623534569677,
+      "total_masked_sse91": 1944.9687723697389,
+      "relative_total_change": 0.25476808596250744,
+      "per_critic_delta": [
+        142.7018476694102,
+        197.30738343554185,
+        41.35984846997599,
+        -126.81816395964415,
+        140.3555032974873
+      ],
+      "all_row_delta": [
+        -5372.547746382301,
+        -6110.226539472569,
+        -4135.289629115328,
+        -6791.977618904588,
+        -5855.920588879642
+      ]
+    },
+    "vmc": {
+      "total_masked_sse90": 1722.7011705152436,
+      "total_masked_sse91": 676.7300023852004,
+      "relative_total_change": -0.6071692444588073,
+      "per_critic_delta": [
+        -230.82276910598375,
+        -294.0833491214289,
+        -363.37939364015983,
+        -178.87327196968909,
+        21.187615707218356
+      ],
+      "all_row_delta": [
+        -3434.599675239977,
+        -1623.1846905069142,
+        744.9233677542616,
+        -1152.0332364843089,
+        -702.8801977535259
+      ]
+    }
+  },
+  "findings": [
+    "All original87 terminals/all5/masks retained across87-91.",
+    "I totalmasked improves, critics1/3 regress; A totalmasked worsens, onlycritic3 improves; V totalmasked improves, critic4 regresses.",
+    "All-row SSE declines for all I/A critics; V critic2 all-row SSE rises. Fixed seen-terminal fitting is not policy safety or convergence."
+  ]
+}
