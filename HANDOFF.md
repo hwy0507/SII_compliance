@@ -1,3 +1,9 @@
+## 2026-10-30 — 半std全16与87历史已审；匹配critic拟合完成
+
+- [交接](docs/RL_HALF_STD86_COMPLETE_HISTORY87_FIT_20261030.md)。半std原16全55s/0更新/最终全state及1760万raw子步审计通过，Strict I2→0、Ashort3→2、Along3→4、V4→4；两实际图、所有失败保留，不推广统一降熵。
+- 原85全部旧replay前缀精确，新增86/87共247500行因果历史/独立标量核验，完整87共10824948行。原87三方法各两臂500步终端critic离线拟合完成，旧Adam保留、新列/矩0、原模型不变；全端点独立算术/实际图通过。仅已见终端拟合，非在线reward改善，未晋升权重/启动88或Direct34，Goal active。
+- GPU145样本min[76, 74, 76, 71]%、低于50[0, 0, 0, 0]，科学全结束仍保载；SSD141成员/SHA70f854a0核验、非HDD/arm1全备份。main80de539b/baselinef6e8f8c实际fetch/read，发布见收据，无子agent。
+
 ## 2026-10-30 — 半标准差评测继续；熵目标持久化基础通过
 
 - [交接](docs/RL_HALF_STD86_ENTROPY_STATE_READY_20261030.md)。原固定86同16 std×0.5评测按原身份继续，未扩预算/重启/提前选seed。唯一PID1888816原deadline内等待完整review后全raw独立复算，保留短回合/失败；完整结果与图仍待，无自动88/Direct34。

@@ -1,0 +1,71 @@
+{
+  "time": 1793372206.5182836,
+  "methods": [
+    "impedance",
+    "admittance",
+    "vmc"
+  ],
+  "cpu": 53,
+  "device": "cuda:1",
+  "budget_seconds": 900,
+  "updates_per_arm": 500,
+  "maximum_cloned_q_optimizer_steps": 3000,
+  "inputs": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter86_half_std_paired_20261030_v3/REVIEW.json",
+      "sha256": "fa9a94e560092f3617f76847a4b3c18415d4556d1310a711fcd9dcab60b0976a"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter86_half_std_paired_20261030_v3/SAVED_REVIEW.json",
+      "sha256": "aa8567825017dfea814c5788392f9b5bf4efb23e36beb4530d2cbc1957b74ee9"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter86_half_std_paired_20261030_v3/PAIRED_REVIEW.json",
+      "sha256": "34164df2927e4a8f3c0155fb3d8c8ae6a9e4715723ba9fc244569efb7aaf423e"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter86_half_std_paired_20261030_v3/PAIRED_SAVED_REVIEW.json",
+      "sha256": "3e6403ac52980ed862d145be968f56bb832fe804d58140500ea34baa40e3b1ed"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter86_half_std_paired_20261030_v3/PLOT_INSPECTION.json",
+      "sha256": "8161440baa9b0357f8ccd114f2fa99a24986813dcf28e63485c74a36000c7843"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/half_std86_completion_entropy_preparation_20261030_v1/HALF_STD_RAW_REVIEW.json",
+      "sha256": "0ed9d6b4d427a4513cd9f7e9a12aecd47f5b2862ff54a070aee959e1bb3faff7"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/half_std86_completion_entropy_preparation_20261030_v1/HALF_STD_RAW_SAVED_REVIEW.json",
+      "sha256": "5f7db23701f63a10c27ea0fa0c49eccbb1bf0b6fe00f2717c33c0070f13ded6b"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery87_history_extension_20261030_v1/REVIEW.json",
+      "sha256": "8c3136bde4f26dc4b851f40b94b12aa173c2dd1ded09f4682ffb858af5cabedf"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery87_history_extension_20261030_v1/SAVED_REVIEW.json",
+      "sha256": "ff3b66dd163d0bc0b428cfb260bb40bacdbf2bca5083a5e4fc8e20b1e7ce3e47"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery87_history_extension_20261030_v1/FINISHED.json",
+      "sha256": "64337ae5fff7ca94ed4a6399691761a8fb17e5575a4191425a7b1a3193fa907e"
+    }
+  ],
+  "sources": {
+    "review_saved.py": "16b64aa47e4b40852b36443b4d4df084e8011a565b57ac77e11004a59f2aa979",
+    "fit.py": "ced9806403b2f13aff1be952fc5441332a398c918a7fbfec4792192b96f346df"
+  },
+  "initial_q_atol": 0.0001,
+  "feature": "preaction cumulative external penetration / (preaction cumulative external penetration +0.0002m)",
+  "feature_insert_observation_index": 50,
+  "new_weight_and_adam_moments": 0,
+  "control": "Original complete87 critic clone, same all terminal rows/masks/rewards, full batch every update",
+  "optimizer": "Original saved Adam states/hyperparameters for both arms; history first-layer columns/moments inserted zero",
+  "loss": "Sum over5 critics of masked terminal MSE. Original terminal128 cancels because every row terminal. No bootstrapping.",
+  "actor_alpha_target_updates": 0,
+  "physics": 0,
+  "training88": false,
+  "no_automatic_promotion": true,
+  "limits": "Development in-sample terminal fitting only, same complete87 data already used in training. No held-out generalization, online reward improvement, history causality, architecture acceptance or policy promotion. All critics and methods retained; no cherry-picking steps or new thresholds. Original87 checkpoints untouched."
+}
