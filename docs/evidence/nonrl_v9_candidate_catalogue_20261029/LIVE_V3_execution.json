@@ -1,0 +1,71 @@
+{
+  "status": "running_development_eligibility",
+  "started_utc": "2026-10-29T15:55:18.970402+00:00",
+  "registration_sha256": "bc2994e299dec10fba75a50c53f3bf4e5064a4c5d253fb91472b6b3ba1add933",
+  "groups": [
+    {
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "trials": [
+        {
+          "candidate": {
+            "id": "esn_ridge_s2026102801/rho0.8_gain0.08_ridge0.1",
+            "family": "esn_ridge",
+            "seed": 2026102801,
+            "validation_mse": 2.707520714730711e-05,
+            "checkpoint": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/learning/esn_ridge_s2026102801/rho0.8_gain0.08_ridge0.1.npz",
+            "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510",
+            "metadata": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/learning/esn_ridge_s2026102801/TRAINING_COMPLETE.json",
+            "metadata_sha256": "19e9427e85ada6bced7a761d360e6084921aad06d8aef07453834b465eba63da",
+            "hyperparameters": {
+              "rho": 0.8,
+              "input_gain": 0.08,
+              "ridge": 0.1
+            },
+            "validation_rank": 1
+          },
+          "cases": [
+            {
+              "identity": "rod_00",
+              "split": "train",
+              "folder": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_v9_paired_scene_priority_20261029_v5/rod_00_esn_ridge/rod",
+              "reused_parent_episode": true,
+              "qualification_sha256": "324551edb153a64b99c6dbf6e81441123862798547129d5a3e63bb826444d51f",
+              "development_qualified": false,
+              "task_success": false,
+              "safety_valid": false,
+              "scene_behavior_valid": false
+            }
+          ],
+          "status": "failed_eligibility_full_episode_preserved"
+        },
+        {
+          "candidate": {
+            "id": "esn_ridge_s2026102801/rho0.8_gain0.08_ridge0.001",
+            "family": "esn_ridge",
+            "seed": 2026102801,
+            "validation_mse": 2.9973040423725977e-05,
+            "checkpoint": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/learning/esn_ridge_s2026102801/rho0.8_gain0.08_ridge0.001.npz",
+            "checkpoint_sha256": "a291f17ef2eef77eef8dd378d2944ebe26385eba085fbdec72187ede4ae64204",
+            "metadata": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/learning/esn_ridge_s2026102801/TRAINING_COMPLETE.json",
+            "metadata_sha256": "19e9427e85ada6bced7a761d360e6084921aad06d8aef07453834b465eba63da",
+            "hyperparameters": {
+              "rho": 0.8,
+              "input_gain": 0.08,
+              "ridge": 0.001
+            },
+            "validation_rank": 2
+          },
+          "cases": [],
+          "status": "running"
+        }
+      ],
+      "selected": null
+    }
+  ],
+  "selected_models": [],
+  "current": {
+    "candidate": "esn_ridge_s2026102801/rho0.8_gain0.08_ridge0.001",
+    "identity": "rod_00"
+  }
+}

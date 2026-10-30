@@ -1,0 +1,37 @@
+{
+  "status": "preflight_passed_no_physics",
+  "checks": [
+    {
+      "status": "worker_ast_equal_after_explicit_collection_only_normalization",
+      "diagnostic_wrapper": "run_video_reference_coverage_20261029.py",
+      "collection_wrapper": "run_registered_special_coverage_20261029.py"
+    },
+    {
+      "status": "equal",
+      "function": "make_actor"
+    },
+    {
+      "status": "equal",
+      "function": "verify_actor"
+    },
+    {
+      "status": "equal",
+      "function": "main"
+    },
+    {
+      "status": "mutation_rejected",
+      "mutation": "flags.update(dt=.0001"
+    },
+    {
+      "status": "mutation_rejected",
+      "mutation": "COMMON_LINEAR_YIELD_MPS*.5)"
+    },
+    {
+      "status": "mutation_rejected",
+      "mutation": "recipe['entrypoint'] = 'run_primitive_teacher_v7.py'"
+    }
+  ],
+  "registered_source_files": 1103,
+  "prerequisite_rejection": "Traceback (most recent call last):\n  File \"/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/prepare_v9_paired_scene_closure_20261029.py\", line 168, in <module>\n    (run if a.run else prepare)(a.root.resolve())\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/prepare_v9_paired_scene_closure_20261029.py\", line 101, in run\n    assert parent['status'] == 'complete' and parent['completed'] == 108\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "student_execution_created": false
+}

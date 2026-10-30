@@ -1,0 +1,63 @@
+{
+  "units": {
+    "run-raa08b13eb33f4583ab899210958345fa.scope": {
+      "ControlGroup": "",
+      "MemoryCurrent": "[not set]",
+      "MemoryMax": "infinity",
+      "MemorySwapMax": "infinity",
+      "ActiveState": "inactive",
+      "InvocationID": ""
+    },
+    "sii-v9-paired-closure-handoff-v3-20261029.service": {
+      "MainPID": "0",
+      "ControlGroup": "",
+      "MemoryCurrent": "[not set]",
+      "MemoryMax": "3221225472",
+      "MemorySwapMax": "0",
+      "ActiveState": "failed",
+      "InvocationID": "39a747c69fe447dd83cc9d2eb2dc88dd"
+    },
+    "sii-v9-paired-priority-v4-20261029.service": {
+      "MainPID": "0",
+      "ControlGroup": "",
+      "MemoryCurrent": "[not set]",
+      "MemoryMax": "infinity",
+      "MemorySwapMax": "infinity",
+      "ActiveState": "inactive",
+      "InvocationID": ""
+    },
+    "sii-v9-paired-priority-v5-20261029.service": {
+      "MainPID": "1672647",
+      "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-v9-paired-priority-v5-20261029.service",
+      "MemoryCurrent": "1031286784",
+      "MemoryMax": "3221225472",
+      "MemorySwapMax": "0",
+      "ActiveState": "active",
+      "InvocationID": "32b84eb9ac2340b7ad71078d0f976db3"
+    }
+  },
+  "cgroup": {
+    "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\n",
+    "memory.swap.current": "0\n",
+    "cpu.stat": "usage_usec 389694897\nuser_usec 387279257\nsystem_usec 2415639\ncore_sched.force_idle_usec 0\n"
+  },
+  "processes": [
+    {
+      "pid": 1672647,
+      "command": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/run_v9_paired_priority_v5_20261029.py --root outputs/nonrl_v9_paired_scene_priority_20261029_v5 --wait-and-run ",
+      "stat": "1672647 (python) S 2117 1672647 1672647 0 -1 4194304 4746 1024398 0 2 3 1 31982 206 20 0 1 0 38601993 38633472 5916 18446744073709551615 103256964206592 103256966946253 140730569579120 0 0 0 0 16781312 2 1 0 0 17 6 0 0 0 0 0 103256968500128 103256969357104 103257761554432 140730569586453 140730569586643 140730569586643 140730569588655 0\n"
+    },
+    {
+      "pid": 1675386,
+      "command": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_v9_paired_scene_priority_20261029_v5/rod_08_esn_ridge --scenes rod ",
+      "stat": "1675386 (python) S 1672647 1672647 1672647 0 -1 4194304 3052 0 0 0 2 0 0 0 20 0 1 0 38634066 37208064 5376 18446744073709551615 102308581847040 102308584586701 140722218113680 0 0 0 0 16781312 2 1 0 0 17 4 0 0 0 0 0 102308586140576 102308586997552 102309211127808 140722218121761 140722218122145 140722218122145 140722218123183 0\n"
+    },
+    {
+      "pid": 1675387,
+      "command": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_v9_paired_scene_priority_20261029_v5/rod_08_esn_ridge --worker rod ",
+      "stat": "1675387 (python) R 1675386 1672647 1672647 0 -1 4194304 171738 1098 0 0 6737 32 0 0 20 0 1 0 38634069 1443008512 135271 18446744073709551615 101151782010880 101151784750541 140734355966272 0 0 0 0 16781312 2 0 0 0 17 1 0 0 0 0 0 101151786304416 101151787161392 101152491208704 140734355974689 140734355975073 140734355975073 140734355976111 0\n"
+    }
+  ],
+  "source_files_verified": 1112,
+  "interpretation": "Live scheduling/resource snapshot, not final experiment completion"
+}

@@ -1,0 +1,90 @@
+{
+  "status": "verified_fixed_first_candidate_offline_diagnostic",
+  "dataset_sha256": "67c01021964857020a039a644a9ff6a5b67735c034d45bb7cc5c84b53cf0691b",
+  "plotter_sha256": "d6b5790e50d4f7ab8b498630908823d47ee77603a6533443ab827e1fd2e78776",
+  "input_sha256": {
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/esn_ridge_s2026102801/TRAINING_COMPLETE.json": "7f1763785be048612b9ed530ec9a18366ecf5b675c56d088ae022a4d9a407bad",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/esn_ridge_s2026102801/checkpoint.npz": "398983fbe802ac6db83c47756ac793fbfca09fc7fca1fb5950be164090958927",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/esn_ridge_s2026102801/exported_replay.npz": "97f63304766dd84cbbf12a15d3d81a6b383f2c7b235459cbb61accc587d66823",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/rnn_scratch_s2026102801_candidate00/TRAINING_COMPLETE.json": "962cbe081cf90b9283fd6a5b771bfba26fa2c8055e927e18255148ba0cf661ab",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/rnn_scratch_s2026102801_candidate00/checkpoint.npz": "7ad915bbc104f66945992e1c1417d52d3f3016a43601f20ddbb8879569c123a7",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/rnn_scratch_s2026102801_candidate00/exported_replay.npz": "6cbd07f961f39e0f043bb6bcc32c721653ef2a991dbbc2677c3f7851ce3f94f2",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/rnn_scratch_s2026102801_candidate00/history.json": "1d4208433a9d60437ffc4d50c600232e3076ad980b712daae95e22b5ef438f1b",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/mlp_scratch_s2026102801_candidate00/TRAINING_COMPLETE.json": "8089a25739d9d60f7b36bc2afca208ad8b6bcd8136e0a6440e822150402aaf84",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/mlp_scratch_s2026102801_candidate00/checkpoint.npz": "e18fec0e34c7262786da3efea9d7d0c43a36ed38fd0f5b1ba9ac97825d437162",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/mlp_scratch_s2026102801_candidate00/exported_replay.npz": "6afaaebb92e7de7b4555306396891d3aa3e22fb1d5d163fe2b1d98ce94866fa0",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_scrape_retrain_20261030_v1/learning/mlp_scratch_s2026102801_candidate00/history.json": "dae4118af69d25053c53546dda0d5905046deacd5d4ea0b18da62916283a3a6e"
+  },
+  "rows": [
+    {
+      "label": "ESN",
+      "fixed_candidate": "esn_ridge_s2026102801",
+      "validation_mse": 3.8454871167769435e-05,
+      "train_mse": 1.143924082358087e-05,
+      "actor_replay_max_abs": 0,
+      "validation_channel_rmse": [
+        0.005658359384460577,
+        0.010068586147456716,
+        0.005620873952426112,
+        0.0072634648264466575,
+        0.004833316922159827,
+        0.005179900994176111,
+        0.0011163190351876917
+      ],
+      "validation_scene_mse": {
+        "rod": 1.1279095821214609e-05,
+        "ball": 5.7788051092214135e-05,
+        "corner": 3.564872572144293e-05
+      }
+    },
+    {
+      "label": "RNN",
+      "fixed_candidate": "rnn_scratch_s2026102801_candidate00",
+      "validation_mse": 4.0580737366714455e-05,
+      "train_mse": 2.026605161068464e-05,
+      "actor_replay_max_abs": 0,
+      "validation_channel_rmse": [
+        0.006623753674963245,
+        0.008894935183892798,
+        0.005905357060344833,
+        0.005359794028280584,
+        0.0037519465042061976,
+        0.008633616277684253,
+        0.002975585700039865
+      ],
+      "validation_scene_mse": {
+        "rod": 2.7851090527436677e-05,
+        "ball": 4.401000041829271e-05,
+        "corner": 5.225112546196124e-05
+      }
+    },
+    {
+      "label": "MLP",
+      "fixed_candidate": "mlp_scratch_s2026102801_candidate00",
+      "validation_mse": 0.0001760381678119709,
+      "train_mse": 0.00015075061710243426,
+      "actor_replay_max_abs": 0,
+      "validation_channel_rmse": [
+        0.01210884884081634,
+        0.020473193529266496,
+        0.007486581365323369,
+        0.008214559306877776,
+        0.005212865462925095,
+        0.022514522804806217,
+        0.0029808912322896626
+      ],
+      "validation_scene_mse": {
+        "rod": 0.00017638186919321814,
+        "ball": 8.538796553332852e-05,
+        "corner": 0.0003847021709453807
+      }
+    }
+  ],
+  "figure_sha256": {
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_FIRST_CANDIDATE_LEARNING_20261030.png": "a1fcf261c0460b0ddd188a2af60d5b156b86a9b6436545c28b729763b729c44e",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_FIRST_CANDIDATE_LEARNING_20261030.pdf": "992b0eb2aab72ca089daddd9323608f83b0485fdfd269eba9f488aeab9c4c5cc"
+  },
+  "model_reselection": false,
+  "test_inputs_read": false,
+  "scope": "First registered candidate00 and ESN seed01 only. Full deployed MSE, not last minibatch loss. No convergence criterion or physical success inferred. Entire grid and closed-loop diagnosis remain pending."
+}

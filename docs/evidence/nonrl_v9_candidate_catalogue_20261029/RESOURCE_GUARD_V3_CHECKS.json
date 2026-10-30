@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "runner_sha256": "8b71b5f34fd68a261dc077aae1855f3129a390783252d5b679840b7c4b6cc855",
+  "unchanged_AST": [
+    "run",
+    "evaluate",
+    "register",
+    "parent_cache",
+    "check_sources"
+  ],
+  "resource_cases": [
+    {
+      "case": "no_cpu_controller_single_core",
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "case": "real_quota_single_core",
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "case": "wrong_affinity",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "unbounded_memory",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "swap_enabled",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "oversized_quota",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "case": "thread_mismatch",
+      "accepted": false,
+      "expected": false
+    }
+  ]
+}

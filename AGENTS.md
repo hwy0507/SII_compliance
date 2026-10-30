@@ -47,6 +47,301 @@
 - [最新交接](docs/RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。76三路各30×55/41250/noabort，旧partial75 replay/history全部保留、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2244+30终端/实际图全审。I尖峰、Vactor漂移和short0600 Strict退化、A总体改善及long0200退化全部保留，未收敛。
 - DECISION77绑定96证据，三路准确全state/replay/next65536和actual INITIAL_STATE/startup通过，当前steps3160279/3161595/3163135、各30sampler。原科学参数/75中断/76–78准确PLAN保持，无自动78、Direct34false，Goal active。77全loss和归档health已部署，77标签/2274锚点待补。
 - guard280样本min[75, 67, 62, 63]%、低于50[0, 0, 0, 0]，审查空档含合成保载、科研完成仍继续。SSD317成员/2677677字节/SHA9fe6df28逐成员/AST已核，大数据SSD非HDD/arm1全备份。main6492ab17后c1e2bf02/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
+## 2026-10-30 — 当前108正式六指标报告入口准备完成，真实训练13/75
+
+- 读[最终报告入口及限制](docs/NONRL_CONTACT_YIELD_FINAL_REPORT_READINESS_20261030.md)。新增experiments/report_contact_yield_final108_20261030.py，仅允许固定新运行完整独立108报告，核adapter注册/执行/reviewer hash、全部身份/replay和原汇总；输出四CSV/六指标PNG-PDF/MD/hash收据，无拟合/物理/选模。family36回合pooling与九seed模型表明确分开；SPT仅双成功、峰矩含失败、人舒适NA/代理分列，无成功或无接触保持NA。
+- 九类错误拒绝、合成全失败108保留、NA与重复导出保护通过，证据CONTACT_YIELD_FINAL_REPORT_CONTROLS_20261030.json；两源AST/diff通过。排版图仅/tmp合成fixture已目视，不是实验成绩、未进仓库，不用作正式结果。真实最终未读/未派发，无当前六指标表或图；入口不能替代108物理/审计或媒体。
+- 开工宿主fetch/read main84c24f9b1a83adad0bbab2cfaffd1dfc668dbbdf/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及完整AGENTS。原训练PID1829248同Invocation仍真实推进到13/75，第二组RNN03已接续（此前RNN02已19392update）；两个后继同PID active等待。上一轮progress/verified wait，本轮补齐交付缺口，未改已登记源码/预算/门槛。Goal active，全75/九锁定/27与必要修复/108/真实六指标及媒体待。新raw仅本地，未绕过导出拒绝，无RL/服务器计算/删除/重复派发；收工重读完整AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 公平训练9/75完成，三seed首组曝光/保存误差核验通过
+
+- 本轮开工宿主fetch/read main f9bbe7c07a4173bf2923564ddc028ca39a3d3aae/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及完整AGENTS。原训练PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab真实从RNN03 10584update接续至全部candidate00完成，9/75fit完整，candidate01 RNN01在途。原两个评测后继同PID/Invocation active等待，OOM0/swap0，未读test或重复派发。
+- 已完成9候选checkpoint/metadata hash、保存export prediction对真实target的val MSE重算及history末次32000update一致；六个神经候选各seed的RNN/MLP schedule hash相同，三seed曝光配对通过。小证据CONTACT_YIELD_FIRST9_FIT_PREFIX_20261030.json。此为前缀保存记录/公平性核查，不冒充完整75fit审计、额外actor重放或九模型锁定。首组RNN val MSE3.67–4.06e-5，MLP1.76–1.85e-4；参数搜索未完成，不按首组偏差改登记预算/选模。
+- 上一Goal轮为progress（真实图与导出诊断），本轮verified wait并完成前9fit记录核验；Goal active，全75/九锁定/固定27与必要修复/108/主六指标与媒体仍待。冻结源和gate不改，新raw仅本地且未绕过旧导出拒绝，无RL/服务器计算/删除。收工重读完整AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 首组新MLP/RNN完整学习曲线与三模型离线误差已独立核验
+
+- 读[当前真实学习诊断](docs/NONRL_CONTACT_YIELD_CURRENT_LEARNING_20261030.md)。只使用新数据67c01021…，固定seed01首个candidate00，MLP/RNN均32000update/895条history；独立部署全15750帧episode reset重放与export精确一致，metadata/history/全train及val MSE重算一致。新增只读绘图source，PNG/PDF/JSON hash齐全且目视通过。全train曲线用整集部署MSE，未把末mini-batch raw训练目标冒充全train；无平滑，无旧图/测试数据。
+- RNN全train/val MSE2.02661e-5/4.05807e-5，MLP1.50751e-4/1.76038e-4，ESN01 1.14392e-5/3.84549e-5。ESN已搜索12格、神经仅首格，明确不可作为公平最终排名；图仅定位学习缺口。MLP首候选厚角及vx/wy误差较大，是线索而非闭环失败唯一根因。三模型输出导出本轮未见错误，不代表物理成功。
+- 开工宿主fetch/read main46f414761c26133773e46675bb47fec5ad583fa4/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d并完整AGENTS；三既有服务同PID/Invocation active，训练由首RNN推进至首MLP完成、RNN seed02在途，固定27/108零派发。前Goal轮为实质progress，本轮verified wait+实际离线诊断；不改变登记源或训练选模。Goal active，全75/九锁定/27与必要修复/108/六指标/媒体待。新raw仅本地，未绕过导出拒绝，无服务器计算/RL/删除/重复作业；收工重读完整AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 新teacher全30独立通过；公平训练实际启动，三ESN导出精确重放
+
+- 读[全量与接续进度](docs/NONRL_CONTACT_YIELD_UNSEEN_ADAPTER_20261030.md)。原采集同PID真实19→23→26→29→30且自然inactive/PID0；完整独立review verified_all30_qualified、零失败，各场景10条。新纯teacher数据15750帧、24train/6开发val，SHA67c01021964857020a039a644a9ff6a5b67735c034d45bb7cc5c84b53cf0691b，逐轨迹obs/action/整轨迹划分精确复核，无旧综合数据。teacher开发使用过val rod09，非独立泛化证据。
+- 原训练等待器PID1829248已fair_training；三seed ESN各12候选完成，三checkpoint与部署actor全15750帧精确重放误差0，val动作MSE独立重算3.84549e-5/3.86894e-5/3.45983e-5；非闭环或success。完整证据CONTACT_YIELD_ALL30_DATASET_ESN_REPLAY_20261030.json。75fit中3完成，首RNN候选真实训练至至少12072/32000update；资源约2.17GB/3GiB/OOM0/swap0，真实快照CONTACT_YIELD_TRAINING_STARTED_20261030.json。不凭未完成单候选loss声称收敛。
+- 新唯一final108有限后继PID1843469 active/waiting_for_fixed27_review/零派发；固定27后继PID1838688仍等完整fits。新coordinator只在固定27完整review通过且inactive后调用adapter register/run/review；科学失败/基础设施失败/超时/STOP均不派发，不重选/自动重试。七生命周期/异常保留/重复run拒绝零物理控制及AST/diff通过，精确启动证据CONTACT_YIELD_FINAL_HANDOFF_LAUNCH_20261030.json。未读最终条件，最终注册目录不存在；单模拟器约束保持。
+- 前Goal轮为progress并verified wait；本轮实质完成全30与独立建集/三ESN导出检查、启动最终有限接续。Goal active，全部神经/九模型审计/固定27与必要修复/108/六指标/媒体待。冻结物理/门槛/接口不改，失败与旧历史保留，无RL/服务器计算/删除。新raw仅本地，未绕过先前自动审查导出拒绝。
+- 开工fetch/read main0afd14c8d449912cb549d8def8889d6a10fdaeed/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及完整AGENTS；收工重读完整AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 新采集前18条独立复核合格，球8/10完成
+
+- 前一Goal轮为实质progress（固定27后继实际启动、final来源adapter和控制已发布358c4257）；本轮宿主再次核main358c42578f9f893c16d791a3215bda8a97667ede/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d日志及完整AGENTS。三既有服务同PID/Invocation active，原采集由16条ball06推进到18条ball08；训练/固定27等待器仍零派发，无重复启动。
+- 独立review重新读取并核前18个完整身份（rod10/ball8）：source/config/原始输入hash、teacher逐动作精确回放、执行标签/完整step与800子步、初始canonical48/MJB/filter配对和Task/安全/行为资格均通过。证据CONTACT_YIELD_FIRST18_INDEPENDENT_REVIEW_20261030.json；不包括在途ball08、未来球/角或学生，不以先前qualification布尔代替本次重放。前18全部合格，无隐藏失败。
+- 本轮为verified wait并增加18条独立证据，完整30/公平75fits/固定27开发闭环与必要修复/冻结108/六指标和媒体仍待；Goal active。新raw仅本地，未绕过先前导出拒绝，无RL/服务器计算/删除/源漂移。收工重读完整AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 固定27学生闭环等待器已active；最终108新来源适配准备完成
+
+- 读[接续与评估来源适配](docs/NONRL_CONTACT_YIELD_UNSEEN_ADAPTER_20261030.md)。宿主核验原采集PID1827286/Invocation ec3b6f480c184966bf86c5def563210d，16/30完整qualified、ball06在途；10rod独立通过保持。原训练等待器PID1829248仍waiting_for_collection/零派发。固定27后继PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b实际active、waiting_for_audited_fits/零派发。三注册source全部一致，3GiB/swap0、OOM0。精确启动快照见CONTACT_YIELD_DIAGNOSIS_HANDOFF_LAUNCH_20261030.json。
+- 后继仅父九模型完整审计且inactive后执行固定27 train00闭环，不重选/不读unseen；科学失败全保留，基础设施异常保留前缀及当前身份。新增final108来源adapter复用原物理/指标/review，固定27全Task/Strict/机器与精确replay通过才显式注册；当前未注册/未测试。十类错误拒绝、前置失败零sealed读取、异常checker恢复零物理控制复跑通过，新增三源AST检查通过。
+- Goal active：teacher通过不等于学生修复。完整30、75fits/九模型、27闭环与必要开发修复、最终108/六指标/媒体待。MJB/物理/input/filter/dt/gates冻结；旧综合历史及未完成格保留。raw仅本地，未绕过先前导出拒绝，无服务器计算/RL/删除/重复模拟器。
+- 开工宿主fetch/read main ffd928cd26d582268347ef26c61a58a3182d5a2e、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读完整AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 新teacher棍推10/10独立合格；固定九学生诊断入口准备完成
+
+- 读[学生诊断与完整棍推证据](docs/NONRL_CONTACT_YIELD_STUDENT_DIAGNOSIS_20261030.md)。同采集PID1827286/Invocation ec3b6f480c184966bf86c5def563210d保持；三次宿主观察确认rod08 475step/380000子步→ball00 150→325step/120000→260000子步，真实接续。10rod全合格且新独立前缀10/10：核source/config/原始输入hash、actor精确重放、label、完整时钟/子步、同初态/MJB/filter、原Task/安全/棍行为门。全部撤回前持续回位，确认领先1.24–5.59s，原失败rod09现领先2.19s。真实PNG/PDF/绘图source与hash已保存并目视核验；不是新学生或unseen结果。
+- 旧v9入口硬绑定旧数据SHA/选模目录，新增experiments/diagnose_contact_yield_students_20261030.py；仅待执行，不改冻结tools/scripts。须30独立合格/75fits与九模型完整审计/两个前置服务inactive后另登记。固定九个validation-MSE模型×rod00/ball00/corner00 train身份=27，复用原物理worker/metrics/replay；不重选模型、不读最终条件、不计算开发SPT，不把科学失败删掉。基础设施异常保留当前与完整前缀，不自动重试。当前未登记/未派发该27回合。
+- 27顺序/全部科学失败保留/第四条异常保留前三及当前/重复派发/模型缺失重复/场景与train身份/活动前置/未完成review拒绝等零物理控制通过；新teacher真实保存rod00正确配对及错误MJB/filter/初始canonical48三拒绝通过。源编译/diff检查通过。新入口未修改已登记采集/训练源码，两个source inventory仍需保持。
+- 原采集和唯一训练等待器继续：观察内MemoryCurrent最高约1.705GB/3GiB，OOM0/swap0；完整30仍在途、75fit/模型闭环/最终108/六指标/媒体待，Goal active。Task/Strict、双通过SPT、平均峰矩、人舒适缺通道NA/代理分列、机器合规不改；旧综合主结果退历史与57未完成格保留。无RL/新并行模拟器/服务器计算/删除；新raw仅本地，未绕过之前的raw导出拒绝。
+- 开工宿主fetch/read main a7c997016e15f2a6672ee86e0b8d7b6fb2bcd926、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d两分支UPDATE_LOG；sandbox网络失败不代表远端不可用。上一轮为实质进展，本轮增加入口及10棍独立完成证据；继续Goal，不标完成。收工重读AGENTS，两个无关untracked保留。
+
+
+## 2026-10-30 — 接触让位后蹭棍teacher全量重采运行，公平训练唯一接续已启动
+
+- 读[本轮修复和接续](docs/NONRL_CONTACT_YIELD_SCRAPE_RETRAIN_20261030.md)。最新teacher在感知接触与4mm让位后才提供有界0.02m/s路径补偿，三开发探针独立3/3合格；仅加推进旧版0/3失败保留。rod09 4.918s接触→5.04s让位→10.68s越棍→10.76s持续回位确认<12.95s撤回。teacher用过开发validation rod09；六validation只作开发选模，不称独立泛化。冻结MJB/物理/input/filter/actuator/dt/gate未改。
+- 唯一新采集`sii-contact-yield-scrape-collection-20261030.service` PID1827286/Invocation ec3b6f480c184966bf86c5def563210d，输出`outputs/contact_yield_scrape_collection_20261030_v1`；复用三条同配置探针、其余27逐条一次，24train/6val。04:13快照完成3/30全部合格，rod03在途，独立前缀复核3/3；MemoryCurrent约1.04GB/3GiB、OOM0/swap0、CPU6/单线程，非全30或学生成功。
+- 唯一有限等待器`sii-contact-yield-scrape-training-handoff-20261030.service` PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab、约60MB，`outputs/contact_yield_scrape_training_handoff_20261030_v1`当前waiting_for_collection/dispatch_attempted=false。全30资格+独立完整重放+采集停止才建纯teacher数据并接续公平训练；任一失败保留不拟合、不重试。目标`outputs/contact_yield_scrape_retrain_20261030_v1`尚不存在。3 seeds/每族每seed12候选/32k neural updates/相同validation MSE选模/75fit作业后九模型锁定及完整审计；不自动派发unseen108。源已绑定，禁止修改或重复启动。
+- 新builder补齐旧fit审计器要求的lineage.hashes真实来源字段；未修改训练算法或门槛。未完成/重复prepare/原29/30拒绝、active/deactivating等待、少身份/重复/失败不派发及真实3前缀核验通过。源编译/diff检查通过。首轮系统Python缺PIL在import失败零物理，换登记解释器后通过。
+- [启动精确收据](docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_SCRAPE_LAUNCH_20261030.json)更正早期探针摘要old_collection SHA手抄错误：实际434f2225…与探针registration一致；绑定旧摘要保留。没有改原始数据。Goal active，当前无新训练/最终test；Task/Strict/双通过SPT/平均峰矩/真实舒适缺测NA/机器合规主矩阵仍待修复。旧综合结果与57未完成格保留，无RL/删除/服务器计算。
+- 宿主fetch成功，已读main80c856d89627acc95b40c456781014b6989682a4、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d两分支日志；纠正sandbox网络/user bus失败。新raw仅本地，先前服务器raw导出被自动审查拒绝，本轮未绕过，未声称新归档。收工重读AGENTS，保留两个无关untracked。
+
+
+## 2026-10-30 — 棍推teacher修复探针3/3合格，等待完整30条重采
+
+- [独立证据](docs/evidence/nonrl_v9_candidate_catalogue_20261029/VERTICAL_STAGE_SCRAPE_TEACHER_PROBES_20261030.json)。原30条teacher采集29/30通过；rod_09 Task/机器安全/action-filter replay通过但棍体接触/让位后未在撤回前完成持续回位，保留失败并阻断dataset。首个路径切向补偿v1在rod09/04/01三身份都因提前越过、没有手部接触和让位而失败，全部保留。
+- 根因定位：垂直路径方向`[0,0,1]`时旧恢复按水平路径长度关闭；只有XY参考纠偏无法补偿纵向受阻。仅增加切向推进会在接触前绕开棍子。新`VerticalStageScrapeTeacher`先以canonical48横向力和误差记录接触并确认至少4mm让位，再提供最多0.02m/s平滑切向补偿；不读phase、时钟、几何、成功标志。MJB/physics、canonical48、公共filter、actuator限制、dt、Task/Safety/棍行为门槛冻结。
+- 独立三探针通过：rod09接触4.918s、让位5.04s、越棍10.68s、持续回位确认10.76s、撤回12.95s；rod04和rod01也通过相同顺序/资格门及actor/filter replay。仅为开发teacher证据，不是模型学习、最终108或泛化证明。CPU6单路/单线程/MemoryMax3GiB/禁swap执行，无OOM。
+- 新完整30条重采已登记待启动，保留24train/6validation与旧身份；拟复用3条同MJB/seed/teacher配置且已合格的scrape v2轨迹，另外运行27条。失败样本会保留并阻断dataset。全部资格和数据复核后才运行ESN/MLP/RNN公平fit，九模型锁定后才评估冻结unseen108。
+- 当前无训练、无最终测试。Goal active；服务器raw归档权限问题待解决；本轮fetch main/baseline因网络拒绝失败，push未执行。收工重读AGENTS并更新UPDATE_LOG。
+
+## 2026-10-30 — 30条新采集结束，29合格，棍推失败保留待修
+
+- 本轮开工fetch/read `origin/main` `80c856d89627acc95b40c456781014b6989682a4` 与 `origin/baseline` `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 的UPDATE_LOG及本AGENTS。原因更正：实际棍后回位窗口`obs[45:48]=[0,0,1]`为竖直路径方向，并非全零/暂停。v1只投影水平方向而停用回位；v2遇非零竖直方向清除历史水平向量，仍停用修复。保存轨迹/动作重放证据见`CROSS_TRACK_VERTICAL_DIRECTION_DIAGNOSIS_20261030.json`。
+- v2服务完整保留：rod/ball通过；corner完整325步因诊断文件被agent在源清单建立后修改，`source_stable=false`而失败，未派发后两纠偏，无标签。证据`PERSISTENT_CROSS_TRACK_TERMINAL_FAILURE_20261030.json`；不重启。v3在竖直路径用bounded XY reference feedback（gain1.5/s、cap.02m/s、load gate1N），不变canonical48/filter/物理/门槛；名义三场景通过、7s安全student前缀纠偏通过、11s前缀行为失败，独立4/5。gain2/s、同cap的复核仍4/5；7s成功、11s以约5.1mm末误差失败。v5固定gain2/.02、只把晚前缀提前至9s，独立5/5；完整棍门为yield→几何越过→持续进入5mm管道80ms→撤回前，9s回合10.08越过、11.92开始回位、12.00确认，12.84撤回，Task/safety/behavior均通过。均属train identity teacher开发，不是学生评测、最终测试或一般安全证明。真实对照图`VERTICAL_STAGE_RECOVERY_COMPARISON_20261030.png`。
+- 确认teacher成功与学生学习需分开。新teacher固定gain2/s、0.02m/s上限、1N gate，30身份采集已结束：复用3条同配置/MJB合格名义轨迹，另运行27条；30条24train/6validation身份中29条合格，球10/10、桌角10/10、棍推9/10。仅rod_09失败：完整Task、安全、actor/filter replay通过，但手/指几何在棍撤回前未达到5mm/80ms持续回位门槛；失败原始证据保留，未降低门槛，dataset builder按协议拒绝拟合。服务已自然停止，cgroup移除；全过程MemoryMax3GiB、swap0，结束前OOM0。当前不训练、不测unseen108。两条实际恢复suffix另存mask候选但本轮先不混入，待循环warmup语义审计。
+- 数据集builder及下一步公平训练源已新增。30全合格后按同teacher hash组纯teacher的24train/6val；沿用ESN/MLP/RNN各3 seeds、每seed/family 12候选及原32k neural update/validation selection。训练/新final108尚未开始。最终比较必须按双Task+Strict成功条件下SPT、平均峰矩、人体舒适未测标NA、机器合规；旧composite结果保留历史，不作三分离主结果。
+- v1/v2及v3完整raw共享路径/摘要见`CROSS_TRACK_COMPLETE_SHARED_RECEIPT_20261030.json`及`VERTICAL_AWARE_COMPLETE_SHARED_RECEIPT_20261030.json`；v4 gain复核已共享但协调器文件事后修改造成协调器精确快照差异，记录于`VERTICAL_AWARE_GAIN2_SHARED_RECEIPT_20261030.json`；v5 131成员本地包309662979bytes/SHA`2ec5506d253070d856acb376b874fd174a682af229dfb07976adeda84b6146f7`，server导出被自动审查拒绝，未声称已共享。collection真实raw当前本机，尚未归档。服务器只存储/hash，未计算。
+- Goal保持active：30数据/公平重训/九模型锁定/冻结未见108与指标矩阵/媒体/归档均待。冻结物理、MJB、gate、输入、filter、执行器限制、dt5e-5未改。旧主矩阵/57未完成格保持。当前任务新增未提交文件仅限本问题；两个无关untracked `MUJOCO_LOG.TXT`、`docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md`保留。收工需重读AGENTS并更新根UPDATE_LOG。
+
+## 2026-10-30 — 有界横向教师五开发验证运行，三名义场景已qualified
+
+- 读[新教师五回合开发验证](docs/NONRL_CROSS_TRACK_TEACHER_DEVELOPMENT_20261030.md)。新增独立执行/审查/登记协调器，不编辑旧物理worker；固定横向1.5/s、速度0.02m/s、载荷尺度1N，三个名义train00后接两条175/275学生前缀恢复。前缀使用原MLP02 rank2（已安全通过但回位失败）区分恢复缺口；不是原有穿透超限的rank1。前缀反事实label仍禁作示范，实际后缀须合格并另登记共享数据协议才可训练。三种前缀真实保存历史独立回放、完整/异常记录与mask、真实prepare/check/重复拒绝零物理控制通过。
+- 唯一服务`sii-cross-track-teacher-development-20261030.service` PID1766039 active/CPU6线程1/3GiB/swap0，登记1142源全部一致。三名义rod/ball/corner均完整qualified，独立三case前缀review重核actor/label/配对/子步/资源通过；rod500/400000，峰矩34.523502Nm/外穿透0.071541mm，7.72s越棍、8.16s回位确认<12.80s撤回。只证明这三条开发回合，非新teacher全面恢复或安全/泛化。两条纠偏当前175步前缀回合已300/240000真实推进，275仍待；原服务均自然inactive，无重复模拟器或最终test。
+- 首条rod完整raw/登记/源码/独立审核38payload+manifest包70522159bytes/SHAde6b61a9c0bb96d8f60bec64fb009a01dedcdaca5e06350d1cb6cd859e22a8b2逐成员/源前后/远端暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/cross_track_teacher_first_20261030_v1/FIRST_ROD_RAW.tar.gz`。只含首条raw，不冒称球/角/纠偏已归档；报告三case后续澄清在包生成后追加，receipt区分包/Git文档hash，服务器仅存储/hash。
+- Goal active：两纠偏结果/完整五case审查与共享、纠偏数据/公平重训、九模型锁定/未见108/六指标/媒体仍待；旧office108的57待补保留，无RL/删除。开工fetch/read main3f3f0eabaa51d96ec72bc2b092107b9eafd2e3e4、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，收工重读AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 两条真实teacher接管均不能横向回位；有界反馈原型已实现
+
+- 读[实际纠偏失败与教师缺口](docs/NONRL_V9_ACTUAL_TEACHER_RECOVERY_FAILURE_20261030.md)。原full12自然结束，独立完整review核99case/72复用/28失败/七selected；MLP02/03均全12耗尽null，最终等待器明确null/dispatch_attempted=false、未见108目录不存在。ESN/RNN各三seed及MLP01开发合格不等于最终成功。原选模完整失败保留，非基础设施停摆。
+- 已登记两条真实rod00训练身份纠偏探针完成：7s/11s学生后teacher接管，独立纯actor/公共filter回放及原Task/rod/安全审查完成；均Task=true但行为/安全false，零合格新示范。teacher后缀越棍至撤回最小横向偏差9.133/10.307mm、y action峰约6.46e-13/1.62e-19，管内采样0；原teacher确实没纠正这两条学生偏离。穿透0.241339mm首次4.7792s发生在学生前缀，不能归咎teacher后缀；后缀峰仅0.000312mm/0。保存状态诊断不替代逐样本行为gate；未见测试未曝光。
+- 新增独立teacher原型cross_track_recovery_teacher_20261030.py，仅canonical48参考误差/路径/估计力，横向反馈1.5/s、速度上限0.02m/s、1N平滑载荷抑制；不改旧冻结源/物理/gate/学生输入。符号对称、载荷抑制、零误差100步原teacher一致、零水平方向、2000随机有界/正交/恢复方向控制通过。仅代数验证，未接入wrapper或登记/派发新teacher物理；下一轮应先有限开发验证，并用已审查安全但不回位的学生候选区分恢复效果，合格后共享后缀mask/warmup数据公平重训。不能把本原型当修复成功或给最终ESN加教师。
+- 新增27raw含18失败671payload逐成员/源前后核验，1785026817bytes/SHAd8f7be0cbb65d3073533fbd32096717ff2a8de2e20fb294466a56f01f23fc741，已远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_fullgrid_new27_20261030_v1/NEW27_RAW.tar.gz`。明确依赖旧72raw SHA664252fb…已远端重核，精确map两包覆盖99/28，避免重复归档旧72。
+- 两条失败完整raw/执行/源/审计/日志及新原型控制63payload包142361019bytes/SHA91605fcf50d781360433e738182220c11e7fa07f1a179a7f5180bf9804b90966逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_actual_handoff_failures_20261030_v1/ACTUAL_HANDOFF_RAW.tar.gz`。服务器仅存储/hash，无RL/删除/重复仿真；原1132及探针1136绑定源一致，新增独立文件不改历史运行。
+- Goal active：新teacher物理纠偏验证/数据增强/公平重训、九模型锁定、最终108/六指标/媒体仍待；旧office108的57待补保留。开工fetch/read main aa35d4491dbf90d4b71970fe5984443ba576e708、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，收工重读AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 两条真实教师纠偏探针已准备并自动等待安全接续
+
+- 读[两条有限教师接管探针](docs/NONRL_V9_TEACHER_HANDOFF_PROBES_20261030.md)。新增执行wrapper/独立审查/协调器，复用原物理worker不编辑；训练rod00、失败MLP02 rank1，175/275学生步后teacher接管至完整20s。原MJB/filter/gate/执行器/dt/输入冻结，记录mixed角色及未完成动作，实际teacher后缀才是未来标签候选；前缀反事实禁止作执行示范。独立纯controller回放、完整/异常worker胶合、真实prepare/check和重复拒绝、五等待边界控制通过；零新物理，不冒称纠偏/重训成功。
+- 唯一有限后继`sii-v9-teacher-handoff-probes-20261030.service` PID1755735已active、约60MB/3GiB/swap0、CPU6/线程1；HANDOFF waiting_for_full_grid_null_boundary、dispatch_attempted=false。绑定1136源，最长6h；须full12完整null且inactive、最终等待器明确null/零派发且inactive、最终108目录不存在，独立完整review后才登记并取公共计算锁跑两条。基础设施异常保留停止无重试；两条科学失败也完整保留，不做新拟合/测试/阈值修改。原full12仍唯一模拟器PID1697598，MLP03已到rank10，原1132source一致；七组开发合格保持，MLP02全12失败保留。
+- 八payload+manifest证据71625bytes/SHA318992afdd6e25bc4053fd6ead3a116d813b5fadde6de13f3cc4f2dba40472ba，逐成员/源前后/远端暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_handoff_probes_20261030_v1/EVIDENCE.tar.gz`。包含精确PENDING及等待状态快照，不是新raw/纠偏结果；服务器仅存储/hash。
+- Goal active：真实teacher纠偏结果、共享增强数据/公平重训、九模型锁定/最终108/六指标/媒体仍待，旧office108的57待补保留。开工main fc52856f693094556fe5d017700855c4a66ba4c9、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；本轮先行9c1389b3已push核验，收工重读AGENTS，两个无关untracked保留，无RL/删除/重复仿真。
+
+## 2026-10-30 — 教师接管纠偏采集算子准备完成，MLP02完整12失败保留
+
+- 读[教师接管算子与限制](docs/NONRL_V9_DEVELOPMENT_TEACHER_HANDOFF_20261030.md)。新增开发算子同canonical48历史推进teacher/student，有限学生前缀后接管；保留教师前缀形成的状态，明确前缀反事实和后缀实际行为来源。10条保存历史/边界控制和8类错误拒绝通过，尚无新物理纠偏/示范/拟合，不把回放当纠偏成功。
+- ESN/RNN三个seed及MLP01七组选定保持；MLP02完整12均失败，rank12已8.52s提前持续回位但外穿透0.218604mm>0.2mm，不能称所有候选都不会回位。MLP03后续候选仍在唯一用户级服务PID1697598推进；最终等待器PID1726066仍等待，零最终108派发。冻结1132源/七待执行源不改；下一步另登记有限真实teacher接管探针，先验证纠偏能力再决定共享数据公平重训。Goal active。
+- 五payload+manifest证据7206bytes/SHA56575762bcf65627258285635a41edf9c335f54eb7d56bbaf87110a7b3b398e4，源前后/成员/暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_development_handoff_20261030_v1/EVIDENCE.tar.gz`。服务器仅存储/hash；非raw全集/新示范。完整九组/未见108/六指标/媒体仍待，旧office108的57待补保留。
+- 本轮fetch/read main fc52856f693094556fe5d017700855c4a66ba4c9、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；重新读取AGENTS，两个无关untracked保留，无RL/删除或重复模拟器。状态检查使用systemctl --user；系统级同名unit不存在不代表用户服务停止。
+
+## 2026-10-30 — 棍推训练阶段覆盖/MLP残差诊断，后继修复依据已明确
+
+- 读[14候选同训练历史诊断](docs/NONRL_V9_MLP_TRAINING_PHASE_DIAGNOSIS_20261030.md)。仅8条rod train/4000帧，核dataset/逐轨迹obs-action/原审计input/source、14checkpoint/metadata及源前后hash；12个MLP02候选和已合格MLP01/ESN01同输入actor回放，无拟合/积分/test或新选模规则。teacher越棍至回位确认仅40帧=rod1%/全train0.317%；接触至越棍657帧也含关键响应，不能说整个蹭棍只训练40帧。原importance均1，后续学生偏离状态覆盖未被这些teacher历史证明。
+- MLP02该40帧MSE约3.08e-5–4.25e-5，已通过MLP01为3.69e-5、ESN01为3.57e-6；MLP通过/失败MSE接近不能靠低loss或加步数解释全部失败。teacher该窗口y requested action为0，MLP小非零泄漏为线索，不直接换算位移/力矩/唯一因果。若full12仍null，另登记teacher真实纠偏能力验证及共享实际纠偏示范/公平重训；反事实输出不冒充执行成功标签。当前只明确条件后继方向，未登记/派发新采集训练，冻结源和gate不改。
+- 唯一full12同PID1697598/1132source一致仍推进，MLP02前九候选已失败、第10在途；MLP03完整12仍待。三个ESN/三个RNN/MLP01仍七组选定，最终等待器仍等九组、零最终108派发。Goal active，无RL/删除/重复模拟器。
+- 三payload+manifest包24143bytes/SHA35cd63680cc2077f3fda6fceb7098e70996306d20b46999a26ed1b775ffe7a07逐成员/源前后/远端暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_mlp_phase_diagnosis_20261030_v1/EVIDENCE.tar.gz`。当前Git报告在归档后补充“657帧也含关键响应”的阅读澄清，receipt明确两个文档版本hash；数据/入口不变。非raw全集或测试结果，服务器仅存储/hash。
+- 九组锁定/最终三特化108/六指标/媒体仍待，旧office108的57待补保留。开工fetch/read main1a878798b5de543d8b908780613a0588f0679630、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
+## 2026-10-30 — 新增ESN01/MLP01的18条最终指标路径预检通过
+
+- 读[新增18条预检](docs/NONRL_V9_NEW18_METRIC_PREFLIGHT_20261030.md)。只读独立入口对ESN01 rank4和MLP01 rank1各九条开发回合核精确actor/filter replay、Task/三特化Strict、13采样终态保持、完整horizon/子步/机器安全，18/18通过；无积分/拟合/test读取/局部T_ref或SPT，也不重复计算旧45条。七组已选都有相应预检证据，非九组锁定或最终泛化成功。ESN01完成时刻9.36–18.04s、九条最大峰矩54.032208Nm/外穿透0.072482mm；MLP01为9.44–16.92s、51.676148Nm/0.139156mm，仅开发范围/最大值，非正式平均/胜负。人体舒适仍NA、代理分列。
+- 当前MLP02前七候选完整rod00均Task=true但持续回位失败，rank2安全通过，其余另超0.2mm外穿透；第8候选在途，MLP03完整12仍待。七失败资格hash快照保留，原完整12共同规则不放宽。唯一PID1697598继续、MemoryCurrent约1.08GB/3GiB，OOM0/swap0、1132source全一致；最终等待器PID1726066仍等九组，目标108目录未创建，零最终派发。Goal active。
+- 五payload+manifest预检包95060bytes/SHA2fa1b8035c4188e21aa36015b31b4583c9afbc5e07ae22a54f64e188c8e972eb逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_new18_metric_preflight_20261030_v1/EVIDENCE.tar.gz`。含18结果、精确execution/registration、独立入口和报告；不是新增raw全备份。服务器仅存储/hash，完整原top3 72raw归档保持。
+- 最终九组/三特化108/六指标/媒体仍待，旧office108的57待补保留，无RL/删除/重复仿真。开工fetch/read main7914d92ec97e2f25ae61f943c150c7282f286c55、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
+## 2026-10-30 — 三个ESN种子九开发全合格；完整72 raw含失败已共享
+
+- 读[完整72回合恢复映射及范围](docs/NONRL_V9_COMPLETE_TOP3_RAW_20261030.md)。完整12共同筛选ESN01 rank4 rho0.5/gain0.08/ridge0.001九train/validation全部qualified；三个ESN、三个RNN和MLP01共七组选定。独立prefix核78完整case/69祖先复用/7失败/7selected，非最终九组或测试成功。原top3的10失败全部保留；full12不重放已选组未选候选，所以两个阶段失败分母不混写。MLP02已转rank5 rod00继续，MLP03仍待，最终108等待器零派发；Goal active。
+- 原top3完整72 raw含10失败、10祖先复用实际raw：1640payload+3manifest/snapshot成员，逐成员大小/SHA/源前后核验；4249904348bytes/SHA664252fbe018b9ba7d75dffb85cf855e9edb5010d1b63648e1b9f478e6211f80已远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_top3_raw_20261030_v1/COMPLETED_PREFIX.tar.gz`。同目录新DELIVERY_EVIDENCE.tar.gz九payload+manifest，27184bytes/SHA3be1a7c2a334cc748e549ef33f70fdba285c033d59678e85a2db3d51ceffc0ad也逐成员/源前后/远端最终核验。仅原top3，非后续full12或最终108全备份，服务器仅存储/hash。
+- 新独立审查全部72条时钟/子步/5e-5及20/30/13s horizon，72/72完成不消除科学失败。rod显式registration参数；ball/corner使用与最终runner一致的独立预期时长，不声称旧schema有显式duration。前三次只读schema字段失败零物理/无结果文件，原因保留，修正入口后完整通过。
+- 归档服务自然exit0，CPU112.934秒/CPU6/Nice19/idle I/O/512MiB/swap0。唯一full12 PID1697598真实推进，MemoryCurrent932556800/3GiB、OOM0/swap0、1132source全一致；最终等待器PID1726066 active。未修改冻结actor/filter/physics/gate，无RL/删除或重复仿真。
+- 九组锁定/三特化最终108/六指标/媒体仍待，旧office108的57待补保持。开工fetch/read maincf5157fb14815a327358ab4238c4c6a0d059a6ab、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
+## 2026-10-30 — ESN教师训练包络外偏离与读出放大；三条棍推修复候选已通过
+
+- 读[新训练覆盖诊断和真实轨迹图](docs/NONRL_V9_ESN_FEATURE_COVERAGE_20261030.md)。四checkpoint各重建24train/12600帧特征包络，核数据/资格输入hash、checkpoint前后和学生精确action replay；不拟合/积分/读最终test。失败ESN01 rank1/3有392/357帧超包络，最大87.710/28.654倍本坐标训练跨度，限幅前残差峰39.758/60.021；通过rod00的ESN01rank2/ESN02rank1仅4/11帧、0.048/0.247倍、读出0.277/0.297。支持闭环分布偏离后输出放大线索，非唯一因果、共同输入排名或最终性能；最早微小包络超出不能当失稳起点。v1原入口/输出保留hash，v2补时窗/最坏特征，新PNG/PDF已目视核验。
+- 唯一full12 PID1697598真实推进：ESN01 rank4 rod00/08/09全部开发qualified，ball00在途425step/340000子步；1132登记source全一致。六组完整资格仍来自原top3，不冒称新增第七组选定。最终等待器仍等九组，零最终108派发；Goal active。
+- 已结束top3的72完整raw（含10失败）只读低优先级归档服务`sii-v9-top3-raw-archive-20261030.service` PID1735753已启动，CPU6/Nice19/idle I/O/512MiB/swap0；当前仍active、partial约3.8GB、CPU80.58s，未有LOCAL_RECEIPT，不能称归档完成/已共享。下一轮收结果、核成员再向唯一服务器目录共享，不重启打包或删除历史。
+- 九payload+manifest诊断/新图包204702bytes/SHA50fe1cb987f72f91b7ab7fb14ad553f26f8e24b3f0df621591153a20f26b1c24逐成员/源前后/远端暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_feature_coverage_20261030_v1/EVIDENCE.tar.gz`。非raw全备份或测试结果，服务器仅存储/hash。无RL/阈值修改/新并行仿真。
+- 九组锁定/最终三特化108/六指标/媒体仍待，旧office108的57待补保留。开工fetch/read main35cea2cae96a8985a3abf4cda5a6b78e585507af、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
+## 2026-10-30 — ESN/MLP同场景回位诊断；完整12候选已真实接续
+
+- 读[同条件五条ESN与五条MLP诊断](docs/NONRL_V9_MLP_ROD_REJOIN_DIAGNOSIS_20261030.md)。保存状态mj_forward、原资格/行为输入hash及teacher/学生动作精确回放，MJB/初始canonical48一致，无积分/拟合/最终测试。teacher越棍后撤回前最小横向偏差1.872mm；失败ESN seed01 rank1/3为82.732/26.529mm，残差动作饱和帧57.2%/17.4%；通过ESN seed01 rank2/seed02 rank1为1.730/2.934mm且0%饱和。前者仍ball09失败，不能列完整合格。失败MLP seed02前三8.429–9.918mm/均0%饱和。支持学生闭环偏差/选模稳定性问题，不证明唯一根因或teacher在学生失败历史必能纠偏；诊断窗口不替代原逐样本gate。
+- 原top3已自然结束：独立FINAL_REVIEW核72完整case/10失败/10复用，六组选中（2ESN/3RNN/1MLP），ESN01/MLP02/03前三耗尽。唯一完整12后继PID1697598已自动完成原phase审查、登记并真实接续ESN01 rank4 rod00；1132绑定source全部一致，不编辑。原PID1684974 inactive；最终等待器PID1726066仍等九组锁定，最终108尚未派发。全12仍null则另登记共享数据/学习修复，不降gate或给ESN单独恢复；Goal active。
+- 六payload+manifest诊断包15041bytes/SHAd02f2917b703f6250a6ef9293d56892677f11fb079ff1c140e33408fb573d5cc，逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_rejoin_diagnosis_20261030_v1/EVIDENCE.tar.gz`。仅诊断和70case前缀，不是raw全集或后续72case/full12登记备份；后续小快照另入Git。服务器仅存储/hash，无RL操作、删除或重复仿真。
+- 最终九组/三特化108/六指标/媒体未完成，旧office108的57未完成保留。开工fetch/read main58981a8eabfec30a2bc6bf9f8394b0d613a4bebc、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
+## 2026-10-30 — 六组九开发闭环合格；最终108唯一自动接续已有限等待
+
+- 读[自动接续与MLP新失败](docs/NONRL_V9_UNSEEN_AUTOMATIC_HANDOFF_20261030.md)。新增唯一有限等待器`sii-v9-unseen-handoff-20261030.service` PID1726066/Invocation207eb965fb0f445a99dcc8d64adbab19，CPU6/单线程/3GiB/swap0；当前MemoryCurrent59535360、HANDOFF waiting_for_complete_full_grid_selection，目标目录尚不存在/dispatch_attempted=false，零新物理。七份待执行source hash冻结，不得运行中编辑。完整12九模型齐全且两个选择服务inactive及独立完整审查后才register→run108→review；null终态零派发要求开发修复，基础设施失败/6h超时保留，不重复启动。review通过仍pending_delivery，不结束Goal。
+- 九类零物理决策及三协调器mock路径通过：在途/deactivating不抢跑，8项/null/failed不派发，ready严格register/run/review，worker异常停止保留不review/重试；编译/diff检查通过。真实等待器无worker/最终registration，原唯一仿真同PID1684974/Invocation推进，1115源和七待执行hash全一致，OOM0；完整12唯一后继PID1697598仍等原top3。
+- 第一组MLP seed01九条全qualified；独立prefix核67完整case/5失败/10复用/6 selected组（两个ESN、三个RNN、一个MLP）。MLP seed02 rank1 rod00虽Task=true/400000子步完整，却外穿透0.241338682mm>冻结0.2mm，10.16s越棍后未在12.84s撤回开始前持续回位，安全/行为失败完整保留。按共同规则淘汰，rank2 rod00当前400step/320000子步；不放宽门槛或凑合格。该新失败不在旧48条raw包，后续仍须归档。
+- 九成员12798bytes/SHAf38e60522101a0cd97e68a79f95295a6d3e33b0194e5d9efe726f09fd9858e20逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_unseen_handoff_20261030_v1/EVIDENCE.tar.gz`。小证据非新raw全备份；服务器仅存储/hash，无RL或删除操作。
+- 九组完整资格/最终108/六指标/媒体/完整共享仍待，旧office108的57未完成保留，Goal active。上一轮progress、本轮progress。开工fetch/read main518d8d035691fbfd08502275ce8d2b6bd6557aeb、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 五组已选模型45条最终指标路径开发预检全部通过
+
+- 读[45条真实预检与口径限制](docs/NONRL_V9_SELECTED_METRIC_PREFLIGHT_20261030.md)。新增只读选中开发case审计入口：冻结精确execution/registration快照，核共同协议/候选/checkpoint/资格输入，每格重新独立actor/filter replay并运行最终v2指标路径；错误保留逐格failed，总体任一失败不得passed。不拟合、不积分、不读最终测试，不计算局部T_ref/SPT或据时间再选模型。
+- ESN seed02/03、RNN三个seed各九条，共45/45通过原Task/三特化Strict、13样本终态保持、完整horizon、子步有限/时钟、矩/穿透及独立动作/filter回放。不是完整九组或未见泛化证明；ESN seed01和MLP仍待。新独立共同prefix审查59完整case、4失败/6复用/5 selected组；原科学失败不删除。
+- 本机预检CPU6/Nice15/单线程/3GiB/swap0、01:03:42–01:04:29自然exit0、CPU23.434s；原仿真PID1684974/Invocation未变、OOM0、1115冻结源全一致，当前MLP seed01 ball09真实150step/120000子步。完整12后继仍等待、无第二worker；没有重启/修改冻结源或触及RL。
+- 六成员35952bytes/SHA221e409a68b78baa1d9cf18fc0e2d7529de0104a0132e8713e77bb39344e0f12逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_selected_preflight_20261030_v1/EVIDENCE.tar.gz`。小指标证据不是在途raw全备份，服务器仅存储/hash；既有48完整raw归档继续保留。
+- 九组完整资格/锁定、最终三特化108、完整六指标/媒体仍待，旧office108的57未完成格保留，Goal active。上一轮progress、本轮progress。开工fetch/read mainb8dd677f52742e06e7a8dd148139c136a85fe4e8、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 48条完整开发闭环raw已共享；四组九闭环合格
+
+- 读[完整raw快照范围与恢复映射](docs/NONRL_V9_COMPLETED_PREFIX_RAW_ARCHIVE_20261030.md)。新增一致前缀归档工具：取execution单次字节快照，仅纳入已登记完整回合；核共同协议/资格输入/checkpoint，完整raw/子步/状态/动作/filter/MJB/源码/配置/审查日志含失败，不纳入在途回合。1088 payload+3快照/manifest成员逐个解包hash及源前后核验通过；无删除/拟合/积分或重启。
+- 48完整case包含4科学失败全部保留；ESN seed01 8、seed02/03各9、RNN seed01 13、seed02 9。快照execution SHA09dc37d29c406d004bfc1d6b048e8bc4f9667f88372e76c865d13db677f40a4f。另对索引48条独立v2完整时长/时钟/子步核验48/48通过；跑满不消除原4失败。后续独立prefix核49case/4失败/4复用/4 selected组，两个时间点不混写。
+- 完整包2815777483bytes/SHAf383e8d24c80b2d21e5ce9dfc116be1397e00d0c3bdffe24077adc1f7ccb22f8已远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_completed_prefix48_20261030_v1/COMPLETED_PREFIX.tar.gz`；同目录DELIVERY_EVIDENCE.tar.gz八成员22224bytes/SHAb7aac553f77a2bf36da4828e88f98c24f3ccd5ad2f648cc3a10d80f9f008b56d也逐成员/源前后/远端暂存及最终核验。仅此前缀，不冒称当前全campaign/未见矩阵全备份；训练全集另见既有完整fits包。服务器仅存储/hash。
+- 归档本机CPU6/Nice19/idle I/O/512MiB/swap0，00:52:29–00:55:09自然exit0、CPU75.010s，OOM0。原仿真同PID1684974/Invocation继续，1115冻结源全一致，ESN seed02/03及RNN seed01/02各九开发全合格；最新RNN seed03 ball08已600step/480000子步，未声明本组完成。完整12唯一后继仍等待无worker。当前九模型全资格/最终108/六指标/媒体仍待，原office108的57未完成保留，Goal active。
+- 上一轮progress、本轮progress。开工fetch/read main07e2dfcd1260356bc048f1b1fbe7dbf6c5f61cfb、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留，未触及RL。
+
+## 2026-10-30 — 三特化最终108执行/独立审查入口与零物理控制验证
+
+- 读[最终执行入口与前置条件](docs/NONRL_V9_UNSEEN_EXECUTION_ENTRY_20261030.md)。新增register/run/review入口：须完整12共同选择九组全合格、两个选择服务inactive及独立完整review后才登记。绑定原冻结12条件/九模型/teacher/全部源码/recipe配置/解释器库版本/资源/预期horizon，单路108格；科学失败保留、基础设施异常停止无重试，MJB/初始canonical48/filter逐条件配对。接入v2完整回合审查；完整review独立重算子步/终态/动作/filter，并用同一全局T_ref输出九seed/三family/按场景汇总，人体舒适NA与代理分列。不宣称已登记/派发最终测试。
+- 零物理控制通过：108唯一派发、拒绝隐式重启、第四格异常停且保留前三、配对错误拒绝、五类缺失/重复输入拒绝、107/109/在途review拒绝、共享T_ref正确。真实active选择时register拒绝且零目录/登记/物理。三条真实开发ESN棍/RNN球/MLP角500/750/325帧新独立actor/filter回放误差全0；含科学失败，不挑成功。补配置绑定前收据保留；编译/diff检查通过。
+- 新独立prefix核41完整case、4失败/4复用/3 selected组：ESN seed02/03与RNN seed01各九条全qualified；ESN seed01及其余组未完成。原同PID1684974/Invocation仍唯一仿真，最新RNN seed02 ball08真实175step/140000子步，1115源hash全部一致；MemoryCurrent971894784/3GiB、swap上限0、OOM全0。完整12唯一后继PID1697598仍等待无worker，不修改冻结运行源或重复启动。
+- 十成员14902bytes/SHAe02d08879b791a2434d97be26f269fe0f96152d2b61f222eb14d5bda2e0097c8逐成员/源前后及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_unseen_entry_20261030_v1/EVIDENCE.tar.gz`。不是在途完整raw归档，服务器仅存储/核hash；无RL操作或删除。
+- Goal active：九组完整资格、正式108执行与独立结果/媒体/完整共享仍待；原组合108的57未完成格不覆盖。上一轮progress、本轮progress。开工fetch/read main280da7e8cb6261f15c1802ab9778c07e8dc78d0a、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 两组ESN九开发闭环合格；补齐完整回合机器合规审查
+
+- 读[完整回合审查与当前限制](docs/NONRL_V9_HORIZON_AUDIT_20261030.md)。独立prefix已核32完整case、4失败/4精确复用/2 selected组；ESN seed02/03各九train/val全qualified，seed01前三耗尽null。当前RNN seed01 rank2继续rod09；不是完整九组或最终主矩阵成功。完整12候选唯一后继仍等待，禁止重复派发/编辑冻结运行源。
+- 找到v1机器合规实现缺口：wrapper complete不证明跑满horizon。新增独立v2适配器，以登记时长核完整25Hz/800子步/5e-5时钟、hash、manifest与legacy invalid_physics；可读短回合保留行并判机器/Strict失败，损坏拒绝且须保留收据。原冻结文件/门槛/条件JSON不改，最终runner尚须接入/登记新源，不宣称已正式评测。
+- 四条有效/失败路径及七类损坏拒绝通过；原18轨迹全部预定时长审查通过，故此缺口不是原18 ESN失败原因。实际RNN rod00的400000子步v2预览通过：任务13采样确认9.52s、峰矩34.526338Nm、外穿透0.0740395mm。首次只读预览缺PYTHONPATH导入失败日志保留，补scripts:tools启动环境后独立重试exit0；无新积分/拟合。
+- 原服务PID1684974/Invocation不变、CPU6/3GiB/swap上限0/OOM全0，真实step推进，1115源hash全一致；后继PID1697598无worker。未触及RL/删除文件。原office108的57未完成格保留；九组完整资格、最终执行入口与三分离未见108仍待，Goal active。
+- 八成员13630bytes/SHA8c21c84454ed187bfd0276a5770a8e7a02da73c0fda0084e11333780644e3e0d逐成员/源前后及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_horizon_20261030_v1/EVIDENCE.tar.gz`。不是在途全raw备份，服务器仅存储/核hash。开工fetch/read main2a0e269f7e21e055f372a1723d26f6cd8bd46277、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。
+
+## 2026-10-30 — 首组ESN九闭环全部合格；完整12候选公平接续已等待
+
+- 读[全候选接续与球撞真实对照](docs/NONRL_V9_FULL_GRID_ELIGIBILITY_AND_BALL_STABILITY_20261030.md)。ESN seed2026102802的rank1 rho0.8/gain0.08/ridge0.1真实九train/val闭环全部qualified；独立selected-prefix核21完整case（含3失败/1复用），确认1组选择。不是九组或正式未见测试完成。seed01前三耗尽null、seed03继续；所有失败保留。
+- 同场景六条完整回合精确actor回放/初始canonical48与MJB核验通过。ball00 RNN失败末10状态物块最大速度0.054917m/s，teacher0.000131188、MLP通过0.000417230；ball09 ESN失败0.0512587，teacher0.000093062、seed02通过0.000368333。冻结门0.02不改；各自历史的teacher反事实不是纠偏物理证明/训练标签/共同输入排名。新图读取本轮hash绑定轨迹，已目视核验，不复用历史图。
+- 新共同规则将候选资格上限由前三扩到各组原已拟合完整12，九组同规则/原验证MSE排名/原九开发身份，首合格选择、首失败停止、全12失败仍null。总上界972检查；复用原18与top3完全同checkpoint/身份/来源完整回合，不重复仿真，不增加拟合、不读取最终test或放宽gate。六路径零物理控制测试含rank1/4/12选择、全失败、972上界与登记突变拒绝通过；真实在途parent拒绝且无新execution/registration通过。
+- 唯一后继`sii-v9-full-grid-eligibility-20261030.service` PID1697598/Invocation f84e957a3d8e45b7a9f60236f33f2020已active、HANDOFF waiting_for_original_three_rank_phase，6h有限等待；**先原top3九组全部完成且inactive、完整独立审查，再登记并串行接续**。新runner与两reviewer pending源hash绑定，禁止运行中编辑或重复启动；独立协调锁不占wrapper全局锁。当前原v3仍唯一仿真，PID1684974/原Invocation，seed03 ball09、前五case已合格，MemoryCurrent1695305728/3GiB、swap上限0/OOM全0；后继仅59383808bytes且无worker。
+- 本轮10成员源码/测试/交接/完整六条小诊断/21case审查/新图证据154521bytes/SHA297fb347416923a5a3ad78150d5e1156e4ae6f9aecd9817e1b27a429d2ae26a5已逐成员及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_full_grid_stability_20261030_v1/EVIDENCE.tar.gz`。不是当前在途全raw归档；服务器无计算，未删文件或触及RL。
+- 未见三分离108条件/六指标合同及原office108的57未完成格保留，后续九模型独立锁定、正式测试/汇总/共享仍待；Goal active。开工fetch/read main813dad771bd2f9b2e820732d8e4758e601cae26c、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，无关untracked保留。
+
+
+## 2026-10-30 — 独立候选审查、六指标真实预览与未见条件前瞻冻结
+
+- 读[实际证据与新合同](docs/NONRL_V9_UNSEEN_TEST_AND_METRIC_CONTRACT_20261030.md)。独立prefix先4后9完整case核验通过，包含3失败/1复用；原首ESN seed01的前三候选耗尽、selected=null，不回退、不声称修复。第二候选三rod及ball00/08通过但ball09失败；第三候选rod00失败。当前同一服务继续ESN seed02，原1115源hash全部一致。
+- 新定位ball09失败的原Task分项：物块末10状态最大速度0.0512587m/s>冻结0.02；对应teacher0.0000931m/s。学生跟踪5.375mm/lift157.6mm/终态stage/物理接触均通过且无动作饱和，说明稳定抓取问题不能仅用饱和解释；保留原门槛与全部失败，不把开发线索当唯一根因或修复完成。
+- 新独立选模reviewer及完成时间/六指标源码；13项边界和污染/缺格/缺时间/改预算/隐失败/在途final拒绝通过。真实ESN rank2 rod00的400000子步指标预览通过：任务终态13样本确认8.92s，不混淆7.72s棍推回位；峰矩34.3391Nm/外穿透0.067847mm。明确开发预览、采样0.48s跨度而非子步保持证明；人力通道缺失则人体舒适与接触时长NA，棍球代理单列、静态角不当人手。
+- 12未见条件（三场景各4）已在任何新测试物理前冻结，9模型未来新108；条件JSON SHAc99f0f962ab44821693f9928c9f68dc4a3ff907617bcc9e55cce3ccdbfbcc24d。训练范围内新seed/组合插值，不称广泛OOD；九模型必须全部合格并完整独立审查，再冻结执行登记才可派发。原office108仍51完整/57待补为独立迁移压力，不覆盖或伪造完成；SPT共同参考不能混用。
+- 完整18 raw/成功失败/checkpoint/源码/审计405 payload、1011274236bytes/SHAd65d2be1564d79cb0d649868618ba6472df56a32f1b022f165c0be0d897a4052已逐成员、源前后及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_paired18_20261030_v1/COMPLETE_PAIRED18.tar.gz`。不删本地、不做服务器计算。
+- 本轮13成员源码/条件/指标/真实失败/审查小证据19894bytes/SHA2068b3e25902d7b73c473f0bc88244f7baccad3b9da93e587b27cb6e9c372db0逐成员及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_unseen_metric_contract_20261030_v1/EVIDENCE.tar.gz`。
+- 宿主同一`sii-v9-common-eligibility-v3-20261029.service` PID1684974/Invocation eab97f0b83e545e9956cd2cc230a6d44 active，MemoryCurrent932622336/3GiB、swap上限0、OOM计数全0；当前seed02 rod09，前两rod已qualified。归档与只读审查服务均自然完成。Goal active，未完成最终矩阵/九组修复；开工fetch/read main29db3f22da28cbe5235ef5aa3d15c86d4974ad92、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，无关untracked保留。
+
+
+## 2026-10-29 — 完整18条诊断与共同闭环资格修复已实际派发
+
+- 读[共同筛选与真实状态](docs/NONRL_V9_COMMON_CLOSED_LOOP_SELECTION_20261029.md)。18条完整开发审查：teacher全部合格，ESN5/6（rod00失败）、RNN5/6（ball00失败）、MLP6/6；不是正式测试/Strict主结果。离线误差很小仍可能闭环饱和，优先修复选模资格；不能单归因teacher或蹭棍。原组合108仍51完成/57待补，不当三分离特化主矩阵。
+- 108候选全部hash/75拟合/24train6val/原排名已核。三方法三seed各按原validation MSE前三候选、每候选相同九train/val闭环；首失败完整保留、首全合格选择，耗尽则null无回退。不读取office测试调参、无新拟合、无门槛放宽；完成还须独立审查及另冻结未见最终测评。
+- v1资源affinity拒绝、v2缺cpu.max拒绝，均零新仿真，保留不重启。新增v3显式taskset CPU6；cpu controller未委派时仍恰一核，3GiB/swap0/线程1冻结；七项guard和五核心函数AST等价通过。当前唯一实际仿真`sii-v9-common-eligibility-v3-20261029.service` PID1684974/Invocation eab97f0b83e545e9956cd2cc230a6d44；ESN seed01 rank2 rod00真实在途，原rank1失败精确复用。父v5完整inactive。后续以v3 execution为准，不重启旧服务或改绑定源。Goal active，未声称修复成功。
+- 14成员129123bytes/SHA1e2007e3759aa0914bdd1837850609b6394bcb7180d4a7bcda61a0108b990934小证据已逐成员及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_common_eligibility_20261029_v3/EVIDENCE.tar.gz`。含完整18小审查/源码/失败与LIVE快照，不含完整raw，不宣称全备份，服务器无计算。
+- 开工fetch/read main d51f149cd9424c4cb31208d9517f8d07410ac0d6、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，无关untracked保留。
+
+
+
+本轮真实后续：ESN seed01 rank2（rho0.8/gain0.08/ridge0.001）在原失败的同身份rod00已完整qualified，400000子步。相同MJB/任务/安全门：峰矩34.3391Nm，最大外穿透0.067847mm，7.72s确认持续回位，撤回开始12.80s，领先5.08s。该改善只是一条开发回合，不代表其余场景/种子或正式Strict通过；rank2已继续rod08。三份审计小收据2569bytes/SHAce169d545f8961683f501d9fdbb8d3246a77c2c8dee0ca66246126b61a655ae4已逐成员与服务器hash核共享于上述目录`RANK2_ROD00.tar.gz`。完整raw尚未归档。首科学提交ba0c4c282e45604cdb212a03eb1937a6f8b0bafa已push并核远端。
+
+## 2026-10-29 — 安全边界调整诊断优先级；同场景已复现ESN闭环失败
+
+- 读[调度修正与真实配对](docs/NONRL_V9_PRIORITY_BOUNDARY_AMENDMENT_20261029.md)。原组合office108会长期阻塞同场景修复，现用其已有STOP_REQUESTED协议让在途回合自然落盘，51/108完整、Task5/Strict0、原scope inactive，57格未完成清单/原execution hash全部保留；不把旧矩阵写complete。旧v3按其前提拒绝派发、无student execution。后续补齐原不相交格子，完整联合审计；不按旧测试挑新参数。这一显式调度修正覆盖上条“先108全部结束再18”的计划顺序。
+- 当前**唯一实际运行**为`outputs/nonrl_v9_paired_scene_priority_20261029_v5`、`sii-v9-paired-priority-v5-20261029.service`，PID1672647/Invocation32b84eb9ac2340b7ad71078d0f976db3；同一18条train00/validation08开发配对，单CPU6/单线程/3GiB/swap0。1112源hash核验、原run资源/派发/审计循环AST不变。原scope inactive、v3 failed、v4 inactive；不要重启它们。v5结束后用原`review_v9_paired_scene_closure_20261029.py --root outputs/nonrl_v9_paired_scene_priority_20261029_v5 --output .../REVIEW.json`完整审查再登记修复。
+- 新增v4曾因协调器重复持有wrapper全局flock，在首次worker创建scene之前BlockingIOError/rc1，0physics。此可避免错误源码/日志/failed收据保留。v5仅用独立协调器锁、让原wrapper独占仿真锁，启动前核v4终止及零物理证据；真实worker推进且独立全局锁获取被拒绝，修复验证通过。宿主v5 active、MemoryCurrent约1.03GB/3GiB，OOM/实验swap0。
+- 首rod00三方法完整：ESN Task/safety/contact均失败，RNN/MLP均qualified；同MJB和初始canonical48逐值相同。ESN teacher-history MSE2.56526e-6却真实5.12s起饱和、占57.2%；teacher自己回放和学生actor回放均0误差。独立teacher消费ESN历史反事实在4.84s差异>0.1、5.00s>0.5，不当物理纠偏证明或训练标签；异历史MSE不当共同输入排名。rod08 ESN已qualified，故不能一概声称ESN全场景失败。证据将重点转向闭环读出/覆盖脆弱性；完整18仍在运行，尚未完成实际ESN修复或主矩阵。
+- 38成员源码/调度/前置拒绝/真实边界/首组三方法完整收据/明确标识的live快照包276202bytes/SHA1b3fa128dc6149c0c34dc880fdfedab06df8c760463e4082da30a0075649fd72逐成员及远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_priority_boundary_20261029_v5/EVIDENCE.tar.gz`。不是完整在途18/raw归档，服务器无计算。
+- 本轮progress；开工fetch/read main e332ac40bdf4a54c1c9030110d2f9e11246dc2a8、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留，Goal active。
+
+
+## 2026-10-29 — v9训练/验证输入敏感性检查与真实推进核验
+
+- [完整检查](docs/NONRL_V9_DEVELOPMENT_SENSITIVITY_20261029.md)：六teacher train00/validation08历史、三方法九模型、54组同状态单步输入干预；±0.1N估计力下ESN最大归一化残差动作变化0.095906、RNN0.023382、MLP0.042393；±1mm位置误差分别0.023375/0.004541/0.008866。数据/模型前后hash不变、clone无扰动回放精确。无拟合/物理积分/测试读取；只支持ESN敏感性线索，不证明闭环稳定性或唯一根因，不称修复成功。
+- 本机独立低优先级CPU6/25%/单线程/512MiB/禁swap分析服务exit0（wall2.141s）。原scope七样本真实time17.04→44.04s、身份保持/OOM0/实验swap0；随后48→49/108、Task5、Strict/BOTH0、SPT NA。唯一v3后继仍等待、1103源hash一致。保持原108→18开发配对→train/val修复→另冻结未见三特化测试顺序；Goal active、主矩阵未修复。
+- 五成员源码/报告/敏感性/有限观察包15206bytes/SHA719ad24ad9b02be46eacc5532a8dfe1f46bfd09e2ebced7c565fcee70591246e，逐成员及远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_development_sensitivity_20261029_v1/EVIDENCE.tar.gz`。无在途108归档、服务器计算或RL操作。
+- 开工fetch/read main fc7fcda23251db552f44be63ae4f211f2eb88ea2、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，保留两个无关untracked。本轮progress。
+
+
+## 2026-10-29 — v9实际scope后处理入口修复与六指标手算预检
+
+- [完整记录](docs/NONRL_V9_TRANSFER_AUDIT_PREFLIGHT_20261029.md)：实际v9由scope直接启动，旧v8顶层审计要求其preparation/handoff，不能伪造套用。新增v9入口绑定实际登记/完整source/父protocol/conditions/v9数据与九模型，复用逐回合独立子步审计和条件SPT汇总。仍只算组合迁移压力，非三特化最终主矩阵。
+- 单条真实ESN1/condition000的277600保存子步兼容审计通过，原lift穿透abort保留；首次拒绝是同一venv绝对路径的`repo/../venv`字符串差异，只在新适配器中做点段归一化、不解析symlink、不改收据，不同venv拒绝通过。九项手算合成指标检查通过；在途完整审计拒绝、0/107/109数量拒绝通过，真实完整108审计尚未执行。
+- 原scope宿主active，协调器1541733/原单CPU6/3GiB/swap上限0；本轮45→47/108、Task5、Strict/BOTH0、SPT NA。唯一v3等待器PID1636845仍waiting，无student execution；1103登记源hash保持。没有重启或修改冻结运行源/门槛。Goal active、ESN控制表现和主矩阵尚未修复。
+- 本轮源码/报告/预检/单条真实审计包8404bytes/SHAcc3c4164cc4f79fb6119c7e73968338dfa8b22c3431e3210aad54f5c3d049d84逐成员与远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_metric_contract_20261029_v1/EVIDENCE.tar.gz`。无在途108归档、服务器计算或RL操作。
+- 开工fetch/read main4405d4356a130779e2ad1360ed00f80c07a82473、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两无关untracked保留。上一轮progress，本轮progress。
+
+
+## 2026-10-29 — 三特化终态时间重建完成六条teacher核验
+
+- [终态遥测审查](docs/NONRL_V9_TERMINAL_TRACE_RECONSTRUCTION_20261029.md)：新只读工具核执行source tar/当前gate源码、MJB/trajectory hash，mj_forward重建六条train00/validation08终态序列、不积分。六条末帧与原成功/放置门一致，corner几何scalar误差<5e-15m；五连续后缀边界及两损坏拒绝检查通过。原源绑定前结果保留，采用TEACHER_SIX_SOURCE_BOUND。rod持续后缀8.88/8.92s、ball13.36/13.96s、corner11.88/11.96s，均只是采样终态证据，不是正式SPT或Strict认证；保持规则/T_ref仍须正式冻结。
+- 原108本轮43→45/108、Task5、Strict/BOTH0、SPT NA；宿主scope active（MemoryCurrent1477910528/3GiB、swap上限0），唯一v3 PID1636845仍waiting_for_original108、无student execution，不重启。主矩阵未修复、Goal active；后继18审查与train/val修复、独立未见最终测试仍待。
+- 新工具/报告/六teacher序列包35916bytes/SHAd05290fd1c05029cd39e4a60386d350a87629f46c6847f7f7da6ab5e83d8ea1e逐成员/远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_terminal_trace_20261029_v1/EVIDENCE.tar.gz`。无在途108归档、服务器计算/新仿真/拟合或冻结运行源修改。
+- 开工fetch/read main a49d2709313285e0e3477cc8d780ae3a4e4dc5e9、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；重读AGENTS，两个无关untracked保留。上一轮progress，本轮progress。
+
+
+## 2026-10-29 — teacher反事实对照完成，ESN早期外推仍待修复
+
+- 新增诊断见`docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md`末节及`docs/evidence/nonrl_v9_teacher_counterfactual_20261029/`。实际teacher500帧精确重放误差0；九学生保存历史独立teacher反事实对照，无积分/拟合。三ESN在2.12s饱和时teacher残差适中，y约+0.68对ESN−1，早于棍推；但teacher在后续失稳历史也有饱和，不能当物理成功或唯一根因。禁止将测试反事实直接当训练标签。
+- 原108当前42完整/43行（含在途），宿主scope active、MemoryCurrent1857937408/3GiB、swap上限0；唯一v3 PID1636845仍仅等待，不重启。18完成后按train/val定位首次偏离，再有限对照强ridge/有界特征或修复teacher/覆盖；共享新数据与公平预算，另冻结未见测试。主矩阵未修复、Goal active。
+- 95553bytes/SHA7c01f6fbbb6189ac22636e87c23ec70edf1047eea58a7d0a414aa0823de065d6新源/图/诊断/报告已逐成员并远端暂存/最终核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_teacher_counterfactual_20261029_v1/EVIDENCE.tar.gz`。服务器仅存储。
+
+## 2026-10-29 — 当前唯一接续v3：修正球coverage入口，完整拟合已共享
+
+- 读[入口校正与指标缺口](docs/NONRL_V9_PAIRED_SCENE_PREFLIGHT_20261029.md)。发现v2待运行检查器沿用了旧scene wrapper，会漏掉v9球初始位置/搬运方向coverage；这是后继计划缺陷，不是已采数据或原108被改写。v2已在等待且无student execution时停止。v1/v2宿主均not-found/inactive，勿重启。原108与其失败保留。
+- 仅`outputs/nonrl_v9_paired_scene_closure_20261029_v3`及`sii-v9-paired-closure-handoff-v3-20261029.service`接续，PID1636845/Invocation39a747c69fe447dd83cc9d2eb2dc88dd；HANDOFF waiting_for_original108，无student execution。原108在14:32UTC快照40/108、Task3、Strict/BOTH0、SPT NA，scope active，OOM/实验swap0。仍是原108完整并scope inactive后，单CPU6/线程1/3GiB/禁swap执行18开发配对，12h等待限时；不重复派发。
+- v3使用已有coverage wrapper/qualifier，物理worker AST除采集guard/不可达validator/归档名称外必须等价；make_actor/verify_actor/main相同。正向及dt/尺度/球入口三突变拒绝通过；六teacher身份实际wrapper/scripts hash、全登记源/18case和在途拒绝通过。原物理/门槛/actor输入/filter/模型未改。新18完整审查工具已编译/CLI通过，但真实18尚未运行；开发资格不能当最终Strict，final-success不能倒推完成时间/SPT，扰动代理不冒称人体舒适。
+- 75份完整拟合作业/108候选/9模型/数据/历史/冻结源906文件已逐成员及源前后核验归档，142154554bytes/SHAe2df92415f5cad4b460c28a80fa347d91e19aec7c38e9a36f3bb4c8f74694e8b共享核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_fits_20261029_v1/COMPLETE_FITS.tar.gz`。不含在途108。
+- 本轮v3来源/登记/检查/宿主收据/完整拟合共享收据/审查源码72452bytes/SHAc7f59684d762925e3cca985c8b190d190592fd66f21803f6e01bf971354b88c0已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_paired_scene_preflight_20261029_v3/PREFLIGHT.tar.gz`。Goal active、主矩阵未修复；完成18后审查teacher/学习/场景，再仅train/val决定修复，并补齐正式完成时刻与未见冻结测试。
+
+## 2026-10-29 — 当前接续以v2为准
+
+- v1等待器因漏掉rod行为审计依赖已停止，未启动student仿真；原108不受影响。只接续`nonrl_v9_paired_scene_closure_20261029_v2`和`sii-v9-paired-closure-handoff-v2-20261029.service`，PID1632309/Invocation6b132622024c47d79fcd89d2b7f96ee0。当前等待parent complete；v2登记源hash/18case/前置拒绝验证通过。v1历史证据保留。审计顺序actor/filter→rod yield/rejoin→qualification。
+- v2源码/登记/收据64373bytes/SHA1542cccd5a5d8690ac0a224e631d3a1ab3afc18baa6f95f72168f4c35bd5dba0已核共享于上轮归档目录的`CORRECTION_V2.tar.gz`，完整地址见UPDATE_LOG。旧EVIDENCE为v1历史；当前用MANIFEST_V2。Goal active，主矩阵未修复。
+
+## 2026-10-29 — v9闭环外推定位与18条串行开发检查已接续登记
+
+- 当前读[完整诊断](docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md)新增时序段及`docs/evidence/nonrl_v9_closed_loop_support_20261029/DIAGNOSIS.json`。正确v9数据SHA12017388/12600 train；condition000九轨迹中，三个ESN均2.12s首次饱和，早于12.824s棍推；RNN/MLP无饱和。活跃特征超训练包络、raw读出放大是修复线索，非唯一因果证明。初态越界通道0/2/6不进入ESN encoder，不能误归因。actor精确回放通过。
+- 原108在22:09CST快照35完整、Task3/Strict0/BOTH0，SPT NA；原scope active，不重启。新18开发闭环（三分离场景×train00/validation08×三方法seed01）登记`outputs/nonrl_v9_paired_scene_closure_20261029_v2`，不是unseen test或正式主矩阵。`sii-v9-paired-closure-handoff-v2-20261029.service` PID1632309/Invocation6b132622024c47d79fcd89d2b7f96ee0已启动，仅等待原108 complete及原scope inactive；12h有限等待、单CPU6/线程1/3GiB/swap0。HANDOFF=waiting_for_original108、无student execution；禁止重复交接器/worker。
+- 后继18须完整审查所有失败，对照同身份合格teacher，先判同场景学习还是迁移失败；仅train/val可用于新修复/拟合，另注册未见隔离test。未改冻结门槛、actor输入/filter/物理/执行器或九模型。Goal active，主矩阵未修复。
+- 本轮四源码/诊断/图/18登记/前置拒绝/交接收据包395531bytes、SHA0f8c34c5a8030048f275e55eff1280f04078a24b80fd66e279953ad765607df9已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_closed_loop_support_20261029_v1/EVIDENCE.tar.gz`；不含完整v9拟合或在途108。开工最新main b176715876980557aeb266e79361a7ff72225b08、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，两日志已fetch/read；baseline是接触指标探索，不是RL进展。
+
+## 2026-10-29 — v9组合回归继续推进至31/108；宿主scope active，诊断显示迁移/数据覆盖风险
+
+- 当前读[teacher、拟合与矩阵范围审查](docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md)及[数据/训练交接](docs/NONRL_V9_DATA_AND_TRAINING_20261029.md)。v9正式teacher数据30/30 qualified；棍推10/10均在撤回前让位、越过并持续回位，领先1.80–5.19s。75作业/108候选完成，锁定9模型。完整拟合、actor回放通过；ESN ridge方程相对残差5.36e-15–6.12e-15。
+- 逐帧训练权重并非等场景：rod 4000帧、ball 6000、corner 2600；ESN slowdown输出裁剪占21.4%–25.3%。这些是后续闭环分析线索，不单独证明teacher或算法错误。
+- 重要范围问题：原12条acceptance条件每条同时有ball/person/rod扰动；训练示范为三个分离特化场景。原12条件应作为组合扰动迁移压力测试，不单独当作特化场景主矩阵。v9的6条validation已经用于选模，不能充当未见最终test；必须另注册场景隔离测试后再声称主矩阵已修复。
+- 回归目录`outputs/special_scene_frozen108_20261029_v9`现有31/108个完整结果：Task 2/31、Strict 0/31、双成功0，故SPT=NA；两条Task成功均因穿透超过0.2mm而Strict失败。ESN 0/11 Task且各seed全部已完成回合最大穿透2.810–3.611mm；RNN 1/10 Task；MLP 1/10 Task。第32条RNN seed2026102802/condition_003在途。原scope `run-raa08b13eb33f4583ab899210958345fa.scope` active，MemoryCurrent约1.80GB/MemoryMax3GiB、MemorySwapMax=0、CPUQuota=100%；继续只读监视，不重复启动或移动轨迹。
+- 普通sandbox曾因PID与user bus隔离误报无worker，宿主级systemd查询已纠正。主机swap 2GiB/2GiB已用尽，但活跃scope有独立MemorySwapMax=0约束。普通sandbox的GitHub连接失败，宿主级fetch成功；已核验main=`69d656d67e60b66107f506400af0d36bc195b4d1`和baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及其UPDATE_LOG。
+- 当前证据未发现teacher棍推顺序、训练样本action重放、ESN ridge求解或checkpoint导出错误；但不能据此说闭环学习已充分。组合条件同时启用球/人/棍扰动，与三个分离特化场景训练不匹配；逐帧loss亦以ball占47.6%、corner占20.6%。原12组只可称迁移压力回归。v9 6条validation已选模，不能作未见测试。未修改冻结物理、gate、actor输入、filter、执行器限制或dt；主矩阵尚未修复。
+- 原v2恢复覆盖审计器拒绝正式v3 collection plan；这是审计器schema不兼容，保留拒绝记录，不回写计划。teacher qualification、训练帧teacher action精确回放和拟合审计独立通过。
+- sandbox内远端访问曾失败；宿主级fetch随后成功，核对main `69d656d67e60b66107f506400af0d36bc195b4d1`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支UPDATE_LOG。Goal active；主矩阵仍未修复。服务器不用于计算；本轮新审计/结果当前仅本地，完成后另建唯一共享归档并核hash。
+
+## 2026-10-29 — 非RL v9完整30合格、真实方向覆盖已补、公平训练运行
+
+- 当前读[数据与训练交接](docs/NONRL_V9_DATA_AND_TRAINING_20261029.md)。原补采30/30全qualified、12600000子步；10棍推均撤回前1.80–5.19秒回位，20棍角8250帧状态/观测/动作与v8逐数组一致。数据24train/6val、12600/3150帧，SHA12017388；训练Y−/Y+主导帧1343/1096（原无），其中估计载荷量>0.1为205/224，描述性覆盖改善不是闭环成功。
+- 原补采与数据交接均exit0，不重启。新数据交接源码`prepare_direction_dataset_handoff_20261029.py`绑定原PID/start/Invocation/boot、全30资格后才建数据，2正常/12拒绝及真实交接通过。当前唯一训练`sii-special-direction-fit-v9-20261029.service`，08:57:38UTC启动，PID1469962/Invocation f22ab353765e49d3a0ddaf7a53ba8e32；14/75作业已完成快照，单CPU6/线程1/3GiB/禁swap。核现有execution/progress后继续，禁止重复拟合或改冻结来源。
+- 完整30包2786887680bytes/SHA9a2f86e1及数据/新源14成员包6978157bytes/SHA5c522149已逐成员、源前后、暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_direction_collection30_20261029_v9/`下`FULL_COLLECTION.tar`和`data/SHARED_DATA_AND_REVIEW.tar.gz`。不含在途拟合输出。
+- 三方法仍各3seed/12候选，神经32000更新；全部75作业/108候选完成后再审计选模/曝光/冻结actor重放、九模型原12条件108回归。Goal active，主矩阵仍未修复，无新学生成功结论；原12已检查，只能称回归。无RL/子agent/服务器计算或门槛放宽。
+
 ## 2026-10-29 — 非RL完整108失败审查、八球完成、v9方向补采运行
 
 - 当前读[修复交接](docs/NONRL_DIRECTION_REPAIR_V9_20261029.md)和[完整108结果](docs/NONRL_V8_FULL108_RESULTS_20261029.md)。原v8完整108：Task1/108、Strict0/108、BOTH0/108，SPT NA；109748000已保存子步算术/证据审计通过，不是动力学重新积分。主矩阵未修复，Goal active。

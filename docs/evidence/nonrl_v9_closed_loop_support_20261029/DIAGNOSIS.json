@@ -1,0 +1,639 @@
+{
+  "schema": "sii-v9-saved-closed-loop-support-v1",
+  "created_utc": "2026-10-29T14:05:22.753483+00:00",
+  "status": "diagnostic_only_no_refit_no_physics_no_model_selection",
+  "execution_snapshot_completed": 34,
+  "execution_snapshot_sha256": "27fba27cca032889c26204847fd771980310a58ab0c77dcf6615bb09c9329ec9",
+  "dataset_sha256": "120173888964ee0545393cd0d2685c794f7aa261626463fa7c10fc981b9c6407",
+  "training_frames": 12600,
+  "actor_source_sha256": "5b03256b390ba2a119122852651d325f6a5e30d86098ce19c06cd95020408c3a",
+  "diagnostic_source_sha256": "96be75e7ec4f464d4f190b20b231a318627a91674d9207720fa5cd40d15bfe0a",
+  "esn_encoder_used_raw_channels": [
+    14,
+    15,
+    16,
+    20,
+    21,
+    22,
+    26,
+    27,
+    28,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "caveats": [
+    "Envelope exceedance is not a multivariate support or causal certificate.",
+    "Teacher labels are unavailable on student states; error here is task tracking error, not imitation loss.",
+    "Only completed condition 000 is inspected; no final method ranking.",
+    "Initial out-of-range joints 0/2/6 do not directly enter this ESN."
+  ],
+  "train_envelopes": {
+    "special_esn_ridge_s2026102801": {
+      "active_features": 540,
+      "train_raw_action_range_per_channel": [
+        [
+          -0.009366037273006325,
+          -0.9137115632905426,
+          -0.32728038899919204,
+          -0.12815295240442517,
+          -0.2559902160113047,
+          -0.27404629066481445,
+          -0.05836315956435051
+        ],
+        [
+          0.42364370264810236,
+          0.8313278273077682,
+          0.6290333340736287,
+          0.47663458924115615,
+          0.24556119169098756,
+          0.7284556263105716,
+          0.34333884366306733
+        ]
+      ]
+    },
+    "special_esn_ridge_s2026102802": {
+      "active_features": 540,
+      "train_raw_action_range_per_channel": [
+        [
+          -0.007945211603330933,
+          -0.9154761789377469,
+          -0.3276414726069703,
+          -0.13618615721673832,
+          -0.2551737814355796,
+          -0.26527561509869585,
+          -0.05868092610168738
+        ],
+        [
+          0.42863067115835685,
+          0.8315487850696476,
+          0.6303501499989962,
+          0.47717424011013365,
+          0.24625556562753909,
+          0.7312493341514879,
+          0.3411229922285741
+        ]
+      ]
+    },
+    "special_esn_ridge_s2026102803": {
+      "active_features": 540,
+      "train_raw_action_range_per_channel": [
+        [
+          -0.005065306464281024,
+          -0.9055500832890373,
+          -0.3272562467824591,
+          -0.12184462184322953,
+          -0.2552587922178096,
+          -0.28003014038359786,
+          -0.057810216941150995
+        ],
+        [
+          0.42434060776731297,
+          0.828442941105398,
+          0.628684390056181,
+          0.4732427918619677,
+          0.2476111382688299,
+          0.7351762335853709,
+          0.34059139604527433
+        ]
+      ]
+    }
+  },
+  "rows": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "f0456f39934d432c1d724c23bc80b0612922e04cd884adf8130302679760af84",
+      "task": false,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.6484149855907781,
+      "first_applied_saturation_s": 2.1200000000017285,
+      "applied_saturation_fraction": 0.41210374639769454,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 3.710536503777331e-05,
+          "max_position_error_mm": 3.777556209603315e-05
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.4000000000000001,
+          "position_error_rmse_mm": 43.1537462170766,
+          "max_position_error_mm": 72.10000077863639
+        },
+        {
+          "stage": 2,
+          "start_s": 1.6000000000011643,
+          "duration_sampled_s": 0.32,
+          "position_error_rmse_mm": 5.902939417698043,
+          "max_position_error_mm": 6.834301403688427
+        },
+        {
+          "stage": 3,
+          "start_s": 1.9200000000018396,
+          "duration_sampled_s": 12.0,
+          "position_error_rmse_mm": 119.94282144905917,
+          "max_position_error_mm": 242.60112813291326
+        }
+      ],
+      "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510",
+      "actor_replay_max_abs": 5.9396931817445875e-15,
+      "first_raw_residual_saturation_s": 2.1200000000017285,
+      "first_active_feature_envelope_excess_1std_s": 1.480000000000911,
+      "first_active_feature_envelope_excess_5std_s": 2.1200000000017285,
+      "initial_active_feature_excess_std": 0.0,
+      "max_active_feature_excess_std": 997.6652840913805,
+      "raw_residual_max_abs": 52.90360872468176,
+      "raw_slowdown_range": [
+        -12.634690820012347,
+        11.634024774564228
+      ]
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "165136ec85ade844a3f91d4cc399fd20fd70ecd401f8428739b9611bdbfe3292",
+      "task": false,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.09527272727272727,
+      "first_applied_saturation_s": null,
+      "applied_saturation_fraction": 0.0,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 0.09638463518608074,
+          "max_position_error_mm": 0.13356588504282169
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.52,
+          "position_error_rmse_mm": 42.65036002655786,
+          "max_position_error_mm": 72.29407491816941
+        },
+        {
+          "stage": 2,
+          "start_s": 1.7200000000014175,
+          "duration_sampled_s": 0.32,
+          "position_error_rmse_mm": 8.434218324870303,
+          "max_position_error_mm": 9.302445221271006
+        },
+        {
+          "stage": 3,
+          "start_s": 2.040000000001915,
+          "duration_sampled_s": 10.16,
+          "position_error_rmse_mm": 90.10208153626294,
+          "max_position_error_mm": 129.5978320251818
+        },
+        {
+          "stage": 4,
+          "start_s": 12.199999999978237,
+          "duration_sampled_s": 42.84,
+          "position_error_rmse_mm": 15.950425821364126,
+          "max_position_error_mm": 22.450763147507256
+        }
+      ]
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "f0f5f3713821804046793520ac192167ce105fbf23e86fbae050ad75cc2114d0",
+      "task": false,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.072,
+      "first_applied_saturation_s": null,
+      "applied_saturation_fraction": 0.0,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 0.018418156363768798,
+          "max_position_error_mm": 0.030562427760220404
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.48,
+          "position_error_rmse_mm": 42.2626332914609,
+          "max_position_error_mm": 72.12385770182901
+        },
+        {
+          "stage": 2,
+          "start_s": 1.680000000001333,
+          "duration_sampled_s": 0.32,
+          "position_error_rmse_mm": 2.7153709924626788,
+          "max_position_error_mm": 3.299203686470958
+        },
+        {
+          "stage": 3,
+          "start_s": 2.000000000002008,
+          "duration_sampled_s": 9.68,
+          "position_error_rmse_mm": 53.69620832475759,
+          "max_position_error_mm": 135.1868923467925
+        },
+        {
+          "stage": 4,
+          "start_s": 11.679999999979449,
+          "duration_sampled_s": 43.36,
+          "position_error_rmse_mm": 16.109051643334467,
+          "max_position_error_mm": 21.531839372589747
+        }
+      ]
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "dd84b63f9691d72be204b73e897c442c5dfd43654b2de8b3f9dd6785a45f489a",
+      "task": false,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.43272727272727274,
+      "first_applied_saturation_s": 2.1200000000017285,
+      "applied_saturation_fraction": 0.38327272727272726,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 3.710536503777331e-05,
+          "max_position_error_mm": 3.777556209603315e-05
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.4000000000000001,
+          "position_error_rmse_mm": 43.15290085644775,
+          "max_position_error_mm": 72.10000077863639
+        },
+        {
+          "stage": 2,
+          "start_s": 1.6000000000011643,
+          "duration_sampled_s": 0.32,
+          "position_error_rmse_mm": 5.922136239316954,
+          "max_position_error_mm": 6.685614885530985
+        },
+        {
+          "stage": 3,
+          "start_s": 1.9200000000018396,
+          "duration_sampled_s": 28.240000000000002,
+          "position_error_rmse_mm": 307.70305215473894,
+          "max_position_error_mm": 703.5858689368636
+        },
+        {
+          "stage": 4,
+          "start_s": 30.160000000439442,
+          "duration_sampled_s": 24.88,
+          "position_error_rmse_mm": 18.14263685309272,
+          "max_position_error_mm": 30.45176522685158
+        }
+      ],
+      "checkpoint_sha256": "94dfd9a70e67ee3a6a40a45f4fcf54c5b40baf434fd4ee6d71701a203f07f438",
+      "actor_replay_max_abs": 4.235500838944972e-14,
+      "first_raw_residual_saturation_s": 2.1200000000017285,
+      "first_active_feature_envelope_excess_1std_s": 2.1200000000017285,
+      "first_active_feature_envelope_excess_5std_s": 2.1200000000017285,
+      "initial_active_feature_excess_std": 0.0,
+      "max_active_feature_excess_std": 8266.790408744031,
+      "raw_residual_max_abs": 221.48037665774342,
+      "raw_slowdown_range": [
+        -37.33934676909642,
+        190.14042269181795
+      ]
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "6132c3f1cf7e8064c918f6aaa1b9b5acb6a009375d19c219c5571815b48f552a",
+      "task": false,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.030545454545454546,
+      "first_applied_saturation_s": null,
+      "applied_saturation_fraction": 0.0,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 0.04601642516068909,
+          "max_position_error_mm": 0.07670846877982332
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.8,
+          "position_error_rmse_mm": 40.97897175966885,
+          "max_position_error_mm": 72.17190248856873
+        },
+        {
+          "stage": 2,
+          "start_s": 2.000000000002008,
+          "duration_sampled_s": 0.4,
+          "position_error_rmse_mm": 7.216312386413385,
+          "max_position_error_mm": 8.594132717649318
+        },
+        {
+          "stage": 3,
+          "start_s": 2.400000000001076,
+          "duration_sampled_s": 8.2,
+          "position_error_rmse_mm": 68.08385403976492,
+          "max_position_error_mm": 135.01818840827792
+        },
+        {
+          "stage": 4,
+          "start_s": 10.599999999981966,
+          "duration_sampled_s": 44.44,
+          "position_error_rmse_mm": 18.122547756288444,
+          "max_position_error_mm": 25.31931539164982
+        }
+      ]
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "d32f4814538558e81bdb3cc4834cb9f2a04e67397b48c830128b717caa736656",
+      "task": false,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.06109090909090909,
+      "first_applied_saturation_s": null,
+      "applied_saturation_fraction": 0.0,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 0.044893750630180425,
+          "max_position_error_mm": 0.07492519751606704
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.36,
+          "position_error_rmse_mm": 43.36259484606291,
+          "max_position_error_mm": 72.16452314584006
+        },
+        {
+          "stage": 2,
+          "start_s": 1.5600000000010799,
+          "duration_sampled_s": 0.32,
+          "position_error_rmse_mm": 6.263745912385535,
+          "max_position_error_mm": 6.71900505743301
+        },
+        {
+          "stage": 3,
+          "start_s": 1.8800000000017552,
+          "duration_sampled_s": 10.92,
+          "position_error_rmse_mm": 78.93055932411055,
+          "max_position_error_mm": 131.03784923436132
+        },
+        {
+          "stage": 4,
+          "start_s": 12.799999999976839,
+          "duration_sampled_s": 42.24,
+          "position_error_rmse_mm": 17.226527542150947,
+          "max_position_error_mm": 23.43199101859495
+        }
+      ]
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "fcb1953fd8e0919613f1c82aaaabc17f61c61cc0d6f028975f2bb2e851a246ad",
+      "task": false,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.45132743362831856,
+      "first_applied_saturation_s": 2.1200000000017285,
+      "applied_saturation_fraction": 0.4336283185840708,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 3.710536503777331e-05,
+          "max_position_error_mm": 3.777556209603315e-05
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.4000000000000001,
+          "position_error_rmse_mm": 43.14999707393266,
+          "max_position_error_mm": 72.10000077863639
+        },
+        {
+          "stage": 2,
+          "start_s": 1.6000000000011643,
+          "duration_sampled_s": 0.32,
+          "position_error_rmse_mm": 4.9847803833458535,
+          "max_position_error_mm": 5.957306638025468
+        },
+        {
+          "stage": 3,
+          "start_s": 1.9200000000018396,
+          "duration_sampled_s": 2.64,
+          "position_error_rmse_mm": 120.93273798867034,
+          "max_position_error_mm": 155.39091414927265
+        }
+      ],
+      "checkpoint_sha256": "a7a4eba3aa23a90024d8962b5bad6704fc0c4aeab4d7527ba4b24c16c9b6db9d",
+      "actor_replay_max_abs": 4.9960036108132044e-15,
+      "first_raw_residual_saturation_s": 2.1200000000017285,
+      "first_active_feature_envelope_excess_1std_s": 1.480000000000911,
+      "first_active_feature_envelope_excess_5std_s": 2.1200000000017285,
+      "initial_active_feature_excess_std": 0.0,
+      "max_active_feature_excess_std": 645.2569377047167,
+      "raw_residual_max_abs": 26.746010590128094,
+      "raw_slowdown_range": [
+        -6.453536863373919,
+        5.4901074999323445
+      ]
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "16b147fe5480a276f62ffef03c4a4d38c60b93ec60a75698a578743320858404",
+      "task": false,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.10981818181818181,
+      "first_applied_saturation_s": null,
+      "applied_saturation_fraction": 0.0,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 0.28695459888233826,
+          "max_position_error_mm": 0.42013210194832856
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.56,
+          "position_error_rmse_mm": 45.17211191511599,
+          "max_position_error_mm": 72.98287718548328
+        },
+        {
+          "stage": 2,
+          "start_s": 1.760000000001502,
+          "duration_sampled_s": 0.96,
+          "position_error_rmse_mm": 7.58709179351569,
+          "max_position_error_mm": 10.873736147493462
+        },
+        {
+          "stage": 3,
+          "start_s": 2.72000000000033,
+          "duration_sampled_s": 9.28,
+          "position_error_rmse_mm": 87.03937417417235,
+          "max_position_error_mm": 133.61923271802016
+        },
+        {
+          "stage": 4,
+          "start_s": 11.999999999978703,
+          "duration_sampled_s": 43.04,
+          "position_error_rmse_mm": 16.562330546197384,
+          "max_position_error_mm": 25.40814178001448
+        }
+      ]
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trace_sha256": "d6066fb182e8bc11580ff53e7dd44cd2cad071f17651c609c51e1eaa0f353ef3",
+      "task": true,
+      "strict": false,
+      "initial_raw_outside_channels": [
+        0,
+        2,
+        6
+      ],
+      "raw_envelope_outside_fraction": 1.0,
+      "esn_encoder_input_envelope_outside_fraction": 0.09818181818181818,
+      "first_applied_saturation_s": null,
+      "applied_saturation_fraction": 0.0,
+      "first_tracking_error_gt_50mm_s": 0.19999999999998613,
+      "stages": [
+        {
+          "stage": 0,
+          "start_s": 0.04000000000000063,
+          "duration_sampled_s": 0.16,
+          "position_error_rmse_mm": 0.028599775355971732,
+          "max_position_error_mm": 0.04737131282582575
+        },
+        {
+          "stage": 1,
+          "start_s": 0.19999999999998613,
+          "duration_sampled_s": 1.56,
+          "position_error_rmse_mm": 40.9754494005538,
+          "max_position_error_mm": 72.15759440837147
+        },
+        {
+          "stage": 2,
+          "start_s": 1.760000000001502,
+          "duration_sampled_s": 0.32,
+          "position_error_rmse_mm": 3.4511898059190167,
+          "max_position_error_mm": 3.562378906698197
+        },
+        {
+          "stage": 3,
+          "start_s": 2.0800000000018217,
+          "duration_sampled_s": 10.6,
+          "position_error_rmse_mm": 72.59117116525907,
+          "max_position_error_mm": 134.7349092171407
+        },
+        {
+          "stage": 4,
+          "start_s": 12.679999999977118,
+          "duration_sampled_s": 37.24,
+          "position_error_rmse_mm": 18.1830011285821,
+          "max_position_error_mm": 28.196337838112903
+        },
+        {
+          "stage": 5,
+          "start_s": 49.9200000010954,
+          "duration_sampled_s": 1.36,
+          "position_error_rmse_mm": 12.01654987500863,
+          "max_position_error_mm": 18.945711207136885
+        },
+        {
+          "stage": 6,
+          "start_s": 51.28000000114055,
+          "duration_sampled_s": 0.52,
+          "position_error_rmse_mm": 9.118755361248345,
+          "max_position_error_mm": 9.873468412282936
+        },
+        {
+          "stage": 7,
+          "start_s": 51.80000000115781,
+          "duration_sampled_s": 3.24,
+          "position_error_rmse_mm": 7.597952550537582,
+          "max_position_error_mm": 18.992213708339314
+        }
+      ]
+    }
+  ]
+}

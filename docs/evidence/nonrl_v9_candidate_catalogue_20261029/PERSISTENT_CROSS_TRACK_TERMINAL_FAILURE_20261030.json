@@ -1,0 +1,25 @@
+{
+  "status": "terminal_failed_preserved_no_retry",
+  "execution_sha256": "9ee46b9c85757b9cd4920d819c6cd570926bdaaa46f172d4734cd065bb39122a",
+  "registration_sha256": "56a832404587347a95819bc2e7cb1c8c862bb80b5903a204fd0bc0b5ad67f772",
+  "independently_qualified_prefix_cases": 2,
+  "ineligible_corner": {
+    "completed_steps": 325,
+    "attempted_actions": 325,
+    "source_stable": false,
+    "labels_eligible_for_training": false
+  },
+  "worker_source_mismatches": [
+    {
+      "path": "tools/diagnose_cross_track_zero_direction_20261030.py",
+      "registered_sha256": "2dda87f6c2a1b396ca3471e1dd9c2bab40187028dc642d2b427f13fee59f6366",
+      "current_sha256": "7a6a3acd07617843260378369eb903a1ceb4dc05958f668ed85ec4ad7310b689"
+    }
+  ],
+  "campaign_registered_source_mismatches": [],
+  "cause": "Agent corrected a diagnostic file after campaign launch, but that new file had already entered the per-episode source inventory. No controller/physics source changed; broad worker provenance guard correctly invalidated the completed corner. Preserve failure; no labels or rerun of v2.",
+  "unexecuted": [
+    "rod_prefix175",
+    "rod_prefix275"
+  ]
+}

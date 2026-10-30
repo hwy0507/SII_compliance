@@ -1,0 +1,1029 @@
+{
+  "checked_utc": "2026-10-29T22:25:33.515981+00:00",
+  "scope": "Fixed first9 completed rod00 training-condition development episodes. Hash checks of stored actor/filter audits, qualification and recorded horizon; no new integration, refit/reselection or unseen access.",
+  "registration_sha256": "aab3174c075ca8f7a34b5ec9ed3232c7f78faceae8cb80560964eb16e1440c01",
+  "rows": [
+    {
+      "id": "rod_00__special_esn_ridge_s2026102801",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102801",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 8.839999999986068,
+        "peak_torque_nm": 35.12690382727544,
+        "peak_joint_torque_nm": [
+          1.2919161612606562,
+          35.12690382727544,
+          1.3051603624053398,
+          27.597614992167994,
+          1.5726302370028584,
+          3.2905101427674937,
+          0.8030133099148341
+        ],
+        "peak_joint_velocity_radps": [
+          0.0473575978351865,
+          0.19335970029815458,
+          0.052710098706551134,
+          0.3497086311359146,
+          0.09178579329583281,
+          0.30516781891229444,
+          0.17756451022716274
+        ],
+        "max_external_penetration_m": 7.084573156364147e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.027350000000000006,
+        "proxy_below_threshold_s": 0.027350000000000006,
+        "qualification_sha256": "684a547f7ce53478629c565115a59f2a809f55ef00c46f149e1dde08129e8c04",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "e3f05656df656f0902d2641a800db4fba931535998987d78aebe5725d400c4fc",
+          "legacy.json": "e3d18691cccb201c3b088213934dcba0df5eb49cda50fe07658829012b7f7501",
+          "execution.json": "5460bbe07d7d3bac39183990f8fbe683bbd4776381cba575bd5f9ad5733a2096",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "787ec5580081888b81cad489877ae8897aa05a829d3cee438d8d948b27557ebe"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "5460bbe07d7d3bac39183990f8fbe683bbd4776381cba575bd5f9ad5733a2096",
+            "trajectory.npz": "e3f05656df656f0902d2641a800db4fba931535998987d78aebe5725d400c4fc",
+            "substeps.npz": "ba10183523fb2eae4a5d1f1c933047641e16be4720de1b6def3007eaa389370d",
+            "legacy.json": "e3d18691cccb201c3b088213934dcba0df5eb49cda50fe07658829012b7f7501"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.7309499999956435,
+        "yield_excursion_m": 0.01465196603948038,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.199999999989889,
+        "rejoin_start_s": 7.199999999989889,
+        "rejoin_confirmed_s": 7.279999999989703,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "e3f05656df656f0902d2641a800db4fba931535998987d78aebe5725d400c4fc",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "e3d18691cccb201c3b088213934dcba0df5eb49cda50fe07658829012b7f7501",
+          "recipe.json": "5f6206f3a71c804f08358b106263fd0b8c42f5d799e8c68818d8735eed803429",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "c58992f525b79d5906e8907e7ed78596c938c43b5e612677b8d0684cdaa98145",
+      "qualification_sha256": "684a547f7ce53478629c565115a59f2a809f55ef00c46f149e1dde08129e8c04",
+      "actor_filter_audit_sha256": "45343a8f575acf42b83cfb59f5fb0246dfd3e19abdcf2dc1fc52d598dba78416"
+    },
+    {
+      "id": "rod_00__special_rnn_scratch_s2026102801",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102801",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 8.759999999986254,
+        "peak_torque_nm": 35.35499936512036,
+        "peak_joint_torque_nm": [
+          1.1132858017873735,
+          35.35499936512036,
+          1.1105133915925067,
+          27.915111082416157,
+          1.5581031917056403,
+          3.2927777505632836,
+          0.8168766564394204
+        ],
+        "peak_joint_velocity_radps": [
+          0.046859380747984826,
+          0.1813443065657595,
+          0.05168312575960216,
+          0.348422434457237,
+          0.09350873792019786,
+          0.29062322013143194,
+          0.15861259808680545
+        ],
+        "max_external_penetration_m": 6.785650954416291e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.02745000000000001,
+        "proxy_below_threshold_s": 0.02745000000000001,
+        "qualification_sha256": "0f5c9fb5d27ee93ff5d6d0b6ab50968d665b34b418d65b8f1416be69223622e8",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "e622139885e3fd1c73786080bff4bb662b7d5b5ed7da7fd2e073f3b7af59de51",
+          "legacy.json": "8b69367cd8fbdf13095302866fba162e36b3036da8ac86a7c906d1aaca95cb20",
+          "execution.json": "d6cb944f624914b43908ec230fe6b738dbd8918f87a1d70457dc9dc660851e47",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "76886ceaa02cc805759e47753a8ad5f56e276b154dfcb50a567e0ddf8c631955"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "d6cb944f624914b43908ec230fe6b738dbd8918f87a1d70457dc9dc660851e47",
+            "trajectory.npz": "e622139885e3fd1c73786080bff4bb662b7d5b5ed7da7fd2e073f3b7af59de51",
+            "substeps.npz": "4cbf4c678acd8f1968937cbbec807f69cd33498e6464c009f6c6d39b089dfafb",
+            "legacy.json": "8b69367cd8fbdf13095302866fba162e36b3036da8ac86a7c906d1aaca95cb20"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.730599999995644,
+        "yield_excursion_m": 0.014726639663645258,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.159999999989982,
+        "rejoin_start_s": 7.159999999989982,
+        "rejoin_confirmed_s": 7.239999999989796,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "e622139885e3fd1c73786080bff4bb662b7d5b5ed7da7fd2e073f3b7af59de51",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "8b69367cd8fbdf13095302866fba162e36b3036da8ac86a7c906d1aaca95cb20",
+          "recipe.json": "2d78e0f2dc00f81fa491df34fa1d697566c9d513c91a2ef88da58d89ced09713",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "613e22611a75c8bc1ff28b6b61850b2b014e1607497c0351607a6e8a89baae8c",
+      "qualification_sha256": "0f5c9fb5d27ee93ff5d6d0b6ab50968d665b34b418d65b8f1416be69223622e8",
+      "actor_filter_audit_sha256": "17e11474e94cfbfdc9be455689114fb7b80eaa02ae8622363ecc6d155d8d6410"
+    },
+    {
+      "id": "rod_00__special_mlp_scratch_s2026102801",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102801",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": false,
+        "completion_time_s": 15.919999999969567,
+        "peak_torque_nm": 39.104987999393906,
+        "peak_joint_torque_nm": [
+          1.2449275558544532,
+          39.104987999393906,
+          1.1780830447638058,
+          27.12558119244865,
+          1.4911238914788316,
+          3.4391846701430278,
+          0.6568746621071885
+        ],
+        "peak_joint_velocity_radps": [
+          0.026185986203326326,
+          0.26096360026867654,
+          0.02897787868719437,
+          0.5665146835935374,
+          0.06525083044256598,
+          0.381345920791673,
+          0.11020347612225019
+        ],
+        "max_external_penetration_m": 3.777127933169348e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.023950000000000006,
+        "proxy_below_threshold_s": 0.023950000000000006,
+        "qualification_sha256": "bb37e3245ca8ac9aa317e88f63a28faf4a320557aa2b61a2bb9b596fb29157da",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "7cf0471bddf6303a96996ae4d3b133163700c4965b00456c606aba24a36813fe",
+          "legacy.json": "45e783afbe8df6a83bb31955fd548843524f0c3876f90313e34c81157b10741b",
+          "execution.json": "da0d994149aca3a0279b9c187b305411bc2e84799db211901ce322a4f5a98c55",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "9f9fe3b2e9d442b28f5572ecff722e16a42e8a27f0641b754c0995d342cd474e"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "da0d994149aca3a0279b9c187b305411bc2e84799db211901ce322a4f5a98c55",
+            "trajectory.npz": "7cf0471bddf6303a96996ae4d3b133163700c4965b00456c606aba24a36813fe",
+            "substeps.npz": "fd6c897ab89fbd413f1f87999ba9bba0f5c919582aeb8766e2da3d1415067871",
+            "legacy.json": "45e783afbe8df6a83bb31955fd548843524f0c3876f90313e34c81157b10741b"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "failed_preserved",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": false,
+          "persistent_rejoin_before_withdrawal": false,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.766349999995561,
+        "yield_excursion_m": 0.00994030667507301,
+        "yield_start_s": 4.879999999995296,
+        "pass_s": null,
+        "rejoin_start_s": null,
+        "rejoin_confirmed_s": null,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "7cf0471bddf6303a96996ae4d3b133163700c4965b00456c606aba24a36813fe",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "45e783afbe8df6a83bb31955fd548843524f0c3876f90313e34c81157b10741b",
+          "recipe.json": "bf07ac5f26110c0c08abefa7abee66ed9791ac162cc44198f33840fc98e346f8",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "08de438897c821f01a17dd98e2b4a2c2968f7884af0b086a47160d380e2fa5d3",
+      "qualification_sha256": "bb37e3245ca8ac9aa317e88f63a28faf4a320557aa2b61a2bb9b596fb29157da",
+      "actor_filter_audit_sha256": "9a06a48b0164766cc28051a805bf72336b89fe79df551e21dbf07f2fb517968f"
+    },
+    {
+      "id": "rod_00__special_esn_ridge_s2026102802",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 8.719999999986348,
+        "peak_torque_nm": 34.49716224800349,
+        "peak_joint_torque_nm": [
+          1.584310736267729,
+          34.49716224800349,
+          1.5492854822502002,
+          27.48517120158163,
+          1.553217695101094,
+          3.3398015812590005,
+          0.7729518199234688
+        ],
+        "peak_joint_velocity_radps": [
+          0.0514492866960792,
+          0.18455577337618728,
+          0.05661840508646123,
+          0.3416097571103417,
+          0.10172825987994773,
+          0.30611239477956487,
+          0.19210375944765815
+        ],
+        "max_external_penetration_m": 7.320584996550794e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.026550000000000008,
+        "proxy_below_threshold_s": 0.026550000000000008,
+        "qualification_sha256": "27bf4e8ad1617f4bcde91cd17f5dec161e7fd560a0ac2dee441adbe5f156226b",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "85d5f894a778d8213c00105b002c849e0ebc48f51b2e4b8e52ee38c9f5dd4fc6",
+          "legacy.json": "47ac33c0305f33142245298f81c47992fc59887be0544b2c6bb9a77f9a1353b0",
+          "execution.json": "413c3d7d8a72b37189bffb7bc8afcbe2a9cb3af7fa49476ec6cdf4385184847c",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "956ad44f09e2fc02e29fd46905f0cc07276e4a3428a17c10aa6f473037d75d96"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "413c3d7d8a72b37189bffb7bc8afcbe2a9cb3af7fa49476ec6cdf4385184847c",
+            "trajectory.npz": "85d5f894a778d8213c00105b002c849e0ebc48f51b2e4b8e52ee38c9f5dd4fc6",
+            "substeps.npz": "c32e8ffe2adccc62882c1acc9b7eb2e78c95ce24c111e7652cb4c6470d78e62f",
+            "legacy.json": "47ac33c0305f33142245298f81c47992fc59887be0544b2c6bb9a77f9a1353b0"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.72819999999565,
+        "yield_excursion_m": 0.014977623008055599,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.119999999990076,
+        "rejoin_start_s": 7.119999999990076,
+        "rejoin_confirmed_s": 7.199999999989889,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "85d5f894a778d8213c00105b002c849e0ebc48f51b2e4b8e52ee38c9f5dd4fc6",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "47ac33c0305f33142245298f81c47992fc59887be0544b2c6bb9a77f9a1353b0",
+          "recipe.json": "938ce86acdd7bc40bda91977667cf411a35e6211819b17f6bde1592aaef00e9a",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "bd8a0ecc6b9a0f4de21866ff2b18090f39217d800f676de3db85576d88cdb0f7",
+      "qualification_sha256": "27bf4e8ad1617f4bcde91cd17f5dec161e7fd560a0ac2dee441adbe5f156226b",
+      "actor_filter_audit_sha256": "c5a5eaa3fea3b27decf9a3eda697a2db2ec2a71226c46807d2f35c147eb1dc61"
+    },
+    {
+      "id": "rod_00__special_rnn_scratch_s2026102802",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102802",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 8.839999999986068,
+        "peak_torque_nm": 35.223291256501575,
+        "peak_joint_torque_nm": [
+          1.1383768454023342,
+          35.223291256501575,
+          1.0408649420077498,
+          28.193683178829446,
+          1.5517432103066935,
+          3.4775656412253504,
+          0.6549604995679779
+        ],
+        "peak_joint_velocity_radps": [
+          0.03630805837358607,
+          0.18538140134722605,
+          0.039253355799819895,
+          0.41299806689368446,
+          0.08086594216762717,
+          0.3134272196483664,
+          0.15289631593141498
+        ],
+        "max_external_penetration_m": 4.286924704318194e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.017050000000000003,
+        "proxy_below_threshold_s": 0.017050000000000003,
+        "qualification_sha256": "6f4c52089c7e7693e828a43c9f682831eda73ee04bf6510cd700fd67df72dd38",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "f2fa1c5e203c7be8d5b8e014f01852cfb2f5547c5877e0b68ed617efbc1f7170",
+          "legacy.json": "92a26931804a8d7a7f9b767e936cb98a1aa5a271e419f0661128ac8dd1f2bc4c",
+          "execution.json": "a04b088370f25bb0d2192a9ee42be24e2aa6287bdfd16557a4439b1db3262275",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "bc07f644da55831ff300707eab59092169a5de72db5ca1a0fb56568a70ce0253"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "a04b088370f25bb0d2192a9ee42be24e2aa6287bdfd16557a4439b1db3262275",
+            "trajectory.npz": "f2fa1c5e203c7be8d5b8e014f01852cfb2f5547c5877e0b68ed617efbc1f7170",
+            "substeps.npz": "7613189fa7b14889edbc3634d029cb3e922754e79ee78701743655f3d0b4ea64",
+            "legacy.json": "92a26931804a8d7a7f9b767e936cb98a1aa5a271e419f0661128ac8dd1f2bc4c"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.741399999995619,
+        "yield_excursion_m": 0.011161343459854842,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.159999999989982,
+        "rejoin_start_s": 7.159999999989982,
+        "rejoin_confirmed_s": 7.239999999989796,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "f2fa1c5e203c7be8d5b8e014f01852cfb2f5547c5877e0b68ed617efbc1f7170",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "92a26931804a8d7a7f9b767e936cb98a1aa5a271e419f0661128ac8dd1f2bc4c",
+          "recipe.json": "8e8f4bfb5deabbc988b5001529c77786224e8e47febf2196822e6d4be58c9353",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "e02c61ac7a44762adb670a4d5a342fbcc3da470a23aa45b28a1abcd5175fc8f1",
+      "qualification_sha256": "6f4c52089c7e7693e828a43c9f682831eda73ee04bf6510cd700fd67df72dd38",
+      "actor_filter_audit_sha256": "8ec1d62a1acd15a5d2a99b700b2ecaa2b7fa1505089c426155a8585a89ebc07d"
+    },
+    {
+      "id": "rod_00__special_mlp_scratch_s2026102802",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102802",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": false,
+        "completion_time_s": 12.27999999997805,
+        "peak_torque_nm": 34.160840490875245,
+        "peak_joint_torque_nm": [
+          2.8852951388633445,
+          34.160840490875245,
+          2.9354541178732845,
+          27.344560102128185,
+          1.5222051952065143,
+          3.2638322884058546,
+          0.6411641976891799
+        ],
+        "peak_joint_velocity_radps": [
+          0.06596108119288492,
+          0.28779895528837085,
+          0.07960391698847168,
+          0.47465126151531106,
+          0.06883707704652231,
+          0.2693377369462099,
+          0.09087546709758428
+        ],
+        "max_external_penetration_m": 0.00021949239864935482,
+        "machine_compliant": false,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.24115000000000003,
+        "proxy_below_threshold_s": 0.24115000000000003,
+        "qualification_sha256": "456050af4461f7cb99c95cf13aa7ab41b38c3de12ab2ad73f11f1224e72738bc",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "796af3687de0403dffbc8fa5248434fc5233fc1ec5e6c2d4b0fe0cfe3e4c7c47",
+          "legacy.json": "7ea0f30b37924d7cab919af263de86d82dd1b44219337252d3135bff74b35332",
+          "execution.json": "649d9ead57b3448bcb532936cded88c035d19daeca13c5ddbbb373af432cd0e4",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "8c2425b9f05f2afe9c362872f6bc6b97e074c8d4e2e064c9636184d3c5bdd096"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "649d9ead57b3448bcb532936cded88c035d19daeca13c5ddbbb373af432cd0e4",
+            "trajectory.npz": "796af3687de0403dffbc8fa5248434fc5233fc1ec5e6c2d4b0fe0cfe3e4c7c47",
+            "substeps.npz": "f81ef9286ac3753c165a614f77351c20efad7059790e709196a91ad620ca767d",
+            "legacy.json": "7ea0f30b37924d7cab919af263de86d82dd1b44219337252d3135bff74b35332"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "failed_preserved",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": false
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "fr3_link7",
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 5.314199999994284,
+        "yield_excursion_m": 0.02953255469053348,
+        "yield_start_s": 5.679999999993432,
+        "pass_s": 9.599999999984297,
+        "rejoin_start_s": 11.399999999980102,
+        "rejoin_confirmed_s": 11.479999999979915,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "796af3687de0403dffbc8fa5248434fc5233fc1ec5e6c2d4b0fe0cfe3e4c7c47",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "7ea0f30b37924d7cab919af263de86d82dd1b44219337252d3135bff74b35332",
+          "recipe.json": "d1fb54f859f752cb18c21de54ef22ddf06250c5920bc037bf7ae16f20c4f2a25",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "9437f38a7c490b9d35fbc5053c83848fcdabd3b4b4bf969f2dbcdcf42a0d5372",
+      "qualification_sha256": "456050af4461f7cb99c95cf13aa7ab41b38c3de12ab2ad73f11f1224e72738bc",
+      "actor_filter_audit_sha256": "a68822ee8cddd6da98318db96487660a23ce4e26a09cb7bfa561116892c4c633"
+    },
+    {
+      "id": "rod_00__special_esn_ridge_s2026102803",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102803",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 9.199999999985229,
+        "peak_torque_nm": 35.19007651427805,
+        "peak_joint_torque_nm": [
+          1.3176763782279146,
+          35.19007651427805,
+          1.3928543259093786,
+          27.604021586298465,
+          1.6884123673394833,
+          3.403657659098585,
+          0.8154236975417855
+        ],
+        "peak_joint_velocity_radps": [
+          0.0435138057224904,
+          0.20331515497669952,
+          0.049109582530496444,
+          0.42780394231785573,
+          0.09209241487219329,
+          0.36661982364142065,
+          0.15689887423738855
+        ],
+        "max_external_penetration_m": 6.278477954305255e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.04070000000000001,
+        "proxy_below_threshold_s": 0.04070000000000001,
+        "qualification_sha256": "683c850ee5c9ee88917cb982b7f129d79c870b0be8a85a99e3970d8ab35a5944",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "20ba9d7e852a58fbad3c4bbe6cb0277b4f3ae69b079bb61efc2990d701855aff",
+          "legacy.json": "587eafa0026b8a25328c753823d6bbbdf61de94d9872f8066607a6f01fd6903d",
+          "execution.json": "becfb268bca5280bc0ef963aa92eb0f39669e7100ff17b773f729df704dab34b",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "09340c7d8d9d0e4466594a579200f16129fb80d29ebeceef7cee715ed1fb892d"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "becfb268bca5280bc0ef963aa92eb0f39669e7100ff17b773f729df704dab34b",
+            "trajectory.npz": "20ba9d7e852a58fbad3c4bbe6cb0277b4f3ae69b079bb61efc2990d701855aff",
+            "substeps.npz": "bfb3d5552861d7f1cf649e0a910aeb8712f6c20deddb7d912470ef00dc1249d8",
+            "legacy.json": "587eafa0026b8a25328c753823d6bbbdf61de94d9872f8066607a6f01fd6903d"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand",
+          "left_finger"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.747849999995604,
+        "yield_excursion_m": 0.013617336755527485,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.519999999989143,
+        "rejoin_start_s": 7.879999999988304,
+        "rejoin_confirmed_s": 7.959999999988118,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "20ba9d7e852a58fbad3c4bbe6cb0277b4f3ae69b079bb61efc2990d701855aff",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "587eafa0026b8a25328c753823d6bbbdf61de94d9872f8066607a6f01fd6903d",
+          "recipe.json": "88cfc50700ac9b8dd3159a2094bf59f6803832d0d5c029b142441525621d15eb",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "ffc9cee3675e76e9dfc49ddfbb3191ffcd02977eacd3669ef706c307da506b53",
+      "qualification_sha256": "683c850ee5c9ee88917cb982b7f129d79c870b0be8a85a99e3970d8ab35a5944",
+      "actor_filter_audit_sha256": "de48f80026220461d69f2d01b53abeaa6a0e7451a024a2acdada8a28904618a2"
+    },
+    {
+      "id": "rod_00__special_rnn_scratch_s2026102803",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102803",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 9.039999999985602,
+        "peak_torque_nm": 35.437605769432075,
+        "peak_joint_torque_nm": [
+          1.1110517182499207,
+          35.437605769432075,
+          1.2219494507487367,
+          27.813553071350853,
+          1.380636450991323,
+          3.2900892949925393,
+          0.5812719295500375
+        ],
+        "peak_joint_velocity_radps": [
+          0.03578133704399663,
+          0.1442968184715586,
+          0.03992896748016587,
+          0.32685037980687,
+          0.06210207071513294,
+          0.2685308059120098,
+          0.13399218806591456
+        ],
+        "max_external_penetration_m": 4.290673885301747e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021650000000000006,
+        "proxy_below_threshold_s": 0.021650000000000006,
+        "qualification_sha256": "739dd1be4bc95d2cd2053d5cf5d57e10eca75ce475489c38ecf68619a3de63d4",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "b56bfc6d9fe3181b6947383dde7a356bb473e4639bdfd16a6f36a88ab900c668",
+          "legacy.json": "1fca72fa22a451f91a3532cbf8d835fbd2f5457d8233ed8469c5fc86d095e9f9",
+          "execution.json": "b2aff7efd60c9755ee51701bf8632c033e6c5772335514bcadd984d0609f8f2b",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "56b331d210ced431d0b874ac7e22812e3b8a92f98823cb4cc6f09323bb270159"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "b2aff7efd60c9755ee51701bf8632c033e6c5772335514bcadd984d0609f8f2b",
+            "trajectory.npz": "b56bfc6d9fe3181b6947383dde7a356bb473e4639bdfd16a6f36a88ab900c668",
+            "substeps.npz": "6206e41d6eb29b11889a856d719b1c309f80739ab82b5b6c1fdcc8b987a66840",
+            "legacy.json": "1fca72fa22a451f91a3532cbf8d835fbd2f5457d8233ed8469c5fc86d095e9f9"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.747049999995606,
+        "yield_excursion_m": 0.011816620741597424,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.359999999989516,
+        "rejoin_start_s": 7.359999999989516,
+        "rejoin_confirmed_s": 7.43999999998933,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "b56bfc6d9fe3181b6947383dde7a356bb473e4639bdfd16a6f36a88ab900c668",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "1fca72fa22a451f91a3532cbf8d835fbd2f5457d8233ed8469c5fc86d095e9f9",
+          "recipe.json": "ebe546ad0908dbfc7d14a6c23b6569a6a926f3dc6284b6d48a0fd1c2113edd97",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "6d3f42fed4b9f70e9525f33eabe7e62b7707427f5147255ccc9faff8c9781e4e",
+      "qualification_sha256": "739dd1be4bc95d2cd2053d5cf5d57e10eca75ce475489c38ecf68619a3de63d4",
+      "actor_filter_audit_sha256": "e0513594b89ac0d1172b2ba3c87b0a47fae569f698181aeb660f0847290937b1"
+    },
+    {
+      "id": "rod_00__special_mlp_scratch_s2026102803",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102803",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 9.039999999985602,
+        "peak_torque_nm": 34.412525061981285,
+        "peak_joint_torque_nm": [
+          1.143158681827742,
+          34.412525061981285,
+          1.035772102940522,
+          28.432684974567117,
+          1.5433905597930402,
+          3.290987994803324,
+          0.6823827863673451
+        ],
+        "peak_joint_velocity_radps": [
+          0.050859277977388366,
+          0.21887652355285975,
+          0.056621564125158154,
+          0.3891739082997754,
+          0.08993763352274368,
+          0.37225985971641223,
+          0.16751758225231927
+        ],
+        "max_external_penetration_m": 7.747565620806259e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.035350000000000006,
+        "proxy_below_threshold_s": 0.035350000000000006,
+        "qualification_sha256": "03cf43c2ee74a9c97bf4a1719176423c42aceb5a6ea04d2191ee5fa1bfb56c11",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "cff4f42d67634ed5593a949ff5854d7da2a34d45696b53b34c924843edbdd7a2",
+          "legacy.json": "dcaa865218004e3b75b6d24dbc0a52de34a0a87ee8c6d4c6475841fbaef3d277",
+          "execution.json": "74b6b92bd024b382056253362c279a4b394aa15f099e8830e5513c689d1f67a6",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "66c2171770675298adadb3e39c79dca42089f847780b534297d00f28ede6bb3e"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "74b6b92bd024b382056253362c279a4b394aa15f099e8830e5513c689d1f67a6",
+            "trajectory.npz": "cff4f42d67634ed5593a949ff5854d7da2a34d45696b53b34c924843edbdd7a2",
+            "substeps.npz": "cfe39737488cd5ba416cb1bfc2e4b6588f55c686092d45cb2168579167a1ede2",
+            "legacy.json": "dcaa865218004e3b75b6d24dbc0a52de34a0a87ee8c6d4c6475841fbaef3d277"
+          }
+        }
+      },
+      "behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.732199999995641,
+        "yield_excursion_m": 0.016391726577041604,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.43999999998933,
+        "rejoin_start_s": 7.55999999998905,
+        "rejoin_confirmed_s": 7.639999999988864,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "cff4f42d67634ed5593a949ff5854d7da2a34d45696b53b34c924843edbdd7a2",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "dcaa865218004e3b75b6d24dbc0a52de34a0a87ee8c6d4c6475841fbaef3d277",
+          "recipe.json": "ab28da73026af1d9c9c131df2bb3f8e3c3e6a528e9663dbc4a45c980435e2d6e",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      },
+      "metrics_sha256": "49398ed692b08f00cc7df91c2aafb5fd859799b88947dba1e23da8c7319c0f5c",
+      "qualification_sha256": "03cf43c2ee74a9c97bf4a1719176423c42aceb5a6ea04d2191ee5fa1bfb56c11",
+      "actor_filter_audit_sha256": "1b3aacf297a8db4ef076d2edf6e35ac2bc9e59caf2b1f4735dccc8aebdac43f6"
+    }
+  ],
+  "family_counts": {
+    "esn_ridge": {
+      "episodes": 3,
+      "task": 3,
+      "strict": 3,
+      "machine": 3
+    },
+    "rnn_scratch": {
+      "episodes": 3,
+      "task": 3,
+      "strict": 3,
+      "machine": 3
+    },
+    "mlp_scratch": {
+      "episodes": 3,
+      "task": 3,
+      "strict": 1,
+      "machine": 2
+    }
+  },
+  "limitations": "One training condition across three seeds, not full27 or unseen108; no development SPT. All two MLP failures retained. Machine/human comfort semantics unchanged."
+}

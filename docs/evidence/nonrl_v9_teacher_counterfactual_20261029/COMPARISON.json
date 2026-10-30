@@ -1,0 +1,954 @@
+{
+  "schema": "sii-v9-teacher-on-saved-student-histories-v1",
+  "status": "counterfactual_actor_diagnosis_no_physics_no_fit",
+  "created_utc": "2026-10-29T14:42:09.049602+00:00",
+  "support_diagnosis_sha256": "e764c9701f3f05c3f287c1ef991483a4ccd33744d4934b733c3a16bba55378d4",
+  "source_sha256": "4ee02c7b8485df7233a8d4f1957b9bc6946e9ff17f93692611e09a845c745a26",
+  "teacher_config_sha256": "2d6a922f95955946912c81ccff5b6cd503451c9b9d425e15c1b90781ca84062d",
+  "teacher_replay": {
+    "trajectory_sha256": "0841a1bfffb070076602fd2641982679d11feadecea4bc44f237da19c46cb752",
+    "frames": 500,
+    "max_abs_error": 0.0
+  },
+  "rows": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "f0456f39934d432c1d724c23bc80b0612922e04cd884adf8130302679760af84",
+      "frames": 347,
+      "comparison": {
+        "mse": 0.3568680021894017,
+        "max_abs": 2.0,
+        "channel_rmse": [
+          0.2589313570282778,
+          0.8094750024054215,
+          0.6334337450698451,
+          0.6669743244842544,
+          0.5588727900141026,
+          0.5544555694429782,
+          0.5567117345046074
+        ],
+        "requested_residual_saturation_fraction": 0.4092219020172911,
+        "teacher_counterfactual_residual_saturation_fraction": 0.09510086455331412
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 1.5360734375626396e-05,
+          "max_abs": 0.04889620927897355,
+          "channel_rmse": [
+            0.0019680760152133814,
+            0.00392650725955672,
+            0.003946161305325308,
+            0.00803848740210174,
+            0.0004391291277412895,
+            0.0021516831483723857,
+            0.0017950806792897363
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 0.0002068652514889532,
+          "max_abs": 0.0645431351760722,
+          "channel_rmse": [
+            0.01495966708910572,
+            0.020802276081962456,
+            0.009321676354962411,
+            0.017345499231196188,
+            0.006937293889962596,
+            0.01639809054981533,
+            0.009313807866488576
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 97,
+          "mse": 0.7425214604481662,
+          "max_abs": 2.0,
+          "channel_rmse": [
+            0.3498615901427544,
+            1.1597782455627508,
+            0.9579049326918705,
+            0.8947639226349007,
+            0.8910251388091075,
+            0.6610725044216119,
+            0.8837615745114021
+          ],
+          "requested_residual_saturation_fraction": 0.7216494845360825,
+          "teacher_counterfactual_residual_saturation_fraction": 0.1958762886597938
+        },
+        {
+          "start_s": 6.0,
+          "end_s": 13.880999999974321,
+          "frames": 198,
+          "mse": 0.2616411301530607,
+          "max_abs": 2.0,
+          "channel_rmse": [
+            0.2398249184503048,
+            0.6995355994703559,
+            0.5036351360705089,
+            0.6223905281057935,
+            0.39803831207102447,
+            0.5697786196527008,
+            0.4006511844299516
+          ],
+          "requested_residual_saturation_fraction": 0.36363636363636365,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0707070707070707
+        }
+      ],
+      "first_saturation_comparison": {
+        "time_s": 2.1200000000017285,
+        "student_requested": [
+          0.43021016016303626,
+          -1.0,
+          -1.0,
+          -1.0,
+          -1.0,
+          -1.0,
+          -0.1322622577793359
+        ],
+        "teacher_counterfactual_requested": [
+          0.2859737877110423,
+          -0.07562248667772134,
+          0.6801732389501731,
+          -0.0934125512440586,
+          0.10290478438447134,
+          -0.05492129543603064,
+          0.0
+        ],
+        "estimated_wrench": [
+          -1.5566259443115247,
+          22.364107494326056,
+          -13.78667874790219,
+          0.7984661064507262,
+          -0.1710411087756738,
+          -0.04985282059676166
+        ],
+        "max_abs_difference": 1.6801732389501731
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "165136ec85ade844a3f91d4cc399fd20fd70ecd401f8428739b9611bdbfe3292",
+      "frames": 1375,
+      "comparison": {
+        "mse": 0.007283399155035442,
+        "max_abs": 0.9893121607323511,
+        "channel_rmse": [
+          0.05488977221707885,
+          0.11645966857300608,
+          0.07512112996686354,
+          0.12037168251783083,
+          0.035534868659545304,
+          0.09309677224078124,
+          0.06592261049970657
+        ],
+        "requested_residual_saturation_fraction": 0.0,
+        "teacher_counterfactual_residual_saturation_fraction": 0.0014545454545454545
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 9.245947916234185e-05,
+          "max_abs": 0.05762192074549267,
+          "channel_rmse": [
+            0.003563866909042247,
+            0.02045332822416849,
+            0.004331532245871238,
+            0.00830196521211375,
+            0.002212450451643007,
+            0.010866007029176705,
+            0.0023508993186006867
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 0.00022023446976531162,
+          "max_abs": 0.061556574053581004,
+          "channel_rmse": [
+            0.013848190255428851,
+            0.012331878429322915,
+            0.02219600097088231,
+            0.019579612888167792,
+            0.004952039381274736,
+            0.01668535297547763,
+            0.004341231566172924
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 97,
+          "mse": 0.016737202801096127,
+          "max_abs": 0.9893121607323511,
+          "channel_rmse": [
+            0.10953905857228986,
+            0.13439980075895627,
+            0.08570153330948416,
+            0.06558877477467817,
+            0.07303390972563173,
+            0.21706822079789626,
+            0.15165455209952033
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.020618556701030927
+        },
+        {
+          "start_s": 6.0,
+          "end_s": 55.00100000126404,
+          "frames": 1226,
+          "mse": 0.006838858604153282,
+          "max_abs": 0.4869204393417831,
+          "channel_rmse": [
+            0.04926448501412873,
+            0.11733523181628261,
+            0.07577147034383562,
+            0.12610769095068058,
+            0.03152340827973695,
+            0.07736529817574252,
+            0.055261958467043466
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        }
+      ],
+      "first_saturation_comparison": null
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "f0f5f3713821804046793520ac192167ce105fbf23e86fbae050ad75cc2114d0",
+      "frames": 1375,
+      "comparison": {
+        "mse": 0.008925488661236602,
+        "max_abs": 0.4795845064434917,
+        "channel_rmse": [
+          0.07994563883383703,
+          0.10012778783282031,
+          0.07470101159412372,
+          0.17056106198028162,
+          0.04735796397658249,
+          0.09155158105911548,
+          0.02767229336996896
+        ],
+        "requested_residual_saturation_fraction": 0.0,
+        "teacher_counterfactual_residual_saturation_fraction": 0.0
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 2.833619642332966e-05,
+          "max_abs": 0.0207603951903265,
+          "channel_rmse": [
+            0.002710790131237095,
+            0.010423703194762884,
+            0.0018370550810947223,
+            0.0070611557085440485,
+            0.0012926280243794484,
+            0.0051907916511702385,
+            0.0007081716237151348
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 0.00023054864572138377,
+          "max_abs": 0.05257047515746939,
+          "channel_rmse": [
+            0.01507525184471227,
+            0.022739591289072367,
+            0.012169895685329422,
+            0.008139384496849207,
+            0.019106309953810477,
+            0.016797581219391518,
+            0.002814699632580582
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 97,
+          "mse": 0.004734213428278151,
+          "max_abs": 0.4584215731025306,
+          "channel_rmse": [
+            0.0737497467148185,
+            0.0752429430616024,
+            0.07795774276393622,
+            0.07522197011813456,
+            0.03670276349351887,
+            0.09284218979072784,
+            0.018342542854668367
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 6.0,
+          "end_s": 55.00100000126404,
+          "frames": 1226,
+          "mse": 0.009631991466316363,
+          "max_abs": 0.4795845064434917,
+          "channel_rmse": [
+            0.08206539751660928,
+            0.10385797038314588,
+            0.07599785542318539,
+            0.17937841585510084,
+            0.04903316817561503,
+            0.09334935420878293,
+            0.02884595580675294
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        }
+      ],
+      "first_saturation_comparison": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "dd84b63f9691d72be204b73e897c442c5dfd43654b2de8b3f9dd6785a45f489a",
+      "frames": 1375,
+      "comparison": {
+        "mse": 0.3731711138442273,
+        "max_abs": 2.0,
+        "channel_rmse": [
+          0.31805767294459625,
+          0.5883697164005874,
+          0.5946189253038286,
+          0.635446959725922,
+          0.6923111058441607,
+          0.6639848463113113,
+          0.6980853400929815
+        ],
+        "requested_residual_saturation_fraction": 0.3825454545454545,
+        "teacher_counterfactual_residual_saturation_fraction": 0.11054545454545454
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 9.655444703662952e-06,
+          "max_abs": 0.04131603440531318,
+          "channel_rmse": [
+            0.001460032942722144,
+            0.001973998096976618,
+            0.002667748110741724,
+            0.006792315551134816,
+            0.0014050293280138898,
+            0.0024868528451955354,
+            0.000385711330076374
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 9.467132455312536e-05,
+          "max_abs": 0.05833881542049468,
+          "channel_rmse": [
+            0.006832458370096516,
+            0.008009651398399256,
+            0.004936157043450573,
+            0.020300453574019633,
+            0.0051231113185632605,
+            0.008331036987712082,
+            0.004442494842692051
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 97,
+          "mse": 0.8465214547056863,
+          "max_abs": 2.0,
+          "channel_rmse": [
+            0.5793260517302884,
+            0.6586198189877277,
+            1.0537225063102598,
+            0.9891831159931165,
+            0.9223917922140366,
+            1.078247039599523,
+            1.026651736833572
+          ],
+          "requested_residual_saturation_fraction": 0.9278350515463918,
+          "teacher_counterfactual_residual_saturation_fraction": 0.14432989690721648
+        },
+        {
+          "start_s": 6.0,
+          "end_s": 55.00100000126404,
+          "frames": 1226,
+          "mse": 0.35154642994130386,
+          "max_abs": 2.0,
+          "channel_rmse": [
+            0.2947890957524036,
+            0.5949202082815483,
+            0.5556019718842601,
+            0.6127348838719061,
+            0.6857328742796636,
+            0.6344058902398535,
+            0.6805559101784213
+          ],
+          "requested_residual_saturation_fraction": 0.3556280587275693,
+          "teacher_counterfactual_residual_saturation_fraction": 0.11256117455138662
+        }
+      ],
+      "first_saturation_comparison": {
+        "time_s": 2.1200000000017285,
+        "student_requested": [
+          1.0,
+          1.0,
+          -1.0,
+          0.39896981289735967,
+          0.11367591018852073,
+          1.0,
+          1.0
+        ],
+        "teacher_counterfactual_requested": [
+          0.28430474686856155,
+          -0.024057890894417795,
+          0.6773802393792628,
+          -0.09802763663557007,
+          0.12187498720903293,
+          -0.033006570325143814,
+          0.0
+        ],
+        "estimated_wrench": [
+          -1.2104490693957894,
+          22.721281101021624,
+          -14.707916157053905,
+          0.8775174237840815,
+          -0.1754445592335282,
+          -0.02516981362127524
+        ],
+        "max_abs_difference": 1.677380239379263
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "6132c3f1cf7e8064c918f6aaa1b9b5acb6a009375d19c219c5571815b48f552a",
+      "frames": 1375,
+      "comparison": {
+        "mse": 0.00662593671846204,
+        "max_abs": 0.6630504500818948,
+        "channel_rmse": [
+          0.05788152876509291,
+          0.09992386294376468,
+          0.0860365040401773,
+          0.1340796748578107,
+          0.025256782091200528,
+          0.0730600474232374,
+          0.04112411048188097
+        ],
+        "requested_residual_saturation_fraction": 0.0,
+        "teacher_counterfactual_residual_saturation_fraction": 0.0
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 0.00010323951783561971,
+          "max_abs": 0.0575747748903721,
+          "channel_rmse": [
+            0.007979787034122431,
+            0.01473408950624248,
+            0.009750314303016747,
+            0.014038321373437157,
+            0.003461762621310896,
+            0.01098042182858489,
+            0.004148453951768106
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 0.00026777080917753245,
+          "max_abs": 0.05983382132473347,
+          "channel_rmse": [
+            0.006970740002226114,
+            0.030034785104219808,
+            0.014259750280916701,
+            0.020840517746072044,
+            0.005670386405838825,
+            0.014753501637946186,
+            0.006019084750738885
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 97,
+          "mse": 0.004063932800480965,
+          "max_abs": 0.6630504500818948,
+          "channel_rmse": [
+            0.03615679060494285,
+            0.09963089813438519,
+            0.09347410186224946,
+            0.05264034281342518,
+            0.021370216036269627,
+            0.06260307052221763,
+            0.03646445187764554
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 6.0,
+          "end_s": 55.00100000126404,
+          "frames": 1226,
+          "mse": 0.007103283101093859,
+          "max_abs": 0.4794829289025233,
+          "channel_rmse": [
+            0.06042757390340036,
+            0.10195740826676128,
+            0.08720809544268732,
+            0.1411797030856303,
+            0.02604888078951252,
+            0.07530011407741995,
+            0.04231506912182412
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        }
+      ],
+      "first_saturation_comparison": null
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "d32f4814538558e81bdb3cc4834cb9f2a04e67397b48c830128b717caa736656",
+      "frames": 1375,
+      "comparison": {
+        "mse": 0.008830883648774424,
+        "max_abs": 0.7619569880811312,
+        "channel_rmse": [
+          0.07458370853943322,
+          0.12243328103443565,
+          0.06737677963132738,
+          0.1394509587516063,
+          0.04271674608629498,
+          0.12031512650064871,
+          0.031255355793367676
+        ],
+        "requested_residual_saturation_fraction": 0.0,
+        "teacher_counterfactual_residual_saturation_fraction": 0.0
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 6.0376675599763314e-05,
+          "max_abs": 0.028044446922741648,
+          "channel_rmse": [
+            0.0027340078419693134,
+            0.015427674863771166,
+            0.003647693634515551,
+            0.011994190221980746,
+            0.0022049692871443797,
+            0.0037563928048901718,
+            0.001005054337800847
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 0.0004730675323828338,
+          "max_abs": 0.11748196163821331,
+          "channel_rmse": [
+            0.013772161059637356,
+            0.01508661883494888,
+            0.015888781472438048,
+            0.008689861397707409,
+            0.021689890587485952,
+            0.045659046198253075,
+            0.0033207404798680203
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 97,
+          "mse": 0.008856058394293211,
+          "max_abs": 0.7619569880811312,
+          "channel_rmse": [
+            0.06998215422851915,
+            0.15943909489096736,
+            0.10833782049913315,
+            0.06281533020662215,
+            0.031167313441921928,
+            0.12045430214691014,
+            0.022596293447861078
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 6.0,
+          "end_s": 55.00100000126404,
+          "frames": 1226,
+          "mse": 0.0091958380121007,
+          "max_abs": 0.731516598731653,
+          "channel_rmse": [
+            0.07647715453176873,
+            0.12161596590726638,
+            0.0644920904558251,
+            0.1466032999577349,
+            0.044313946947457945,
+            0.12272377370669622,
+            0.032481686211419177
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        }
+      ],
+      "first_saturation_comparison": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "fcb1953fd8e0919613f1c82aaaabc17f61c61cc0d6f028975f2bb2e851a246ad",
+      "frames": 113,
+      "comparison": {
+        "mse": 0.4290062900967755,
+        "max_abs": 2.0,
+        "channel_rmse": [
+          0.36333756612629564,
+          0.9225981522208695,
+          0.8589505582311153,
+          0.6544756179700308,
+          0.4565594365702807,
+          0.5736663046496181,
+          0.5622886705447359
+        ],
+        "requested_residual_saturation_fraction": 0.39823008849557523,
+        "teacher_counterfactual_residual_saturation_fraction": 0.1415929203539823
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 5.421059982873949e-06,
+          "max_abs": 0.026111970064518878,
+          "channel_rmse": [
+            0.0015148596387060762,
+            0.0042927821598501585,
+            0.00265219802532844,
+            0.0015862814802786148,
+            0.0021518140657581925,
+            0.0015383257305221561,
+            0.00082307250968358
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 0.00011667078544187813,
+          "max_abs": 0.04143840421043417,
+          "channel_rmse": [
+            0.010538212215459364,
+            0.018985408472645956,
+            0.007095603950461564,
+            0.013930702494827217,
+            0.007052048085951663,
+            0.006947698121003605,
+            0.0016678991916511561
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 61,
+          "mse": 0.7946845924579448,
+          "max_abs": 2.0,
+          "channel_rmse": [
+            0.4944918307266541,
+            1.2556631197163268,
+            1.1690681413775652,
+            0.8907468567432714,
+            0.6213884422878259,
+            0.7807804068929977,
+            0.7653026749957034
+          ],
+          "requested_residual_saturation_fraction": 0.7377049180327869,
+          "teacher_counterfactual_residual_saturation_fraction": 0.26229508196721313
+        }
+      ],
+      "first_saturation_comparison": {
+        "time_s": 2.1200000000017285,
+        "student_requested": [
+          1.0,
+          1.0,
+          -1.0,
+          -0.4419451744619651,
+          -1.0,
+          -1.0,
+          -0.6644717912027603
+        ],
+        "teacher_counterfactual_requested": [
+          0.28377875977710665,
+          -0.015657986707920908,
+          0.6768703297363738,
+          -0.09494154669515695,
+          0.12356671042669361,
+          -0.022384413418288,
+          0.0
+        ],
+        "estimated_wrench": [
+          -0.4639660834047031,
+          22.54471875634951,
+          -14.333885867854015,
+          0.8703695650467163,
+          -0.10546758719943505,
+          0.024709020872887066
+        ],
+        "max_abs_difference": 1.6768703297363738
+      }
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "16b147fe5480a276f62ffef03c4a4d38c60b93ec60a75698a578743320858404",
+      "frames": 1375,
+      "comparison": {
+        "mse": 0.006888920559589371,
+        "max_abs": 1.0630510107734406,
+        "channel_rmse": [
+          0.05692358465300263,
+          0.09096176698864337,
+          0.07706383987971514,
+          0.13679780445479053,
+          0.034266260388371585,
+          0.09246265986619594,
+          0.0482919411754051
+        ],
+        "requested_residual_saturation_fraction": 0.0,
+        "teacher_counterfactual_residual_saturation_fraction": 0.0014545454545454545
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 0.00035465031668889584,
+          "max_abs": 0.10845103338128848,
+          "channel_rmse": [
+            0.011828584010495882,
+            0.026866079475456793,
+            0.019485937396262757,
+            0.025701393855141415,
+            0.006749691006307968,
+            0.01976467766375762,
+            0.012016088240617449
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 0.0001481300943010876,
+          "max_abs": 0.04949754531013005,
+          "channel_rmse": [
+            0.010348384654340766,
+            0.01960858306803328,
+            0.012343546528374286,
+            0.011732051922816837,
+            0.007831726520528541,
+            0.013676544260655307,
+            0.0026338334787209972
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 97,
+          "mse": 0.012410859753152714,
+          "max_abs": 1.0630510107734406,
+          "channel_rmse": [
+            0.0812180882808379,
+            0.12281146227596706,
+            0.07485410433529571,
+            0.043701556011381766,
+            0.056471868300534384,
+            0.21176100936087963,
+            0.09824573890590356
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.020618556701030927
+        },
+        {
+          "start_s": 6.0,
+          "end_s": 55.00100000126404,
+          "frames": 1226,
+          "mse": 0.006731703393350381,
+          "max_abs": 0.5544169016140582,
+          "channel_rmse": [
+            0.05573747794492581,
+            0.08977640386767129,
+            0.07876524686558242,
+            0.14427490843549884,
+            0.032595038027323484,
+            0.07762977056863483,
+            0.04298166485806576
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        }
+      ],
+      "first_saturation_comparison": null
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "trajectory_sha256": "d6066fb182e8bc11580ff53e7dd44cd2cad071f17651c609c51e1eaa0f353ef3",
+      "frames": 1375,
+      "comparison": {
+        "mse": 0.007631376279184622,
+        "max_abs": 0.9273927111229163,
+        "channel_rmse": [
+          0.0650984413356682,
+          0.1006638705330649,
+          0.07726552258240063,
+          0.11914451735814757,
+          0.04720132229519086,
+          0.12507889800126823,
+          0.03178898411710762
+        ],
+        "requested_residual_saturation_fraction": 0.0,
+        "teacher_counterfactual_residual_saturation_fraction": 0.0014545454545454545
+      },
+      "windows": [
+        {
+          "start_s": 0.0,
+          "end_s": 1.5,
+          "frames": 37,
+          "mse": 9.93216087359902e-06,
+          "max_abs": 0.014355596493457622,
+          "channel_rmse": [
+            0.0015459992455743017,
+            0.005452094365099688,
+            0.0014037023720485343,
+            0.0030810427575714617,
+            0.0014963235840194965,
+            0.004818673400594108,
+            0.000698481960368826
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "end_s": 2.12,
+          "frames": 15,
+          "mse": 0.00039824433412111794,
+          "max_abs": 0.06804888397873088,
+          "channel_rmse": [
+            0.012346499694632328,
+            0.031222153017104754,
+            0.015794438541944542,
+            0.013213138598575683,
+            0.017014456176676462,
+            0.03015670229914156,
+            0.0061222309730389985
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 2.12,
+          "end_s": 6.0,
+          "frames": 97,
+          "mse": 0.007352061898455388,
+          "max_abs": 0.7753928096223212,
+          "channel_rmse": [
+            0.09469576181526332,
+            0.08661075936282871,
+            0.07382751104090768,
+            0.04987016557816542,
+            0.05534894445141966,
+            0.15360945611160062,
+            0.01997040024465537
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0
+        },
+        {
+          "start_s": 6.0,
+          "end_s": 55.00100000126404,
+          "frames": 1226,
+          "mse": 0.007971983054457215,
+          "max_abs": 0.9273927111229163,
+          "channel_rmse": [
+            0.06357217622791037,
+            0.10372275333366196,
+            0.07912749558988878,
+            0.12538516431478372,
+            0.04746309951495194,
+            0.12516939685145176,
+            0.03318623991109387
+          ],
+          "requested_residual_saturation_fraction": 0.0,
+          "teacher_counterfactual_residual_saturation_fraction": 0.0016313213703099511
+        }
+      ],
+      "first_saturation_comparison": null
+    }
+  ],
+  "limitations": [
+    "Teacher never physically executed on these student states.",
+    "Counterfactual predictions are not training labels, a teacher success certificate or a causal intervention.",
+    "Only already-inspected condition000 is analyzed; no held-out model selection.",
+    "Different task tracking references and state histories remain relevant."
+  ]
+}

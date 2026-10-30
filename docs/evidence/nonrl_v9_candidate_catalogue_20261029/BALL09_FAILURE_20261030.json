@@ -1,0 +1,60 @@
+{
+  "status": "development_validation_failure_localized_not_repaired",
+  "identity": "ball_09",
+  "split": "validation",
+  "rows": [
+    {
+      "label": "teacher",
+      "folder": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_collection_20261029_v9/ball_09/ball",
+      "checks": {
+        "lift": true,
+        "payload_motion": true,
+        "terminal_tracking_error": true,
+        "valid_physics": true,
+        "no_upstream": true,
+        "terminal_stage": true,
+        "cup_stable": true
+      },
+      "lift_m": 0.1475887603922304,
+      "payload_motion_last10_max_mps": 9.30620205073036e-05,
+      "terminal_tracking_error_last10_mean_m": 0.00728674314112872,
+      "action_saturation_fraction": 0.0,
+      "scene_qualification": "qualified",
+      "hashes": {
+        "legacy.json": "0a85dc5d66da92119a54f0cb79954712a5fc01156273a333f047b139c59f438a",
+        "legacy.npz": "07840d26a9455c3959cff92b81392dcab508a14bc3d2c95d95e84836d71ad944",
+        "trajectory.npz": "132f8341be204e9eba59ed9dfd57b7ccd243856d08baf748e4f3aa28effd45e8",
+        "DEMONSTRATION_QUALIFICATION.json": "3a402cefdda197351ea01d76623a26bea1d897a4f7969ac208bdd8b438039432"
+      }
+    },
+    {
+      "label": "student_rank2",
+      "folder": "outputs/nonrl_v9_common_eligibility_20261029_v3/evaluations/esn_ridge_s2026102801_rank2/ball_09/ball",
+      "checks": {
+        "lift": true,
+        "payload_motion": false,
+        "terminal_tracking_error": true,
+        "valid_physics": true,
+        "no_upstream": true,
+        "terminal_stage": true,
+        "cup_stable": true
+      },
+      "lift_m": 0.1575990491686628,
+      "payload_motion_last10_max_mps": 0.05125872616190048,
+      "terminal_tracking_error_last10_mean_m": 0.0053745654842309145,
+      "action_saturation_fraction": 0.0,
+      "scene_qualification": "failed_preserved",
+      "hashes": {
+        "legacy.json": "06cf8fbb94c13f3a403730e66b21fe27c8c8fd6538942f50d74a7841f62acb70",
+        "legacy.npz": "576a2d7cf0fe6526617d77b74da17a5831c2b830e08540253fa365874c986cd7",
+        "trajectory.npz": "8b33767e5dfdbf8687d79ca308a225b1c722dc9277b9ee08aeac8d37552af253",
+        "DEMONSTRATION_QUALIFICATION.json": "121a80600857a2e246a1e59931d817b0aa0f4576a6d318508d396e8e3572168f"
+      }
+    }
+  ],
+  "limitations": [
+    "No new integration or fitting.",
+    "Tracking accuracy and task stage do not guarantee payload stability; original task gate is retained.",
+    "Do not turn this single validation result into test or unique causal proof."
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "status": "passed_zero_physics",
+  "controls": [
+    {
+      "zero_direction_retains_past_only": true,
+      "vertical_clears": true,
+      "reset_clears": true,
+      "new_horizontal_updates": true
+    },
+    {
+      "prefix": 0,
+      "saved_history_independent_pure_controller_replay": true
+    },
+    {
+      "prefix": 175,
+      "saved_history_independent_pure_controller_replay": true
+    },
+    {
+      "prefix": 275,
+      "saved_history_independent_pure_controller_replay": true
+    },
+    {
+      "injected_physical_failure": false,
+      "worker_receipt_and_masks_correct": true
+    },
+    {
+      "injected_physical_failure": true,
+      "worker_receipt_and_masks_correct": true
+    },
+    {
+      "real_prepare_no_physics_and_duplicate_refusal": true
+    }
+  ],
+  "source_sha256": {
+    "tools/run_persistent_cross_track_probe_20261030.py": "87d5d0b53e64cee73b3b8d086fc7d73b8854bb2d9cb98f2d8acaa64fdb3f6733",
+    "tools/audit_persistent_cross_track_probe_20261030.py": "21ae15534e2cd10c8aa8a1a9fc910fd58b83f32db894f3c872b9d3ce7b60a2af",
+    "tools/run_persistent_cross_track_campaign_20261030.py": "89fa7965249ec3157376b55bd7fe4f0e030f615b1fad785aca2fea75af7ddc52"
+  },
+  "real_input_hashes": {
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/learning/mlp_scratch_s2026102802_candidate05/checkpoint.npz": "3218fb6b021e130adbc57089638138ad4f4f95c5b17963eb73a8b1c2c02d66ff",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_collection_20261029_v9/rod_00/rod/teacher.json": "2d6a922f95955946912c81ccff5b6cd503451c9b9d425e15c1b90781ca84062d"
+  },
+  "limitations": "Saved-history replay and injected worker errors, not new physical recovery evidence."
+}

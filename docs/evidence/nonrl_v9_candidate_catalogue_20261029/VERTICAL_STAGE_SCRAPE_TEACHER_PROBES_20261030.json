@@ -1,0 +1,98 @@
+{
+  "schema": "sii-vertical-stage-scrape-teacher-probe-review-v1",
+  "status": "three_registered_rod_probes_independently_qualified",
+  "old_collection": {
+    "directory": "outputs/special_scene_vertical_aware_collection_20261030_v2",
+    "registration_sha256": "b8a20457f57c9db10c3ee947b8afc936391b86020083648f6e7c1da8d01ea01e",
+    "execution_sha256": "8c5f0411f72a95ca0f6e7b330c34773f4f8c09538946ca353626c1d973c6f739",
+    "completed": 30,
+    "qualified": 29,
+    "failure": {
+      "id": "rod_09",
+      "task_success": true,
+      "safety_valid": true,
+      "scene_contact_valid": false,
+      "pass_s": 12.56,
+      "retract_start_s": 12.95,
+      "persistent_rejoin_confirmed_s": null,
+      "preserved": true
+    }
+  },
+  "rejected_progress_only_probe": {
+    "directory": "outputs/vertical_stage_progress_probe_20261030_v2",
+    "registration_sha256": "323b422ce6677b65f40e0bfa2c756364a17eb1c78d24baadd0f0ec37f7cd9f3e",
+    "execution_sha256": "95339189b31a78f8619db17f01c7467c51e537eb5f0f68bf67e8c41acf0edffa",
+    "teacher_config_sha256": "52df02ccf34ce43a8c712ca3a7167353adb47536ba65b3245cf0b5c03ec314c9",
+    "independent_review": {
+      "status": "independently_verified",
+      "identities": 3,
+      "qualified": 0,
+      "failures": ["rod_09", "rod_04", "rod_01"]
+    },
+    "failure_mode": "All three crossed without measured hand contact or the required yield excursion; faster tangent correction alone bypassed the intended push interaction.",
+    "preserved": true
+  },
+  "contact_yield_gated_probe": {
+    "directory": "outputs/vertical_stage_scrape_probe_20261030_v1",
+    "registration_sha256": "f36b5c2cb8236048d1f82d3f1e761c94c539db1d77336fab51e2ba45d7f13855",
+    "execution_sha256": "b435859731b2b8726684cede6e409547a07e159d2f610f55d274b70ad1b8016c",
+    "teacher_config_sha256": "0e6d1619835d0025da44d591a8962a585d755fffcd9e4f515f0e39f4da5b69d2",
+    "parameters": {
+      "yield_force_threshold_n": 1.0,
+      "yield_excursion_m": 0.004,
+      "path_speed_gain": 1.0,
+      "maximum_path_speed_mps": 0.02,
+      "attack_s": 0.08,
+      "release_s": 0.5
+    },
+    "independent_review": {
+      "status": "independently_verified",
+      "identities": 3,
+      "qualified": 3,
+      "failures": []
+    },
+    "rows": [
+      {
+        "id": "rod_09",
+        "contact_s": 4.91805,
+        "yield_s": 5.04,
+        "pass_s": 10.68,
+        "rejoin_confirmed_s": 10.76,
+        "retract_start_s": 12.95,
+        "task_success": true,
+        "safety_valid": true,
+        "actor_filter_replay": true,
+        "qualification_sha256": "6280b7b77cddc43040559ec89ba8bcdb1f214e7210e6d75e45cbdffd303349e4",
+        "behavior_audit_sha256": "32dd90284eebe7234338ef0673d381704a25d00fd4b386f169491b96ce745a5c"
+      },
+      {
+        "id": "rod_04",
+        "contact_s": 4.7468,
+        "yield_s": 4.84,
+        "pass_s": 7.32,
+        "rejoin_confirmed_s": 7.52,
+        "retract_start_s": 12.8,
+        "task_success": true,
+        "safety_valid": true,
+        "actor_filter_replay": true,
+        "qualification_sha256": "9c8ba303fa6bfdf1be77474f527af5fc2a65ef72f93d1d00d76788fca260d0ce",
+        "behavior_audit_sha256": "5557a7d9c246ef7e853cce59a860524406a96cf3dbc0ca6ce667a03ca41ab0df"
+      },
+      {
+        "id": "rod_01",
+        "contact_s": 4.9832,
+        "yield_s": 5.12,
+        "pass_s": 9.48,
+        "rejoin_confirmed_s": 9.56,
+        "retract_start_s": 13.0,
+        "task_success": true,
+        "safety_valid": true,
+        "actor_filter_replay": true,
+        "qualification_sha256": "2e422bee58147fb0339f15d36b0ca3399095ecd89f901cd74c09f0e94e379c73",
+        "behavior_audit_sha256": "a77c474f9dcacc79f2ad2e5e3c1708eef24237fd53ecc59880d5dd0a3c58a9bc"
+      }
+    ],
+    "fixed": ["MJB/physics", "canonical48", "public action filter", "actuator limits", "dt=5e-5", "task/safety/behavior thresholds"],
+    "limits": "Three development rod identities only. This does not establish student learning, all-scene behavior, or unseen-test performance."
+  }
+}

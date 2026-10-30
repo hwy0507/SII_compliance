@@ -1,0 +1,55 @@
+{
+  "status": "completed_train00_prefix_diagnostic_only",
+  "snapshot_completed_qualified_rows": 2,
+  "registration_sha256": "d8865136ee61239e07eb3b1d6a577656742088def995c19d135ba297e9724fe4",
+  "source_sha256": "6f230a7db2205704d1f8953c1d0b22df5c21dff4e14fe446f2b215193884c029",
+  "caveats": [
+    "This is an incomplete 18-case development prefix, not a final comparison.",
+    "Counterfactual teacher output is not a physical recovery proof or training label.",
+    "Different student histories: counterfactual MSE is not a common-input method ranking."
+  ],
+  "rows": [
+    {
+      "id": "rod_00_esn_ridge",
+      "family": "esn_ridge",
+      "split": "train",
+      "same_mjb": true,
+      "initial_observation_max_abs_difference": 0.0,
+      "teacher_replay_max_abs": 0.0,
+      "student_replay_max_abs": 0.0,
+      "student_on_teacher_history_mse": 2.5652605024367318e-06,
+      "teacher_counterfactual_on_student_history_mse": 0.32195263131208685,
+      "first_residual_disagreement_gt_0p1_s": 4.839999999995389,
+      "first_residual_disagreement_gt_0p5_s": 4.999999999995016,
+      "first_requested_residual_saturation_s": 5.119999999994737,
+      "requested_residual_saturation_fraction": 0.572,
+      "task_success": false,
+      "development_safety_valid": false,
+      "development_contact_valid": false,
+      "trajectory_sha256": "bd419603fe7874c5a0dea55d155a09b5a934384f3e2b779209262a782d4cccfb",
+      "qualification_sha256": "324551edb153a64b99c6dbf6e81441123862798547129d5a3e63bb826444d51f",
+      "checkpoint_sha256": "1a25f7e80bbe909cd09a3ad5873ceb35e6ba8a5addada2ed74819aa1e58d6510"
+    },
+    {
+      "id": "rod_00_rnn_scratch",
+      "family": "rnn_scratch",
+      "split": "train",
+      "same_mjb": true,
+      "initial_observation_max_abs_difference": 0.0,
+      "teacher_replay_max_abs": 0.0,
+      "student_replay_max_abs": 0.0,
+      "student_on_teacher_history_mse": 3.7722417945338936e-06,
+      "teacher_counterfactual_on_student_history_mse": 7.679331050254695e-05,
+      "first_residual_disagreement_gt_0p1_s": 4.839999999995389,
+      "first_residual_disagreement_gt_0p5_s": null,
+      "first_requested_residual_saturation_s": null,
+      "requested_residual_saturation_fraction": 0.0,
+      "task_success": true,
+      "development_safety_valid": true,
+      "development_contact_valid": true,
+      "trajectory_sha256": "652bf7fceb1bfdf7dc7f1e722716c00c17eda54a613514e8ca1277de9c444f3f",
+      "qualification_sha256": "c8fd37783cbac85c8151fac5df2ddab1bd81dbe110627f787dd29cf0956419f7",
+      "checkpoint_sha256": "a621fa126c8b15aa36687dc0f04accc7e6a1b772d28afe47b013547863dee656"
+    }
+  ]
+}

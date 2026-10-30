@@ -1,0 +1,490 @@
+{
+  "status": "finite_verified_wait_complete",
+  "source_sha256": "6d57306db683bc2b1fe93ee5e89aa3e1edbcf2d6ed748c09ec28cae50f5655e9",
+  "samples": [
+    {
+      "utc": "2026-10-29T15:13:45.976904+00:00",
+      "units": {
+        "run-raa08b13eb33f4583ab899210958345fa.scope": {
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa08b13eb33f4583ab899210958345fa.scope",
+          "MemoryCurrent": "1651752960",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "8beca05f1b344ec6985028452eed70d4"
+        },
+        "sii-v9-paired-closure-handoff-v3-20261029.service": {
+          "MainPID": "1636845",
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-v9-paired-closure-handoff-v3-20261029.service",
+          "MemoryCurrent": "9109504",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "39a747c69fe447dd83cc9d2eb2dc88dd"
+        }
+      },
+      "cgroup": {
+        "memory.current": "1651752960",
+        "memory.peak": "2219958272",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.swap.current": "0",
+        "cpu.stat": "usage_usec 14085260050\nuser_usec 14016202855\nsystem_usec 69057195\ncore_sched.force_idle_usec 0"
+      },
+      "processes": [
+        {
+          "pid": 1541733,
+          "start_ticks": "37078452",
+          "cpu_ticks": 1929,
+          "command": "../.venv-sii-local-rl/bin/python code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_preparation_20261029_v8/tools/run_nonrl_spt_matrix_20261025.py --source-run code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2 --root code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9 --runtime code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime --python ../.venv-sii-local-rl/bin/python --model-lock code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/MODEL_LOCK.json "
+        },
+        {
+          "pid": 1661588,
+          "start_ticks": "38478023",
+          "cpu_ticks": 10321,
+          "command": "../.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/PROTOCOL.json --protocol-sha256 ed72068fcd7c30af00da532d253f36b7d427f129ca9c0ad78e4111780f051eaf --research-condition new30_prospective_20261026_acceptance_005 --phase acceptance --worker-kind office --v6-input code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/configs/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005.json --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005 --contact-audit --physics-dt .00005 --checkpoint /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/checkpoints/special_esn_ridge_s2026102802.npz "
+        }
+      ],
+      "original_status": "running",
+      "completed": 48,
+      "task": 5,
+      "strict": 0,
+      "current": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "new30_prospective_20261026_acceptance_005",
+        "progress": {
+          "time_s": 17.040000000003904,
+          "stage": "lift",
+          "position_error_m": 0.047521968809712094,
+          "external_penetration_mm": 0.7708317554049156
+        }
+      },
+      "paired_handoff": {
+        "status": "waiting_for_original108",
+        "started_utc": "2026-10-29T14:26:17.373958+00:00",
+        "registration_sha256": "9fa06330055ae4b21f841ff0a91f49e79b2cd09d4f23e31a49edbdd9bacb0aab",
+        "source_sha256": "11fc6814a3067839b0714b8f5dcc57998a318c13f99ee4e605d53c9c1b1063ea",
+        "maximum_wait_s": 43200
+      },
+      "paired_execution_exists": false
+    },
+    {
+      "utc": "2026-10-29T15:14:15.984924+00:00",
+      "units": {
+        "run-raa08b13eb33f4583ab899210958345fa.scope": {
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa08b13eb33f4583ab899210958345fa.scope",
+          "MemoryCurrent": "1678680064",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "8beca05f1b344ec6985028452eed70d4"
+        },
+        "sii-v9-paired-closure-handoff-v3-20261029.service": {
+          "MainPID": "1636845",
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-v9-paired-closure-handoff-v3-20261029.service",
+          "MemoryCurrent": "9109504",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "39a747c69fe447dd83cc9d2eb2dc88dd"
+        }
+      },
+      "cgroup": {
+        "memory.current": "1678680064",
+        "memory.peak": "2219958272",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.swap.current": "0",
+        "cpu.stat": "usage_usec 14115265271\nuser_usec 14046202078\nsystem_usec 69063193\ncore_sched.force_idle_usec 0"
+      },
+      "processes": [
+        {
+          "pid": 1541733,
+          "start_ticks": "37078452",
+          "cpu_ticks": 1929,
+          "command": "../.venv-sii-local-rl/bin/python code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_preparation_20261029_v8/tools/run_nonrl_spt_matrix_20261025.py --source-run code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2 --root code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9 --runtime code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime --python ../.venv-sii-local-rl/bin/python --model-lock code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/MODEL_LOCK.json "
+        },
+        {
+          "pid": 1661588,
+          "start_ticks": "38478023",
+          "cpu_ticks": 13321,
+          "command": "../.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/PROTOCOL.json --protocol-sha256 ed72068fcd7c30af00da532d253f36b7d427f129ca9c0ad78e4111780f051eaf --research-condition new30_prospective_20261026_acceptance_005 --phase acceptance --worker-kind office --v6-input code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/configs/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005.json --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005 --contact-audit --physics-dt .00005 --checkpoint /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/checkpoints/special_esn_ridge_s2026102802.npz "
+        }
+      ],
+      "original_status": "running",
+      "completed": 48,
+      "task": 5,
+      "strict": 0,
+      "current": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "new30_prospective_20261026_acceptance_005",
+        "progress": {
+          "time_s": 21.04000000013669,
+          "stage": "lift",
+          "position_error_m": 0.20829394522524938,
+          "external_penetration_mm": 0.7708317554049156
+        }
+      },
+      "paired_handoff": {
+        "status": "waiting_for_original108",
+        "started_utc": "2026-10-29T14:26:17.373958+00:00",
+        "registration_sha256": "9fa06330055ae4b21f841ff0a91f49e79b2cd09d4f23e31a49edbdd9bacb0aab",
+        "source_sha256": "11fc6814a3067839b0714b8f5dcc57998a318c13f99ee4e605d53c9c1b1063ea",
+        "maximum_wait_s": 43200
+      },
+      "paired_execution_exists": false
+    },
+    {
+      "utc": "2026-10-29T15:14:45.993047+00:00",
+      "units": {
+        "run-raa08b13eb33f4583ab899210958345fa.scope": {
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa08b13eb33f4583ab899210958345fa.scope",
+          "MemoryCurrent": "1695174656",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "8beca05f1b344ec6985028452eed70d4"
+        },
+        "sii-v9-paired-closure-handoff-v3-20261029.service": {
+          "MainPID": "1636845",
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-v9-paired-closure-handoff-v3-20261029.service",
+          "MemoryCurrent": "9109504",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "39a747c69fe447dd83cc9d2eb2dc88dd"
+        }
+      },
+      "cgroup": {
+        "memory.current": "1695174656",
+        "memory.peak": "2219958272",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.swap.current": "0",
+        "cpu.stat": "usage_usec 14145271513\nuser_usec 14076204311\nsystem_usec 69067201\ncore_sched.force_idle_usec 0"
+      },
+      "processes": [
+        {
+          "pid": 1541733,
+          "start_ticks": "37078452",
+          "cpu_ticks": 1929,
+          "command": "../.venv-sii-local-rl/bin/python code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_preparation_20261029_v8/tools/run_nonrl_spt_matrix_20261025.py --source-run code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2 --root code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9 --runtime code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime --python ../.venv-sii-local-rl/bin/python --model-lock code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/MODEL_LOCK.json "
+        },
+        {
+          "pid": 1661588,
+          "start_ticks": "38478023",
+          "cpu_ticks": 16323,
+          "command": "../.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/PROTOCOL.json --protocol-sha256 ed72068fcd7c30af00da532d253f36b7d427f129ca9c0ad78e4111780f051eaf --research-condition new30_prospective_20261026_acceptance_005 --phase acceptance --worker-kind office --v6-input code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/configs/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005.json --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005 --contact-audit --physics-dt .00005 --checkpoint /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/checkpoints/special_esn_ridge_s2026102802.npz "
+        }
+      ],
+      "original_status": "running",
+      "completed": 48,
+      "task": 5,
+      "strict": 0,
+      "current": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "new30_prospective_20261026_acceptance_005",
+        "progress": {
+          "time_s": 26.040000000302673,
+          "stage": "lift",
+          "position_error_m": 0.06604220817655634,
+          "external_penetration_mm": 0.7708317554049156
+        }
+      },
+      "paired_handoff": {
+        "status": "waiting_for_original108",
+        "started_utc": "2026-10-29T14:26:17.373958+00:00",
+        "registration_sha256": "9fa06330055ae4b21f841ff0a91f49e79b2cd09d4f23e31a49edbdd9bacb0aab",
+        "source_sha256": "11fc6814a3067839b0714b8f5dcc57998a318c13f99ee4e605d53c9c1b1063ea",
+        "maximum_wait_s": 43200
+      },
+      "paired_execution_exists": false
+    },
+    {
+      "utc": "2026-10-29T15:15:16.000440+00:00",
+      "units": {
+        "run-raa08b13eb33f4583ab899210958345fa.scope": {
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa08b13eb33f4583ab899210958345fa.scope",
+          "MemoryCurrent": "1716305920",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "8beca05f1b344ec6985028452eed70d4"
+        },
+        "sii-v9-paired-closure-handoff-v3-20261029.service": {
+          "MainPID": "1636845",
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-v9-paired-closure-handoff-v3-20261029.service",
+          "MemoryCurrent": "9109504",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "39a747c69fe447dd83cc9d2eb2dc88dd"
+        }
+      },
+      "cgroup": {
+        "memory.current": "1716305920",
+        "memory.peak": "2219958272",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.swap.current": "0",
+        "cpu.stat": "usage_usec 14175277388\nuser_usec 14106204180\nsystem_usec 69073208\ncore_sched.force_idle_usec 0"
+      },
+      "processes": [
+        {
+          "pid": 1541733,
+          "start_ticks": "37078452",
+          "cpu_ticks": 1929,
+          "command": "../.venv-sii-local-rl/bin/python code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_preparation_20261029_v8/tools/run_nonrl_spt_matrix_20261025.py --source-run code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2 --root code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9 --runtime code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime --python ../.venv-sii-local-rl/bin/python --model-lock code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/MODEL_LOCK.json "
+        },
+        {
+          "pid": 1661588,
+          "start_ticks": "38478023",
+          "cpu_ticks": 19323,
+          "command": "../.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/PROTOCOL.json --protocol-sha256 ed72068fcd7c30af00da532d253f36b7d427f129ca9c0ad78e4111780f051eaf --research-condition new30_prospective_20261026_acceptance_005 --phase acceptance --worker-kind office --v6-input code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/configs/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005.json --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005 --contact-audit --physics-dt .00005 --checkpoint /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/checkpoints/special_esn_ridge_s2026102802.npz "
+        }
+      ],
+      "original_status": "running",
+      "completed": 48,
+      "task": 5,
+      "strict": 0,
+      "current": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "new30_prospective_20261026_acceptance_005",
+        "progress": {
+          "time_s": 31.040000000468655,
+          "stage": "carry",
+          "position_error_m": 0.014461560144043772,
+          "external_penetration_mm": 0.7708317554049156
+        }
+      },
+      "paired_handoff": {
+        "status": "waiting_for_original108",
+        "started_utc": "2026-10-29T14:26:17.373958+00:00",
+        "registration_sha256": "9fa06330055ae4b21f841ff0a91f49e79b2cd09d4f23e31a49edbdd9bacb0aab",
+        "source_sha256": "11fc6814a3067839b0714b8f5dcc57998a318c13f99ee4e605d53c9c1b1063ea",
+        "maximum_wait_s": 43200
+      },
+      "paired_execution_exists": false
+    },
+    {
+      "utc": "2026-10-29T15:15:46.010089+00:00",
+      "units": {
+        "run-raa08b13eb33f4583ab899210958345fa.scope": {
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa08b13eb33f4583ab899210958345fa.scope",
+          "MemoryCurrent": "1744068608",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "8beca05f1b344ec6985028452eed70d4"
+        },
+        "sii-v9-paired-closure-handoff-v3-20261029.service": {
+          "MainPID": "1636845",
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-v9-paired-closure-handoff-v3-20261029.service",
+          "MemoryCurrent": "9109504",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "39a747c69fe447dd83cc9d2eb2dc88dd"
+        }
+      },
+      "cgroup": {
+        "memory.current": "1744068608",
+        "memory.peak": "2219958272",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.swap.current": "0",
+        "cpu.stat": "usage_usec 14205284704\nuser_usec 14136207482\nsystem_usec 69077221\ncore_sched.force_idle_usec 0"
+      },
+      "processes": [
+        {
+          "pid": 1541733,
+          "start_ticks": "37078452",
+          "cpu_ticks": 1929,
+          "command": "../.venv-sii-local-rl/bin/python code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_preparation_20261029_v8/tools/run_nonrl_spt_matrix_20261025.py --source-run code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2 --root code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9 --runtime code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime --python ../.venv-sii-local-rl/bin/python --model-lock code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/MODEL_LOCK.json "
+        },
+        {
+          "pid": 1661588,
+          "start_ticks": "38478023",
+          "cpu_ticks": 22324,
+          "command": "../.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/PROTOCOL.json --protocol-sha256 ed72068fcd7c30af00da532d253f36b7d427f129ca9c0ad78e4111780f051eaf --research-condition new30_prospective_20261026_acceptance_005 --phase acceptance --worker-kind office --v6-input code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/configs/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005.json --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005 --contact-audit --physics-dt .00005 --checkpoint /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/checkpoints/special_esn_ridge_s2026102802.npz "
+        }
+      ],
+      "original_status": "running",
+      "completed": 48,
+      "task": 5,
+      "strict": 0,
+      "current": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "new30_prospective_20261026_acceptance_005",
+        "progress": {
+          "time_s": 35.04000000060144,
+          "stage": "carry",
+          "position_error_m": 0.012110694442961036,
+          "external_penetration_mm": 0.7708317554049156
+        }
+      },
+      "paired_handoff": {
+        "status": "waiting_for_original108",
+        "started_utc": "2026-10-29T14:26:17.373958+00:00",
+        "registration_sha256": "9fa06330055ae4b21f841ff0a91f49e79b2cd09d4f23e31a49edbdd9bacb0aab",
+        "source_sha256": "11fc6814a3067839b0714b8f5dcc57998a318c13f99ee4e605d53c9c1b1063ea",
+        "maximum_wait_s": 43200
+      },
+      "paired_execution_exists": false
+    },
+    {
+      "utc": "2026-10-29T15:16:16.017124+00:00",
+      "units": {
+        "run-raa08b13eb33f4583ab899210958345fa.scope": {
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa08b13eb33f4583ab899210958345fa.scope",
+          "MemoryCurrent": "1764921344",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "8beca05f1b344ec6985028452eed70d4"
+        },
+        "sii-v9-paired-closure-handoff-v3-20261029.service": {
+          "MainPID": "1636845",
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-v9-paired-closure-handoff-v3-20261029.service",
+          "MemoryCurrent": "9109504",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "39a747c69fe447dd83cc9d2eb2dc88dd"
+        }
+      },
+      "cgroup": {
+        "memory.current": "1764921344",
+        "memory.peak": "2219958272",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.swap.current": "0",
+        "cpu.stat": "usage_usec 14235290822\nuser_usec 14166206598\nsystem_usec 69084224\ncore_sched.force_idle_usec 0"
+      },
+      "processes": [
+        {
+          "pid": 1541733,
+          "start_ticks": "37078452",
+          "cpu_ticks": 1929,
+          "command": "../.venv-sii-local-rl/bin/python code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_preparation_20261029_v8/tools/run_nonrl_spt_matrix_20261025.py --source-run code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2 --root code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9 --runtime code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime --python ../.venv-sii-local-rl/bin/python --model-lock code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/MODEL_LOCK.json "
+        },
+        {
+          "pid": 1661588,
+          "start_ticks": "38478023",
+          "cpu_ticks": 25324,
+          "command": "../.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/PROTOCOL.json --protocol-sha256 ed72068fcd7c30af00da532d253f36b7d427f129ca9c0ad78e4111780f051eaf --research-condition new30_prospective_20261026_acceptance_005 --phase acceptance --worker-kind office --v6-input code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/configs/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005.json --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005 --contact-audit --physics-dt .00005 --checkpoint /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/checkpoints/special_esn_ridge_s2026102802.npz "
+        }
+      ],
+      "original_status": "running",
+      "completed": 48,
+      "task": 5,
+      "strict": 0,
+      "current": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "new30_prospective_20261026_acceptance_005",
+        "progress": {
+          "time_s": 40.04000000076742,
+          "stage": "carry",
+          "position_error_m": 0.0193859728149401,
+          "external_penetration_mm": 0.7708317554049156
+        }
+      },
+      "paired_handoff": {
+        "status": "waiting_for_original108",
+        "started_utc": "2026-10-29T14:26:17.373958+00:00",
+        "registration_sha256": "9fa06330055ae4b21f841ff0a91f49e79b2cd09d4f23e31a49edbdd9bacb0aab",
+        "source_sha256": "11fc6814a3067839b0714b8f5dcc57998a318c13f99ee4e605d53c9c1b1063ea",
+        "maximum_wait_s": 43200
+      },
+      "paired_execution_exists": false
+    },
+    {
+      "utc": "2026-10-29T15:16:46.025792+00:00",
+      "units": {
+        "run-raa08b13eb33f4583ab899210958345fa.scope": {
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa08b13eb33f4583ab899210958345fa.scope",
+          "MemoryCurrent": "1786814464",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "8beca05f1b344ec6985028452eed70d4"
+        },
+        "sii-v9-paired-closure-handoff-v3-20261029.service": {
+          "MainPID": "1636845",
+          "Result": "success",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-v9-paired-closure-handoff-v3-20261029.service",
+          "MemoryCurrent": "9109504",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "ActiveState": "active",
+          "SubState": "running",
+          "InvocationID": "39a747c69fe447dd83cc9d2eb2dc88dd"
+        }
+      },
+      "cgroup": {
+        "memory.current": "1786814464",
+        "memory.peak": "2219958272",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.swap.current": "0",
+        "cpu.stat": "usage_usec 14265296667\nuser_usec 14196206442\nsystem_usec 69090225\ncore_sched.force_idle_usec 0"
+      },
+      "processes": [
+        {
+          "pid": 1541733,
+          "start_ticks": "37078452",
+          "cpu_ticks": 1929,
+          "command": "../.venv-sii-local-rl/bin/python code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_preparation_20261029_v8/tools/run_nonrl_spt_matrix_20261025.py --source-run code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2 --root code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9 --runtime code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime --python ../.venv-sii-local-rl/bin/python --model-lock code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/MODEL_LOCK.json "
+        },
+        {
+          "pid": 1661588,
+          "start_ticks": "38478023",
+          "cpu_ticks": 28325,
+          "command": "../.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/PROTOCOL.json --protocol-sha256 ed72068fcd7c30af00da532d253f36b7d427f129ca9c0ad78e4111780f051eaf --research-condition new30_prospective_20261026_acceptance_005 --phase acceptance --worker-kind office --v6-input code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/configs/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005.json --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_005 --contact-audit --physics-dt .00005 --checkpoint /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v9/checkpoints/special_esn_ridge_s2026102802.npz "
+        }
+      ],
+      "original_status": "running",
+      "completed": 48,
+      "task": 5,
+      "strict": 0,
+      "current": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "new30_prospective_20261026_acceptance_005",
+        "progress": {
+          "time_s": 44.04000000090021,
+          "stage": "carry",
+          "position_error_m": 0.014615784486810147,
+          "external_penetration_mm": 0.7708317554049156
+        }
+      },
+      "paired_handoff": {
+        "status": "waiting_for_original108",
+        "started_utc": "2026-10-29T14:26:17.373958+00:00",
+        "registration_sha256": "9fa06330055ae4b21f841ff0a91f49e79b2cd09d4f23e31a49edbdd9bacb0aab",
+        "source_sha256": "11fc6814a3067839b0714b8f5dcc57998a318c13f99ee4e605d53c9c1b1063ea",
+        "maximum_wait_s": 43200
+      },
+      "paired_execution_exists": false
+    }
+  ],
+  "scope": "Verified wait only; no dispatch, restart or physical integration"
+}
