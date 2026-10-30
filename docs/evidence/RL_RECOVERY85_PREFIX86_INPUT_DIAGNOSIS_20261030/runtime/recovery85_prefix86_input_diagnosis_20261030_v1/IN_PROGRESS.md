@@ -1,0 +1,4 @@
+# 85 prefix /86 restore-only preparation /84 terminal input diagnosis
+Previous publication ab8cbd7b verified. All science85/frozen82 and guard live. Prefix85 first5000 complete and actual plot inspected.86 restore-only waiter1064870; no86 training.84 behavior all90 and input all60+neighbors checked. Frozen84 CPU gradient diagnostic running under900s/1210forward/1200autograd registered budget, no updates. All current evidence not yet archived/published.
+
+Gradient completed:974 forward/964autograd,69.41seconds; full savedQ bitexact,weights/RNG/gradbuffers unchanged, nooptimizer. Vshort0600 opposite-neighbor local cosines−.76584/−.97120/−.79773; no historiccausal claim. Actual four-panelplot viewed,receiptwritten. New fixed2514/all5 complete85 input-followup waiter1604861 deployed under original85monitor+14400deadline; missing85 refusal passed. Only86restore prep waiting,no86science/decision. Archive/publication next.
