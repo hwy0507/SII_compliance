@@ -1,10 +1,33 @@
+## 2026-10-30 — v7 MLP棍推失败的状态支持诊断
+
+- 新增只读诊断 `code/mujoco_6d_vmc_benchmark/experiments/diagnose_contact_yield_mlp_rod_support_v7_20261030.py` 与哈希绑定结果 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_MLP_ROD_SUPPORT_DIAGNOSIS_V7_20261030.json`。源数据绑定v7 dataset `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`、75候选FIT_AUDIT、9模型锁和完成的fixed27 review；对9条rod00开发轨迹使用相同18字段/训练集尺度/绝对值扩展对照训练支持域。
+- fixed27为Task 27/27、Strict 25/27，ESN/RNN各9/9，MLP 7/9。两个失败MLP为seed02/03，最大外部穿透0.2157/0.2456mm；冻结限值0.20mm未变。validation最近帧距离p95=0.18783。所有方法在杆接触附近都有短时支持域偏离；但失败MLP在5–8s全帧超过p95，8–12.76s仍分别44.5%/91.6%超阈值。成功ESN/RNN及MLP seed01在后段大多回到支持域内。证据支持“接触后的状态分布漂移可能参与失败”，不证明单一因果；最近训练教师标签不是同状态teacher动作。诊断零物理步、零拟合/更新/回放、零重选模、未读unseen108。
+- 检查 `py_compile` 和分析器实际运行通过；9轨迹与审计指标一致、注册与数据哈希自检通过。开工fetch/read远端`main=f47cd2386691ef6bb7e33f46e4359658ea6f2180`与`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支UPDATE_LOG；main含另一持续RL工作的18个本地缺失提交，baseline无本轮相关变化。final108继续封存。收工时本轮提交/推送状态待核；训练raw与checkpoint仍本地，不声称已共享。原有无关会议素材与MuJoCo日志保留、不提交。
+
+## 2026-10-30 19:37 CST — v6 MLP棍推四条VMC接管探针完成
+
+- 用户明确批准对当前v6失败checkpoint做四条完整探针：MLP seed2026102801/seed2026102803分别在4.48s（112步）和4.60s（115步）切换冻结VMC teacher。新wrapper `code/mujoco_6d_vmc_benchmark/experiments/contact_yield_v6_mlp_rod_handoff_20261030.py` 修正了旧campaign接口按4字段且固定seed01选模的问题；现在逐条绑定v6注册模型和失败identity，并核对父诊断、最终108未派发标记、fit文件、模型/源码哈希。第一次prepare在仿真前因旧接口字段不匹配失败；没有产生登记/物理步骤。该错误已在wrapper适配层修复并重新完整校验。
+- 唯一run `code/mujoco_6d_vmc_benchmark/outputs/contact_yield_v6_mlp_rod_handoff_20261030_v1/` 完成4/4，每条500 actor steps/400,000物理子步；student observation/action前缀与对应原失败轨迹逐值一致（最大差0），全部真实teacher suffix由独立动作/filter replay审计。顺序为seed01 4.48s合格、seed01 4.60s合格、seed03 4.48s不合格、seed03 4.60s不合格。两条seed01峰值外部穿透0.0437/0.0768mm，Task、rod-yield/rejoin和冻结机器检查通过；teacher suffix分别388/385行，可作为后续共同训练数据候选，但本轮未训练或合并数据。两条seed03 Task虽成功，峰值穿透0.2495/0.2390mm超出0.20mm冻结限制，`penetration_within_02mm=false`，因此安全资格与Strict不通过；失败证据保留，未重试，不纳入训练。
+- 运行在本机CPU6、显式taskset单核、单线程、MemoryMax 3GiB、MemorySwapMax 0的唯一systemd scope，scope Result=success；运行中采样MemoryCurrent约0.59–0.92GiB。scope退出后systemd回收了cgroup，未能取得持久MemoryPeak/OOM计数；不把采样区间称为精确峰值。GPU驱动不可用，本探针按登记使用CPU MuJoCo。物理/MJB、gate、48维输入、filter、执行器限制和dt未改；最终108未读/未派发。
+- 探针细节和限制见 [CONTACT_YIELD_TARGETED_RECOVERY_20261030.md](docs/CONTACT_YIELD_TARGETED_RECOVERY_20261030.md)。本地`py_compile`、唯一登记哈希校验和四条独立review均通过。GitHub实时main head由`ls-remote`读到`3d3b5caeb50121e58a0fa397ef640d86cfe158a4`、baseline为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；随后fetch失败，故远端UPDATE_LOG未能同步读取，也未提交/推送或共享大体积raw。当前工作区已有用户/前序修改均保留。
+
+## 2026-10-30 19:12 CST — 当前MLP棍推失败的状态支持诊断
+
+- 新增只读诊断 `experiments/diagnose_contact_yield_mlp_rod_support_20261030.py`，证据 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_MLP_ROD_SUPPORT_DIAGNOSIS_20261030.json`。基于v6固定27两条完整MLP失败轨迹与同版38episode训练集，按既有18字段、train-only scale、clip及绝对值扩展计算最近训练帧距离；运行前核验了开发review/registration与数据hash。无新物理步、拟合、checkpoint改动或测试集读取。
+- MLP seed03在4.4–4.7s预碰撞段距离中位0.04139；4.7–5s升至2.13174，87.5%帧超过全validation距离p95阈值0.18448；5–8s全帧超过阈值。与原记录4.7428s首次穿透超0.20mm相邻，支持“危险偏离后进入严重训练支持域外”线索，但不证明最初动作偏差或唯一因果。seed01在4.4–4.7s仍处支持域内，随后5–12.76s中位距离0.11144–0.13546、约14–21%帧越过validation-p95；符合渐进偏移线索，无法解释为单纯早期O O D。
+- 最近邻距离不是校准OOD概率；nearest teacher labels不是在查询状态上的真实teacher rollout。当前证据更支持针对失败前缀做严格绑定的teacher接管/纠偏验证，再决定是否增补共同训练数据；不改物理、gate、48维输入、filter或选模规则。四条上一轮已批准的接管探针收据已存在，不重复运行；本轮新诊断使用不同v6失败checkpoint。最终108未读、未派发。
+- 计划为当前v6 seed01/seed03各在4.48s、4.60s切换同一VMC teacher做四条完整回合；该计划绑定不同于已批准旧探针的v6 checkpoint。自动审批拒绝创建本轮新登记，理由是用户之前的明确批准仅覆盖旧checkpoint探针。未创建REGISTRATION、未启动仿真；已向用户请求对这四条新v6探针作具体批准。探针启动包装器已移除，等待答复；既有数据/模型/开发结果只读保留。
+- 继续核验v6 `DATA_COMPLETE.json`（SHA256 `469fd6c98eec56a08f28deb6127d9b097f4df323ca89019bb5f9c6963dc30547`）：训练NPZ 38 episodes/20,500帧（SHA256 `29093f8d62ef5b7e072b813112b13723170314fd6f43511a1b1b56c5c7a8db32`）已纳入8个qualified teacher suffix：原批准4条、seed01 rod targeted 2条、seed01 rod early 2条。全部正向棍推MLP suffix来自seed01；seed03旧checkpoint pre-penetration失败被排除，故没有seed03恢复suffix进入v6 fit。其余18条开发格和所有失败收据均保留。该数据谱系解释了为何四条已批准探针已贡献训练但不解决当前两个seed特定失败。
+- 重新审计验收前置：新teacher collection独立`verified_all30_qualified`，rod/ball/corner各10条；base24train/6validation，v6增广后lineage32train/6validation共38条，来源仅三类新特化场景、无旧综合场景。v6 fit execution complete、75/75 candidate receipts、FIT_AUDIT passed、9 frozen actors/replays；预算12 candidates per family/seed、neural32k updates、六条纯teacher validation统一MSE选模。以上只证训练集/拟合/重放合同，不等同最终闭环矩阵。最终108仍为`development_not_qualified_no_final_dispatch`，dispatch=false。
+- `py_compile`及诊断脚本实跑通过。开工`git ls-remote`核得main `ab8cbd7b75cfe9c3e16adc4564462c21c695662a`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；main fetch因GitHub网络不可达失败，不能安全合并/推送，本地报告待发布。保留已有修改与无关untracked文件。
+
 ## 2026-10-30 18:57 CST — v6固定27完成独立复核；MLP棍推仍有两类失败
 
 - v6在CPU6/单线程/单仿真器/MemoryMax 3GiB/no-swap下完成固定27个train00回合；所有27回合均为500 actor steps/400,000物理子步。独立review `verified_fixed27_development_diagnosis`：Task 27/27、Strict 25/27；ESN 9/9、RNN 9/9、MLP 7/9双成功。27条actor/filter replay最大误差0。unseen108未读取/派发。
 - 两个失败仅在`rod_00` MLP：seed01 Task和machine通过但Strict失败，rod audit记录yield=10.23mm、pass/rejoin均null，未能在8s hold内越杆/回位（Task完成16.28s）；seed03虽在11.24s越杆、12.16s回位且早于12.76s撤杆，但与`fr3_link7`接触，最大外部穿透0.236507mm，超过冻结0.20mm限制，machine/Strict失败。两条完整失败轨迹与qualification保留。
 - 同一锁定数据/教师/物理下，ESN和RNN在三场景全通过；三seed MLP validation MSE为1.59e-4至1.69e-4，而ESN约3.36e-5至4.00e-5、RNN约3.17e-5至3.60e-5。FIT_AUDIT通过只表明75个拟合候选、9模型锁定和9 actor replay有效；现有证据更符合无状态MLP对接触时序/安全余量表达不足，不能据此断言teacher轨迹错误。还需基于失败轨迹做动作/观测混叠分析，再决定是否注册新架构或标签迭代；不得更改gate/物理/48维输入或selection规则。
 - 固定27由新v6绑定wrapper与v4 handoff执行，修复并保留了两个preflight-only失败收据（零物理episode）；成功运行收据`contact_yield_recovery_student_handoff_20261030_v4/`。本机episode记录cgroup memory peak最高约1.38GiB、OOM/OOM-kill=0、swap.current=0；无并发worker。
-- GitHub实时main/baseline因网络不可达未核，本地变化未提交/推送/共享；缓存SHA不冒充实时远端。保留所有旧失败与无关untracked文件。最终108仍未派发，开发成绩不是最终测试结论。
+- 本轮提交`cb4e2f78726d11b641d79f736efd32a32ea510db`已本地生成。`git push origin main`因远端main前进被非快进拒绝；随后两次fetch均网络不可达，尚未读取远端新提交、未合并或重试push，不强推。工作树只留无关未跟踪文件；失败收据保留。最终108仍未派发，开发成绩不是最终测试结论。
 
 ## 2026-10-30 18:31 CST — v6恢复重训FIT_AUDIT通过；新fixed27接续修复并在途
 
