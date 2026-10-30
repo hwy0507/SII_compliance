@@ -18,11 +18,11 @@
 - startup/archive/fullreview/health实际依赖和完整80loss/79→80配对工具准备；decision绑定完整79/四实际图、准确恢复、原76–78完整结果及79–81准确PLAN，三个缺前置真实拒绝。11样本/300.053s共15身份保持并独立保存复核，观察器自然结束，科学不重启；Goal active、无Direct34。
 - guard194样本min[75, 67, 68, 69]%、低于50[0, 0, 0, 0]，科研结束仍合成保活，历史低谷保留。SSD75成员/SHAc29bc3a5逐成员/AST已核，非HDD/arm1全备份；main21c580a9/baselinef6e8f8c2已读，发布待收据，无子agent。
 
-## 2026-10-30 — 接管恢复重训推进至73/75；handoff仍等待
+## 2026-10-30 — 75候选重训与独立拟合审计完成；固定27闭环诊断已启动
 
-- 本轮本地核对v3协调器`execution.json`约13:13:56 CST时为training、73/75 complete；RNN seed2026102803 candidate11正在23376/32000 updates，validation MSE `8.6869e-5`。fit cgroup MemoryCurrent约1.05 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff文件仍为waiting，`dispatch_attempted=false`。FIT_AUDIT尚未生成；继续由原协调器推进，不重复启动或手动提前派发。
-- 远端恢复81更新 `186f77aa` 已普通合并并随本轮进度发布；上一提交已推送核验到 `1c5d3e380e0b243d23b9436177080642b837e34d`，baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 未变。systemd bus不可用，但直接读取fit/handoff cgroup和execution/progress文件成功。
-- 保持物理/MJB、最终gate、actor输入、action filter、执行器限制、dt和测试集冻结。尚未完成75-fit、FIT_AUDIT、九模型锁定、fixed27、最终108及六指标报告；不宣称收敛或学生策略修复完成。
+- 本轮本地核对v3协调器在13:15 CST记录75/75 fit complete、无failed fit；`FIT_AUDIT.json`为passed（75条候选、9个锁定actor各18500观测精确replay、最大误差0），`MODEL_LOCK.json`冻结9个ESN/RNN/MLP模型。锁定规则仅用每场景两条共六个登记validation身份；32k neural updates是有限预算，不构成收敛声明。
+- 被动handoff在审计通过后自然派发固定27开发诊断，当前1/27完成。ESN seed2026102801在完整20s棍推`rod_00`上Task/Strict/machine均通过，终态9.16s、峰值力矩35.0273Nm、峰值关节速度0.3338rad/s、最大外部穿透0.0820mm；其余26回合未完成。当前RNN seed2026102801棍推回合在途；handoff cgroup约0.94GiB/3GiB、swap=0、OOM/OOM-kill=0。没有跑最终unseen108评测。
+- 远端恢复81更新 `186f77aa` 已普通合并；本次将推送本地最新记录并核验。baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 未变。systemd bus不可用，但fit/handoff状态、execution和cgroup收据可直接读取。
 ## 2026-10-30 — 四条接管探针通过；较早训练快照为29/75
 
 - 开工核对 GitHub main `a798f53e6c30ed69bd2dc3ff81d6038726bdf496`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，`git ls-remote` 与当时 tracking refs 一致；阅读两分支日志及本文件。发布前main前进至 `21c580a99cd8613fa06a12164f05aff1d86d200b`，经fetch/read并安全合并，远端变更仅日志/文档/证据，没有触碰本训练依赖源码。baseline日志仍停留在2026-10-08，不能代表本轮新结果。
