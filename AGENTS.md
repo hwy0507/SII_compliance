@@ -8,7 +8,7 @@
 
 ## 2026-10-30 — 接管恢复重训推进至37/75；handoff仍等待
 
-- 本轮本地核对v3协调器`execution.json`最新mtime约12:30 CST，状态training，37/75 complete；当前RNN seed2026102803 candidate05已推进到6796/32000 updates。fit cgroup MemoryCurrent约1.04 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff仍waiting，`dispatch_attempted=false`。继续由原协调器推进，不重复启动或手动提前派发。
+- 本轮本地核对v3协调器`execution.json`约12:32 CST时为training、37/75 complete；当前RNN seed2026102803 candidate05推进到28682/32000 updates。fit cgroup MemoryCurrent约1.11 GiB/3 GiB、swap=0、OOM/OOM-kill=0；student handoff文件仍为waiting，`dispatch_attempted=false`。继续由原协调器推进，不重复启动或手动提前派发。
 - 本机`git ls-remote`因无法连接GitHub失败；当前合并中的远端main对象为`cd8bbf33`，baseline tracking ref为`f6e8f8c2`，不得称其为本轮最新远端核验。systemd bus不可用，但直接读取fit/handoff cgroup和execution/progress文件成功。
 - 保持物理/MJB、最终gate、actor输入、action filter、执行器限制、dt和测试集冻结。尚未完成75-fit、FIT_AUDIT、九模型锁定、fixed27、最终108及六指标报告；不宣称收敛或学生策略修复完成。
 ## 2026-10-30 — 四条接管探针通过；较早训练快照为29/75
