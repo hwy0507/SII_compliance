@@ -20,6 +20,30 @@
 - 训练使用CPU6 affinity/单线程、MemoryMax 3GiB、swap上限0；容器无`cpu.max`，故无CFS quota声明。首轮scope预检因`cpu.max`缺失在第一个候选启动前失败，失败收据保留；后续版本改以单CPU affinity限制。未新增MuJoCo物理步、未以fixed27选模、未访问final108。独立拟合和actor replay审计通过，但宽度384 checkpoint尚无fixed27闭环结果，不能声称安全/Task/Strict提升。
 - 下一步应另行登记新九模型组合（原ESN/RNN锁定checkpoint与三个384宽度MLP）并完成27个train00开发回合及独立action/filter/物理审计；保留所有失败，27条未全部Task+Strict+机器合规前不得注册final108。开工实时查询GitHub：main=`d8ef159fa84acbde264c1460453fa50153dc0b76`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；fetch因连接GitHub失败，远端日志正文未能读取，本地tracking cache仍为main=`c5f5f9d7`。本条为本地进度修订，远端发布待网络恢复；Goal active。
 
+## 2026-10-30 — 原89继续；88—90稳定性标签修正及真实88绑定通过
+
+- [交接](docs/RL_HISTORY89_STABILITY_READY_20261030.md)。原88—90预登记脚本遗留85—87图题/字段/说明，独立v2仅修标签，原PLAN/hash保留；除字符串与字段名外AST相同，公式/原seed/5000bootstrap/5%/nearzero1不变。实际完整88三路全输入/历史revision/55科学契约绑定通过，未完整89真实拒绝；未跑全窗口统计，不授权90。
+- 原89与冻结88、archive3433024和固定87终端等待4055969继续，600.082秒/105身份观察通过；总steps{'impedance': 3672849, 'admittance': 3675085, 'vmc': 3676375}，完整89/稳定性及冻结88全90回合结果仍待，无自动90/Direct34。
+- GPU177采样min[66, 66, 67, 68]%、低于50[0, 0, 0, 0]，科研结束继续守护；共享SSD30成员/SHA861baa53，非HDD/arm1全备份。maind8ef159f/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，历史失败保留。
+
+## 2026-10-30 — History89前5000已审；完整89固定87终端跟踪等待
+
+- [交接](docs/RL_HISTORY89_PREFIX_FOLLOWUP_20261030.md)。三方法固定5000原字节/独立保存算术/实际六栏图通过；critic首末均值I1.850637→1.681222、A1.193333→1.186347、V.777596→.785050，尖峰及I actor上移保留，非完整loss/reward稳定。
+- 同原87全部终端/all5/原masks的87/88/89跟踪已在完整89前登记；已保存87/88算术精确、真实缺89前置拒绝，等待器4055969按原archive截止运行，0新forward/physics/update，实际89结果待。原89与冻结88持续，180.048秒/105身份观察通过，总steps{'impedance': 3660477, 'admittance': 3662709, 'vmc': 3663789}。
+- GPU105采样min[68, 62, 69, 68]%、低于50[0, 0, 0, 0]，科研结束继续守护；共享SSD42成员/SHA6e77ef8d，非HDD/arm1全备份。mainb17dfd17/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，无自动90/Direct34，历史失败保留。
+
+## 2026-10-30 — 完整88精确恢复；有限history89实际运行
+
+- [交接](docs/RL_HISTORY89_ONLINE_20261030.md)。完整88含Ashort0900及三critic退化证据后单独登记89，同history51/actor49与全部物理、LR、reward契约；84负例、6原生clone更新重复/恢复、精确全state/replay通过。trainer仅两恢复seam变化，未重置已学history权重/Adam，不自动90/Direct34。
+- 真实startup全旧51维回放/30MJB/CPU/新映射/reward0误差通过，120.042秒/99身份观察保持；总steps{'impedance': 3652305, 'admittance': 3654609, 'vmc': 3655743}。唯一archive/full review/health/loss消费者已部署，完整89与稳定性待；原冻结88三路/collector/后处理继续，最终90及raw/配对待。
+- GPU172采样min[75, 65, 65, 69]%、低于50[0, 0, 0, 0]，科学完成仍保载，非科研吞吐。共享SSD105成员/SHA4fd6d62e，HDD仅254字节指针、非全备份。mainaac53b19/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，所有历史失败保留。
+
+## 2026-10-30 — 完整history88已审；冻结88全90实际运行
+
+- [交接](docs/RL_COMPLETE88_FROZEN88_20261030.md)。88三路各30×55s/41250/0abort，全旧replay及新51维映射/reward0误差/full loss/health已审；Task/Strict18/17、16/16、17/17，reward−2.375354/−5.201837/−2.815046。critic首末均值下降但尖峰/actor漂移保留，单轮未收敛；Ashort0900从通过退化至carry失败，所有90配对保留。
+- 固定87全终端all5，V全部mask内SSE改善；Icritic3与Acritic2/3退化，原state/RNG不变。health/loss/训练配对/固定终端四实际图已查看。完整88三路冻结恢复通过后，全90/seed2026102638/0更新实际启动；90.019秒10样本身份/物理CPU/进度通过，最终全90/raw/配对及内存证明仍待。
+- 原88训练正常停止，原guard继续；GPU418采样min[71, 67, 65, 64]%、低于50[0, 0, 0, 0]，科研结束仍保载。SSD129成员/SHA22003725，非HDD/arm1全备份。main7ae9d9af→c5f5f9d7/baselinef6e8f8c已fetch/read/fast-forward，发布见收据；Goal active，无子agent，无自动89/Direct34。
+
 ## 2026-10-31 — v7 锁定模型已见棍推训练拟合诊断
 
 - 承接已批准并完成的 v7 公平重训（40条/21,500帧、75候选、9个锁定模型）；本轮没有重复训练。新增只读动作复放，核验`rod_00`的500帧观测和requested-action标签与原teacher逐位相同，均为正权重训练行；通过训练完成收据、FIT_AUDIT、模型锁、数据和checkpoint哈希检查。
