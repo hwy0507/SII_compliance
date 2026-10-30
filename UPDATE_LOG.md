@@ -7,6 +7,28 @@
 发布前远端main前进到511fbd5f5a671b203f8265636a8bcc143860a264，已fetch/read最新日志、AGENTS和MLP384专题报告：另一主机非RL容量拟合改善但rod00三seed Strict均失败，保留其原作业/失败及wide-loader修复。本机冻结runtime不受这些checkout修改影响；正常整合双方记录，不合并baseline。
 
 
+## 2026-10-31 — MLP384宿主live与棍推全九条核验；独立wide复核入口
+
+- 获批v7 75/75与容量36/36既有收据继续复用，不重复训练。原fixed27 v4宿主协调2517772及子worker live，scope CPU6/单线程/MemoryMax3221225472/swap0、OOM/kill0；哈希绑定前缀已完成13/27、Task13/13、Strict10/13。不是全矩阵结果。
+- rod00九条齐全：ESN/RNN各3/3双成功；MLP384 Task3/3、Strict0/3，峰穿透0.251768/0.243292/0.222516mm超过冻结0.20mm。拟合MSE改善未改善该训练身份安全；不删失败、不重选模型，final108未读/派发。详见docs/CONTACT_YIELD_MLP384_FIXED27_PROGRESS_20261031.md及绑定前缀JSON。
+- 修复旧loader拒绝v2契约的版本化worker/独立审计代码予以发布；新增独立full27 reviewer使末尾重放同样使用wide loader，不改运行中冻结source。只读prefix replay另留证据，完整27与最终比较仍待。
+- 已实际fetch/read main9207ff42、baselinef6e8f8c两分支日志；服务器归档SSH被自动审批拒绝，已请求具体授权，本轮仅本地、待同步。Goal active，未创建子agent。
+
+## 2026-10-31 — MLP384 fixed27 v4 接续运行中
+
+- 复用用户批准的40条/21,500帧v7公平重训收据（dataset SHA256 `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`；75/75 fits、九模型锁定、FIT_AUDIT passed），不重复相同75候选。固定27旧结果仍Task27/27、Strict25/27；旧MLP为7/9，final108继续封存。
+- MLP容量诊断36/36 complete，36个候选均32,000 updates，FIT_AUDIT passed；三个seed均选宽度384，validation MSE相对旧宽128下降`15.04% / 12.23% / 17.45%`。所选checkpoint SHA256：`de81b4d10a7e04b027edb1b0c3784a3be2224029c2b505a5f05ef43e9bd59945`、`2fe1f5c4d70c21b9483490a249ca442ada8a23c90837dee7e9df10bc0cce31f8`、`0e570f76faf996dcee72ac7a7fdcad290bd2c88cc43d3ea4198e744cc2852bf4`。拟合改善尚不能代表物理闭环改善。
+- fixed27 v1/v2因原部署loader不支持`proprio48_office_mlp_rnn_v2`而在宽MLP物理步前退出；v2额外确认subprocess不会继承monkey-patch。v3同进程worker成功产生一条宽MLP 20秒、400,000子步轨迹，actor/filter raw replay为零误差，但独立audit子进程仍走旧loader而停止，三个attempt和失败日志全部保留。v3物理原始行峰穿透`0.251768mm`，已超冻结0.20mm门槛；yield、持杆越过、回位时序通过，但Task true、Strict false、machine false，且v3资格审计不完整。
+- v4修复了仿真与独立action/filter replay的wide-loader路径。先对临时副本完成独立actor/filter replay预检（均零误差），之后注册新的27条train00、九模型固定组合，物理/MJB/gate/canonical48/filter/执行器限制/dt不变。v4在CPU6 affinity、单线程、MemoryMax3GiB、swap0下串行运行；当前4/27、seed02 RNN在途，MemoryCurrent约0.87GiB、OOM=0。v4首个MLP独立审核复核同样确认Task true、Strict/machine false及0.251768mm穿透失败；所有结果保留，其余回合按队列继续执行。
+- 证据与修复代码位于`code/mujoco_6d_vmc_benchmark/outputs/contact_yield_mlp_capacity_20261031_v1/`、`outputs/contact_yield_mlp384_fixed27_20261031_v1/`至`v4/`及新增版本化loader/coordinator。v4尚未完成；不进行test/final108访问，也不把早期或partial结果视作整组成功。开工实时GitHub `main=d8ef159fa84acbde264c1460453fa50153dc0b76`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；fetch失败，本地tracking cache main=`c5f5f9d7`。容量诊断提交`73a1f500`已本地commit，push因网络失败；本轮新代码和进度待commit/push。Goal active。
+
+## 2026-10-31 — MLP容量诊断完成；新宽度模型尚未闭环验证
+
+- 用户批准的v7公平重训与已存在run逐项对应：统一40条/21,500帧数据（SHA256 `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`）、ESN/RNN/MLP各seed候选搜索、75/75完成、9个模型锁定，FIT_AUDIT通过。因此复用原始训练与审计收据，不重复消耗算力。该既有run的fixed27结果为Task 27/27、Strict 25/27；MLP 7/9，final108仍封存。
+- 同数据另完成MLP容量诊断：单隐层宽度128/256/384，每seed各12候选、每候选32,000更新，仍只按原六条纯teacher development validation MSE选模。execution记录36/36 complete、FIT_AUDIT passed，三个seed全部选择宽度384。selected validation MSE从v7宽度128的`1.688898e-4 / 1.637364e-4 / 1.719797e-4`降至`1.434842e-4 / 1.437191e-4 / 1.419610e-4`，相对下降`15.04% / 12.23% / 17.45%`。新checkpoint SHA256分别为`de81b4d10a7e04b027edb1b0c3784a3be2224029c2b505a5f05ef43e9bd59945`、`2fe1f5c4d70c21b9483490a249ca442ada8a23c90837dee7e9df10bc0cce31f8`、`0e570f76faf996dcee72ac7a7fdcad290bd2c88cc43d3ea4198e744cc2852bf4`。容量诊断登记、执行、审计和锁定收据位于`code/mujoco_6d_vmc_benchmark/outputs/contact_yield_mlp_capacity_20261031_v1/`。
+- 训练使用CPU6 affinity/单线程、MemoryMax 3GiB、swap上限0；容器无`cpu.max`，故无CFS quota声明。首轮scope预检因`cpu.max`缺失在第一个候选启动前失败，失败收据保留；后续版本改以单CPU affinity限制。未新增MuJoCo物理步、未以fixed27选模、未访问final108。独立拟合和actor replay审计通过，但宽度384 checkpoint尚无fixed27闭环结果，不能声称安全/Task/Strict提升。
+- 下一步应另行登记新九模型组合（原ESN/RNN锁定checkpoint与三个384宽度MLP）并完成27个train00开发回合及独立action/filter/物理审计；保留所有失败，27条未全部Task+Strict+机器合规前不得注册final108。开工实时查询GitHub：main=`d8ef159fa84acbde264c1460453fa50153dc0b76`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；fetch因连接GitHub失败，远端日志正文未能读取，本地tracking cache仍为main=`c5f5f9d7`。本条为本地进度修订，远端发布待网络恢复；Goal active。
+
 ## 2026-10-30 — 完整89与边界诊断已审；原88—90 A/V稳定性失败
 
 - [交接](docs/RL_COMPLETE89_BOUNDARY_DIAGNOSIS_20261030.md)。89三路正常完成，各30×55/41250/0abort，全旧replay及新51映射/reward0误差；Task/Strict18/17、13/12、17/16，mean−2.360402/−11.989807/−4.601530。完整loss末段均值上升/尖峰，全90配对A丢4 Strict、V丢1，无新增通过；四实际图已查看，未收敛。
@@ -11897,4 +11919,6 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 
 - 对冻结v7的36个MLP候选复放已见`rod_00`训练teacher序列；核验500帧观测/动作标签逐位一致、权重全正、75/75拟合完成、FIT_AUDIT、36候选和逐checkpoint哈希。所有候选训练序列RMSE为0.005341–0.006112。validation选中的每seed模型距训练序列候选最优仅0–1.7%，故现有MLP误差不能归咎于选模挑错。六个validation identities选模及锁定模型未修改。
 - v7 MLP所有候选固定为单隐层宽128、5,504参数，只搜索4 learning rates×3 weight decay；RNN宽128有21,888参数，ESN为3,780 trainable readout+128 fixed reservoir。方法候选数和32,000 neural updates一致，但模型容量并未配平；容量/时序表征是下一步需测试的假设，不是已证因果。完整逐候选结果见`docs/CONTACT_YIELD_V7_MLP_CANDIDATE_GRID_20261031.md`。
-- `py_compile`与36候选本地actor复放通过。0物理步、0 optimizer更新、无重选模、无final108访问。当前宿主cgroup实测`memory.max=max`、`memory.swap.max=max`、`cpu.max`不可用，不符合MemoryMax≤3GiB、swap=0和CPU配额，因此未启动新拟合/物理作业；后续扩展容量搜索前需在合规资源边界登记同候选数公平预算。首次fetch失败后已通过提升网络权限重新fetch/read，main=`39d5363e39b56c542bffc33ccd625ff66400da19`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，两分支无新增提交。诊断提交`80affc49`已推送；远端指针核验main=`80affc49d28866769898821910a1b5ab6d721f75`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
+- 只读按动作通道分解补充了线索：4.2–4.7秒平均 RMSE 中，MLP的slowdown通道0为0.001778，未高于ESN/RNN的0.002045/0.001581；差距主要集中在 residual 通道1（0.009275，对0.002801/0.001816）和通道5（0.005883，对0.002204/0.002242）。若干通道的teacher目标近乎常量，因此只报告绝对RMSE；这仍不证明轴动作误差造成穿透。详见`docs/CONTACT_YIELD_V7_LOCKED_ROD_TRAIN_FIT_20261031.md`。
+- 本轮远端复核读取main=`c5f5f9d74005e1a7cdcaf1a6f4b87d7f14472b71`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，日志无更新；开始时本地head与main相同。新增仅保存轨迹训练动作通道分析，无训练/物理作业；scope资源限制仍不合规。
+- 只读按动作通道分解补充了线索：4.2–4.7秒平均 RMSE 中，MLP的slowdown通道0为0.001778，未高于ESN/RNN的0.002045/0.001581；差距主要集中在 residual 通道1（0.009275，对0.002801/0.001816）和通道5（0.005883，对0.002204/0.002242）。若干通道的teacher目标近乎常量，因此只报告绝对RMSE；这仍不证明轴动作误差造成穿透。详见`docs/CONTACT_YIELD_V7_LOCKED_ROD_TRAIN_FIT_20261031.md`。

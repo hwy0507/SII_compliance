@@ -47,4 +47,3 @@ PLAN SHA256 `94aad5f5d2054a31dfe5499544880f6a638f30196b578771aaeecaa5fe171a30`�
 HDD仅原位254字节LATEST，原大checkpoint/raw/sidecar继续共享SSD，非HDD/arm1全备份。Direct33数值接受但冻结30 Task/Strict0/0，28中断缺最终内存不变证明；指定ESN未提供、不替代其他主机模型。partial75、74—76不可判、79安全中止、全部失败窗口、halfstd拒绝及软件失败保留。完整reward稳定、loss健康、最终冻结及原ESN比较未证实，Goal active。
 
 发布前远端main前进到511fbd5f5a671b203f8265636a8bcc143860a264，已fetch/read最新日志、AGENTS和MLP384专题报告：另一主机非RL容量拟合改善但rod00三seed Strict均失败，保留其原作业/失败及wide-loader修复。本机冻结runtime不受这些checkout修改影响；正常整合双方记录，不合并baseline。
-

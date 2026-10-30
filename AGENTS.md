@@ -6,6 +6,24 @@
 - 固定500步I/A/V总masked loss比同容量对照低约53.4%/.83%/1.52%；Icritic0/Acritic1略差，A/V早期尖峰保留。 全初末保存值独立标量复算/六栏实际图通过，仅已见终端拟合；选择准备因果违规位52维持久化/全量回放迁移，尚未实现正式迁移或登记在线90。 原88—90失败窗口保持，未收敛、无90/Direct34。
 - 原冻结88完成数{'impedance': 13, 'admittance': 14, 'vmc': 13}，原evaluator/collector/postprocessor继续，最终全90/raw/配对待。GPU59采样min[71, 76, 67, 76]%、低于50[0, 0, 0, 0]，科研结束仍保载；SSD43成员/SHA06ab306a核验，非HDD/arm1全备份。main8610fd8e/baselinef6e8f8c已query/fetch/read，发布见收据，无子agent，Goal active。
 
+## 2026-10-31 — MLP384当前接续（覆盖下方早期快照）
+
+原fixed27 v4 scope与PID2517772已宿主live核验，完成前缀13/27、Task13/13、Strict10/13；rod00 ESN/RNN各3/3，MLP384三个seed均穿透Strict失败（0.251768/0.243292/0.222516mm）。原作业继续、不重复训练/物理派发。全27结束后用独立review_contact_yield_mlp384_fixed27_20261031.py运行wide-loader完整复核；旧v4 review直接入口仍会调用legacy replay，不用它重试。详见docs/CONTACT_YIELD_MLP384_FIXED27_PROGRESS_20261031.md。final108未派发；完整矩阵未完成，不能宣称安全修复。
+
+## 2026-10-31 — MLP容量诊断完成；新模型闭环待验证
+
+- 用户批准的v7公平重训与现有已完成run完全相同（40条/21,500帧，dataset SHA256 `d771433d…57f42a`，75候选/9个模型、FIT_AUDIT passed）；因此复用其收据，不重复跑相同75候选。
+- 新增MLP容量诊断保持canonical48、数据/标签/划分、六条validation选模和每候选32k更新不变，比较宽度128/256/384。36/36候选完成、0失败，独立拟合/actor replay审计通过；三个seed均按原validation规则选中宽度384。相对v7宽度128模型，validation MSE分别下降15.04%、12.23%、17.45%。登记、执行、独立审计与模型锁见`outputs/contact_yield_mlp_capacity_20261031_v1/`。
+- 容量诊断采用CPU6单核affinity、单线程、MemoryMax 3GiB、swap上限0；容器未挂载`cpu.max`，不声称CFS quota。首轮资源预检在候选启动前因缺`cpu.max`失败，原收据保留；后续修订以CPU affinity作单CPU限制。无新物理步、未用fixed27结果选模、final108未访问。
+- 新384宽度MLP尚未进入fixed27闭环，因此不能声称Task/Strict、安全合规改善。下一步需单独登记并核验九模型组合（原ESN/RNN锁定模型+三个384宽度MLP）在27个train00开发回合上的独立闭环与动作/filter/物理审计；所有失败保留。fixed27未全通过前不得注册final108。详见根`UPDATE_LOG.md`顶部。
+
+## 2026-10-31 — MLP384 fixed27 接续运行中
+
+- 75候选重训已用同数据SHA的既有完整收据（75/75、FIT_AUDIT passed），没有重复计算；MLP容量诊断36/36、每候选32k updates、FIT_AUDIT和actor replay passed，三个seed均选宽384，validation MSE相对v7宽128下降12.23%–17.45%。这些拟合结果不代表闭环成功。
+- 新fixed27 v1、v2均在首个宽MLP的物理步前因旧loader拒绝contract `proprio48_office_mlp_rnn_v2`而停止；v3通过版本化loader完成首个宽MLP的20s/400,000子步，但其后独立replay审计子进程仍调用旧loader，审计初始化失败。三次attempt及原始执行/失败日志都保留，未覆盖。v3宽MLP原始轨迹记录峰穿透0.251768mm，已超过冻结0.20mm门槛；Task true、Strict false、machine false；yield/持杆越过/回位时序均通过。此物理事实保留，但v3没有完整独立资格审计。
+- 修复了v4隔离worker与同进程独立actor/filter replay使用v2 loader的路径，并在临时轨迹副本上先验证独立replay误差为0。v4 registration绑定27条train00、固定九个模型及全部来源hash；v4当前由CPU6 affinity、单线程、MemoryMax 3GiB、swap0 scope串行执行，已完成4/27，当前`rod_00` seed02 RNN；MemoryCurrent约0.87GiB、OOM/OOM-kill=0。首个宽度384 MLP行已在v4经独立审计确认上述Strict/穿透失败，全部失败均保留，剩余23条继续，不按validation外结果重选。
+- v1/v2/v3物理/代码收据、v4状态及v4完整复核结果见`outputs/contact_yield_mlp384_fixed27_20261031_v1/`至`v4/`。v4尚未完成；最终108未读取或派发，不得以当前开发结果宣称新模型组全通过。
+
 ## 2026-10-30 — 完整89与边界诊断已审；原88—90 A/V稳定性失败
 
 - [交接](docs/RL_COMPLETE89_BOUNDARY_DIAGNOSIS_20261030.md)。89三路正常完成，各30×55/41250/0abort，全旧replay及新51映射/reward0误差；Task/Strict18/17、13/12、17/16，mean−2.360402/−11.989807/−4.601530。完整loss末段均值上升/尖峰，全90配对A丢4 Strict、V丢1，无新增通过；四实际图已查看，未收敛。
