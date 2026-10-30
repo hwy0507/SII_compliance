@@ -1,0 +1,32 @@
+{
+  "controller": "impedance",
+  "parameter_dimension": 5,
+  "parameter_keys": [
+    "stiffness",
+    "rot_stiffness",
+    "zeta",
+    "rot_zeta",
+    "vertical_stiffness_ratio"
+  ],
+  "prior": [
+    654.1615336528237,
+    44.69118493567842,
+    1.1728085015511442,
+    0.8142729717441489,
+    1.393781179072902
+  ],
+  "updates": 675,
+  "minimum_tank_j": 0.7629006260329786,
+  "limited_updates": 0,
+  "reference_mapping": "original BO controller reference mapping",
+  "safety_scope": "Rate/bounds and positive change of local storage model. Damping recharge is relative virtual damping. No global robot passivity claim; reference motion and VMC readout gain are outside storage model.",
+  "repair_version": "physical-units-projected-impedance-v1",
+  "repair_options": {
+    "friction_compensation": 1.0,
+    "nullspace_stiffness": 5.0,
+    "nullspace_damping": 1.0
+  },
+  "historical_controller_unmodified": true,
+  "execution_semantics": "Native torque: projected Cartesian spring/damper, model friction feedforward and nullspace posture; bounded equivalent joint command then unchanged torque amplitude/slew. Physical velocity still audited separately.",
+  "telemetry_storage": "Disk-backed exact float64 rows, same complete servo NPZ schemas; no control-law change"
+}

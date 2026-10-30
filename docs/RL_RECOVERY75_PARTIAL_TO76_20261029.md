@@ -1,3 +1,5 @@
+> **最新：[完整79/安全失败与有限80续训](RL_RECOVERY79_ABORT80_RUNNING_20261030.md)。80运行、Goal active，GPU科研结束仍保活。**
+
 > **最新：[80仅恢复/审查准备](RL_RECOVERY80_PREPARATION_20261030.md)。原79继续，无80训练决定，GPU科研结束仍保活。**
 
 > **最新：[RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030](RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030.md)。完整78与76–78已审；79实际续训、Direct33恢复，GPU科研结束仍保活，Goal active。**

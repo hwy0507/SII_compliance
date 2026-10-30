@@ -1,0 +1,104 @@
+{
+  "time": 1793331571.1105595,
+  "parent_run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle79_20261029_v1",
+  "parent_launch_sha256": "b70c007f8abd151c98e73e155978ab872225573db691a6770214b49c629da697",
+  "jobs": [
+    {
+      "controller": "impedance",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery79_20261029_v1/resume_recovery78.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle79_20261029_v1/impedance/REGISTRATION.json",
+        "--resume",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle78_archive_20261029_v1/impedance/cycle_00078.pt",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle79_20261029_v1/impedance/train",
+        "--controller",
+        "impedance",
+        "--cpus",
+        "13,14,15,16,17,18,19,20,21,22,23,24,25",
+        "--workers",
+        "30",
+        "--device",
+        "cuda:1"
+      ],
+      "pid": 192090,
+      "proc_start_ticks": "570530307",
+      "time": 1793331492.8602846
+    },
+    {
+      "controller": "admittance",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery79_20261029_v1/resume_recovery78.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle79_20261029_v1/admittance/REGISTRATION.json",
+        "--resume",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle78_archive_20261029_v1/admittance/cycle_00078.pt",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle79_20261029_v1/admittance/train",
+        "--controller",
+        "admittance",
+        "--cpus",
+        "26,27,28,29,30,31,32,33,34,35,36,37,38",
+        "--workers",
+        "30",
+        "--device",
+        "cuda:2"
+      ],
+      "pid": 192091,
+      "proc_start_ticks": "570530307",
+      "time": 1793331492.8610864
+    },
+    {
+      "controller": "vmc",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_recovery79_20261029_v1/resume_recovery78.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle79_20261029_v1/vmc/REGISTRATION.json",
+        "--resume",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle78_archive_20261029_v1/vmc/cycle_00078.pt",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle79_20261029_v1/vmc/train",
+        "--controller",
+        "vmc",
+        "--cpus",
+        "39,40,41,42,43,44,45,46,47,48,49,50,51",
+        "--workers",
+        "30",
+        "--device",
+        "cuda:3"
+      ],
+      "pid": 192094,
+      "proc_start_ticks": "570530307",
+      "time": 1793331492.862346
+    }
+  ],
+  "monitor": {
+    "time": 1793331492.8634522,
+    "pid": 192096,
+    "proc_start_ticks": "570530307",
+    "script_sha256": "49b6985a3b8201a95ae9e80d3382db94de37d46a9fb4e00b9ab67cae757ad609"
+  },
+  "sources": {
+    "audit_labels.py": "ffeada4290fdaf4d9d8b49f36c3de148c30c3987603efb2ac3e3c0594607044d",
+    "review_labels79.py": "42e0d8cc4acf951d7e38190ba6b4297ac1675dfbf21e1fe8b61fb7cb9068f015",
+    "wait.py": "96d489fc6d7ef94637827c960caa946db0c0fc3e13cce3939be61cae1682e901"
+  },
+  "wait_seconds": 14400,
+  "cycles": [
+    78,
+    79
+  ],
+  "original75_interrupted": true,
+  "consecutive_complete_cycles": true,
+  "new_training": false
+}

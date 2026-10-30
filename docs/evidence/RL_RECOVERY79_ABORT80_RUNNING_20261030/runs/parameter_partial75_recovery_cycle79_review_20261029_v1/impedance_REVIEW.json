@@ -1,0 +1,61 @@
+{
+  "steps": 3276448,
+  "updates": 3271449,
+  "checkpoint_sha256": "8f49c1cdd96b18167ebdfc37605256bce8651dd37c4f0d72b536c2d9b9312fb2",
+  "replay_capacity_extension": {
+    "version": 1,
+    "original_capacity": 1000000,
+    "capacity": 2000000,
+    "retention": "append_without_overwrite",
+    "sampling": "uniform_all_retained_rows",
+    "full_behavior": "raise_before_overwrite"
+  },
+  "replay_capacity_followup": {
+    "version": 1,
+    "previous_capacity": 2000000,
+    "capacity": 4000000,
+    "retention": "append_without_overwrite",
+    "sampling": "uniform_all_retained_rows",
+    "full_behavior": "raise_before_overwrite",
+    "historical_marker_preserved": true
+  },
+  "current_replay_capacity": 4000000,
+  "historical_entry_cycle": 23,
+  "crossed_second_capacity": true,
+  "rows_beyond_second_capacity": 1276448,
+  "replay_size": 3276448,
+  "crossed_original_capacity": true,
+  "new_transitions": 40550,
+  "retained_replay_rows": 3235898,
+  "retained_replay_all_fields_exact": true,
+  "conditions": 30,
+  "task": 17,
+  "strict": 17,
+  "reward_mean": -2.511716602094845,
+  "full_horizon_count": 29,
+  "aborts": [
+    {
+      "cycle": 79,
+      "condition": "active_long_train_0000",
+      "category": "active_long",
+      "steps": 675,
+      "total_steps": 3264119,
+      "reward": -40.529577441590455,
+      "task_success": false,
+      "strict_success": false,
+      "abort_reason": "global_penetration_exceeded_2mm",
+      "full_task_horizon_completed": false,
+      "physical_valid": false,
+      "final_task_stage": "retreat",
+      "completion_time_s": null,
+      "model_sha256": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7",
+      "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle79_20261029_v1/impedance/train/cycle_00079/active_long_train_0000"
+    }
+  ],
+  "max_reward_reconstruction_error": 0.0,
+  "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction",
+  "source_parent_sha256": "03ff35c5299f61017bf4b83a2c6cfefd8659bb8027e110b23a7ab8efb1495b9f",
+  "stage_resumed_parent_sha256": "03ff35c5299f61017bf4b83a2c6cfefd8659bb8027e110b23a7ab8efb1495b9f",
+  "optimizer_and_network_finite": true,
+  "convergence_claim": false
+}
