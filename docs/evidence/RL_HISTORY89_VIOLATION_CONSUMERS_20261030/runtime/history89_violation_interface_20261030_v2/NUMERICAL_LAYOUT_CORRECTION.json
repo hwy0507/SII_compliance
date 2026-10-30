@@ -1,0 +1,25 @@
+{
+  "time": 1793387635.6212335,
+  "failed_v1": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v1/FAILURE_1793387407551816203.json",
+    "sha256": "a772a14c3e65d999fde90182f00642eb0446179c1347feb3e9f3118e934c3489"
+  },
+  "diagnosis": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v1/NATIVE_MISMATCH_DIAGNOSIS.json",
+    "sha256": "98188dff229982ed12d3bf2e6ca8fa3bbd4df05a6d0ff89b68f5fa19663f1031"
+  },
+  "old_source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v1/persisted_violation_critic.py",
+    "sha256": "e62df5eafa4dc6a88a279f0328c5284abd8b7fd20a16614fe3b2d51e6798a97f"
+  },
+  "new_source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_interface_20261030_v2/persisted_violation_critic.py",
+    "sha256": "c6e54f415fcb8804cbcce26b3322bcf8b600466d5c9b64abd612e51524b8116a"
+  },
+  "change": "Preserve original51+action first-layer dot layout and add bit-column contribution separately; zero initialization keeps old inference. Same full52 parameter tensor/Adam structure.",
+  "reason": "Dense inserted zero column changed single-row CUDA reduction; CHEQ next weights differed by up to2.82824e-5, next raw action by up to5.50561e-5 despite equal actor RNG. Full-batch initial comparisons were exact and missed this.",
+  "criterion": "Retain exact old native action/context/RNG checks, no tolerance relaxation.",
+  "limits": "Split affine numerical realization differs from dense offline diagnostic though same real-arithmetic model. Requires actual v2 full checks; no online/policy acceptance from this correction.",
+  "physics_steps": 0,
+  "formal_updates": 0
+}

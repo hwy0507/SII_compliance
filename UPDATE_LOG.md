@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整89违规位全量保存、GPU cache及完整消费者通过
+
+- [交接](docs/RL_HISTORY89_VIOLATION_CONSUMERS_20261030.md)。三份52维full snapshot磁盘重载、11072448旧行/learner/Adam逆迁移精确、实际4m GPU cache下一65536/RNG、可丢弃append/mask/fallback通过；大快照SSD、非在线90 checkpoint。
+- 同完整89三条short0600各1375+terminal，原51与新52的观测/raw/mixed/context/clock/terminal/外部RNG精确，全部learner/RNG/replay不变；全部7993终端all5 online/target及原projection精确。真实跨bit门，0physics/正式update。trainer/eval/health正式调度和有限90仍待，原失败窗口保持，未收敛。
+- 原冻结88完成数{'impedance': 20, 'admittance': 19, 'vmc': 19}，原评测/后处理继续。GPU129样本min[68, 73, 67, 75]%、低于50[0, 0, 0, 0]；用户明确科研结束也继续守护。SSD50成员/SHAc2f52675核验，非HDD/arm1全备份。main72d318a5→cea807d8/baselinef6e8f8c已query/fetch/read/ff，正常发布见收据，无子agent，Goal active。
+
 ## 2026-10-31 — 特化场景 final108 锁定比较等待受限执行环境
 
 - 已批准的75候选公平重训由既存完整收据覆盖（40条/21,500帧、75/75、FIT_AUDIT passed），未重复运行。MLP384 fixed27独立复核为Task 27/27、Strict 24/27、replay 27条精确；ESN/RNN各9/9双成功，MLP384 6/9。三条MLP棍推外穿透0.251768/0.243292/0.222516 mm超过冻结0.20 mm，失败保留；舒适度NA。

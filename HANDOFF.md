@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整89违规位全量保存、GPU cache及完整消费者通过
+
+- [交接](docs/RL_HISTORY89_VIOLATION_CONSUMERS_20261030.md)。三份52维full snapshot磁盘重载、11072448旧行/learner/Adam逆迁移精确、实际4m GPU cache下一65536/RNG、可丢弃append/mask/fallback通过；大快照SSD、非在线90 checkpoint。
+- 同完整89三条short0600各1375+terminal，原51与新52的观测/raw/mixed/context/clock/terminal/外部RNG精确，全部learner/RNG/replay不变；全部7993终端all5 online/target及原projection精确。真实跨bit门，0physics/正式update。trainer/eval/health正式调度和有限90仍待，原失败窗口保持，未收敛。
+- 原冻结88完成数{'impedance': 20, 'admittance': 19, 'vmc': 19}，原评测/后处理继续。GPU129样本min[68, 73, 67, 75]%、低于50[0, 0, 0, 0]；用户明确科研结束也继续守护。SSD50成员/SHAc2f52675核验，非HDD/arm1全备份。main72d318a5→cea807d8/baselinef6e8f8c已query/fetch/read/ff，正常发布见收据，无子agent，Goal active。
+
 ## 2026-10-30 — 完整89因果违规位数据与持久化初始接口通过
 
 - [交接](docs/RL_HISTORY89_VIOLATION_INTERFACE_20261030.md)。原87 prefix精确保留，88/89新增247500 raw历史及逐标量复算通过；全11072448行原51特征/独立bit对齐，现有回放不改。新critic/replay52、actor49、clock49/history50/bit51、10critic/Adam零列迁移，原history与23/47 marker保持。
