@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_online_20261030_v2/review88.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_review_20261030_v3/review88.py
+@@ -61,7 +61,7 @@
+     followup=reg['replay_capacity_followup_stage']
+     assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47
+     assert followup==previous['replay_capacity_followup_stage']
+-    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==88
++    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==87
+     baseline_deps=previous['batch_size_stage']['dependency_hashes'];deps=reg['batch_size_stage']['dependency_hashes']
+     assert deps==baseline_deps
+     assert all(deps[k]==v for k,v in baseline_deps.items())

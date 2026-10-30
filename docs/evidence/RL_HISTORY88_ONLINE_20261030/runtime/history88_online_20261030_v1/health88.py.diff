@@ -1,0 +1,24 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle87_review_20261029_v1/diagnose_published_training_20261025.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_online_20261030_v1/health88.py
+@@ -106,7 +106,11 @@
+         state = checkpoint['learner']
+         assert state['target_pair_reduction']==dict(version=1,target={'impedance':'minimum','admittance':'mean','vmc':'mean'}[method],actor='minimum',sampled_targets=2)
+         dimension = 7 if method == 'direct' else prior['methods'][method]['action_dimension']
+-        learner = PublishedLearner(root, dimension=dimension, direct=method == 'direct',
++        from persisted_history_critic import history_class, marker as history_marker, KEY
++        protocol = json.loads((folder.resolve().parent/'REGISTRATION.json').read_text())
++        binding = protocol['history_critic_amendment']['binding']
++        assert state[KEY] == checkpoint['replay'][KEY] == history_marker(binding)
++        learner = history_class(PublishedLearner, binding)(root, dimension=dimension, direct=method == 'direct',
+             seed=42, device='cpu', algorithm=state['algorithm'],
+             **{key: state[key] for key in ('critic_layer_norm', 'numerical_amendments', 'critic_clock') if key in state})
+         # Load policy/critics only. Do not restore optimizer or host CUDA RNG.
+@@ -171,7 +175,7 @@
+                                 in_bag_mae=summary(selected_error[selected_mask]),
+                                 out_of_bag_mae=summary(selected_error[~selected_mask]))
+                 metrics['terminal_error_limitation'] = (
+-                    ('Critic includes known remaining time; actor does not receive the clock feature. '
++                    ('Critic includes remaining time and causal history; actor directly receives neither feature. '
+                      if state.get('critic_clock', False) else
+                      'Observation lacks remaining time; terminal MAE can include hidden-clock aliasing. ') +
+                     'It is a diagnostic, not a required zero-error convergence gate.')

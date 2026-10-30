@@ -1,0 +1,95 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter86_half_std_paired_20261030_v3/evaluate_parameter82_frozen_full30_20261030.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_online_20261030_v1/evaluate_history88.py
+@@ -1,4 +1,4 @@
+-"""Frozen complete82 parameter policies on all30 registered training conditions.
++"""Frozen complete88 parameter policies on all30 registered training conditions.
+ 
+ One external action seed per method; no optimization or formal replay writes.
+ Reuse the independently exercised external RNG and native replay implementation
+@@ -12,13 +12,13 @@
+ import subprocess
+ import sys
+ import time
+-from evaluate_parameter29_seeded_switch_20261026 import (
++from frozen_helpers import (
+     sha, write, ExternalActions, gate, review_episode,
+ )
+ 
+ 
+ def validate_recovery(ck, protocol, expected_cycle):
+-    assert expected_cycle in (81, 82)
++    assert expected_cycle in (88,)
+     assert ck['cycle'] == expected_cycle and ck['boundary'] == 'complete_condition_cycle'
+     assert ck['environment_state_saved'] is False
+     assert ck['interruption_recovery'] == protocol['interrupted_episode_recovery']
+@@ -30,10 +30,10 @@
+     assert all(c['cycle'] != 75 for c in ck['cycles']) and ck['cycles'][-1]['cycle'] == expected_cycle
+ 
+ 
+-def main(registration, check_only, expected_cycle=82):
+-    if expected_cycle != 82 and not check_only:
+-        raise ValueError("Only planned82 may execute physics; validation81 is check-only")
+-    if expected_cycle not in (81, 82):
++def main(registration, check_only, expected_cycle=88):
++    if expected_cycle != 88 and not check_only:
++        raise ValueError("Only planned88 may execute physics; validation87 is check-only")
++    if expected_cycle not in (88,):
+         raise ValueError("Unregistered parent cycle")
+     reg = json.loads(registration.read_text())
+     os.sched_setaffinity(0, {reg['cpu']})
+@@ -82,14 +82,18 @@
+     assert sha(followup['entry_checkpoint']['path']) == followup['entry_checkpoint']['sha256']
+     assert ck['replay']['capacity'] == 4_000_000
+     assert ck['replay']['replay_capacity_followup'] == FOLLOWUP_MARKER
+-    replay = replay_class(Replay)(ck['replay']['arrays']['actions'].shape[1], 50, 2026102638)
++    from persisted_history_critic import history_class, history_replay_class, marker as history_marker, KEY
++    binding = protocol['history_critic_amendment']['binding']
++    assert ck['history_critic_amendment'] == protocol['history_critic_amendment']
++    assert ck['learner'][KEY] == ck['replay'][KEY] == history_marker(binding)
++    replay = history_replay_class(replay_class(Replay), binding)(ck['replay']['arrays']['actions'].shape[1], 51, 2026102638)
+     replay.load_state_dict(ck['replay'])
+     replay_digest = digest(replay.state_dict())
+     assert replay_digest == digest(ck['replay'])
+     reduction = {'impedance': 'minimum', 'admittance': 'mean', 'vmc': 'mean'}[reg['controller']]
+     assert ck['learner']['target_pair_reduction'] == marker(reduction)
+     dimension = json.loads((root/'parameter/PRIORS.json').read_text())['methods'][reg['controller']]['action_dimension']
+-    learner = pair_class(PublishedLearner, reduction)(root, dimension=dimension, direct=False,
++    learner = history_class(pair_class(PublishedLearner, reduction), binding)(root, dimension=dimension, direct=False,
+         seed=ck['seed'], device=reg['device'], algorithm='cheq', critic_layer_norm=True,
+         numerical_amendments=True, critic_clock=True)
+     learner.load_state_dict(ck['learner'])
+@@ -98,7 +102,7 @@
+     journal = Path(reg['gate_observations'])
+     assert sha(journal) == reg['gate_observations_sha256']
+     with journal.open() as stream:
+-        observations = [json.loads(next(stream))['observation'] for _ in range(3)]
++        observations = [json.loads(next(stream)) for _ in range(3)]
+     result = gate(learner, ck, observations, reg['action_seed'], reg['gate_case_id'], digest)
+     result.update(full_replay_restored_exact=True, replay_digest=replay_digest,
+                   full_learner_digest=initial, checkpoint_sha256=sha(reg['checkpoint']),
+@@ -113,7 +117,7 @@
+         checkpoint_sha256=sha(reg['checkpoint']), action_seed=reg['action_seed'], case_ids=reg['case_ids'],
+         full_learner_digest=initial, full_replay_digest=replay_digest, expected_episodes=30,
+         maximum_actions=41250, maximum_substeps=33000000, optimizer_updates=0,
+-        scope='Prospectively selected complete82 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
++        scope='Prospectively selected complete88 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
+     results = []
+     seed = reg['action_seed']
+     for case in reg['case_ids']:
+@@ -145,6 +149,7 @@
+                     event = json.loads(line)
+                     if event['kind'] == 'error':
+                         raise RuntimeError(event['error'])
++                    learner.consume_interval(event['interval'])
+                     if event['kind'] == 'terminal':
+                         assert event['model_sha256'] == condition['model_sha256']
+                         assert child.wait(timeout=60) == 0
+@@ -192,7 +197,7 @@
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--registration', type=Path, required=True)
+     parser.add_argument('--check-only', action='store_true')
+-    parser.add_argument('--validation-cycle', type=int, choices=[81,82], default=82)
++    parser.add_argument('--validation-cycle', type=int, choices=[88], default=88)
+     args = parser.parse_args()
+     try:
+         main(args.registration, args.check_only, args.validation_cycle)
