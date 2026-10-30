@@ -2,7 +2,7 @@
 
 - [交接](docs/RL_RECOVERY79_ABORT80_RUNNING_20261030.md)。79三路reward−2.511717/−10.141245/−2.874607，Task/Strict17/17、14/13、17/17；I long0000在27s安全中止、40550新增/29full，失败/惩罚全部保留。完整回放/reward/loss/health/180标签/终端/五实际图已审，未收敛。
 - 原80 no-abort决定正确拒绝保留；v2只绑定精确已审失败另登记有限80，原2mm安全/reward/学习参数不改。shield675/servo6750通过但25Hz几何不能重建97.689mm子步峰值，根因未定。修旧launcher父轮次/driver引用并做真实预检，12负例通过；准确80恢复/实际startup通过，当前steps{'impedance': 3280700, 'admittance': 3282971, 'vmc': 3284195}，各30sampler及全后续已部署；无自动81/Direct34，Goal active。
-- 7样本/180.023s共15身份验证，GPU465样本min[70, 62, 64, 64]%、低于50[0, 0, 0, 0]；科研结束仍合成保载。SSD381成员/SHA2991b5d5核验，非HDD/arm1全备份。开工maincd8bbf33/baselinef6e8f8c2，后main03365fd2非RL55/75已读快进保留；发布待收据，无子agent。
+- 7样本/180.023s共15身份验证，GPU465样本min[70, 62, 64, 64]%、低于50[0, 0, 0, 0]；科研结束仍合成保载。SSD381成员/SHA2991b5d5核验，非HDD/arm1全备份。开工maincd8bbf33/baselinef6e8f8c2，后main03365fd2非RL55/75已读快进保留；科学1d533340/合并54005e69已push并核远端、全部387变更及380证据字节核验；非RL56/75完整保留，无子agent。
 
 ## 2026-10-30 — 原79继续；80仅恢复及完整审查准备
 

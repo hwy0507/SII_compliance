@@ -49,3 +49,6 @@ Direct33数值阶段接受状态保持，冻结全30 Task/Strict0/0；旧28最�
 SSD小证据包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_RECOVERY79_ABORT80_RUNNING_20261030/SMALL_EVIDENCE.tar.gz`，381成员/16250492字节，SHA `2991b5d54925dc05bfd4ffbd59ea0baf7b598d6e6f50906b7dab04ad6a912692`，全部成员字节/hash及Python AST核验。收据[RL_RECOVERY79_ABORT80_RUNNING_20261030_SAVE.json](RL_RECOVERY79_ABORT80_RUNNING_20261030_SAVE.json)。大checkpoint/回放/轨迹留原共享SSD，活动日志为快照，**非HDD/arm1全量备份**。HDD原254字节LATEST指针原位更新回读。GitHub发布以实际发布收据为准。
 
 下一步继续原80科学进程，检查完整loss/health/labels/terminal与79–81等待器，按实际物理失败和loss趋势决定有限81；继续GPU保载。勿把本轮有限续训或保存成功写成收敛完成。
+
+
+发布核验：科学提交`1d533340a044ef30eeace337ca6a58698da081c9`，安全合入另一主机非RL56/75日志后`54005e69907f27fb0dcf5e0ca756b2f110db34d4`已push，实际GitHub main一致。380个manifest条目在归档/暂存/提交逐字节核验，全部387个科学变更文件及共享日志合并内容核对通过；非RL源码不变。收据[RL_RECOVERY79_ABORT80_RUNNING_20261030_PUBLICATION.json](RL_RECOVERY79_ABORT80_RUNNING_20261030_PUBLICATION.json)。此发布补充在小证据包之后，不冒充归档内已有发布收据。
