@@ -1,3 +1,9 @@
+## 2026-10-31 — 特化场景 final108 锁定比较等待受限执行环境
+
+- 已批准的75候选公平重训由既存完整收据覆盖（40条/21,500帧、75/75、FIT_AUDIT passed），未重复运行。MLP384 fixed27独立复核为Task 27/27、Strict 24/27、replay 27条精确；ESN/RNN各9/9双成功，MLP384 6/9。三条MLP棍推外穿透0.251768/0.243292/0.222516 mm超过冻结0.20 mm，失败保留；舒适度NA。
+- locked-v2只移除“开发集全部通过才允许比较”的派发限制；九模型、12冻结条件/108格、物理/Task/Strict/机器gate、SPT、失败分母及独立replay不变。v3登记有效，SHA256 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`；无execution文件/无测试回合。v1/v2登记迭代尝试保留且禁止运行。旧v1执行说明已标注版本边界。
+- 本机容器资源不合规（memory/swap上限max、affinity 0–23、systemd bus不可用）；无仿真user-systemd预检请求被自动审批拒绝，理由是只读环境与approval policy=never，且明确禁止绕过。未启动物理测试。main=`d9507f2f319856428246018c77922a9fc1425aaf`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询并fetch；main新增history89 RL证据已保留且与本专题无冲突。见 `docs/CONTACT_YIELD_FINAL108_LOCKED_V2_PROGRESS_20261031.md`。
+
 ## 2026-10-30 — 完整89因果违规位数据与持久化初始接口通过
 
 - [交接](docs/RL_HISTORY89_VIOLATION_INTERFACE_20261030.md)。原87 prefix精确保留，88/89新增247500 raw历史及逐标量复算通过；全11072448行原51特征/独立bit对齐，现有回放不改。新critic/replay52、actor49、clock49/history50/bit51、10critic/Adam零列迁移，原history与23/47 marker保持。
@@ -11941,4 +11947,10 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 - 双成功开发回合时间按condition/方法均值（仅描述性）：ESN rod/ball/corner 9.000/12.493/12.187s；RNN 10.400/15.520/12.280s；MLP384 rod无双成功、ball/corner 11.080/12.280s。开发27中最短双成功为8.800s，非final108共同T_ref。全回合峰值力矩均值44.470/44.859/44.046Nm；人体舒适度27条全为null，不推断人体舒适。机器合规9/9、9/9、6/9。详细限制见`docs/CONTACT_YIELD_MLP384_FIXED27_PROGRESS_20261031.md`。
 - 只读复核代码`experiments/review_contact_yield_mlp384_fixed27_20261031.py`解决final replay仍走legacy loader的问题。既有v7训练75/75收据继续复用，未重训；冻结final108未读/派发，正式指标与测试比较仍未完成。
 - 本轮在先前提交`da37535f`之后新增完整结果与方法/限制记录；当前远端main head `da37535f`、baseline `f6e8f8c`。其它RL会话于开工时已通过fetch读取并保留。Goal active。
+
+## 2026-10-31 — 特化场景final108比较已锁定，等待允许的受限执行环境
+
+- 用户批准的75候选公平重训已由既存收据完整覆盖（40条/21,500帧、75/75、FIT_AUDIT passed）；未重复运行。MLP384 fixed27独立复核27/27：Task 27、Strict 24、replay 27条精确；ESN/RNN各9/9双成功，MLP384 6/9。三条MLP棍推外穿透0.251768/0.243292/0.222516 mm超过冻结0.20 mm，失败均保留；舒适度NA。
+- 新增 locked final108 v2入口和专题进度。只解除“开发27条必须全通过”这一个派发条件；测试仍用按validation锁定的九checkpoint与原12条件/108格、Task/Strict/机器gate、SPT、失败分母及独立replay。MLP384走fixed27已验证的兼容runner。一次性有效登记为`outputs/contact_yield_locked_unseen108_20261031_v3/REGISTRATION.json`；无`execution.json`，未派发任何测试回合。v1/v2早期源绑定迭代登记仅留存，没有运行，禁止执行。
+- 资源不满足：当前容器memory.max/swap.max均为max、affinity为0–23、user-systemd bus不可用。自动审批拒绝了一个无仿真的systemd资源预检scope（环境只读、approval policy=never），并明确禁止绕过；未启动仿真。需要在系统允许且能验证CPU6、单线程、3 GiB、零swap的本机scope中继续。
 

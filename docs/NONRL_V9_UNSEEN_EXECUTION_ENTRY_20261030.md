@@ -1,5 +1,7 @@
 # 三分离特化108格最终测试执行入口
 
+> 版本说明（2026-10-31）：本文的“27条开发回合全部通过才可登记”属于原 v1 模型选择流程。对已冻结的 v7 ESN/RNN 与 validation 选出的 MLP384 九模型组合，用户要求进行一次正式未见组比较；专用入口为 `experiments/evaluate_contact_yield_unseen108_locked_v2_20261031.py`，当前登记见 `outputs/contact_yield_locked_unseen108_20261031_v3/REGISTRATION.json`。v2 只允许将既有开发失败带入正式对比，不做回退选模或测试调参；下文冻结条件、Task/Strict/机器 gate、失败分母、SPT及独立复核规定继续有效。v1旧登记与其历史结果不覆盖。
+
 本入口补齐从开发资格选择到最终测试的执行路径，尚未登记或派发正式测试。冻结条件JSON仍为SHA256 `c99f0f962ab44821693f9928c9f68dc4a3ff907617bcc9e55cce3ccdbfbcc24d`。不得用当前开发改善宣称正式结果。
 
 ## 前置要求与执行
