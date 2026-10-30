@@ -1,0 +1,17 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history88_90_reward_stability_20261030_v1/review_saved.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history88_90_reward_stability_20261030_v2/review_saved.py
+@@ -1,4 +1,4 @@
+-"""Independent scalar arithmetic of the existing fixed85-87 report."""
++"""Independent scalar arithmetic of the existing fixed88-90 report."""
+ from pathlib import Path
+ import hashlib,json,math,os,time
+ os.sched_setaffinity(0,{54})
+@@ -47,7 +47,7 @@
+     for pair in record['paired_conditions']:
+         assert pair['rewards']==[m[pair['condition']] for m in maps]
+     deltas=[maps[2][k]-maps[0][k] for k in sorted(maps[0])]
+-    near(math.fsum(deltas)/30,record['paired85_to87_mean_delta'])
++    near(math.fsum(deltas)/30,record['paired88_to90_mean_delta'])
+     near((means[2]-means[0])/2,record['slope'])
+     assert sum(x>0 for x in deltas)==record['improved_conditions']
+     assert sum(x<0 for x in deltas)==record['worsened_conditions']
