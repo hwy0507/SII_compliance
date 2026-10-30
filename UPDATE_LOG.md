@@ -11854,3 +11854,8 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 - 唯一新七项垂向阻尼110→220，其余原offset/恢复/读出/物理/filter/input/gates保持；rod00/ball00/04/06/01/corner00/office000，20:09:28 service`sii-special-teacher-vertical-damping-v1-20261029` parent1080783/start31622555/REG01d9abbf，3GiB/swap0/单线程。独立8000虚拟子步0误差、静态差1.48e−17，非闭环证明。启动前祖先metadata继承纠正并重核source/hash，科学配置不变；完整七项与训练尾能量改善待，无自动新30/学习。
 - 新完整18配对诊断入口只准备，检查teacher/student自身精确重放、teacher历史模仿与学生历史反事实，保留全部失败。实际历史三学生各500帧/新rod00 helper精确，真正未启动18入口拒绝无输出；未称新学生成功。旧v7绑定18/108不能直接接后继数据。
 - 实际fetch/read main2b41371d/baselinef6e8f8c；原进程17次有界观察真实17→30/自然终止，前轮progress。完整605文件/2798858240bytes/SHAfa6eb5b9物理归档本机核验，独立共享上传中；新七项在途仅本机，Goal active，无RL/子agent/服务器计算/删除。
+## 2026-10-31 — v7 MLP 36 候选在棍推训练序列上的复放
+
+- 对冻结v7的36个MLP候选复放已见`rod_00`训练teacher序列；核验500帧观测/动作标签逐位一致、权重全正、75/75拟合完成、FIT_AUDIT、36候选和逐checkpoint哈希。所有候选训练序列RMSE为0.005341–0.006112。validation选中的每seed模型距训练序列候选最优仅0–1.7%，故现有MLP误差不能归咎于选模挑错。六个validation identities选模及锁定模型未修改。
+- v7 MLP所有候选固定为单隐层宽128、5,504参数，只搜索4 learning rates×3 weight decay；RNN宽128有21,888参数，ESN为3,780 trainable readout+128 fixed reservoir。方法候选数和32,000 neural updates一致，但模型容量并未配平；容量/时序表征是下一步需测试的假设，不是已证因果。完整逐候选结果见`docs/CONTACT_YIELD_V7_MLP_CANDIDATE_GRID_20261031.md`。
+- `py_compile`与36候选本地actor复放通过。0物理步、0 optimizer更新、无重选模、无final108访问。当前宿主cgroup实测`memory.max=max`、`memory.swap.max=max`、`cpu.max`不可用，不符合MemoryMax≤3GiB、swap=0和CPU配额，因此未启动新拟合/物理作业；后续扩展容量搜索前需在合规资源边界登记同候选数公平预算。首次fetch失败后已通过提升网络权限重新fetch/read，main=`39d5363e39b56c542bffc33ccd625ff66400da19`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，两分支无新增提交。
