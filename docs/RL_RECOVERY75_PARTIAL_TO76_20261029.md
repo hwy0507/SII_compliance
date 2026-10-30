@@ -1,3 +1,5 @@
+> **最新：[80仅恢复/审查准备](RL_RECOVERY80_PREPARATION_20261030.md)。原79继续，无80训练决定，GPU科研结束仍保活。**
+
 > **最新：[RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030](RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030.md)。完整78与76–78已审；79实际续训、Direct33恢复，GPU科研结束仍保活，Goal active。**
 
 > **最新：[79仅恢复/完整审查准备](RL_RECOVERY79_PREPARATION_20261029.md)。原78/冻结33继续，GPU科研结束仍保活，无79训练决定。**
