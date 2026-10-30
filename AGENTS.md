@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 半标准差评测继续；熵目标持久化基础通过
+
+- [交接](docs/RL_HALF_STD86_ENTROPY_STATE_READY_20261030.md)。原固定86同16 std×0.5评测按原身份继续，未扩预算/重启/提前选seed。唯一PID1888816原deadline内等待完整review后全raw独立复算，保留短回合/失败；完整结果与图仍待，无自动88/Direct34。
+- 新版本化entropy marker绑定target/维度/准确父，17拒绝、两维真实native同目标update逐字等价与替代测试目标alpha梯度/序列化通过；真实完整87三份全learner仅加marker其余精确、原SHA不变，0实际更新/physics。失败整数vs浮点metadata诊断保留；12随机fixture native调用不算科学训练。仅恢复基础、未选科学目标，trainer/eval/health接入仍待，Goal active。
+- GPU122样本min[74, 76, 73, 76]%、低于50[0, 0, 0, 0]，科学结束仍保载。SSD99成员/SHA98789c12核验、非HDD/arm1全备份；main7bff39ec/baselinef6e8f8c实际fetch/read，发布见收据，无子agent。
+
 ## 2026-10-30 — 完整87与冻结86全16已审；半标准差配对评测运行
 
 - [交接](docs/RL_COMPLETE87_HALF_STD86_RUNNING_20261030.md)。87三路各30×55/41250/noabort、全replay/reward0误差/loss/health/187标签/两终端已审；Task/Strict18/16、15/14、17/16。原85—87全失败稳定性，固定2514 V1158.553→2829.904退化、A2110.926→1036.234改善但critic3退化，六实际图保留；未收敛，无自动88/Direct34。
