@@ -1,3 +1,9 @@
+## 2026-10-30 — 原90继续；固定87全部终端跟踪90已登记
+
+- [交接](RL_VIOLATION90_TERMINAL_FOLLOWUP_20261030.md)。固定原87全部7813终端/all5/原masks，旧87/88/89保存算术精确；新增52输入与raw bit/历史逐位绑定通过，真实缺完整90拒绝。唯一等待器2283008沿原archive截止等待，无新forward/physics/update、无90新终端结果或自动91。
+- Direct原数值验收及冻结33全30 Task/Strict0/0、旧28最终内存证明缺失复核保留，不额外启动34。原90/冻结88持续，180.067秒/105身份保持，总steps{'impedance': 3706926, 'admittance': 3709226, 'vmc': 3710237}，完整结果与健康收敛仍待。
+- GPU65样本min[78, 66, 64, 70]%、低于50[0, 0, 0, 0]，科研结束仍保载；冻结88完成数{'impedance': 28, 'admittance': 27, 'vmc': 27}。SSD40成员/SHAd075b260核验，非HDD/arm1全备份。main4b19b5f9/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，所有历史失败保留。
+
 ## 2026-10-30 — 已学90违规位冻结接口通过；首5000 loss保留尖峰
 
 - [交接](RL_VIOLATION90_FROZEN_READY_20261030.md)。实际partial90三份全learner/replay恢复、双marker/非零bit及Adam、1375 native与外部RNG精确重放/terminal bit/actor49隔离通过，8271记录动作、0新physics/update。完整90冻结全90预登记及缺前置真实拒绝，最终恢复/评测仍待；不把partial当complete。
