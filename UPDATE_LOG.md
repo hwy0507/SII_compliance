@@ -1,3 +1,10 @@
+## 2026-10-31 — v7重训授权核对；MLP训练/部署契约审计
+
+- 用户批准的75候选方案与已有v7 run完全相同：共同数据40条/21,500帧，SHA256 `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`；其中40条含10条合格恢复轨迹（包括两条seed01实际teacher后缀），seed03穿透失败后缀未入集。execution为`complete`、75/75候选完成、FIT_AUDIT为`passed`、九模型锁定且九路actor replay通过。故未重复启动相同数据/种子/搜索网格的既有训练，避免把重复计算误报为新结果。
+- 审计排除了此前怀疑的预处理/加载器错位：checkpoint契约`proprio48_office_mlp_rnn_v1`由`load_current()`分派到`OfficeMLPRNN`；18字段、train-only scale、[-12,12] clip、绝对值扩展与训练一致。神经候选训练目标是`requested`动作，部署在同一requested输出后使用公共action filter；固定27运行端及独立actor/filter replay均逐值通过。通用旧`CurrentMLP`类不负责加载该checkpoint。
+- 因而MLP两条棍推Strict失败目前没有已证实的软件/数据通道bug。仍观察到MLP验证动作MSE约`1.64e-4–1.72e-4`，高于同seed ESN/RNN约`3.3e-5–4.0e-5`；单帧MLP缺少显式时序状态、teacher含接触进度记忆，是待检验的表征假设，不是已证因果。fixed27仍Task 27/27、Strict 25/27；final108继续封存。
+- 本轮只读核对；GitHub网络不可达，远端未刷新。依据本地HEAD/cache `9df3bf3d` 与`f6e8f8c2`；无训练、仿真或测试集访问。核验细节见`docs/CONTACT_YIELD_V7_PREPROCESSING_AUDIT_20261031.md`。
+
 ## 2026-10-31 — v7接管证据已共享归档；MLP安全恢复问题未解决
 
 - 承接用户已批准的75候选公平重训：40条/21,500帧、75/75候选、九个冻结模型和九路actor replay通过FIT_AUDIT；fixed27仍为Task 27/27、Strict 25/27，ESN/RNN各9/9，MLP 7/9。没有重跑已完成的训练，也没有将任务成功等同安全成功。
