@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 原79继续；80仅恢复及完整审查准备
+
+- [交接](docs/RL_RECOVERY80_PREPARATION_20261030.md)。80科学trainer与79逐字相同、五metadata插入可逆；三路正例/每路19协议+8边界拒绝、真实未完整79拒绝通过。仅恢复等待1495605已部署，准确80恢复完成=False，无80决定/训练；原79steps{'impedance': 3263737, 'admittance': 3265299, 'vmc': 3266841}。
+- startup/archive/fullreview/health实际依赖和完整80loss/79→80配对工具准备；decision绑定完整79/四实际图、准确恢复、原76–78完整结果及79–81准确PLAN，三个缺前置真实拒绝。11样本/300.053s共15身份保持并独立保存复核，观察器自然结束，科学不重启；Goal active、无Direct34。
+- guard194样本min[75, 67, 68, 69]%、低于50[0, 0, 0, 0]，科研结束仍合成保活，历史低谷保留。SSD75成员/SHAc29bc3a5逐成员/AST已核，非HDD/arm1全备份；main21c580a9/baselinef6e8f8c2已读，发布待收据，无子agent。
+
 ## 2026-10-30 — 完整78/原76–78已审；新主机79实际续训与Direct33恢复
 
 - [最新交接](docs/RL_RECOVERY78_COMPLETE79_NEW_HOST_20261030.md)。78全30×55/41250、reward/replay/全loss/health/标签/终端与五图完成；原76–78 I近零不可判、A失败5%、V reward通过但loss异常，未收敛。新主机三路准确恢复、DECISION79和actual startup通过，79 steps{'impedance': 3251451, 'admittance': 3253055, 'vmc': 3254465}；全后续及前瞻79–81部署，无自动80/Direct34，Goal active。
