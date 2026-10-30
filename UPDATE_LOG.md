@@ -2,7 +2,7 @@
 
 - 已批准的75候选公平重训由既存完整收据覆盖（40条/21,500帧、75/75、FIT_AUDIT passed），未重复运行。MLP384 fixed27独立复核为Task 27/27、Strict 24/27、replay 27条精确；ESN/RNN各9/9双成功，MLP384 6/9。三条MLP棍推外穿透0.251768/0.243292/0.222516 mm超过冻结0.20 mm，失败保留；舒适度NA。
 - locked-v2只移除“开发集全部通过才允许比较”的派发限制；九模型、12冻结条件/108格、物理/Task/Strict/机器gate、SPT、失败分母及独立replay不变。v3登记有效，SHA256 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`；无execution文件/无测试回合。v1/v2登记迭代尝试保留且禁止运行。旧v1执行说明已标注版本边界。
-- 本机容器资源不合规（memory/swap上限max、affinity 0–23、systemd bus不可用）；无仿真user-systemd预检请求被自动审批拒绝，理由是只读环境与approval policy=never，且明确禁止绕过。未启动物理测试。main=`d9507f2f319856428246018c77922a9fc1425aaf`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询并fetch；main新增history89 RL证据已保留且与本专题无冲突。见 `docs/CONTACT_YIELD_FINAL108_LOCKED_V2_PROGRESS_20261031.md`。
+- 本机容器资源不合规（memory/swap上限max、affinity 0–23、systemd bus不可用）；无仿真user-systemd预检请求被自动审批拒绝，理由是只读环境与approval policy=never，且明确禁止绕过。未启动物理测试。main=`d9507f2f319856428246018c77922a9fc1425aaf`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询并fetch；main新增history89 RL证据已保留且与本专题无冲突。本轮提交`72d318a5a3a9cdbc94744da4b3c5964f670d3817`已push；远端main=`72d318a5a3a9cdbc94744da4b3c5964f670d3817`及登记JSON SHA256均已核验。见 `docs/CONTACT_YIELD_FINAL108_LOCKED_V2_PROGRESS_20261031.md`。
 
 ## 2026-10-30 — 完整89因果违规位数据与持久化初始接口通过
 
