@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "time": 1793385986.6182218,
+  "sources": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_completion_20261030_v1/review_boundary.py",
+      "sha256": "f480200dc4a1d55b60a8541b893947a83731040637f690e9b8a5475b47c740bb"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/scripts/validate_office_apparatus_v5_20260917.py",
+      "sha256": "75be184dfd5f39f89d2058311e1701c0bef7a2b95128653f772920a0e0ec249b"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_compliance_episode_20261025.py",
+      "sha256": "05917e897b694a3fdff2f22b4867380dc2a4882fbce36f0e3107b09ab3590e59"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_frozen_preparation_20261030_v1/persisted_history_critic.py",
+      "sha256": "b00e63ee527c13ef299050b28cc2fcfd8f3b7903a96d248bf1e11633b718b074"
+    }
+  ],
+  "methods": {
+    "impedance": {
+      "sidecar": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery87_history_extension_20261030_v1/impedance_causal_history.npy",
+        "sha256": "2ee30dd5bd7555ed5cb9654de314056a11cefc220121d044e0958cef494d94be"
+      },
+      "values": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_fixed87_terminal_followup_20261030_v1/impedance_values.npz",
+        "sha256": "4552931a9e3b2202dae27c4f1140a673d9327465b2f844f9d3c41e30a7863a46"
+      },
+      "all_retained87_rows": 3606448,
+      "original87_terminal_rows": 2605,
+      "raw_preaction_violation_rows": 88075,
+      "rounded_feature_boundary_disagreements": 0,
+      "terminal_boundary_disagreements": 0,
+      "all_saved_terminal_features_exact": true,
+      "all5_saved_sse_contributors_recomputed": true,
+      "minimum_terminal_distance_to_threshold_m": 3.3184999101600185e-08
+    },
+    "admittance": {
+      "sidecar": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery87_history_extension_20261030_v1/admittance_causal_history.npy",
+        "sha256": "8c1bd3f9c9c6760e6993f50df14aa16ec29f54cfb41a4fea957b54922b900a80"
+      },
+      "values": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_fixed87_terminal_followup_20261030_v1/admittance_values.npz",
+        "sha256": "a2cea575b4c7a7e44022c4f073e49881d6397c8b466347b88e92201c7bbf2b3d"
+      },
+      "all_retained87_rows": 3608750,
+      "original87_terminal_rows": 2604,
+      "raw_preaction_violation_rows": 76552,
+      "rounded_feature_boundary_disagreements": 0,
+      "terminal_boundary_disagreements": 0,
+      "all_saved_terminal_features_exact": true,
+      "all5_saved_sse_contributors_recomputed": true,
+      "minimum_terminal_distance_to_threshold_m": 7.495829605806627e-08
+    },
+    "vmc": {
+      "sidecar": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery87_history_extension_20261030_v1/vmc_causal_history.npy",
+        "sha256": "de66eb4e7e84aaacc8c6c772519dacf9d46d431cc315673f65d41d391121566d"
+      },
+      "values": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/history89_fixed87_terminal_followup_20261030_v1/vmc_values.npz",
+        "sha256": "9e7b34d6ed052fab8b607b4e68fa04cc621c3a8f27bc5fed6899dad9121d55e8"
+      },
+      "all_retained87_rows": 3609750,
+      "original87_terminal_rows": 2604,
+      "raw_preaction_violation_rows": 58224,
+      "rounded_feature_boundary_disagreements": 0,
+      "terminal_boundary_disagreements": 0,
+      "all_saved_terminal_features_exact": true,
+      "all5_saved_sse_contributors_recomputed": true,
+      "minimum_terminal_distance_to_threshold_m": 2.245585395367275e-07
+    }
+  },
+  "raw_gate": "external cumulative penetration <=0.0002m, no tolerance in frozen source; abort/task/additional unexpected-edge checks also apply",
+  "causal_candidate": "float(raw_preaction_cumulative_external_penetration_m > 0.0002), not rounded history_feature >0.5",
+  "float32_counterexample": {
+    "raw_m": 0.00020000000000000004,
+    "feature": 0.5,
+    "raw_violation": true,
+    "rounded_feature_violation": false
+  },
+  "interpretation": "Explicit bit is only a known penetration-violation flag. It is not Task/Strict outcome, contains no future information, and does not replace additional gates. Continuous feature quantization mismatch can occur mathematically even if absent from current saved rows. No evidence that rounding caused observed critic regressions.",
+  "new_neural_forwards": 0,
+  "optimizer_updates": 0,
+  "physics_steps": 0,
+  "new_architecture_implemented": false,
+  "fitting_registered": false,
+  "cycle90_launched": false
+}

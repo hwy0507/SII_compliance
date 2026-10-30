@@ -20,6 +20,12 @@
 - 训练使用CPU6 affinity/单线程、MemoryMax 3GiB、swap上限0；容器无`cpu.max`，故无CFS quota声明。首轮scope预检因`cpu.max`缺失在第一个候选启动前失败，失败收据保留；后续版本改以单CPU affinity限制。未新增MuJoCo物理步、未以fixed27选模、未访问final108。独立拟合和actor replay审计通过，但宽度384 checkpoint尚无fixed27闭环结果，不能声称安全/Task/Strict提升。
 - 下一步应另行登记新九模型组合（原ESN/RNN锁定checkpoint与三个384宽度MLP）并完成27个train00开发回合及独立action/filter/物理审计；保留所有失败，27条未全部Task+Strict+机器合规前不得注册final108。开工实时查询GitHub：main=`d8ef159fa84acbde264c1460453fa50153dc0b76`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；fetch因连接GitHub失败，远端日志正文未能读取，本地tracking cache仍为main=`c5f5f9d7`。本条为本地进度修订，远端发布待网络恢复；Goal active。
 
+## 2026-10-30 — 完整89与边界诊断已审；原88—90 A/V稳定性失败
+
+- [交接](docs/RL_COMPLETE89_BOUNDARY_DIAGNOSIS_20261030.md)。89三路正常完成，各30×55/41250/0abort，全旧replay及新51映射/reward0误差；Task/Strict18/17、13/12、17/16，mean−2.360402/−11.989807/−4.601530。完整loss末段均值上升/尖峰，全90配对A丢4 Strict、V丢1，无新增通过；四实际图已查看，未收敛。
+- 原88→89 A130.492%/V63.462%已违反5%必要条件，保留原失败窗口，无完整三轮/bootstrap、无90/Direct34。固定87全部终端/all5已跟踪89，Icritic3退化突出；全SSE解释算术和10,824,948 raw历史边界核验通过，现存舍入判定分歧0。显式因果违规位离线拟合仅候选，未登记/运行/晋升。
+- 原89/archive/固定终端等待正常结束勿重启；冻结88完成数{'impedance': 12, 'admittance': 12, 'vmc': 12}，原evaluator/collector/postprocessor继续，最终全90/raw/paired待。GPU466采样min[66, 64, 65, 64]%、低于50[0, 0, 0, 0]，科学结束继续保载，非科研吞吐。SSD118成员/SHA1513cd1b核验，非HDD/arm1全备份；main9207ff42/baselinef6e8f8c已query/fetch/read，发布见收据，无子agent，Goal active。
+
 ## 2026-10-30 — 原89继续；88—90稳定性标签修正及真实88绑定通过
 
 - [交接](docs/RL_HISTORY89_STABILITY_READY_20261030.md)。原88—90预登记脚本遗留85—87图题/字段/说明，独立v2仅修标签，原PLAN/hash保留；除字符串与字段名外AST相同，公式/原seed/5000bootstrap/5%/nearzero1不变。实际完整88三路全输入/历史revision/55科学契约绑定通过，未完整89真实拒绝；未跑全窗口统计，不授权90。
