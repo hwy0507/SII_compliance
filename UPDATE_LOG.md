@@ -1,3 +1,150 @@
+## 2026-10-30 18:57 CST — v6固定27完成独立复核；MLP棍推仍有两类失败
+
+- v6在CPU6/单线程/单仿真器/MemoryMax 3GiB/no-swap下完成固定27个train00回合；所有27回合均为500 actor steps/400,000物理子步。独立review `verified_fixed27_development_diagnosis`：Task 27/27、Strict 25/27；ESN 9/9、RNN 9/9、MLP 7/9双成功。27条actor/filter replay最大误差0。unseen108未读取/派发。
+- 两个失败仅在`rod_00` MLP：seed01 Task和machine通过但Strict失败，rod audit记录yield=10.23mm、pass/rejoin均null，未能在8s hold内越杆/回位（Task完成16.28s）；seed03虽在11.24s越杆、12.16s回位且早于12.76s撤杆，但与`fr3_link7`接触，最大外部穿透0.236507mm，超过冻结0.20mm限制，machine/Strict失败。两条完整失败轨迹与qualification保留。
+- 同一锁定数据/教师/物理下，ESN和RNN在三场景全通过；三seed MLP validation MSE为1.59e-4至1.69e-4，而ESN约3.36e-5至4.00e-5、RNN约3.17e-5至3.60e-5。FIT_AUDIT通过只表明75个拟合候选、9模型锁定和9 actor replay有效；现有证据更符合无状态MLP对接触时序/安全余量表达不足，不能据此断言teacher轨迹错误。还需基于失败轨迹做动作/观测混叠分析，再决定是否注册新架构或标签迭代；不得更改gate/物理/48维输入或selection规则。
+- 固定27由新v6绑定wrapper与v4 handoff执行，修复并保留了两个preflight-only失败收据（零物理episode）；成功运行收据`contact_yield_recovery_student_handoff_20261030_v4/`。本机episode记录cgroup memory peak最高约1.38GiB、OOM/OOM-kill=0、swap.current=0；无并发worker。
+- GitHub实时main/baseline因网络不可达未核，本地变化未提交/推送/共享；缓存SHA不冒充实时远端。保留所有旧失败与无关untracked文件。最终108仍未派发，开发成绩不是最终测试结论。
+
+## 2026-10-30 18:31 CST — v6恢复重训FIT_AUDIT通过；新fixed27接续修复并在途
+
+- 宿主机复核v7原训练unit自然完成，75/75 fit、0失败；`FIT_AUDIT.json` passed（75候选、9锁定模型、9条actor replay），`MODEL_LOCK.json`冻结9模型。该结论只代表拟合/重放审计，不代表闭环合格。
+- 发现原fixed27 handoff仍硬绑定旧v3模型锁，没有自动接续到v6。新增v6专用诊断wrapper与handoff，绑定v6 execution/数据/模型锁/audit哈希，复用固定27 train00物理runner，不重选模型、不读取或派发unseen108。
+- 两次handoff preflight错误均在物理episode开始前拒绝并保留失败收据：v2目录状态检查错误；v3底层TARGET路径绑定旧目录。修复后v4 handoff成功启动，target为`contact_yield_recovery_student_development_20261030_v5`。18:31 CST已完成3/27：rod ESN/RNN通过Task/Strict/machine，rod MLP seed01 Strict失败但machine通过；第4条rod ESN seed02在途。scope `sii-contact-yield-recovery-v6-fixed27-r3-20261030.scope`，CPU6、单线程、MemoryMax 3GiB、MemorySwapMax 0，当前约1.04GiB；失败结果保留。
+- 网络受限，GitHub实时main/baseline未核；缓存refs见前条且不视作实时。训练与诊断产物本机、未共享。固定27后仍需失败模式审查/必要修复，之后才允许评估是否满足开发资格；final108未触碰。无关`MUJOCO_LOG.TXT`、`docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md`保留。
+
+## 2026-10-30 19:01 CST — v7 fair refit推进至67/75
+
+- v7同一systemd unit/PID 2218464/Invocation `5df2adb6d6fb4763b1245b508d722f9f` active；67/75 fit完成，RNN seed2026102803 candidate10在途，fit failure=0。MemoryCurrent约1.22GiB/3GiB、swap=0，CPU6单路/单线程。
+- 余8候选完成后才启动独立FIT_AUDIT与固定27。所有探针/训练失败收据保留，unsafe seed02 suffix未训练，冻结测试不读取、不派发。
+- GitHub仍不可达；缓存ref不是远端核验。工作树本地未提交/push/共享；无关untracked保留。
+
+## 2026-10-30 18:44 CST — v7 fair refit推进至63/75
+
+- v7仍由原unit/PID 2218464/Invocation `5df2adb6d6fb4763b1245b508d722f9f`单路推进；63/75完成，RNN seed2026102801 candidate10在途，fit失败0。MemoryCurrent约1.23GiB/3GiB、swap=0，CPU6/单线程。
+- 训练数据为本机审计过的38episode v6；最终资格未完成，不能将拟合当闭环通过。所有旧失败保留，Final108未读取/未派发。
+- GitHub网络当前不可达，远端main/baseline状态未核；本地文件未commit/push或归档，共有无关未跟踪文件原样保留。
+
+## 2026-10-30 18:31 CST — v7 fair refit推进至57/75
+
+- v7 unit/PID/Invocation持续active：2218464 / `5df2adb6d6fb4763b1245b508d722f9f`。候选完成57/75，RNN seed2026102801 candidate09在途，0失败；MemoryCurrent约1.20GiB/3GiB，swap=0，CPU6单路/单线程。
+- 75候选fit audit、fixed27开发复测仍未完成；严格禁止以候选完成或离线MSE替代闭环/安全资格。最终108未读取/未派发。网络不可达，代码/进度本地未提交推送/归档，失败记录和无关untracked保留。
+
+## 2026-10-30 18:17 CST — v7 fair refit推进至53/75
+
+- v7原unit保持active，PID 2218464/Invocation `5df2adb6d6fb4763b1245b508d722f9f`；53/75完成、RNN seed2026102802 candidate08在途、0失败。MemoryCurrent约1.27GiB、MemoryMax3GiB、swap=0，CPU6单路/单线程。
+- 训练与后续资格步骤按登记顺序执行；无unseen108访问，物理配置/门槛未改。GitHub不可达；远端refs未知，仅本地记录，未push/共享。失败receipt与无关untracked均保留。
+
+## 2026-10-30 18:03 CST — v7 fair refit推进至49/75
+
+- 原v7 unit/PID/Invocation持续active：2218464 / `5df2adb6d6fb4763b1245b508d722f9f`。已49/75候选完成，RNN seed2026102803 candidate07在途，失败数0。MemoryCurrent约1.28GiB/3GiB、swap=0，单CPU6/单线程。
+- 没有改模型候选预算、更新数、物理环境、gate或validation身份。v5/v6 handoff失败与被排除seed02 unsafe teacher前缀收据均保留。独立FIT_AUDIT和固定27待，unseen108仍未读/未派发。
+- GitHub当前不可达；缓存main/HEAD `450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`非实时。尚未提交/推送/共享；无关untracked文件保留。
+
+## 2026-10-30 17:49 CST — v7 fair refit推进至45/75
+
+- v7单路训练服务继续active，MainPID 2218464 / Invocation `5df2adb6d6fb4763b1245b508d722f9f`；45/75候选完成，RNN seed2026102801 candidate07在途，0 failed fit。MemoryCurrent约1.27GiB/3GiB、swap=0、CPU6单路/单线程。
+- 无训练/物理门槛变化，旧失败receipt保留；独立拟合审计与固定27待全75完成后，最终108未读取/派发。
+- 网络不可达，远端不宣称已核验；本地尚未commit/push/共享，两个无关untracked保留。
+
+## 2026-10-30 17:36 CST — v7 fair refit推进至41/75
+
+- v7同一unit/PID 2218464/Invocation `5df2adb6d6fb4763b1245b508d722f9f` active，41/75完成；RNN seed2026102802 candidate06在途，0 failed fits。MemoryCurrent约1.26GiB/3GiB、swap=0、CPU6单路/单线程。
+- 无代码/数据/资格变化。本地v6、v7产物尚未归档；GitHub不可达，只知缓存main/HEAD `450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`和baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，未push。保留两次旧handoff失败和所有安全失败。
+- 等完整75/75后做独立FIT_AUDIT与固定27；Final108仍零派发。
+
+## 2026-10-30 17:29 CST — v7 fair refit推进至37/75
+
+- v7 unit/PID/Invocation未变且active：2218464 / `5df2adb6d6fb4763b1245b508d722f9f`。已完成37/75，RNN seed2026102803 candidate05在途，fit failures=0。MemoryCurrent约1.26GiB、MemoryMax=3GiB、swap上限0；CPU6单路/单线程。
+- 只按登记75项队列继续。v4审计兼容已过，v6数据和两个历史失败receipt保持；FIT_AUDIT、固定27开发与资格复核待，unseen108依旧未读/未派发。
+- GitHub不可达，缓存refs不代表最新远端；暂未commit/push/共享，工作区无关untracked保留。
+
+## 2026-10-30 17:19 CST — v7 fair refit推进至33/75
+
+- v7 unit仍active、PID 2218464/Invocation `5df2adb6d6fb4763b1245b508d722f9f`；完成33/75，RNN seed2026102801 candidate05在途；0 candidate failures。MemoryCurrent约1.24GiB/3GiB，swap=0、CPU6单路/单线程。
+- 训练仅在新v6数据/新v7 handoff路径。此前v5/v6启动失败和两条不合格seed02 teacher-prefix仍保留并排除；没有改变固定27或final108资格状态。
+- GitHub网络仍不可达；缓存refs不是实时远端。未提交/推送或服务器共享；两个无关untracked保留。
+
+## 2026-10-30 17:12 CST — v7 fair refit推进至29/75
+
+- 同一v7 systemd unit/PID 2218464/Invocation `5df2adb6d6fb4763b1245b508d722f9f` active。当前29/75候选完成，RNN seed2026102802 candidate04在途，0 candidate failures。MemoryCurrent约1.25GiB/3GiB、swap=0、CPU6单路/单线程。
+- 所有旧/新失败收据保留。v6为38 episode/20,500帧；数据修复只改变共同训练数据及兼容契约，不改物理/MJB、actor输入、filter、执行器限制、dt、Task/Strict gate、validation身份/选模规则或最终测试。
+- GitHub暂不可达；main/HEAD缓存`450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`、baseline缓存`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。本地未提交/推送/共享。fixed27和unseen108仍未派发。
+
+## 2026-10-30 17:03 CST — v7 fair refit推进至17/75
+
+- v7原systemd unit/MainPID/Invocation保持active（PID 2218464，`5df2adb6d6fb4763b1245b508d722f9f`），已完成17/75，RNN seed2026102802 candidate02在途，未记录fit失败。MemoryCurrent约1.23GiB/3GiB，MemorySwapMax=0；单CPU6/单线程、无额外worker。
+- v4兼容复核、v6数据38/32/6与teacher suffix/weight审计、v7独立handoff源码/data hash均保持上一记录；v5/v6两条失败receipt继续保留。仍待75完整、独立FIT_AUDIT和固定27；Final108未读取/未派发。
+- GitHub仍无法连通；只可引用缓存main/HEAD `450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。本地进度未提交/推送/共享；无关untracked保留。
+
+## 2026-10-30 16:58 CST — v7 fair refit推进至11/75
+
+- 延续16:55登记的v7唯一训练unit：`sii-contact-yield-recovery-mlp-rod-early-v7-20261030.service`仍active，MainPID 2218464、Invocation `5df2adb6d6fb4763b1245b508d722f9f`。ESN 3/3、第一组RNN和MLP候选持续完成；当前全队列11/75，RNN seed2026102802 candidate01在途，0 fit failures。MemoryCurrent约1.24GiB/3GiB、swap上限0，CPU单路/单线程；无重复派发。
+- `git diff --check`及本轮四个相关Python源码`py_compile`通过。v4通过当前auditor兼容复核；v6数据契约/来源兼容/旧失败收据见上一条和专题文档。fixed27尚未开始，最终108未读取或派发。
+- GitHub网络仍不可达；缓存main/HEAD `450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，仅缓存，不声称最新。当前改动尚未提交/推送，共享归档未做；原无关untracked保留。
+
+## 2026-10-30 16:55 CST — v3恢复数据契约修复；v7共同重训8/75在途
+
+- 用户确认“批准这四条探针并继续修复”。本轮保留四条新早期接管探针收据：seed01 4.48/4.60s合格，seed02两条穿透失败并排除。原物理、MJB、actor/filter、执行器、dt和Task/Strict门未改，unseen108未读取/未派发。
+- v4旧审计器兼容复核曾因schema v1人口映射错误拒绝；按实际登记数据修正为v1 round1=34/4、v1 round2=36/6、v3 round3=38/8。v4复核通过：数据/model-lock/9 actor replay/训练schedule均一致；75个候选名称和checkpoint hash精确相同，validation MSE仅有<1e-12浮点顺序误差。历史FIT_AUDIT未覆盖。审计器与协调器变化均以旧/新源码SHA精确写入新数据compatibility收据。
+- v5数据38 episode/20,500帧、32 train/6原validation、1,707零权重prefix/18,793正权重行，其中接管teacher suffix 3,043帧。两条seed02失败样本在训练外。v5数据SHA256 `29093f8d62ef5b7e072b813112b13723170314fd6f43511a1b1b56c5c7a8db32`；独立v6重建数据SHA相同。构建失败（schema来源核验、系统Python缺Pillow、帧数预估错误）均在目录创建前保留日志；没有改物理。
+- 两次训练handoff失败均保留：v5首次训练器schema guard拒绝；v6因协调器缺少`numpy`导入在首fit前失败。修复为精确v3数组契约（38 episode/32 train/6 val/20,500帧/1,707零权重/18,793正权重）和独立数据v6+handoff v7；无失败receipt覆盖、无自动retry。
+- v7 `sii-contact-yield-recovery-mlp-rod-early-v7-20261030.service` 当前active，MainPID 2218464，Invocation `5df2adb6d6fb4763b1245b508d722f9f`；75候选完成8、MLP seed01 candidate00在途、0 candidate failures。MemoryCurrent最近约1.30GiB/3GiB，MemorySwapMax=0，CPU6单路/单线程；无重复进程。数据/训练raw本地，尚无共享归档。
+- 开工远端`git ls-remote`因网络无法连接失败；缓存`origin/main`/HEAD `450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`，缓存baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，只读缓存日志，不声称远端最新。当前改动仅本地，未commit/push。无关untracked `MUJOCO_LOG.TXT`、`docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md`保留。
+- 下一步等v7 75/75自然完成和独立FIT_AUDIT，再运行既有固定27 train00开发复测；Task+Strict和安全均通过才进入后续资格审查，Final108继续禁止派发。
+
+## 2026-10-30 14:12 CST — 四条定点teacher接管探针完成；两条合格后启动共同重训
+
+- 用户明确批准MLP seed01棍推5.20s/7.00s、MLP seed03棍推4.48s/4.60s四条开发探针。父fixed27收据绑定正确，四个竞争service派发前均inactive；本机 transient scope 强制CPU6、单线程、3GiB、swap=0。四条各完成500动作/400,000物理子步，无基础设施错误；四条prefix/action/filter独立重放最大误差均0，所有失败保留。
+- MLP01 5.20s、7.00s两条 Task/Strict/machine全通过，峰值穿透各0.03708mm；实际teacher监督后缀370/325帧，符合训练资格。MLP03 4.48s、4.60s两条Task通过但Strict/machine失败，峰值穿透0.25188/0.23600mm，均超原0.20mm门；suffix 388/385帧不纳入训练。独立审计passed只表示source/action/filter replay复核通过，不代表qualification通过。
+- 只把两条合格MLP01 teacher后缀追加到上一共同34episode训练集，构建36episode/19,500帧v4，zero-weight student warmup 1,480帧，实际teacher监督2,270帧；原六个纯teacher validation身份不变。数据SHA256 `bcfe105df77080e7604a1725011e63bf8a2f786346966afae4e7300bb87dfc12`。ESN/RNN/MLP同数据75候选、三固定seed、同validation规则、neural 32k update候选；无counterfactual teacher prefix标签。
+- 新fair refit已在Transient `sii-contact-yield-targeted-refit-v4-20261030.scope`串行运行：CPU6/1线程/3GiB/swap0；已派发，最初采样为ESN阶段、2/75 fit records、MemoryCurrent约0.67GiB、OOM未见、swap上限0。完整fit audit与fixed27复测待完成。final unseen108未登记/派发，物理/gate/input/filter/执行器/dt未改。
+- [专题结果与收据](docs/CONTACT_YIELD_TARGETED_RECOVERY_20261030.md)。本轮开工远端`git ls-remote`因无法连接GitHub失败；缓存main `450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`仅作缓存记录。暂未提交/推送。
+
+## 2026-10-30 14:40 CST — 75候选拟合及独立审计通过；v4 fixed27已启动
+
+- v4共同数据SHA `bcfe105df77080e7604a1725011e63bf8a2f786346966afae4e7300bb87dfc12`，36 episode/19,500帧，train30/validation6；零权重prefix1480、有效监督18020帧。75/75候选无fit失败，MODEL_LOCK九模型已冻结。独立审计首次因旧auditor硬编码34 episode/4增广数据而拒绝，原失败记录保留；扩展auditor只接受登记的v1(34/30/4/28train)和round2 v2(36/30/6/30train)，第二次审计通过75候选+9个frozen actor replay。未重训或改数据。
+- 新固定27 runner绑定正确v4 MODEL_LOCK、相同旧teacher训练身份及只读unseen约束。首次准备wrapper错绑v3 recovery模型锁，物理派发前拒绝且保留；改为直接复用最底层fixed27 runner，以新v2 run-id成功登记。当前`sii-contact-yield-targeted-diagnosis-v2-20261030.scope`已启动，首条rod_00/ESN seed01在途，0/27完整。CPU6/1线程/MemoryMax3GiB/swap0，当前MemoryCurrent约0.76GiB、OOM未见；无最终108测试或参数重选。
+- 重要限制：目前MSE/拟合audit通过只证明数据重建、拟合收据和actor重放，不证明新策略开发门通过。待fixed27全部完成并独立复核；若仍失败，保留结果继续按具体failure mode修复，不启动冻结unseen108。
+
+## 2026-10-30 15:05 CST — v4 fixed27独立审查完成；仍有两条棍推MLP失败
+
+- v4 fixed27完整27/27及独立review通过，Task 27/27、Strict 24/27；ESN 9/9、RNN 9/9、MLP 6/9 Strict。对比恢复增强fixed27的MLP rod 1/3，v4 seed03转为合格，说明共同加入合格MLP01后缀带来开发成绩改善线索；仍未证明唯一因果或全体MLP合格。27条actor replay与公共filter replay最大绝对误差均0。
+- 剩余失败：MLP seed01 Task成功、机器安全但回位/蹭棍时序Strict失败，Task完成15.64s；seed02 Task成功但最大穿透0.212666mm，首次>0.20mm子步为94855/time4.74280s、峰值4.74325s；seed03三门通过。固定门未改，全部失败保留。
+- 新共享v4数据19500×48 observations/7 actions，75候选和九个model lock通过独立拟合与actor审计。Fit handoff首次审计旧版硬编码34episode失败、旧wrapper错绑v3模型锁准备失败均保存；适配后无训练重跑，fixed27以新v2登记运行并独立审查通过。
+- Final108继续保持`development_not_qualified_no_final_dispatch`，未读取测试条件。下一步为两个残余棍推MLP seed定点早期teacher handoff诊断，后缀需独立合格才能纳入下一轮三家族共同重训。详见`docs/CONTACT_YIELD_TARGETED_RECOVERY_20261030.md`。GitHub不可达，远端未重新核验，所有源码/进展本地待提交推送。
+- 针对剩余失败已另登记`contact_yield_mlp_rod_early_recovery_20261030_v1`四case：MLP seed01/02各在4.48s与4.60s由学生切换至原VMC teacher，源checkpoint绑定v4 fixed27；四条串行完整20s并独立审计，限定CPU6/单线程/3GiB/no-swap。当前第一条`rod_mlp01_early_4p48s`在途，0条完整receipt，MemoryCurrent约0.70GiB、OOM未见；无新增训练/最终108。
+
+## 2026-10-30 13:56 CST — 恢复增强 fixed27 审查完成；新目标接管探针等待审批
+
+- 独立 `REVIEW.json` 完整审查 recovery-enhanced fixed27：27/27，Task 27/27、Strict 25/27，较上一版开发集23/27、21/27有改善；失败仅棍推MLP seed01/seed03。27条actor/filter replay最大绝对误差均为0；所有400k/600k子步回合与资源收据完整。安全边界、物理参数、模型和最终测试条件均未改变。上一版最终108等待器已记录`development_not_qualified_no_final_dispatch`，冻结测试继续未派发。
+- MLP01完整回合：手部接触4.76395s、让位4.88s，但20s内未越棍也未持续回位；最大穿透0.03708mm，因此是回位行为失败。MLP03完整回合：越棍8.84s、确认回位8.92s，但0.2mm门首次于4.73955s超限，33子步、峰值0.23546mm；`fr3_link7`参与接触，执行器限制通过，因此是早期机器安全失败。
+- 当前恢复训练MLP三seed的validation requested-action MSE为0.00015775–0.00017087；最后50次记录均值与最终值接近，呈平台，32k updates已完成。训练集部署MSE为0.00026163–0.00031133；RNN01 validation MSE为0.00003755。延长相同优化预算缺少证据，更值得验证MLP对棍推关键状态的标签覆盖/表征能力。teacher30条训练采集均qualified；恢复增强里只有旧MLP01/7s样本且无MLP03穿透前student状态，1575条teacher后缀有效帧并未修复两条棍推失败。此为覆盖/模型线索，不宣称已证因果。
+- 新草案 `experiments/contact_yield_targeted_recovery_campaign_20261030.py` 语法及CLI帮助检查通过；设计两类当前MLP失败各两条：MLP01在5.20s与7.00s后接管；MLP03在4.48s与4.60s、均早于已观测4.73955s超限时刻接管。原VMC teacher、student prefix、完整20s回合、独立审计；单路CPU6/线程1/3GiB/禁swap；只考虑qualified teacher suffix进入之后共享重训。目标目录不存在，未登记/未派发。
+- 自动审批拒绝本轮新`prepare`写入操作，理由是之前批准仅覆盖旧四条，未明确涵盖这四条新增接管探针；遵守拒绝，未用其他命令绕过。需要用户对这四个具体前缀时刻明确批准，才能创建新注册并运行。GitHub网络仍不可达，日志/脚本仅本地、未commit/push。既有无关untracked文件保留。
+
+## 2026-10-30 13:49 CST — recovery fixed27 独立复核完成；两条失败定位到 MLP 棍推
+
+- `outputs/contact_yield_recovery_student_development_20261030_v1/REVIEW.json` 状态`verified_fixed27_development_diagnosis`：27/27完整，Task 27/27、Strict 25/27；九个场景×方法单元中，除棍推MLP外均3/3双成功。相较上一版开发27的Task 23/27、Strict 21/27，恢复增强数据主要修复了球撞回合；这是train00开发结果，不是最终108泛化。两条失败ID为棍推MLP seed01和seed03。
+- 独立复核27/27 action和filter重放均精确（最大绝对误差0），source/场景/MJB配对与完整回合核验通过。各episode cgroup `MemoryMax=3GiB`、swap=0，峰值范围0.94–1.67GiB，memory.events的high/max/OOM/OOM-kill/group均0。固定27协调器自然exit0，无重启；旧最终108等待器状态`development_not_qualified_no_final_dispatch`，测试目录未启动。
+- 失败机理可区分：MLP01在4.76395s接触手、4.88s开始让位，但完整20s内未越棍/未进入持续回位；穿透仅0.03708mm，故是行为时序失败。MLP03有接触、8.84s越棍、8.92s回位确认，但`fr3_link7`参与接触；保存400000子步里首次超过0.2mm发生于4.73955s，共33子步，峰值0.23546mm，执行器限值通过，故是早期物理安全失败，不是回位门误判。
+- 四条先前获批teacher-handoff已成功，但恢复重训仍不够：训练增强中只有一条旧MLP01棍推7s prefix，对应325个teacher suffix步；没有MLP03受影响前、约4.74s的student状态样本。全恢复数据仅1575个有效teacher suffix标签，1175个学生prefix是RNN warmup且零loss权重。当前MLP候选在六个原validation身份的MSE约1.58e-4–1.71e-4，ESN/RNN约3–4e-5；MLP所有候选均完整32k updates，最佳误差在后段平台化，不能简单归为物理/代码错误或只延长步数。证据支持下一步补当前失败MLP状态附近、危险接触前的真实teacher suffix，并让三家族共享新数据/同等拟合预算；尚不能判定唯一因果。
+- GitHub远端仍因本机网络不可达而未核验；本次仅本地进度记录。未修改冻结MJB/场景、Task/Strict门、canonical48、filter、执行器、dt、selection或unseen测试条件；未派发unseen108。
+
+## 2026-10-30 13:44 CST — fixed27 开发诊断推进至 18/27，开始桌角场景
+
+- 同一已登记 run 于13:44核到18/27完整episode receipt及METRICS：棍推9/9、球撞9/9完成，桌角ESN seed01为当前项。球撞ESN/RNN/MLP各3/3 Task+Strict+machine通过，最大峰值力矩分别47.444/46.998/47.694Nm、穿透均为0。桌角当前首条ESN完整结果为三项均通过（峰值力矩47.048Nm、穿透0）；其余8条待跑。
+- 棍推结果未变化：ESN/RNN各3/3双成功且machine合规；MLP Task 3/3、Strict 1/3、machine 2/3。失败原因仍为回位时序和0.23546mm穿透超限两种；所有失败均留存。新增回合只是固定27开发诊断，不代表最终测试或泛化通过。
+- unit仍active/running，MainPID 2065413、NRestarts=0；MemoryCurrent约1.42GB/3GiB，swap=0、OOM/max事件均0。唯一协调器接续运行，无重复worker。
+- 本机命令空间的网络仍无法连接GitHub；remote最新状态未核验、尚未推送本次记录。缓存SHA/工作区状态见上一条；未触碰冻结物理、gate、actor/filter、执行器限制、dt或unseen108。
+
+## 2026-10-30 — 用户批准的四条教师接管探针已核；恢复增强模型 fixed27 诊断推进至 15/27
+
+- 用户明确批准的四条既有 teacher-handoff probe 收据已在此前轮次完成核验；它们证明相应 student-prefix 后由 VMC teacher 接手可完成，不证明 student 独立恢复。当前继续的是已登记的 recovery-enhanced 模型 fixed27 开发诊断，不另开重复 run。
+- 本地固定诊断 `outputs/contact_yield_recovery_student_development_20261030_v1` 于13:40 CST核到15/27完整回合：棍推`rod_00` 9/9，球撞`ball_00`前6/9；下一条为ESN seed03。前15条全部完整episode receipt及METRICS存在。棍推ESN/RNN分别3/3同时Task+Strict且machine-compliant；棍推MLP仍为Task 3/3、Strict 1/3、machine 2/3，两个失败分别是杆保持时未及时越杆回位和最大穿透0.23546mm超0.2mm。球撞已完成的ESN/RNN/MLP各2/2同时Task+Strict且machine-compliant，穿透为0。
+- 同一 handoff unit `sii-contact-yield-recovery-student-handoff-v1-20261030.service` 只读核为active/running，MainPID 2065413、InvocationID `afadc65e7edf43f8a4e8ece3056f0587`、NRestarts=0；协调器/当前video helper PID 2111882/2124805/2124806。单路CPU6运行，cgroup MemoryCurrent约1.38GB / MemoryMax 3GiB，swap=0，memory.events的high/max/oom/oom_kill/group均为0。没有发起新物理worker。
+- GitHub fetch/`ls-remote`本轮因网络不可达失败；本地HEAD与缓存`origin/main`为`450dcce3cea6c7cd4a1a2eb67535aa5ac417edbd`，缓存baseline为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不得据此声称远端最新。工作区既有无关未跟踪文件保留。当前15/27仅开发集部分结果，尚未完成诊断、修复归因或冻结测试；unseen108未派发。
+
 ## 2026-10-30 — 原80继续；81完整审查与派发准备
 
 - [交接](docs/RL_RECOVERY81_DISPATCH_PREPARATION_20261030.md)。81决定绑定完整80/四实际图/准确恢复、版本2 DECISION80及79失败、原76–78完整结果和79–81准确PLAN；缺完整80/决定/LAUNCH实际拒绝。launcher父80/driver80引用核验，81标签/2394→2424终端helper准备但未部署，无81决定/训练、无Direct34。

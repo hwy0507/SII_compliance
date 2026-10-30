@@ -14,6 +14,8 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
+
 
 SEEDS = [2026102801, 2026102802, 2026102803]
 RATES = [1e-4, 3e-4, 1e-3, 3e-3]
@@ -102,8 +104,31 @@ def main() -> None:
     metadata = root / "data" / "DATA_COMPLETE.json"
     expected = read(metadata)["training_data_sha256"]
     dataset_meta=read(metadata)
-    if dataset_meta.get('schema')!='sii-vmc-special-scenes-recovery-augmented-v1' or dataset_meta.get('qualified_episodes')!=30:
-        raise RuntimeError('Require audited balanced 30-identity real-special-scene dataset v2; old diagnostics rejected')
+    schema=dataset_meta.get('schema')
+    if dataset_meta.get('qualified_episodes')!=30:
+        raise RuntimeError('Require 30 qualified real-special-scene identities')
+    if schema=='sii-vmc-special-scenes-recovery-augmented-v1' and dataset_meta.get('augmentation_round') in (None, 2):
+        expected_population=(36, 30, 6, 30, 19500, 1480, 18020)
+    elif schema=='sii-vmc-special-scenes-recovery-augmented-v3' and dataset_meta.get('augmentation_round')==3:
+        expected_population=(38, 32, 6, 32, 20500, 1707, 18793)
+    else:
+        raise RuntimeError(f'Unsupported recovery dataset schema/round: {schema}/{dataset_meta.get("augmentation_round")}')
+    episodes, train_episodes, validation_episodes, expected_train_ids, frames, zero_weight, positive_weight=expected_population
+    if (dataset_meta.get('episodes'), len([r for r in dataset_meta['lineage'] if r['split']=='train']),
+            len([r for r in dataset_meta['lineage'] if r['split']=='validation']),
+            dataset_meta.get('frames'), dataset_meta.get('zero_weight_warmup_frames')) != (
+            episodes, train_episodes, validation_episodes, frames, zero_weight):
+        raise RuntimeError('Dataset metadata population/lineage mismatch')
+    with np.load(data, allow_pickle=False) as z:
+        episode, train, importance = z['episode'].copy(), z['train'].copy(), z['importance'].copy()
+        if not z['physical_execution'].all():
+            raise RuntimeError('Nonphysical demonstration row in training data')
+    if (len(episode)!=frames or len(np.unique(episode[train]))!=expected_train_ids
+            or len(np.unique(episode[~train]))!=validation_episodes
+            or int((importance==0).sum())!=zero_weight
+            or int((importance>0).sum())!=positive_weight
+            or int((importance<0).sum())!=0):
+        raise RuntimeError('Dataset arrays disagree with registered population/weights')
     if sha(data) != expected:
         raise RuntimeError("dataset hash mismatch")
     registration = read(root / 'REGISTRATION.json')

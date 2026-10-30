@@ -44,15 +44,25 @@ def audit(root, physics_source):
     data_sha = sha(root / 'data/training_data.npz')
     require(data_sha == lock['training_data_sha256'] == state['data_sha256'], 'Wrong dataset')
     metadata = read(root / 'data/DATA_COMPLETE.json')
-    require(metadata['episodes'] == 34 and metadata['qualified_episodes'] == 30
-            and metadata['augmented_recovery_episodes'] == 4, 'Wrong dataset population')
+    expected_episodes = {
+        ('sii-vmc-special-scenes-recovery-augmented-v1', None): (34, 30, 4, 28),
+        ('sii-vmc-special-scenes-recovery-augmented-v1', 2): (36, 30, 6, 30),
+        ('sii-vmc-special-scenes-recovery-augmented-v3', 3): (38, 30, 8, 32),
+    }
+    schema = metadata['schema']
+    population = expected_episodes.get((schema, metadata.get('augmentation_round')))
+    require(population is not None, 'Unregistered recovery dataset schema')
+    episodes, qualified, augmented, train_episodes = population
+    require(metadata['episodes'] == episodes and metadata['qualified_episodes'] == qualified
+            and metadata['augmented_recovery_episodes'] == augmented, 'Wrong dataset population')
     with np.load(root / 'data/training_data.npz', allow_pickle=False) as z:
         obs, target, episode, train = [z[k].copy() for k in (
             'observation', 'requested_teacher_action', 'episode', 'train')]
         require(z['physical_execution'].all(), 'Nonphysical data present')
         importance = z['importance'].copy()
     require(obs.shape == (len(target), 48) and target.shape[1] == 7, 'Wrong interface')
-    require(len(np.unique(episode[train])) == 28 and len(np.unique(episode[~train])) == 6, 'Wrong split')
+    require(len(np.unique(episode[train])) == train_episodes
+            and len(np.unique(episode[~train])) == 6, 'Wrong split')
     require(not set(episode[train]).intersection(episode[~train]), 'Episode leakage')
     for row in metadata['lineage']:
         ids = np.flatnonzero(episode == row['episode'])
