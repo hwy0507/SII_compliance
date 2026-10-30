@@ -11913,3 +11913,9 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 - 只读按动作通道分解补充了线索：4.2–4.7秒平均 RMSE 中，MLP的slowdown通道0为0.001778，未高于ESN/RNN的0.002045/0.001581；差距主要集中在 residual 通道1（0.009275，对0.002801/0.001816）和通道5（0.005883，对0.002204/0.002242）。若干通道的teacher目标近乎常量，因此只报告绝对RMSE；这仍不证明轴动作误差造成穿透。详见`docs/CONTACT_YIELD_V7_LOCKED_ROD_TRAIN_FIT_20261031.md`。
 - 本轮远端复核读取main=`c5f5f9d74005e1a7cdcaf1a6f4b87d7f14472b71`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，日志无更新；开始时本地head与main相同。新增仅保存轨迹训练动作通道分析，无训练/物理作业；scope资源限制仍不合规。
 - 只读按动作通道分解补充了线索：4.2–4.7秒平均 RMSE 中，MLP的slowdown通道0为0.001778，未高于ESN/RNN的0.002045/0.001581；差距主要集中在 residual 通道1（0.009275，对0.002801/0.001816）和通道5（0.005883，对0.002204/0.002242）。若干通道的teacher目标近乎常量，因此只报告绝对RMSE；这仍不证明轴动作误差造成穿透。详见`docs/CONTACT_YIELD_V7_LOCKED_ROD_TRAIN_FIT_20261031.md`。
+## 2026-10-31 — MLP384 fixed27推进至22/27；新增22行独立精确重放
+
+- 用户批准的v7 75候选仍复用既有75/75、FIT_AUDIT通过收据；无重复fit。原v4 fixed27宿主PID2517772及scope仍live，进度22/27，当前corner RNN seed02；已完成行Task22/22、Strict19/22。CPU6 affinity/单线程/MemoryMax3GiB/swap0，OOM/kill0。
+- 单独CPU5对22条完整轨迹执行versioned wide-loader actor/filter replay，22/22通过，两个最大绝对误差均0。绑定快照证据`docs/evidence/CONTACT_YIELD_MLP384_LIVE_PREFIX_V2_20261031.json`，重放证据`docs/evidence/CONTACT_YIELD_MLP384_PREFIX_REPLAY_V3_20261031.json`。前次22行落盘后，campaign继续至当前快照；不把两份观察的完成数混同。
+- rod00三方法结果不变：ESN/RNN各3/3 Strict，MLP384为0/3，三seed峰穿透0.251768/0.243292/0.222516mm，超过冻结0.20mm。全部失败保留，不重选，不派发final108；完成full27后执行wide-loader独立复核，最终冻结测试结果仍待。
+- 同步：远端main 511fbd5f已由上轮推送核验，baseline f6e8f8c未变；当前无关未跟踪MUJOCO_LOG.TXT和会议提示文件保留，不纳入提交。Goal active。

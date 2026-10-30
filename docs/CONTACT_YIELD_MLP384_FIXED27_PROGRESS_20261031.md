@@ -1,5 +1,9 @@
 # MLP384 fixed27 开发闭环：宿主核验与完整复核入口
 
+## 最新宿主快照
+
+2026-10-31 02:55 CST，原协调器 PID2517772 仍由同一用户 scope 运行，execution 已到 22/27，当前 `corner_00__special_rnn_scratch_s2026102802`。完成行 Task 22/22、Strict 19/22；MemoryCurrent 约 0.72 GiB、MemoryMax 3 GiB、swap0，OOM/OOM-kill 均为0。另一路 CPU5 对这22条已完成行的 actor/filter 独立重放误差均为0。快照和所有行指标 hash 见 `docs/evidence/CONTACT_YIELD_MLP384_LIVE_PREFIX_V2_20261031.json`，对应重放见 `docs/evidence/CONTACT_YIELD_MLP384_PREFIX_REPLAY_V3_20261031.json`。这些仍是 train00 开发集中的部分行，不是最终测试。
+
 观察时间：2026-10-30T18:47:33.821999+00:00。只覆盖已完成的 13/27 条 train00 开发回合，不是最终测试结果。
 
 完成前缀 Task 13/13，Strict 10/13。原协调器 PID2517772 的宿主进程和 scope 已实际核验 live；MemoryMax 3 GiB、swap0、OOM/kill0。资源快照不是内核全程峰值。
