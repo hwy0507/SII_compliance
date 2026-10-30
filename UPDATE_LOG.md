@@ -4,14 +4,25 @@
 - v7 handoff v1–v4原始收据、失败轨迹、对应wrapper、诊断报告和三份证据JSON共226个文件/1,018,511,873字节，已归档到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_v7_handoff_diagnosis_20261030_v1/`。从服务器incoming到正式目录前，`rsync -aRnc --checksum`逐文件校验无差异；目录此前不存在，未覆盖旧run。大回合数据仍保留本机副本。
 - v3/v4八条teacher接管均完成Task，但八条最大穿透均超过冻结0.20 mm门槛（0.21565–0.25499 mm），Strict/安全资格失败；失败后缀不纳入训练。更早接管仍失败，故当前问题不能通过只提前切换teacher解决。详见`docs/CONTACT_YIELD_V7_HANDOFF_DIAGNOSIS_20261030.md`。物理/MJB、gate、canonical48、公共filter、执行器限制和dt均未改；unseen108未访问。
 - 本地验证：四个wrapper `py_compile`通过，3份JSON解析及`git diff --check`通过。GitHub实时main最终为`271ce4e4d4b58d4375f723a703e0af002e31739d`、baseline为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；初次TLS fetch失败后改用HTTP/1.1获取成功。远端main新增history88独立RL进度，已读并将安全合并；当前还未push。服务器SSH归档已核验。
-- 本轮源码/报告/索引提交为`819a6c49d540018a8cac4455a15fe99b96f0ecd8`；对应9个文件、3,461,735字节的不可变源码快照已归档到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/819a6c49d540018a8cac4455a15fe99b96f0ecd8/`，`rsync --checksum`复核无差异。由于GitHub TLS fetch仍失败，该提交尚未安全整合或push。
 
 ## 2026-10-30 — v7四条MLP棍推teacher接管审计完成；教师安全恢复仍失败
 
 - 75候选公平重训已完成并独立FIT_AUDIT通过：40条/21,500帧、九模型锁定与九路actor replay。fixed27为Task 27/27、Strict 25/27；ESN/RNN各9/9，MLP 7/9。final108保持封存。
 - 保留v1错误MuJoCo解释器失败、v2 CPU affinity preflight零物理步失败；不重用失败登记。新v3/v4以MuJoCo3.11.0、`taskset -c 6`、MemoryMax 3GiB、swap0共完成八条500步/400k子步teacher接管；两轮scope均exit0、OOM0、actor/filter replay误差0。4.48/4.60 s交接最大穿透0.21599/0.22387/0.25499/0.24257mm；更早4.20/4.32 s交接最大0.23565/0.24574/0.24165/0.24904mm。八条Task均完成但均Strict/安全资格失败；学生前缀零穿透，越限发生在teacher后缀，八条失败后缀不入训练集。yield/越杆/回位均早于撤杆完成。保存子步摘要独立数值复算不等于重新积分动力学。详见`docs/CONTACT_YIELD_V7_HANDOFF_DIAGNOSIS_20261030.md`。
 - 同一rod00纯teacher原始演示通过qualification，峰值外部穿透0.07140mm；所以不能概括为teacher标称动作普遍错误。失败MLP与teacher逐帧对齐显示关节位置差在碰撞事件前已增长（seed02于2.44s、seed03于3.68s首次超过0.01rad；请求动作0.04s已有差异），是关联诊断而非因果证明。下一步沿保存轨迹定位动作/关节/滤波twist分歧机制，不重复只提前teacher切换时点。物理/MJB、gate、canonical48、filter、执行器限制、dt冻结；最终108未读/派发。
-- 本轮开工本地main=`89b3025e1b4660e40ac3a7b42fa3fabd27489638`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。GitHub fetch受网络限制，以上是本地缓存，不称为实时远端状态；当前代码和完整回合证据尚未push/共享。
+- 本轮开工本地main=`89b3025e1b4660e40ac3a7b42fa3fabd27489638`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。初次fetch受TLS限制；后续经HTTP/1.1获取并合并实时main，见本条上方同步记录。v7完整回合已共享归档。
+
+## 2026-10-30 — History critic有限88三路实际运行
+
+- [交接](docs/RL_HISTORY88_ONLINE_20261030.md)。完整87为父，单一51维history修订/actor49不变，原LR/reward/物理/30×55/41250/batch65536/UTD1保持。完整链预检66拒绝、实际health/冻结gate/6 clone更新通过，明确有限88，未来88—90统计预登记不授权89/90。
+- 初次依赖文件名覆盖、A浮点LR相等误拒、只读父轮号生成错误全部保留。A0physics后v2容差修复5拒绝+2 clone更新，仅A重试；原I/V持续。v3只读修正，三路实际启动全旧字段/历史/30MJB/CPU/新映射/reward0误差通过，120.0秒99身份观察通过；总steps{'impedance': 3615661, 'admittance': 3614141, 'vmc': 3619201}。早期loss下降仍有尖峰，非收敛，完整88审查待。
+- 活动汇总 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle88_20261030_v2`，只读runtime `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_review_20261030_v3`；原guard继续，GPU235采样min[72, 67, 69, 65]%、低于50[0, 0, 0, 0]。SSD278成员/SHAb158a49e，非HDD/arm1全备份；main628bf1b8/baselinef6e8f8c已fetch/read，发布见收据，无子agent，Goal active。
+
+## 2026-10-30 — 完整87历史critic持久化与原生接口通过
+
+- [交接](docs/RL_HISTORY87_PERSISTENT_CRITIC_INTERFACE_20261030.md)。51维critic/replay、actor49隔离、全10critic/Adam零列迁移、原投影/foreach/全部stream历史恢复实现；完整87三份旧learner和10824948旧行精确，Q初始误差0/0，45负例、下一65536/RNG通过。
+- 完整迁移快照写盘重载、实际GPU cache及3次可丢弃合成append通过；两维随机fixture12次native update重复恢复精确。原87三条完整记录1375+terminal/外部RNG、all5终端health及投影通过；0新physics/正式update，不是新评测或reward改善。完整trainer/eval/health调度接入和有限88登记仍待，Goal active，无Direct34。
+- GPU141采样min[76, 76, 77, 76]%、低于50[0, 0, 0, 0]，科研结束继续守护；共享SSD71成员/SHAb0be2078，完整迁移快照仅SSD、非HDD/arm1全备份。main89b3025e/baselinef6e8f8c已fetch/read，发布见收据，无子agent。
 
 ## 2026-10-30 — 半std全16与87历史已审；匹配critic拟合完成
 

@@ -1,3 +1,15 @@
+## 2026-10-30 — History critic有限88三路实际运行
+
+- [交接](docs/RL_HISTORY88_ONLINE_20261030.md)。完整87为父，单一51维history修订/actor49不变，原LR/reward/物理/30×55/41250/batch65536/UTD1保持。完整链预检66拒绝、实际health/冻结gate/6 clone更新通过，明确有限88，未来88—90统计预登记不授权89/90。
+- 初次依赖文件名覆盖、A浮点LR相等误拒、只读父轮号生成错误全部保留。A0physics后v2容差修复5拒绝+2 clone更新，仅A重试；原I/V持续。v3只读修正，三路实际启动全旧字段/历史/30MJB/CPU/新映射/reward0误差通过，120.0秒99身份观察通过；总steps{'impedance': 3615661, 'admittance': 3614141, 'vmc': 3619201}。早期loss下降仍有尖峰，非收敛，完整88审查待。
+- 活动汇总 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle88_20261030_v2`，只读runtime `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_review_20261030_v3`；原guard继续，GPU235采样min[72, 67, 69, 65]%、低于50[0, 0, 0, 0]。SSD278成员/SHAb158a49e，非HDD/arm1全备份；main628bf1b8/baselinef6e8f8c已fetch/read，发布见收据，无子agent，Goal active。
+
+## 2026-10-30 — 完整87历史critic持久化与原生接口通过
+
+- [交接](docs/RL_HISTORY87_PERSISTENT_CRITIC_INTERFACE_20261030.md)。51维critic/replay、actor49隔离、全10critic/Adam零列迁移、原投影/foreach/全部stream历史恢复实现；完整87三份旧learner和10824948旧行精确，Q初始误差0/0，45负例、下一65536/RNG通过。
+- 完整迁移快照写盘重载、实际GPU cache及3次可丢弃合成append通过；两维随机fixture12次native update重复恢复精确。原87三条完整记录1375+terminal/外部RNG、all5终端health及投影通过；0新physics/正式update，不是新评测或reward改善。完整trainer/eval/health调度接入和有限88登记仍待，Goal active，无Direct34。
+- GPU141采样min[76, 76, 77, 76]%、低于50[0, 0, 0, 0]，科研结束继续守护；共享SSD71成员/SHAb0be2078，完整迁移快照仅SSD、非HDD/arm1全备份。main89b3025e/baselinef6e8f8c已fetch/read，发布见收据，无子agent。
+
 ## 2026-10-30 — 半std全16与87历史已审；匹配critic拟合完成
 
 - [交接](docs/RL_HALF_STD86_COMPLETE_HISTORY87_FIT_20261030.md)。半std原16全55s/0更新/最终全state及1760万raw子步审计通过，Strict I2→0、Ashort3→2、Along3→4、V4→4；两实际图、所有失败保留，不推广统一降熵。

@@ -1,0 +1,41 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_online_20261030_v1/driver.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_online_20261030_v2/driver.py
+@@ -1,7 +1,7 @@
+ """One registered history-critic cycle from exact complete87; no followup."""
+ from pathlib import Path
+ import argparse,copy,hashlib,importlib.util,json,os,sys,time
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=Path(__file__).parent;I=B/'runtime/history87_critic_interface_20261030_v1';RUN=B/'runs/parameter_history_cycle88_20261030_v1'
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');D=Path(__file__).parent;I=B/'runtime/history87_critic_interface_20261030_v1';RUN=B/'runs/parameter_history_cycle88_20261030_v2'
+ read=lambda p:json.loads(Path(p).read_text())
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+@@ -46,6 +46,11 @@
+  for c,k in enumerate(('observations','next_observations')):assert np.array_equal(rs['arrays'][k][:,50],feature(peaks[:,c]))
+  put(out/'INITIAL_STATE_REVIEW.json',dict(passed=True,time=time.time(),learner_digest=digest(ls),replay_digest=digest(rs),original_replay_digest=binding['replay_digest'],old87_state_exact_except_registered_zero_column_migration=True,all_history_rows_verified=True,history_digest=digest(ck['cycles']),new_physics=0,optimizer_updates=0))
+ 
++def validate_actor_rates(actual, expected):
++ import math
++ if len(actual)!=len(expected) or any(not math.isfinite(a) or abs(a-e)>=1e-12 for a,e in zip(actual,expected)):
++  raise ValueError('Actual actor learning rates differ from registered values')
++
+ def main(args):
+  import torch,numpy as np
+  torch.set_num_threads(1);p=read(args.registration);st=p['post_interruption_continuation'];h=p['history_critic_amendment'];root=Path(p['runtime']);assert args.runtime.resolve()==root and sha(root/'RUNTIME.json')==p['runtime_sha256']
+@@ -67,13 +72,16 @@
+  source=Path(st['trainer_path']).read_text();assert sha(st['trainer_path'])==st['trainer_sha256'];modified=transform(source);assert hashlib.sha256(modified.encode()).hexdigest()==st['patched_trainer_sha256']
+  if args.check_only:
+   os.sched_setaffinity(0,{cpus[0]});learner=cls(root,dimension=h['binding']['action_dimension'],direct=False,seed=20261025,device=args.device,algorithm='cheq',critic_layer_norm=True,numerical_amendments=True,critic_clock=True);learner.migrate_parent(ck['learner']);replay=replay_cls(h['binding']['action_dimension'],51,20261078);replay.migrate_parent(ck['replay'],h['sidecar']['path']);verify_initial(learner,replay,ck,args.output.parent/'check')
++  from train_published_compliance_20261025 import registered_stage_actor_rates
++  _, expected_rates=registered_stage_actor_rates(p['completed_stage_continuation'])
++  validate_actor_rates([g['lr'] for g in learner.learner.actor_optimizer.param_groups],expected_rates)
+   from published_replay_device_cache_20261025 import DeviceReplayCache
+   initial=learner.state_dict();replay_initial=copy.deepcopy(replay.rng.bit_generator.state);cache=cache_class(DeviceReplayCache)(replay,args.device);batch=cache.sample(65536);metrics=learner.update(batch);expected=digest(learner.state_dict());learner.load_state_dict(initial);metrics2=learner.update(batch);assert metrics==metrics2 and digest(learner.state_dict())==expected;learner.load_state_dict(initial);replay.rng.bit_generator.state=replay_initial;assert digest(learner.state_dict())==digest(initial)
+   put(args.output.parent/'CHECK_ONLY_REVIEW.json',dict(passed=True,time=time.time(),checkpoint_sha256=sha(args.resume),registration_sha256=sha(args.registration),actual_native_batch=65536,disposable_migrated_clone_updates=2,repeat_native_update_full_state_exact=True,original_state_restored=True,clone_weights_promoted=False,new_physics=0,actual_formal_updates=0));return
+  gate=read(RUN/'PRELAUNCH_REVIEW.json');assert gate['passed'] and gate['registration_hashes'][args.controller]==sha(args.registration);assert read(args.output.parent/'CHECK_ONLY_REVIEW.json')['passed']
+  trainer=root/'source/tools/train_published_compliance_20261025.py';spec=importlib.util.spec_from_file_location('history88_trainer',trainer);module=importlib.util.module_from_spec(spec);exec(compile(modified,str(trainer),'exec'),module.__dict__)
+  def stage_check(checkpoint,stage,cycle_budget,rates):
+-  validate_parent(checkpoint,p);assert stage==p['completed_stage_continuation'] and cycle_budget==1;_,expected=module.registered_stage_actor_rates(stage);assert rates==expected
++  validate_parent(checkpoint,p);assert stage==p['completed_stage_continuation'] and cycle_budget==1;_,expected=module.registered_stage_actor_rates(stage);validate_actor_rates(rates,expected)
+  import published_replay_device_cache_20261025 as cm
+  cm.DeviceReplayCache=cache_class(cm.DeviceReplayCache)
+  module.Replay=replay_cls;module.PublishedLearner=cls;module.validate_resume_protocol=validate_protocol;module.validate_completed_stage_checkpoint=stage_check;module._parameter_sampler_affinity=sampler_affinity;module._validate_parameter_sampler_pool=validate_pool;module._verify_initial_state=verify_initial

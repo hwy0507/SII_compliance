@@ -1,0 +1,80 @@
+{
+  "time": 1793375429.0301895,
+  "cause": "Admittance actual LR3e-5 vs computed floating product differed only in representation; new exact equality rejected before any physics",
+  "old_run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle88_20261030_v1",
+  "new_composite_run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle88_20261030_v2",
+  "admittance_old_pid": 3861086,
+  "admittance_zero_new_physics": true,
+  "admittance_zero_formal_updates": true,
+  "original_I_V_jobs": [
+    {
+      "controller": "impedance",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_online_20261030_v1/driver.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle88_20261030_v1/impedance/REGISTRATION.json",
+        "--resume",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle87_archive_20261029_v1/impedance/cycle_00087.pt",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle88_20261030_v1/impedance/train",
+        "--controller",
+        "impedance",
+        "--cpus",
+        "13,14,15,16,17,18,19,20,21,22,23,24,25",
+        "--workers",
+        "30",
+        "--device",
+        "cuda:1"
+      ],
+      "pid": 3861085,
+      "proc_start_ticks": "574905900",
+      "time": 1793375248.8033447
+    },
+    {
+      "controller": "vmc",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_online_20261030_v1/driver.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle88_20261030_v1/vmc/REGISTRATION.json",
+        "--resume",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_partial75_recovery_cycle87_archive_20261029_v1/vmc/cycle_00087.pt",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle88_20261030_v1/vmc/train",
+        "--controller",
+        "vmc",
+        "--cpus",
+        "39,40,41,42,43,44,45,46,47,48,49,50,51",
+        "--workers",
+        "30",
+        "--device",
+        "cuda:3"
+      ],
+      "pid": 3861087,
+      "proc_start_ticks": "574905901",
+      "time": 1793375248.8059354
+    }
+  ],
+  "replaced_only_readonly_consumers": [
+    {
+      "time": 1793375248.8076215,
+      "pid": 3861088,
+      "proc_start_ticks": "574905901",
+      "script_sha256": "b93094b281adc9e94259c07e86d0655dca91d87181f610ec178fc20a02461453"
+    },
+    {
+      "time": 1793375248.8091307,
+      "pid": 3861089,
+      "proc_start_ticks": "574905901",
+      "script_sha256": "90353d3d1892c884bc02634f218f5cb7dc7cf45b7b1d1a9793775e465fb8177b"
+    }
+  ],
+  "fix": "Restore original finite1e-12 actor LR tolerance; test same gate in check-only; no change to optimizer settings, state, physics, budgets or history feature",
+  "additional_disposable_clone_updates": 2,
+  "automatic_followup": false
+}

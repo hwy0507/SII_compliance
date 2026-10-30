@@ -1,0 +1,25 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery85_87_reward_stability_20261030_v1/audit.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history88_90_reward_stability_20261030_v1/audit.py
+@@ -1,4 +1,4 @@
+-"""Fixed capacity85-87 training stability; never an automatic stop gate."""
++"""Fixed history88-90 training stability; never an automatic stop gate."""
+ from pathlib import Path
+ import argparse
+ import hashlib
+@@ -21,7 +21,7 @@
+     matplotlib.use('Agg')
+     import matplotlib.pyplot as plt
+     reg = json.loads((root/'REGISTRATION.json').read_text())
+-    assert reg['cycles'] == [85, 86, 87] and reg['seed'] == 2026102858
++    assert reg['cycles'] == [88, 89, 90] and reg['seed'] == 2026102861
+     assert reg['bootstrap_replicates'] == 5000 and reg['near_zero_guard'] == 1.
+     assert reg['relative_limit'] == .05 and sha(__file__) == reg['source_sha256']
+     for group in reg['inputs'].values():
+@@ -39,6 +39,7 @@
+             def read(key):
+                 return json.loads(Path(refs[key]['path']).read_text())
+             p, review, health = read('protocol'), read('review'), read('health')
++            assert p['history_critic_amendment'] == reg['history_amendment'][method]
+             assert review['passed'] and read('finished')['completed']
+             row, h = review['methods'][method], health['methods'][method]
+             assert row['checkpoint_sha256'] == h['checkpoint_sha256']
