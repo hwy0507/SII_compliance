@@ -1,0 +1,57 @@
+--- baseline_frozen86
++++ evaluate_parameter86_half_std_20261030.py
+@@ -1,6 +1,7 @@
+-"""Frozen complete86 parameter policies on four prospectively selected method/case groups.
+-
+-Four fixed external action seeds per group; no optimization or formal replay writes.
++"""Finite fixed86 paired intervention: pre-tanh Gaussian sampling std multiplied by0.5.
++
++Same four groups and four external seeds as completed baseline; no updates or replay writes.
++Serialized learner state is unchanged; the actor sampling distribution intentionally changes.
+ Reuse the independently exercised external RNG and native replay implementation
+ from the completed frozen29 diagnostic, whose source is pinned in registration.
+ """
+@@ -12,6 +13,7 @@
+ import subprocess
+ import sys
+ import time
++from half_std_probe import install_probe
+ from evaluate_parameter29_seeded_switch_20261026 import (
+     sha, write, ExternalActions, gate, review_episode,
+ )
+@@ -58,6 +60,8 @@
+                 'gate_case_id', 'runtime', 'audit_runtime', 'source_hashes']:
+         assert reg[key] == entry[key], key
+     assert reg['gate_case_id'] == reg['case_ids'][0]
++    assert reg['pre_tanh_std_factor'] == plan['pre_tanh_std_factor'] == .5
++    for entry in plan['baseline_inputs'].values():assert sha(entry['path']) == entry['sha256']
+ 
+ 
+ def main(registration, check_only, expected_cycle=86):
+@@ -126,6 +130,8 @@
+     assert sha(journal) == reg['gate_observations_sha256']
+     with journal.open() as stream:
+         observations = [json.loads(next(stream))['observation'] for _ in range(3)]
++    probe = install_probe(learner, observations, digest)
++    write(output/('CHECK_ONLY_PROBE.json' if check_only else 'STARTUP_PROBE.json'), probe)
+     result = gate(learner, ck, observations, reg['action_seeds'][0], reg['gate_case_id'], digest)
+     result.update(full_replay_restored_exact=True, replay_digest=replay_digest,
+                   full_learner_digest=initial, checkpoint_sha256=sha(reg['checkpoint']),
+@@ -140,7 +146,7 @@
+         checkpoint_sha256=sha(reg['checkpoint']), action_seeds=reg['action_seeds'], case_ids=reg['case_ids'],
+         full_learner_digest=initial, full_replay_digest=replay_digest, expected_episodes=4,
+         maximum_actions=5500, maximum_substeps=4400000, optimizer_updates=0,
+-        scope='Complete86 selected method/case sensitivity: four predeclared action seeds, no updates; not all30, independent training seeds, generalization, entropy intervention, historical causal attribution or final ESN comparison'))
++        scope='Paired inference intervention: same fixed86 weights/groups/seeds, pre-tanh Gaussian std factor0.5. Serialized state unchanged but policy sampler intentionally changed. Not a training entropy intervention or convergence claim'))
+     results = []
+     case = reg['case_ids'][0]
+     for seed in reg['action_seeds']:
+@@ -212,7 +218,7 @@
+         strict=sum(r['physical']['row']['strict_success'] for r in results),
+         full_learner_state_unchanged=True, full_replay_state_unchanged=True,
+         initial_learner_digest=initial, final_learner_digest=digest(learner.state_dict()),
+-        new_optimizer_updates=0, convergence_claim=False))
++        new_optimizer_updates=0, convergence_claim=False, pre_tanh_std_factor=.5, sampling_distribution_intentionally_changed=True))
+ 
+ 
+ if __name__ == '__main__':

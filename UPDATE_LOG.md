@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整87与冻结86全16已审；半标准差配对评测运行
+
+- [交接](docs/RL_COMPLETE87_HALF_STD86_RUNNING_20261030.md)。87三路各30×55/41250/noabort、全replay/reward0误差/loss/health/187标签/两终端已审；Task/Strict18/16、15/14、17/16。原85—87全失败稳定性，固定2514 V1158.553→2829.904退化、A2110.926→1036.234改善但critic3退化，六实际图保留；未收敛，无自动88/Direct34。
+- 原冻结86全16与1760万raw子步独立审计/最终全state不变/图通过，I Strict2/4、A两组3/4、V4/4。唯一std×0.5固定86同16配对已启动，PLAN0d857019，v1/v2零物理接口预检失败保留，v3四真实恢复/56负例/实际400行与native循环通过；180.0秒40身份观察通过，最终16/paired图待。序列化state不变但sampler有意改变，非训练熵目标等价，Goal active。
+- GPU363样本min[74, 63, 63, 63]%、低于50[0, 0, 0, 0]，科学完成仍保载；SSD521成员/SHAabd952ef核验、非HDD/arm1全备份。mainf47cd238/baselinef6e8f8c实际fetch/read，正常发布见收据，无子agent。
+
 ## 2026-10-30 — v7 MLP棍推失败的状态支持诊断
 
 - 新增只读诊断 `code/mujoco_6d_vmc_benchmark/experiments/diagnose_contact_yield_mlp_rod_support_v7_20261030.py` 与哈希绑定结果 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_MLP_ROD_SUPPORT_DIAGNOSIS_V7_20261030.json`。源数据绑定v7 dataset `d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a`、75候选FIT_AUDIT、9模型锁和完成的fixed27 review；对9条rod00开发轨迹使用相同18字段/训练集尺度/绝对值扩展对照训练支持域。

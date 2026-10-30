@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery82_84_bootstrap_scalar_review_20261030_v1/audit.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/recovery85_87_bootstrap_scalar_review_20261030_v1/audit.py
+@@ -14,7 +14,7 @@
+ result={}
+ for window,root in plan['windows'].items():
+  root=Path(root);reg=read(root/'REGISTRATION.json');report=read(root/'REVIEW.json');saved=read(root/'SAVED_ARITHMETIC_REVIEW.json');assert report['passed'] and saved['passed']
+- assert reg['bootstrap_replicates']==5000 and reg['seed']==2026102855 and reg['relative_limit']==.05 and reg['near_zero_guard']==1
++ assert reg['bootstrap_replicates']==5000 and reg['seed']==2026102858 and reg['relative_limit']==.05 and reg['near_zero_guard']==1
+  methods={}
+  for mi,m in enumerate(['impedance','admittance','vmc']):
+   maps=[]
