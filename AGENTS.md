@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 原80前5000已核；81仅恢复准备
+
+- [交接](docs/RL_RECOVERY80_PREFIX81_PREPARATION_20261030.md)。80三路前5000原日志字节/连续step/全部有限/独立算术/实际六图核验；critic首→尾I2.714394→2.630187、A1.330159→1.485200、V0.978321→0.870612，尖峰仍在，仅描述前缀非收敛。原80steps{'impedance': 3289698, 'admittance': 3291957, 'vmc': 3293649}，全审查继续，79安全失败及原窗口保持。
+- 81科学trainer与80逐字同一、五metadata插入可逆；三路正fixture/每路19协议+8边界拒绝及真实未完整80拒绝通过。仅恢复等待3542338已部署，准确恢复完成=False，startup/archive/fullreview/health实际依赖与完整loss/80→81配对准备；无81决定/训练、无Direct34，Goal active。
+- 11样本/300.040s共15身份保持；GPU143样本min[76, 68, 69, 68]%、低于50[0, 0, 0, 0]，科研结束仍合成保载。SSD77成员/SHA24bd87d4核验，非HDD/arm1全备份。mainecdfdd53后eacd3086/baselinef6e8f8c已fetch/read并保留非RL66/75；发布待收据，无子agent。
+
 ## 2026-10-30 — 完整79含真实安全中止；明确登记有限80续训
 
 - [交接](docs/RL_RECOVERY79_ABORT80_RUNNING_20261030.md)。79三路reward−2.511717/−10.141245/−2.874607，Task/Strict17/17、14/13、17/17；I long0000在27s安全中止、40550新增/29full，失败/惩罚全部保留。完整回放/reward/loss/health/180标签/终端/五实际图已审，未收敛。
