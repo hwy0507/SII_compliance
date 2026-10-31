@@ -1,3 +1,11 @@
+## 2026-10-31 — final108 资源前置再次核验；测试仍未派发
+
+- 本轮先重新读取了项目规则及 GitHub 两个分支：远端 `main=414944fe9b270dfa5664de38f2da96952df365e0`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；本地已快进到该 main。远端 main 的 RL census94 更新与本专题无冲突，未改 final108 登记或模型锁定。
+- 只读检查 `outputs/contact_yield_locked_unseen108_20261031_v3/` 仍只有 `REGISTRATION.json`（登记 SHA256 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`），没有 `execution.json`、episode、Task/Strict、SPT、峰值力矩、人舒适度或机器合规统计，完成度仍 0/108。
+- 当前容器仍位于 Chromium scope，实测 affinity 为 CPU 0–23，`memory.max`、`memory.swap.max`、`cpu.max` 不可用，user systemd bus 不可用；主机 `SwapFree=0`。不满足登记的 CPU6/单线程/3 GiB/禁 swap 前置，未启动 MuJoCo，也没有绕过限制。
+- 按用户批准范围只读核验共享服务器：`contact_yield_rod_recheck_20261031_v1` 和 `contact_yield_final108_binding_audit_20261031_v1` 的 `SHA256SUMS` 全部通过；`nonrl_final108_v2_controls_20261031_v2` 存在且清单绑定提交 `abd2fc269f087108160d2edf8ff34a07eb533b1d`。服务器未运行计算，未写入或覆盖任何目录。
+- 结论保持：teacher/来源/控制流证据有效，但不能替代 final108 物理结果。Goal active；待出现合规本机 scope 后，才按 v3 登记一次性运行并保留所有失败收据。
+
 ## 2026-10-31 — 第94轮前5000已审；固定93全部终端比较等待
 
 - [交接](docs/RL_CENSUS94_PREFIX_20261031.md)。固定first5000原始字节/全部metrics/保存算术/实际九栏图通过；原抽样loss最大I16.365/A1.537/V1.152，I尖峰与actor上移仍保留。新q_loss是条件估计，不替代原抽样健康口径；前缀无新terminal，完整94/真实cache增长和收敛均待。

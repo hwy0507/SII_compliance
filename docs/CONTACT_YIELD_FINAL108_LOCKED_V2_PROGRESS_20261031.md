@@ -1,3 +1,9 @@
+## 2026-10-31 13:39 CST — 资源前置再次核验
+
+- 重新 fetch/read 远端后，`main=414944fe9b270dfa5664de38f2da96952df365e0`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；本地已快进到该 main。RL census94 更新不涉及本专题冻结登记。
+- v3 目标目录仍只有 `REGISTRATION.json`，无 `execution.json` 或 episode，final108 完成度 0/108。当前 Chromium scope 的 affinity 为 `0–23`，`memory.max`、`memory.swap.max`、`cpu.max` 不可用，user systemd bus 不可用，主机 `SwapFree=0`；未满足 CPU6/单线程/3 GiB/禁 swap，未启动物理。
+- 经批准的服务器只读核验中，rod recheck 与 binding audit 两个既有独立目录的 `SHA256SUMS` 全部通过；controls v2 目录存在并绑定 `abd2fc269f087108160d2edf8ff34a07eb533b1d`。服务器未运行计算，未覆盖旧产物。
+
 # 特化场景模型 final108 一次性比较进度
 
 ## v2 启动控制复核
