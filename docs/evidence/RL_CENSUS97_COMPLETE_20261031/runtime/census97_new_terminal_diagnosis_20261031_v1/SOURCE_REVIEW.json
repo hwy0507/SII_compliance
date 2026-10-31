@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "time": 1793447317.3499162,
+  "files": [
+    {
+      "source": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_new_terminal_diagnosis_20261031_v1/build_reference96.py",
+      "source_sha256": "0708eecb6c2ba94fae00b78b9759ac3bbdf4764a12e63ba9b81f092cf642b64e",
+      "candidate": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_new_terminal_diagnosis_20261031_v1/build_reference97.py",
+      "candidate_sha256": "11287a64b7f0896f147735103d69543b0898199f4ffefe41f38463eb5d260952",
+      "cycle_and_population_identity_mapping": {
+        "96": "97",
+        "95": "96",
+        "8623": "8713",
+        "8533": "8623",
+        "00096": "00097"
+      },
+      "explicit_amendments": [
+        {
+          "old": "assert ep['cycle']==97 and ep['steps']==1375 and ep['full_task_horizon_completed'] and ep['abort_reason'] is None",
+          "new": "assert ep['cycle']==97 and 0<ep['steps']<=1375;assert ep['total_steps']==t['step'];assert isinstance(ep['full_task_horizon_completed'],bool)",
+          "reason": "Preserve any actual97 aborted terminal instead of excluding it; original gate labels remain unchanged."
+        }
+      ],
+      "other_arithmetic_and_inference_unchanged": true
+    },
+    {
+      "source": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_new_terminal_diagnosis_20261031_v1/analyze.py",
+      "source_sha256": "811ee0d0ae051fc54804ae5c9cf5bc83862f83ae2250d86b0176cbc863984f00",
+      "candidate": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_new_terminal_diagnosis_20261031_v1/analyze.py",
+      "candidate_sha256": "91a1d38240e3ce83968b05c620fcc41a1b93903a783e54065ec46f9f4166936c",
+      "cycle_and_population_identity_mapping": {
+        "96": "97",
+        "95": "96",
+        "8623": "8713",
+        "8533": "8623",
+        "00096": "00097"
+      },
+      "explicit_amendments": [
+        {
+          "old": "assert len(trans)==1375 and trans[-1]",
+          "new": "assert 0<len(trans)<=1375 and len(trans)==ep['steps'] and trans[-1]",
+          "reason": "Keep finite aborted episodes in the diagnostic pair, without changing labels or original gates."
+        }
+      ],
+      "other_arithmetic_and_inference_unchanged": true
+    },
+    {
+      "source": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_new_terminal_diagnosis_20261031_v1/review_saved.py",
+      "source_sha256": "9a67d4eb6110ae14c930fe03e457b5256cce9b45d7b73ab1a4d763eee02b5d5d",
+      "candidate": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_new_terminal_diagnosis_20261031_v1/review_saved.py",
+      "candidate_sha256": "1e4f16f8840581cf71f3c14ebb83243dadb1a93eddba9208cf4401161f02e18e",
+      "cycle_and_population_identity_mapping": {
+        "96": "97",
+        "95": "96",
+        "8623": "8713",
+        "8533": "8623",
+        "00096": "00097"
+      },
+      "explicit_amendments": [],
+      "other_arithmetic_and_inference_unchanged": true
+    }
+  ],
+  "physics_steps": 0,
+  "optimizer_updates": 0,
+  "scope": "Identity-only adaptation apart from explicit inclusion of actual finite aborted episodes; no scientific gates changed."
+}

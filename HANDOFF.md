@@ -1,3 +1,11 @@
+## 2026-10-31 — 完整97/全部终端与loss已审，next context全行证据补齐
+
+- [交接](docs/RL_CENSUS97_COMPLETE_20261031.md)。完整97旧回放/新奖励/600万容量、全部loss数组/标量及五张实际图通过；结果{'impedance': {'task': 18, 'strict': 16, 'reward': -4.200142450623342, 'original_loss_max': 1.7768959999084473}, 'admittance': {'task': 15, 'strict': 15, 'reward': -6.807196862626171, 'original_loss_max': 1.6205227375030518}, 'vmc': {'task': 17, 'strict': 17, 'reward': -2.870846981161089, 'original_loss_max': 1.227644920349121}}。原loss口径保持，不以阶段完成宣称收敛。
+- 固定8623旧终端全5critic/原mask与新增90完整诊断通过，全部8713参考及learner/Adam/replay/RNG不变。全90条件成功退化和short0600时序保留；无采样索引，不作尖峰因果推断。每次线上总终端计数/最终32分层精确，线上逐分层tensor未记录。
+- 新终端binder字段错误及原observer停止记录保留；推理前只读修复后完成原诊断，完整比较图另存收据保留旧前缀。
+- next context缺口已补到每条新97：全52非终端连续、所有日志current context及30终端原复制规则精确，无尾部遗漏。原三训练/archive/消费者完成勿重启；无自动98，原94–96失败/前瞻97–99未完成/Direct33原验收与冻结0/0/指定ESN缺失保持，Goal active。
+- GPU448样本min[83, 65, 67, 68]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD128成员/SHA0c9d5873，HDD仅254-byte指针、非全备份。
+
 ## 2026-10-31 — 第97轮真实跨400万回放通过，补齐下一观测context证据
 
 - [交接](docs/RL_CENSUS97_ACTUAL4M_BOUNDARY_20261031.md)。原三路真实>4m快照完整旧96全字段保持、新reward/done及五条边界actor journal绑定通过，6m与全部历史容量标记保持。实际快照步数{'impedance': 4000512, 'admittance': 4005000, 'vmc': 4006000}；零训练/物理更新。
