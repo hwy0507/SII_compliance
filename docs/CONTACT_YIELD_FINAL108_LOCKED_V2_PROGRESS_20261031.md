@@ -26,3 +26,10 @@
 ## 本轮续接状态
 
 2026-10-31，服务器归档 v1 已完成：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_final108_v2_controls_20261031_v1/`，5个文件与manifest逐项SHA256回读一致。2026-10-31，v2控制审计通过，审计脚本、控制收据与本进度更新已准备并随本轮提交发布。用户已明确批准使用SSH将本轮必要产物归档到共享服务器独立目录并逐文件校验SHA256；只读检查确认共享根存在、目标目录 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_final108_v2_controls_20261031_v1/` 在归档前不存在。SSH访问已恢复。GitHub远端main `9bd8d0d8ce202f1a147e5aa5736fcf88e74bb96d` 与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 已查询，main远端更新已合并；发布和归档需在本轮最终提交后完成。final108仍未派发，测试完成度0/108。
+
+## 2026-10-31 — all10 棍推 teacher 行为收据只读复核
+
+- 对既有独立收据 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_ALL10_ROD_INDEPENDENT_REVIEW_20261030.json` 做了逐条只读核验；`rod_00`–`rod_09` 共 10 条均 `qualified=true`，Task、安全、行为、actor replay、filter replay 全部为 true，失败列表为空。
+- 十条均满足“撤杆前让位、持杆越过、撤杆前持续回位、穿透≤0.20 mm”。回位确认时间早于撤杆 1.24–5.59 s（中位数 4.36 s）；各条时间与轨迹 SHA 已保存到 `docs/evidence/CONTACT_YIELD_ALL10_ROD_RECHECK_20261031.json`。这验证的是开发 teacher collection，不是冻结 unseen108 的模型性能或最终科学结果。
+- final108 v3 目录仍只有 `REGISTRATION.json`，物理完成度 0/108；未生成 `execution.json`、Task/Strict、SPT、峰值力矩、人舒适度或机器合规统计。当前容器仍不满足登记的 CPU6/单线程/3 GiB/零 swap 约束，未启动仿真。
+- 已按用户批准的归档授权只读核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/` 存在；本轮未向服务器写入文件，也未在服务器计算。GitHub/服务器后续发布仍以提交和可用网络为前提。

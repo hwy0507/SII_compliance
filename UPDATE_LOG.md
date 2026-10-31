@@ -1,3 +1,9 @@
+## 2026-10-31 — all10 棍推 teacher 行为收据只读复核；final108仍未运行
+
+- 只读复核既有 `CONTACT_YIELD_ALL10_ROD_INDEPENDENT_REVIEW_20261030.json`：rod_00–rod_09 共10条均 qualified，Task/安全/行为/actor replay/filter replay 全通过；撤杆前让位、持杆越过、持续回位和≤0.20 mm 穿透条件逐条通过。回位确认早于撤杆 1.24–5.59 s，中位数4.36 s。逐条时间、判定值和轨迹哈希写入 `docs/evidence/CONTACT_YIELD_ALL10_ROD_RECHECK_20261031.json`。
+- 这只是开发 teacher collection 的独立收据复核，不是 unseen108 模型测试结果。`outputs/contact_yield_locked_unseen108_20261031_v3/` 仍只有 REGISTRATION.json，final108 完成度0/108；没有 Task/Strict、SPT、峰值力矩、人舒适度或机器合规统计。
+- 当前容器资源仍不满足登记的CPU6/单线程/3GiB/零swap，未启动物理仿真。SSH只读核验共享根存在；本轮未向服务器写入文件、未在服务器计算。保留历史失败和未完成收据。
+
 ## 2026-10-31 — 新主机cn2恢复：四卡保活重启、完整93冷恢复精确
 
 - [交接](docs/RL_CENSUS93_HOST_RECOVERY_20261031.md)。主机已切换至cn2p6rygmr，旧guard/PID和工具句柄消失、实测四卡0%；无其他guard确认后从原源码重启，/tmp/sii_gpu_util_guard_20261031_recovery_v1，supervisor96425、workers96426–96429，start身份见CURRENT_GUARD。科学结束继续，非重启服务。
