@@ -1,3 +1,9 @@
+## 2026-10-31 — 完整92冻结原生batch尖峰来源已核验
+
+- [交接](RL_VIOLATION92_BATCH_DIAGNOSIS_20261031.md)。三路各64×65536、首批精确重复、完整learner/Adam/replay/RNG不变，0update/physics；全部192原批独立算术与实际图核验。I两尖峰由原90安全中止terminal index3726050主导，最大贡献85.52%，bit0；非历史在线尖峰因果复现、pair因果或修复证明。A/V有限未复现大尖峰不等于已解决，未收敛。
+- 原92和诊断完成勿重启；下一步完整终端误差集中审查后单独科学决定，无自动93/Direct34。原冻结90继续，完成{'impedance': 27, 'admittance': 25, 'vmc': 25}，最终全90/raw/paired待；全部历史失败/Direct原结论/指定ESN缺失保持。
+- GPU104样本min[76, 67, 68, 68]%、低于50[0, 0, 0, 0]，科研结束仍守护。SSD148小证据成员/SHAe1a6d296核验，192raw NPZ仅SSD且逐hash核验；HDD仅254字节指针，非全备份。main03c9f084/baselinef6e8f8c2实际query/fetch/read，发布见收据。Goal active，无子agent。
+
 ## 2026-10-31 — 完整92与原90—92窗口已审；I/A失败保留
 
 - [交接](RL_COMPLETE92_20261031.md)。I40562新增/29完整+1安全中止，A/V41250各30完整；旧replay与新52/action/reward精确，Task/Strict17/16、14/13、17/17。I long0000在687动作/27.48s全局87.97mm中止，external bit0不覆盖该失败。全loss仍有尖峰/actor上移，未收敛。
