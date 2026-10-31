@@ -1,0 +1,13 @@
+# 下一步：单独登记有限在线94（尚未派发）
+
+正式科学父是三路完整93，禁止加载本轮restart_fixture或任何隔离更新权重。新版估计器采用完整五位mask分层的原终端SSE条件期望；固定参数/回放/非终端target下期望loss与gradient对应原估计器，但有限Adam路径不同。原native抽样loss必须单独记账，不能用条件估计loss较平滑宣称原异常解决。
+
+已实现census_native.py版本2；marker绑定整个模块SHA，load独立复制learner以免CPU Adam step与调用方状态别名。完整93迁入只增加marker，无权重/moments/RNG重置。load之后必须重新绑定CensusCache；旧loader可能静默丢marker，registered driver/consumer必须strict_restore并完整digest核验，不能声称旧loader本身主动拒绝。
+
+下一独立runtime/registration可复用原93的driver和actual trainer，保存所有既有history/rawbit架构marker、23/47容量marker与partial75历史。明确新增estimator amendment，单方法一轮最多41250新物理transition/30×55s，4m容量内，原LR/reward/terminal128/batch65536/UTD1/pair/actor信息/physics/MJB/gates保持。没有自动95、Direct34或辅助权重推广。
+
+需在实际trainer构造DeviceReplayCache后绑定learner.bind_cache(cache)，将类替为CensusCache，sample继承原ExactCache且不改抽样RNG。不要把本轮独立历史行测试当新rollout。新checkpoint learner marker和top-level amendment必须精确保存；后续冻结消费者/归档/review也需识别版本，不能沿用会丢规则的旧restore。父93完整metadata依原compare93验证；新94完整消费者另绑定预算、旧prefix和新actions/rewards/history/rawbit。
+
+有限上线前还需登记具体driver/trainer源码和来源、反例守卫、实际check-only及startup核验。完整loss审查须同时保留agent_train/q_loss（新估计器）与agent_train/original_sampled_q_loss（原抽样计算），只把后者与原健康口径比较；reward稳态窗口需按登记版本重新绑定，不回写或抹去90—92失败/92→93变化。上轮I最差原batch、新93误差分配、旧92中止和V unmasked退化均保留，不能被这次8步兼容性测试覆盖。
+
+本轮测试无physics，正式state仍完整93。Direct33原数值验收、冻结30 Task/Strict0/0、旧28证明不足/恢复2完全不变结论保留；指定ESN仍缺。GPUguard独立继续，非系统重启服务。
