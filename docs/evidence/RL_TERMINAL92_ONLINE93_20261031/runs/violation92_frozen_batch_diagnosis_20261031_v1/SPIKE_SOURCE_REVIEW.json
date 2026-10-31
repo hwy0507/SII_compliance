@@ -1,0 +1,866 @@
+{
+  "passed": true,
+  "time": 1793407567.5391233,
+  "method": "impedance",
+  "replay_index": 3726050,
+  "source_transition": {
+    "step": 3726051,
+    "cycle": 90,
+    "condition": "active_long_train_0000",
+    "reward": -37.79256573694613,
+    "done": true,
+    "context": 0.4236879348754883,
+    "reward_terms": {
+      "progress": -3.1588680781344616,
+      "occupancy": -0.0011458304826421118,
+      "time": -0.0007272727272727274,
+      "comfort_torque": -0.0,
+      "contact_force": -0.0,
+      "torque_slew": -9.291607272789756e-05,
+      "penetration": -0.0,
+      "peak_torque": -0.0,
+      "terminal": -25.0,
+      "failure_tail": -9.631731639529024,
+      "current_potential": 0.6317736156268923,
+      "next_potential": 0.6061207715917741,
+      "effective_next_potential": 0.0,
+      "task_success": false,
+      "strict_success": false,
+      "success": false,
+      "terminated": true,
+      "failure_reason": null,
+      "elapsed_s": 35.07999999999943,
+      "final_reward": -37.79256573694613,
+      "completion_efficiency": 0.0
+    }
+  },
+  "original_abort_summary": {
+    "passed": true,
+    "time": 1793395246.7124984,
+    "condition": "active_long_train_0000",
+    "method": "impedance",
+    "actual_actions": 877,
+    "terminal_time_s": 35.080000000602766,
+    "task": false,
+    "strict": false,
+    "abort": "global_penetration_exceeded_2mm",
+    "reward": -40.33666958012428,
+    "global_peak_penetration_mm": 97.91258910176563,
+    "worst_global_pair": [
+      "office_v5_corner_top",
+      "target_object_geom"
+    ],
+    "external_peak_penetration_mm": 0.046985938315137664,
+    "worst_external_pair": [
+      "office_v5_human_thumb",
+      "hand_collision"
+    ],
+    "last_current_and_terminal_external_bit": 0,
+    "prior89": {
+      "task": true,
+      "strict": true,
+      "abort": null,
+      "global_peak_penetration_mm": 0.18429551018612697,
+      "external_peak_penetration_mm": 0.07005618521774044
+    },
+    "sources": [
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/train/episodes.jsonl",
+        "sha256": "6a751dc74df7a51ba45654adc2dfeb220d447579f45213fa7760a065c75fe930"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/train/transitions.jsonl",
+        "sha256": "7ea4ee884ef0d065c025b7de76d1a56e7e34a6c6f9779618dbe0009473263fce"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/train/cycle_00090/active_long_train_0000/actor_intervals.jsonl",
+        "sha256": "52eba7cb7c2c65e7f7d67b9caa156622adccd731a29e27129cf506c3a97ba0ea"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/train/cycle_00090/active_long_train_0000/TERMINAL.json",
+        "sha256": "46bb344e3b6b50c5e6a1dc70395f321381509fb8831bdeb1372f8fc7a20254b5"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/train/cycle_00090/active_long_train_0000/rollout.json",
+        "sha256": "25aabeca14474069aa37ec7f767ff1f1e0fc4905767252880d7e6f730883c882"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle89_20261030_v1/impedance/train/cycle_00089/active_long_train_0000/rollout.json",
+        "sha256": "3228850f02de5e78fb492188f02bdef57d034cb204e6e7cf6c95db43f0ea7207"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/REGISTRATION.json",
+        "sha256": "222e01a0d8f7b3195342130230147f50818ba2e058e81b5fc08b51db8ba9cb9d"
+      }
+    ],
+    "new_physics": 0,
+    "optimizer_updates": 0,
+    "scope": "Read-only saved rollout/journal diagnosis. Global target-object/corner contact is distinct from the external-penetration critic bit. No claim of independent dynamics replication, causal policy attribution, or a fix; original physics/gates and failed episode retained."
+  },
+  "all64_batches": [
+    {
+      "batch": 0,
+      "occurrences": 0,
+      "native_loss": 1.2446517944335938,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2446518342741426,
+      "target_pair": [
+        3,
+        4
+      ]
+    },
+    {
+      "batch": 1,
+      "occurrences": 0,
+      "native_loss": 1.2168093919754028,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2168094044639943,
+      "target_pair": [
+        2,
+        1
+      ]
+    },
+    {
+      "batch": 2,
+      "occurrences": 0,
+      "native_loss": 1.3597254753112793,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.3597254802747665,
+      "target_pair": [
+        2,
+        4
+      ]
+    },
+    {
+      "batch": 3,
+      "occurrences": 0,
+      "native_loss": 1.202974796295166,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2029747725602404,
+      "target_pair": [
+        2,
+        4
+      ]
+    },
+    {
+      "batch": 4,
+      "occurrences": 0,
+      "native_loss": 1.305972933769226,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.3059729952162522,
+      "target_pair": [
+        2,
+        4
+      ]
+    },
+    {
+      "batch": 5,
+      "occurrences": 0,
+      "native_loss": 1.4884867668151855,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.4884868069443868,
+      "target_pair": [
+        3,
+        4
+      ]
+    },
+    {
+      "batch": 6,
+      "occurrences": 0,
+      "native_loss": 1.2366917133331299,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2366916917523751,
+      "target_pair": [
+        3,
+        2
+      ]
+    },
+    {
+      "batch": 7,
+      "occurrences": 0,
+      "native_loss": 1.2643669843673706,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2643670033506975,
+      "target_pair": [
+        0,
+        3
+      ]
+    },
+    {
+      "batch": 8,
+      "occurrences": 0,
+      "native_loss": 1.4432308673858643,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.4432309929064593,
+      "target_pair": [
+        4,
+        2
+      ]
+    },
+    {
+      "batch": 9,
+      "occurrences": 0,
+      "native_loss": 1.1436958312988281,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1436958375232396,
+      "target_pair": [
+        0,
+        1
+      ]
+    },
+    {
+      "batch": 10,
+      "occurrences": 0,
+      "native_loss": 1.2737843990325928,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2737843507711324,
+      "target_pair": [
+        0,
+        4
+      ]
+    },
+    {
+      "batch": 11,
+      "occurrences": 0,
+      "native_loss": 1.438025712966919,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.438025677279741,
+      "target_pair": [
+        3,
+        2
+      ]
+    },
+    {
+      "batch": 12,
+      "occurrences": 0,
+      "native_loss": 1.3636822700500488,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.3636821715593355,
+      "target_pair": [
+        4,
+        1
+      ]
+    },
+    {
+      "batch": 13,
+      "occurrences": 0,
+      "native_loss": 1.141037106513977,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1410371356762121,
+      "target_pair": [
+        0,
+        2
+      ]
+    },
+    {
+      "batch": 14,
+      "occurrences": 0,
+      "native_loss": 1.2256989479064941,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.22569899431922,
+      "target_pair": [
+        3,
+        2
+      ]
+    },
+    {
+      "batch": 15,
+      "occurrences": 0,
+      "native_loss": 1.345656394958496,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.345656412713219,
+      "target_pair": [
+        2,
+        1
+      ]
+    },
+    {
+      "batch": 16,
+      "occurrences": 0,
+      "native_loss": 1.2572636604309082,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2572636286427523,
+      "target_pair": [
+        3,
+        0
+      ]
+    },
+    {
+      "batch": 17,
+      "occurrences": 0,
+      "native_loss": 1.354519009590149,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.354519085843661,
+      "target_pair": [
+        3,
+        0
+      ]
+    },
+    {
+      "batch": 18,
+      "occurrences": 0,
+      "native_loss": 1.2523276805877686,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2523276007492647,
+      "target_pair": [
+        2,
+        3
+      ]
+    },
+    {
+      "batch": 19,
+      "occurrences": 0,
+      "native_loss": 1.3309322595596313,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.33093224152724,
+      "target_pair": [
+        4,
+        0
+      ]
+    },
+    {
+      "batch": 20,
+      "occurrences": 0,
+      "native_loss": 1.353848934173584,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.3538488932836217,
+      "target_pair": [
+        4,
+        1
+      ]
+    },
+    {
+      "batch": 21,
+      "occurrences": 1,
+      "native_loss": 7.6586174964904785,
+      "same_denominator_row_contribution": 6.506862948272679,
+      "remaining_contribution": 1.1517541254578472,
+      "target_pair": [
+        1,
+        0
+      ]
+    },
+    {
+      "batch": 22,
+      "occurrences": 0,
+      "native_loss": 1.4087181091308594,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.408718220149995,
+      "target_pair": [
+        1,
+        3
+      ]
+    },
+    {
+      "batch": 23,
+      "occurrences": 0,
+      "native_loss": 1.1022515296936035,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1022515124452041,
+      "target_pair": [
+        1,
+        2
+      ]
+    },
+    {
+      "batch": 24,
+      "occurrences": 0,
+      "native_loss": 1.156517505645752,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1565175066313071,
+      "target_pair": [
+        4,
+        2
+      ]
+    },
+    {
+      "batch": 25,
+      "occurrences": 0,
+      "native_loss": 1.170855164527893,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1708550931956043,
+      "target_pair": [
+        0,
+        3
+      ]
+    },
+    {
+      "batch": 26,
+      "occurrences": 0,
+      "native_loss": 1.2950785160064697,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2950784943532052,
+      "target_pair": [
+        1,
+        3
+      ]
+    },
+    {
+      "batch": 27,
+      "occurrences": 0,
+      "native_loss": 1.244335412979126,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2443353969060282,
+      "target_pair": [
+        0,
+        4
+      ]
+    },
+    {
+      "batch": 28,
+      "occurrences": 0,
+      "native_loss": 1.2392009496688843,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2392009059725093,
+      "target_pair": [
+        1,
+        3
+      ]
+    },
+    {
+      "batch": 29,
+      "occurrences": 0,
+      "native_loss": 1.1791843175888062,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.179184327463203,
+      "target_pair": [
+        2,
+        1
+      ]
+    },
+    {
+      "batch": 30,
+      "occurrences": 0,
+      "native_loss": 1.2822933197021484,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.282293307980563,
+      "target_pair": [
+        0,
+        4
+      ]
+    },
+    {
+      "batch": 31,
+      "occurrences": 0,
+      "native_loss": 1.3252819776535034,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.3252819268536458,
+      "target_pair": [
+        2,
+        1
+      ]
+    },
+    {
+      "batch": 32,
+      "occurrences": 0,
+      "native_loss": 1.1119422912597656,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.111942298834113,
+      "target_pair": [
+        1,
+        4
+      ]
+    },
+    {
+      "batch": 33,
+      "occurrences": 0,
+      "native_loss": 1.2450942993164062,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.24509433319448,
+      "target_pair": [
+        1,
+        4
+      ]
+    },
+    {
+      "batch": 34,
+      "occurrences": 0,
+      "native_loss": 1.2023675441741943,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2023675228701318,
+      "target_pair": [
+        1,
+        2
+      ]
+    },
+    {
+      "batch": 35,
+      "occurrences": 0,
+      "native_loss": 1.2052098512649536,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.205209864787406,
+      "target_pair": [
+        0,
+        3
+      ]
+    },
+    {
+      "batch": 36,
+      "occurrences": 0,
+      "native_loss": 1.1613850593566895,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1613850849217964,
+      "target_pair": [
+        2,
+        1
+      ]
+    },
+    {
+      "batch": 37,
+      "occurrences": 0,
+      "native_loss": 1.1260178089141846,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1260177405006138,
+      "target_pair": [
+        4,
+        1
+      ]
+    },
+    {
+      "batch": 38,
+      "occurrences": 0,
+      "native_loss": 1.1596711874008179,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.159671192742072,
+      "target_pair": [
+        4,
+        3
+      ]
+    },
+    {
+      "batch": 39,
+      "occurrences": 0,
+      "native_loss": 1.0995999574661255,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.0995999511005867,
+      "target_pair": [
+        1,
+        0
+      ]
+    },
+    {
+      "batch": 40,
+      "occurrences": 0,
+      "native_loss": 1.4111971855163574,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.4111971480225858,
+      "target_pair": [
+        3,
+        2
+      ]
+    },
+    {
+      "batch": 41,
+      "occurrences": 1,
+      "native_loss": 7.68778133392334,
+      "same_denominator_row_contribution": 6.574775147125566,
+      "remaining_contribution": 1.1130059555230556,
+      "target_pair": [
+        0,
+        1
+      ]
+    },
+    {
+      "batch": 42,
+      "occurrences": 0,
+      "native_loss": 1.2670841217041016,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2670841629201217,
+      "target_pair": [
+        3,
+        4
+      ]
+    },
+    {
+      "batch": 43,
+      "occurrences": 0,
+      "native_loss": 1.1043089628219604,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1043089901110243,
+      "target_pair": [
+        3,
+        0
+      ]
+    },
+    {
+      "batch": 44,
+      "occurrences": 0,
+      "native_loss": 1.203489065170288,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2034891783341743,
+      "target_pair": [
+        0,
+        1
+      ]
+    },
+    {
+      "batch": 45,
+      "occurrences": 0,
+      "native_loss": 1.1918821334838867,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1918821932427222,
+      "target_pair": [
+        0,
+        2
+      ]
+    },
+    {
+      "batch": 46,
+      "occurrences": 0,
+      "native_loss": 1.2459006309509277,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2459006069730796,
+      "target_pair": [
+        3,
+        0
+      ]
+    },
+    {
+      "batch": 47,
+      "occurrences": 0,
+      "native_loss": 1.0408611297607422,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.040861094029045,
+      "target_pair": [
+        1,
+        0
+      ]
+    },
+    {
+      "batch": 48,
+      "occurrences": 0,
+      "native_loss": 1.1965000629425049,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1965000185208008,
+      "target_pair": [
+        0,
+        3
+      ]
+    },
+    {
+      "batch": 49,
+      "occurrences": 0,
+      "native_loss": 1.1909950971603394,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1909951480072247,
+      "target_pair": [
+        4,
+        2
+      ]
+    },
+    {
+      "batch": 50,
+      "occurrences": 0,
+      "native_loss": 1.2669932842254639,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2669932148170748,
+      "target_pair": [
+        2,
+        0
+      ]
+    },
+    {
+      "batch": 51,
+      "occurrences": 0,
+      "native_loss": 1.1316977739334106,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1316977841010794,
+      "target_pair": [
+        1,
+        0
+      ]
+    },
+    {
+      "batch": 52,
+      "occurrences": 0,
+      "native_loss": 1.341644287109375,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.34164427563937,
+      "target_pair": [
+        0,
+        2
+      ]
+    },
+    {
+      "batch": 53,
+      "occurrences": 0,
+      "native_loss": 1.149540901184082,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1495408468644688,
+      "target_pair": [
+        2,
+        1
+      ]
+    },
+    {
+      "batch": 54,
+      "occurrences": 0,
+      "native_loss": 1.1708767414093018,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1708768487704162,
+      "target_pair": [
+        0,
+        1
+      ]
+    },
+    {
+      "batch": 55,
+      "occurrences": 0,
+      "native_loss": 1.1426712274551392,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1426712232224303,
+      "target_pair": [
+        2,
+        1
+      ]
+    },
+    {
+      "batch": 56,
+      "occurrences": 0,
+      "native_loss": 1.1398307085037231,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.1398307026285208,
+      "target_pair": [
+        4,
+        2
+      ]
+    },
+    {
+      "batch": 57,
+      "occurrences": 0,
+      "native_loss": 1.2853953838348389,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2853954319103316,
+      "target_pair": [
+        0,
+        4
+      ]
+    },
+    {
+      "batch": 58,
+      "occurrences": 0,
+      "native_loss": 1.4055874347686768,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.4055873482652719,
+      "target_pair": [
+        4,
+        0
+      ]
+    },
+    {
+      "batch": 59,
+      "occurrences": 0,
+      "native_loss": 1.2490551471710205,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.249055182052842,
+      "target_pair": [
+        1,
+        3
+      ]
+    },
+    {
+      "batch": 60,
+      "occurrences": 0,
+      "native_loss": 1.439023733139038,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.4390237505383536,
+      "target_pair": [
+        1,
+        0
+      ]
+    },
+    {
+      "batch": 61,
+      "occurrences": 0,
+      "native_loss": 1.2018251419067383,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2018252347184428,
+      "target_pair": [
+        4,
+        3
+      ]
+    },
+    {
+      "batch": 62,
+      "occurrences": 0,
+      "native_loss": 1.2297348976135254,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2297348704959314,
+      "target_pair": [
+        1,
+        4
+      ]
+    },
+    {
+      "batch": 63,
+      "occurrences": 0,
+      "native_loss": 1.2433786392211914,
+      "same_denominator_row_contribution": 0.0,
+      "remaining_contribution": 1.2433785434907656,
+      "target_pair": [
+        4,
+        1
+      ]
+    }
+  ],
+  "present_batches": [
+    {
+      "batch": 21,
+      "occurrences": 1,
+      "native_loss": 7.6586174964904785,
+      "same_denominator_row_contribution": 6.506862948272679,
+      "remaining_contribution": 1.1517541254578472,
+      "target_pair": [
+        1,
+        0
+      ]
+    },
+    {
+      "batch": 41,
+      "occurrences": 1,
+      "native_loss": 7.68778133392334,
+      "same_denominator_row_contribution": 6.574775147125566,
+      "remaining_contribution": 1.1130059555230556,
+      "target_pair": [
+        0,
+        1
+      ]
+    }
+  ],
+  "absent_batches": 62,
+  "absent_native_loss_range": [
+    1.0408611297607422,
+    1.4884867668151855
+  ],
+  "maximum_batch_row_fraction": 0.8552240056716378,
+  "sources": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/train/transitions.jsonl",
+      "sha256": "7ea4ee884ef0d065c025b7de76d1a56e7e34a6c6f9779618dbe0009473263fce"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/train/cycle_00090/active_long_train_0000/rollout.json",
+      "sha256": "25aabeca14474069aa37ec7f767ff1f1e0fc4905767252880d7e6f730883c882"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle90_20261030_v1/impedance/train/cycle_00090/active_long_train_0000/TERMINAL.json",
+      "sha256": "46bb344e3b6b50c5e6a1dc70395f321381509fb8831bdeb1372f8fc7a20254b5"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_completion_20261030_v1/ABORT_REVIEW.json",
+      "sha256": "d21a6a2b427c324a4ac0099ba9912f60e286849c885cf46161d987be062b3618"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation92_frozen_batch_diagnosis_20261031_v1/SAVED_REVIEW.json",
+      "sha256": "12f72a44314f4542dda306e36996e3e1a4c620abd55cdf0e66c8f75c77fd2d89"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation92_frozen_batch_diagnosis_20261031_v1/impedance/RAW_MANIFEST.json",
+      "sha256": "fac281cc4865ca5f5207e86482f191c5b702d74f45536da9b37247e125381f8a"
+    }
+  ],
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "replay_rows_removed": 0,
+  "scope": "All64 fixed-state native batches retained. Both dominant spikes contain the same cycle90 global-safety-abort terminal, whose Bellman target is exactly reward regardless of sampled critic pair; pair0/1 co-occurrence is not evidence of a pair effect. Contribution uses unchanged full-batch denominators, not a rerun excluding rows. No historical online spike replay or proof of irreducible representation error."
+}

@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-31 — 全部92终端已审；有限同协议93实际训练
+
+- [交接](docs/RL_TERMINAL92_ONLINE93_20261031.md)。全部8263终端/all5/原masks及原79/90/92中止来源、保存算术和实际图核验，完整learner/Adam/replay/RNG不变。I90/92两条占masked SSE76.3184%，79占.2162%；非纵向改善/不可约/历史在线因果证明，A/V和未参与mask的critic误差保留。
+- 据完整92与集中误差单独登记一轮93，每方法≤41250，实际trainer/数值协议不变；108负例、6原生batch clone重复恢复、实际startup旧replay/新52/action/reward0误差通过。120.045s/99身份保持，steps{'impedance': 3816234, 'admittance': 3819659, 'vmc': 3820553}。完整93及固定92比较待，无自动94/Direct34；原90–92 I/A失败、V reward-only通过保持，未收敛。
+- 原冻结90继续，完成{'impedance': 30, 'admittance': 28, 'vmc': 28}，最终全90/raw/paired待。GPU199样本min[68, 66, 68, 68]%、低于50[0, 0, 0, 0]，科研结束仍守护。SSD164成员/SHA5979f575核验，HDD仅254字节指针、非全备份。main624c7cf2/baselinef6e8f8c2实际query/fetch/read，发布见收据。全部历史失败/Direct原结论/指定ESN缺失保持；Goal active，无子agent。
+
 ## 2026-10-31 — 完整92冻结原生batch尖峰来源已核验
 
 - [交接](docs/RL_VIOLATION92_BATCH_DIAGNOSIS_20261031.md)。三路各64×65536、首批精确重复、完整learner/Adam/replay/RNG不变，0update/physics；全部192原批独立算术与实际图核验。I两尖峰由原90安全中止terminal index3726050主导，最大贡献85.52%，bit0；非历史在线尖峰因果复现、pair因果或修复证明。A/V有限未复现大尖峰不等于已解决，未收敛。
