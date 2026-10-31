@@ -1,3 +1,8 @@
+## 2026-10-31 — 预检收据服务器归档被自动审批拒绝
+
+- 本轮尝试将新生成的资源预检收据归档到独立服务器目录；自动审批拒绝了该数据导出，理由是此前授权未明确覆盖这份具体预检 payload/目标目录。随后只读确认 `incoming/contact_yield_final108_resource_preflight_20261031_v1` 与最终 `runs/main/contact_yield_final108_resource_preflight_20261031_v1` 均不存在，未发生服务器写入。
+- 本地证据和 GitHub 提交不受影响；既有已核验归档保持不变。新收据仍只在本地 GitHub 版本中，final108 仍 0/108，未启动物理。
+
 ## 2026-10-31 — final108 登记资源函数零物理预检保留
 
 - 直接使用登记环境的 `select_v9_closed_loop_candidates_v3_20261029.py::check_resources()` 做零物理预检；没有调用 `run()`、没有创建 final108 `execution.json`、没有启动 MuJoCo。收据：`docs/evidence/CONTACT_YIELD_FINAL108_RESOURCE_PREFLIGHT_20261031.json`，`physics_calls=0`，状态 `rejected_resource_preflight`。

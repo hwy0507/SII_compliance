@@ -1,3 +1,8 @@
+## 2026-10-31 服务器归档状态
+
+- 新资源预检 JSON 的服务器归档请求被自动审批拒绝；只读确认 incoming 和最终目标目录均不存在，未写入服务器。既有 rod recheck、binding audit 和 controls v2 归档保持已核验状态。
+- 资源预检收据当前仅在本地/GitHub；final108 仍为 0/108，Goal active。
+
 ## 2026-10-31 13:50 CST — 登记资源函数零物理预检
 
 - 真实调用冻结资源检查函数 `select_v9_closed_loop_candidates_v3_20261029.py::check_resources()`；在 `memory.max=max` 断言处拒绝，`physics_calls=0`，未调用 final108 `run()`，未生成 `execution.json`。收据为 `docs/evidence/CONTACT_YIELD_FINAL108_RESOURCE_PREFLIGHT_20261031.json`，SHA256 `c4d68bdd045d142e360ead2dd9d7aeef2c38725ae379414e615b3d87f2d6a98b`。
