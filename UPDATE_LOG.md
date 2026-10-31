@@ -6,6 +6,28 @@
 
 - GPU148样本min[71, 67, 67, 68]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD93成员/SHAcaa43ed4，HDD仅254字节指针、非全备份。main7f8c80b0/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
 
+## 2026-10-31 — 恢复后资源阻塞再次复现；预检 v2 保留
+
+- 重新调用登记资源 guard，收据 `docs/evidence/CONTACT_YIELD_FINAL108_RESOURCE_PREFLIGHT_20261031_v2.json` SHA256 `f14cc179888c49da76cde97f81ecdfbfae0d3e460d5b3ee44edde654395f8f13`，状态仍为 `rejected_resource_preflight`，`physics_calls=0`。
+- 当前 Chromium scope affinity/cpuset 为 0–23、`memory.max` 不可用/为 max、user systemd bus 不可用，主机 `SwapFree=16 KiB`；final108 目录仍只有登记文件，服务器也没有 final108 归档。
+- 这是用户恢复 goal 后连续复现的同一外部资源阻塞；本轮没有重复启动或改变冻结条件。Goal 保持未完成，需外部提供合规执行 scope。
+
+## 2026-10-31 — final108 静态 readiness 检查通过；等待资源 scope
+
+- final108 adapter、冻结 evaluator、资源 guard 的 `py_compile` 和 CLI help 均通过；静态收据 `docs/evidence/CONTACT_YIELD_FINAL108_STATIC_READINESS_20261031.json` SHA256 `ec5b1e76ede08c1759b34b8f7ff5a79a9fd624277e175d76963afb76c25af34f`。
+- 收据明确 `run_called=false`、`physics_calls=0`，登记 SHA 保持 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`，`execution.json` 不存在。正式 108 回合仍未开始，等待合规 CPU6/单线程/3GiB/禁swap scope。
+
+## 2026-10-31 — final108 adapter 控制流回归复核；物理调用仍为0
+
+- 重新运行零物理控制审计，当前登记 SHA `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6` 与控制源码 SHA 保持一致。108 行有序派发、重复派发拒绝、基础设施失败收据保留、失败目录重启拒绝、107 行复核拒绝全部通过。
+- 收据 `docs/evidence/CONTACT_YIELD_FINAL108_CONTROL_RECHECK_20261031.json` SHA256 `234fd9d05d75e788f729e210513a93d63539f68e11983a5c30d903dd70619d58`；`physics_calls=0`。这只是控制流回归，不是 final108 物理结果。当前资源仍不合规，final108 仍0/108。
+
+## 2026-10-31 — goal 恢复后当前状态审计；final108 仍未执行
+
+- 新增 `docs/evidence/CONTACT_YIELD_GOAL_CURRENT_STATE_AUDIT_20261031.json`（SHA256 `0918234bf7eae9f1114a3fc646b92aaed44ccf2f49b8534c3d672ff0b98dfc4c`）。登记检查通过，9/9 模型 checkpoint 与 metadata 绑定一致，30/30 teacher collection 轨迹 qualified。
+- final108 已登记108格但 `execution.json` 仍不存在，物理指标不可用，状态明确为 `not_executed_resource_blocked`。当前容器仍是 Chromium scope，affinity/cpuset为0–23，主机swap仅余236 KiB，user systemd bus不可用；没有启动物理。
+- 服务器只读检查确认新预检归档目录和 final108目录均不存在；没有新的服务器计算或写入。Goal active，待合规执行scope后继续正式一次性评测。
+
 ## 2026-10-31 — goal 逐项完成度审计；final108 仍被资源阻塞
 
 - 新增逐项审计 `docs/evidence/CONTACT_YIELD_GOAL_REQUIREMENTS_AUDIT_20261031.json`（SHA256 `7287f7d851541db2991a7e4cd9174bbd55b7efb7aa27022b9c01c2c1615ac6a7`）。当前权威状态：30 条最新版 VMC teacher action（棍推/球撞/桌角各10）全部 qualified；棍推10/10 让位—蹭过—回位独立审计通过；统一数据上的75个候选、9个锁定模型和MLP容量审计通过；fixed27开发闭环 Task 27/27、Strict 24/27。

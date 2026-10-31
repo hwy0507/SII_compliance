@@ -1,3 +1,23 @@
+## 2026-10-31 — 恢复后资源阻塞再次复现
+
+- 预检 v2 收据 `docs/evidence/CONTACT_YIELD_FINAL108_RESOURCE_PREFLIGHT_20261031_v2.json`（SHA256 `f14cc179888c49da76cde97f81ecdfbfae0d3e460d5b3ee44edde654395f8f13`）仍在 `memory.max` 断言处拒绝，`physics_calls=0`。
+- final108 仍0/108；当前未有物理进程，服务器无 final108 归档。该资源阻塞在恢复后的连续多轮保持不变。
+
+## 2026-10-31 — final108 静态 readiness
+
+- adapter/evaluator/resource guard 编译与CLI检查通过，静态收据 `docs/evidence/CONTACT_YIELD_FINAL108_STATIC_READINESS_20261031.json`，`run_called=false`、`physics_calls=0`。
+- `execution.json`仍不存在；只待合规资源scope，不改变冻结模型、条件或门槛。
+
+## 2026-10-31 — adapter 控制流回归复核
+
+- 零物理控制脚本重新通过：108行有序调度、重复启动拒绝、基础设施失败保留前三条收据、失败重启拒绝、107行复核拒绝；登记 SHA 未漂移。收据 `docs/evidence/CONTACT_YIELD_FINAL108_CONTROL_RECHECK_20261031.json`，`physics_calls=0`。
+- 该审计不提供物理指标；资源前置仍不合规，final108仍0/108。
+
+## 2026-10-31 — goal 恢复后当前状态审计
+
+- 新收据 `docs/evidence/CONTACT_YIELD_GOAL_CURRENT_STATE_AUDIT_20261031.json`：登记检查通过，9/9模型来源绑定一致，30/30 teacher qualified。
+- final108登记108格但仍无`execution.json`，没有物理指标；资源仍为Chromium scope、affinity/cpuset 0–23、主机swap余236 KiB、user systemd不可用，未启动仿真。
+
 ## 2026-10-31 14:59 CST — goal 逐项完成度审计
 
 - 新增逐项权威审计 `docs/evidence/CONTACT_YIELD_GOAL_REQUIREMENTS_AUDIT_20261031.json`，SHA256 `7287f7d851541db2991a7e4cd9174bbd55b7efb7aa27022b9c01c2c1615ac6a7`。
