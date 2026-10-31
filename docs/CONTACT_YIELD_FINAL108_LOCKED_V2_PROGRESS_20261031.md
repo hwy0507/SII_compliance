@@ -1,3 +1,8 @@
+## 2026-10-31 — 恢复后资源阻塞再次复现
+
+- 预检 v2 收据 `docs/evidence/CONTACT_YIELD_FINAL108_RESOURCE_PREFLIGHT_20261031_v2.json`（SHA256 `f14cc179888c49da76cde97f81ecdfbfae0d3e460d5b3ee44edde654395f8f13`）仍在 `memory.max` 断言处拒绝，`physics_calls=0`。
+- final108 仍0/108；当前未有物理进程，服务器无 final108 归档。该资源阻塞在恢复后的连续多轮保持不变。
+
 ## 2026-10-31 — final108 静态 readiness
 
 - adapter/evaluator/resource guard 编译与CLI检查通过，静态收据 `docs/evidence/CONTACT_YIELD_FINAL108_STATIC_READINESS_20261031.json`，`run_called=false`、`physics_calls=0`。

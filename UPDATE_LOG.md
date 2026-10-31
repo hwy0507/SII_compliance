@@ -1,3 +1,9 @@
+## 2026-10-31 — 恢复后资源阻塞再次复现；预检 v2 保留
+
+- 重新调用登记资源 guard，收据 `docs/evidence/CONTACT_YIELD_FINAL108_RESOURCE_PREFLIGHT_20261031_v2.json` SHA256 `f14cc179888c49da76cde97f81ecdfbfae0d3e460d5b3ee44edde654395f8f13`，状态仍为 `rejected_resource_preflight`，`physics_calls=0`。
+- 当前 Chromium scope affinity/cpuset 为 0–23、`memory.max` 不可用/为 max、user systemd bus 不可用，主机 `SwapFree=16 KiB`；final108 目录仍只有登记文件，服务器也没有 final108 归档。
+- 这是用户恢复 goal 后连续复现的同一外部资源阻塞；本轮没有重复启动或改变冻结条件。Goal 保持未完成，需外部提供合规执行 scope。
+
 ## 2026-10-31 — final108 静态 readiness 检查通过；等待资源 scope
 
 - final108 adapter、冻结 evaluator、资源 guard 的 `py_compile` 和 CLI help 均通过；静态收据 `docs/evidence/CONTACT_YIELD_FINAL108_STATIC_READINESS_20261031.json` SHA256 `ec5b1e76ede08c1759b34b8f7ff5a79a9fd624277e175d76963afb76c25af34f`。
