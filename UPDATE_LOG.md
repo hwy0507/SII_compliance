@@ -8,6 +8,7 @@
 
 - 只读核对 `REGISTRATION.json` 绑定：9/9 checkpoint、9/9 training metadata、1178/1178 源文件、2/2 配置文件 SHA256 全部匹配。完整明细见 `docs/evidence/CONTACT_YIELD_FINAL108_BINDING_AUDIT_20261031.json`。
 - 这只是来源和配置前置审计，不是物理评测；final108 仍为0/108。当前 CPU/内存/swap 隔离条件仍不满足，未启动任何 episode。
+- 审计 JSON、专题进度和范围说明已归档到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_final108_binding_audit_20261031_v1/`；4 个文件和 `SHA256SUMS` 已逐项回读通过，MANIFEST SHA256 为 `dbe9a3273b8c729467d797ecccdb4a850be7ff037445a23b9b82cd99aaae51c5`。
 
 ## 2026-10-31 — 条件终端估计器完整native更新与恢复兼容通过
 
