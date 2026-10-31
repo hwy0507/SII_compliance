@@ -4,6 +4,11 @@
 - 这只是开发 teacher collection 的独立收据复核，不是 unseen108 模型测试结果。`outputs/contact_yield_locked_unseen108_20261031_v3/` 仍只有 REGISTRATION.json，final108 完成度0/108；没有 Task/Strict、SPT、峰值力矩、人舒适度或机器合规统计。
 - 当前容器资源仍不满足登记的CPU6/单线程/3GiB/零swap，未启动物理仿真。SSH只读核验共享根存在；本轮服务器归档已完成到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_rod_recheck_20261031_v1/`，4个证据文件和 `SHA256SUMS` 已逐项回读校验；服务器未运行计算。保留历史失败和未完成收据。
 
+## 2026-10-31 — final108 登记绑定哈希前置审计
+
+- 只读核对 `REGISTRATION.json` 绑定：9/9 checkpoint、9/9 training metadata、1178/1178 源文件、2/2 配置文件 SHA256 全部匹配。完整明细见 `docs/evidence/CONTACT_YIELD_FINAL108_BINDING_AUDIT_20261031.json`。
+- 这只是来源和配置前置审计，不是物理评测；final108 仍为0/108。当前 CPU/内存/swap 隔离条件仍不满足，未启动任何 episode。
+
 ## 2026-10-31 — 条件终端估计器完整native更新与恢复兼容通过
 
 - [交接](docs/RL_CENSUS93_NATIVE_COMPATIBILITY_20261031.md)。只替换q_losses、原train code字节重建核验、原sampler/RNG及actor/target/温度路径保持；增量终端cache与版本化marker已实现。三方法各四臂×8完整更新，共96隔离更新，候选重复/中途重载完整state精确，原生对照抽样/RNG一致；独立首批loss/gradient最大差0、三磁盘存档旧回放前缀/新增fixture/masks/RNG/Adam+4通过。

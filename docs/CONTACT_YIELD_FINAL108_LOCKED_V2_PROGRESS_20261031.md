@@ -33,3 +33,8 @@
 - 十条均满足“撤杆前让位、持杆越过、撤杆前持续回位、穿透≤0.20 mm”。回位确认时间早于撤杆 1.24–5.59 s（中位数 4.36 s）；各条时间与轨迹 SHA 已保存到 `docs/evidence/CONTACT_YIELD_ALL10_ROD_RECHECK_20261031.json`。这验证的是开发 teacher collection，不是冻结 unseen108 的模型性能或最终科学结果。
 - final108 v3 目录仍只有 `REGISTRATION.json`，物理完成度 0/108；未生成 `execution.json`、Task/Strict、SPT、峰值力矩、人舒适度或机器合规统计。当前容器仍不满足登记的 CPU6/单线程/3 GiB/零 swap 约束，未启动仿真。
 - 已按用户批准的归档授权核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/` 存在，并将本轮复核包归档到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_rod_recheck_20261031_v1/`；4个文件及 `SHA256SUMS` 已逐项回读通过，MANIFEST SHA256 为 `ef3e40bd72b7dac43461092c9be44d64bc9eac1dda2ac28b3abd01d8fa86ec45`。服务器未运行计算。
+
+## 2026-10-31 — final108 登记绑定哈希前置审计
+
+- 只读核对 v3 登记的来源绑定：9/9 checkpoint、9/9 training metadata、1178/1178 源文件、2/2 配置文件 SHA256 全部匹配。完整明细见 `docs/evidence/CONTACT_YIELD_FINAL108_BINDING_AUDIT_20261031.json`。
+- 这项审计只证明 provenance/preflight 完整，不提供 Task/Strict、SPT、峰值力矩、人舒适度或机器合规结果；final108 仍为0/108。当前资源隔离条件仍不满足，未启动 episode。
