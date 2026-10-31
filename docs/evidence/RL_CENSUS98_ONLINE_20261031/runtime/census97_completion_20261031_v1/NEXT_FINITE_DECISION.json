@@ -1,0 +1,126 @@
+{
+  "time": 1793449687.6571708,
+  "passed": true,
+  "decision": "prepare_and_register_one_finite98_from_exact_complete97",
+  "parent_cycle": 97,
+  "new_cycle": 98,
+  "new_cycles": 1,
+  "maximum_new_actions_per_method": 41250,
+  "actual98_restore": false,
+  "online98_launched": false,
+  "automatic99": false,
+  "direct34": false,
+  "convergence_claim": false,
+  "optimizer_settings_changed": false,
+  "reward_physics_changed": false,
+  "capacity_unchanged": 6000000,
+  "original_third_capacity_stage_must_be_preserved": true,
+  "offline_weights_promoted": false,
+  "facts": {
+    "impedance": {
+      "checkpoint_sha256": "34e66979676c297c8dfd6265e93479881b09701397dd561cddb7eb64987a7bf6",
+      "steps": 4017762,
+      "reward_mean": -4.200142450623342,
+      "reward_delta_from96": -1.7970790370726952,
+      "original_loss": {
+        "mean": 0.9832687706268195,
+        "first1000_mean": 0.9491792405247689,
+        "last1000_mean": 1.0075399152636528,
+        "minimum": 0.6811811923980713,
+        "maximum": 1.7768959999084473
+      },
+      "old_terminal_masked_sse_change": -0.3925462959988808,
+      "new97_terminal_masked_sse": 14.699449599960644,
+      "task_gained": [],
+      "task_lost": [],
+      "strict_gained": [],
+      "strict_lost": [
+        "active_short_train_0100"
+      ]
+    },
+    "admittance": {
+      "checkpoint_sha256": "9c0eb0638ae837addab9db5d4062433150c3c30bef53442e152ba028ff9e1fb4",
+      "steps": 4021250,
+      "reward_mean": -6.807196862626171,
+      "reward_delta_from96": -1.6246750905908707,
+      "original_loss": {
+        "mean": 1.0406329641674503,
+        "first1000_mean": 1.0375162654519081,
+        "last1000_mean": 1.03327119243145,
+        "minimum": 0.7140908241271973,
+        "maximum": 1.6205227375030518
+      },
+      "old_terminal_masked_sse_change": -0.4557144149406276,
+      "new97_terminal_masked_sse": 17.833413024647598,
+      "task_gained": [
+        "active_short_train_0600"
+      ],
+      "task_lost": [
+        "active_short_train_0900",
+        "active_long_train_0900"
+      ],
+      "strict_gained": [
+        "active_short_train_0600"
+      ],
+      "strict_lost": [
+        "active_short_train_0900",
+        "active_long_train_0900"
+      ]
+    },
+    "vmc": {
+      "checkpoint_sha256": "fa41f3808f107b8af8ff492572df90f524795b3b928b37a326026b506e194261",
+      "steps": 4022250,
+      "reward_mean": -2.870846981161089,
+      "reward_delta_from96": 1.7350269137849295,
+      "original_loss": {
+        "mean": 0.7235870431885575,
+        "first1000_mean": 0.723623870909214,
+        "last1000_mean": 0.7210736572742462,
+        "minimum": 0.4355161488056183,
+        "maximum": 1.227644920349121
+      },
+      "old_terminal_masked_sse_change": -0.19528197559710625,
+      "new97_terminal_masked_sse": 1.9468282697598625,
+      "task_gained": [],
+      "task_lost": [],
+      "strict_gained": [
+        "active_short_train_0600"
+      ],
+      "strict_lost": []
+    }
+  },
+  "evidence": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_completion_20261031_v1/COMPLETE97_SCIENTIFIC_REVIEW.json",
+      "sha256": "df9b5ee519a46db475f10bc8db0ddd0fb8fcb6dc5e7a0a4af3dbc19c6bbaefd6"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_completion_20261031_v1/FULL_LOSS_SAVED_REVIEW.json",
+      "sha256": "1744111e392c6f637e270802e06d7119accfd25d6eecacd94942becbcc35d44d"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_completion_20261031_v1/FULL_CONTEXT_REVIEW.json",
+      "sha256": "25945d966bb0572f645f1a1923851d7bb3ad00176f0797d5a6aeb2514c28f10b"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census97_new_terminal_diagnosis_20261031_v1/DIAGNOSIS.json",
+      "sha256": "063bb38182895634cfa6bf5b0a2ce3ab3cf075b850e03e86ab4d558c004ac7f3"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_continuation_20261031_v1/STABILITY_WINDOW_INTENT.json",
+      "sha256": "f97394dd39d8867892c4f18a10776917cae6af74572fecb90aeb515a2c913238"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census94_96_reward_stability_20261031_v1/REVIEW.json",
+      "sha256": "ed4781075cbf17b716a541a5c3a97b95e9875de247ca452a5dbabb1cb5248071"
+    }
+  ],
+  "reason": "All97 data/plots/full-state/context/terminal checks passed. Original loss has no96-scale V spike in97 but I loss and actors drift; I/A reward and strict regressions persist while old masked terminal error improves. A final new long0100 has largest new terminal residual. Continue one finite unchanged census stage from latest97; full98 recovery/native repeated updates/CPU consumers/startup/archive and explicit launch gate required. Prospective97-99 remains incomplete; original94-96 failures retained.",
+  "required_before_launch": [
+    "separate98 scientific registration and source manifest",
+    "actual complete97 full learner/Adam/replay/RNG exact recovery and repeated65536 native update equivalence with state restored",
+    "CPU strict consumers and corrupt contract rejections",
+    "registered startup and full98/archive/health/loss consumers",
+    "separate explicit launch gate with original97 jobs terminal"
+  ]
+}
