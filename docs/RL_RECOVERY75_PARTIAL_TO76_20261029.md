@@ -1,3 +1,10 @@
+## 2026-10-31 — 600万回放GPU原生更新等价通过；完整96仍待
+
+- [交接](RL_CENSUS_CAPACITY6M_GPU_20261031.md)。三份真实全95在GPU0比较原4m/新6m/重复6m，全部retained设备镜像、8533终端及32分层精确；65536批次与采样RNG相同，原loss/全部metrics和更新后完整learner/Adam/RNG digest逐值相同，随后全state恢复。
+- 共9次隔离更新、0正式更新/physics、无权重保存；三原checkpoint hash保持。新容量尚未部署，准确全96父恢复及有限97契约仍待，既有21负例/跨4m/满6m拒绝证据保持；原94–96窗口及A19.7689%必要条件失败不变。
+- 原101身份两端一致，steps增长{'impedance': 1908, 'admittance': 1908, 'vmc': 2002}；GPU43样本min[74, 69, 70, 68]%、低于50[0, 0, 0, 0]，guard继续。原三96训练/archive/两个消费者继续；完整96/原loss健康/联合收敛、Direct原结论及指定ESN缺失保持，Goal active。
+- SSD小包12成员/SHA56c1cc5c，HDD仅指针。开工main8b39c197/baselinef6e8f8c2实际query/fetch/read；GPU测试未修改原正式源码/协议。
+
 ## 2026-10-31 — 600万回放容量准备通过；原第96轮继续
 
 - [交接](RL_CENSUS_CAPACITY6M_PREPARATION_20261031.md)。现4m不能容纳完整97，独立6m候选仅准备；真实完整95三路全部回放/历史双容量及架构标记/RNG精确、CPU census终端与1/32/256/65536采样一致，完整learner digest和原checkpoint hash保持。
