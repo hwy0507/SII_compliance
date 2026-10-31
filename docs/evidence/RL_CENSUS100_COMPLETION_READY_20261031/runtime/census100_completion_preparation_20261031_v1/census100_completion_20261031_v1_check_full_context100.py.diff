@@ -1,0 +1,47 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census99_completion_20261031_v1/check_full_context99.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census100_completion_20261031_v1/check_full_context100.py
+@@ -1,11 +1,11 @@
+-"""Close the next-context evidence gap over every new complete99 transition."""
++"""Close the next-context evidence gap over every new complete100 transition."""
+ from pathlib import Path
+ import os, sys, json, hashlib, time, gc
+ 
+ D = Path(__file__).resolve().parent
+ B = D.parents[1]
+-R = B / 'runs/parameter_census_cycle99_20261031_v1'
+-V = B / 'runs/parameter_census_cycle99_review_20261031_v1'
++R = B / 'runs/parameter_census_cycle100_20261031_v1'
++V = B / 'runs/parameter_census_cycle100_review_20261031_v1'
+ HELPER = B / 'runtime/census97_boundary_review_20261031_v1'
+ read = lambda p: json.loads(p.read_text())
+ 
+@@ -29,17 +29,17 @@
+     from check_continuity import compare_links
+     methods = {}
+     for m, record in full['methods'].items():
+-        cp = B / 'runs/parameter_census_cycle99_archive_20261031_v1' / m / 'cycle_00099.pt'
++        cp = B / 'runs/parameter_census_cycle100_archive_20261031_v1' / m / 'cycle_00100.pt'
+         assert sha(cp) == record['checkpoint_sha256']
+         ck = torch.load(cp, map_location='cpu', weights_only=False, mmap=True)
+-        assert ck['boundary'] == 'complete_condition_cycle' and ck['cycle'] == 99
++        assert ck['boundary'] == 'complete_condition_cycle' and ck['cycle'] == 100
+         arrays = ck['replay']['arrays']
+         source = R / m / 'train/transitions.jsonl'
+         ts = [json.loads(line) for line in source.read_text().splitlines()]
+         parent = read(R / m / 'REGISTRATION.json')['post_interruption_continuation']['parent_steps']
+         assert len(ts) == record['new_transitions'] == ck['steps']-parent
+         assert [t['step'] for t in ts] == list(range(parent+1, ck['steps']+1))
+-        assert all(t['cycle'] == 99 for t in ts)
++        assert all(t['cycle'] == 100 for t in ts)
+         links = compare_links(arrays, ts)
+         idx = np.asarray([t['step']-1 for t in ts], np.int64)
+         contexts = np.asarray([t['context'] for t in ts], np.float32)
+@@ -60,7 +60,7 @@
+         print(m, methods[m], flush=True)
+     with (D / 'FULL_CONTEXT_REVIEW.json').open('x') as f:
+         json.dump(dict(passed=True, time=time.time(), methods=methods, physics_steps=0, optimizer_updates=0,
+-            scope='All new99 rows: full52 next-state equality to following same-condition current state for nonterminals; all current contexts match original log, all terminal next contexts match original copied-current rule. Supplements the original full actor-journal review, with no tail exclusions at complete boundary.'), f, indent=2)
++            scope='All new100 rows: full52 next-state equality to following same-condition current state for nonterminals; all current contexts match original log, all terminal next contexts match original copied-current rule. Supplements the original full actor-journal review, with no tail exclusions at complete boundary.'), f, indent=2)
+         f.write('\n')
+ 
+ if __name__ == '__main__':
