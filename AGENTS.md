@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-31 — 固定94–96窗口完整94输入通过；原95继续
+
+- [交接](docs/RL_CENSUS95_WINDOW_INPUTS_20261031.md)。三个真实完整94输入组的原protocol/review/health/finished、全部30episodes/41250optimizer、原loss和两实际图、checkpoint均完成锁定逐组检查；三完整checkpoint实际加载。抽取原逐组AST逐句精确，未改统计源码/窗口；原全九组检查拒绝仅三组输入，无最终REGISTRATION或稳定性结果。
+- 完整95/96仍缺，原三训练/archive/固定8443终端与全90比较等待继续，无新增等待器或自动96。原101身份180.155s/19样本保持，steps增长{'impedance': 1749, 'admittance': 1741, 'vmc': 1454}，保存总steps{'impedance': 3916991, 'admittance': 3920480, 'vmc': 3920688}。原loss尖峰/全部失败、Direct数值验收与冻结0/0、指定ESN缺失保持，Goal active，未收敛。
+- GPU39样本min[72, 66, 71, 71]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD30成员/SHA76fc669c；HDD仅254字节指针、大产物SSD，非全备份。mainfaae0cfe/baselinef6e8f8c2实际query/fetch/read，发布见收据。
+
 ## 2026-10-31 — 第95轮继续；94→95全90比较与终端增长检查准备
 
 - [交接](docs/RL_CENSUS95_COMPARISON_20261031.md)。全90训练条件reward分项/Task/Strict/abort/原抽样loss及所有标签变化比较已登记，真实完整94全90模型/摘要/标签/算术与缺完整95拒绝通过；唯一等待器1569117沿原archive截止。两轮census amendment完全相同，原抽样健康loss两轮同口径；描述比较不替代固定94–96稳定窗口。
