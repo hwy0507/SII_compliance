@@ -1,3 +1,9 @@
+## 2026-10-31 — goal 恢复后当前状态审计；final108 仍未执行
+
+- 新增 `docs/evidence/CONTACT_YIELD_GOAL_CURRENT_STATE_AUDIT_20261031.json`（SHA256 `0918234bf7eae9f1114a3fc646b92aaed44ccf2f49b8534c3d672ff0b98dfc4c`）。登记检查通过，9/9 模型 checkpoint 与 metadata 绑定一致，30/30 teacher collection 轨迹 qualified。
+- final108 已登记108格但 `execution.json` 仍不存在，物理指标不可用，状态明确为 `not_executed_resource_blocked`。当前容器仍是 Chromium scope，affinity/cpuset为0–23，主机swap仅余236 KiB，user systemd bus不可用；没有启动物理。
+- 服务器只读检查确认新预检归档目录和 final108目录均不存在；没有新的服务器计算或写入。Goal active，待合规执行scope后继续正式一次性评测。
+
 ## 2026-10-31 — goal 逐项完成度审计；final108 仍被资源阻塞
 
 - 新增逐项审计 `docs/evidence/CONTACT_YIELD_GOAL_REQUIREMENTS_AUDIT_20261031.json`（SHA256 `7287f7d851541db2991a7e4cd9174bbd55b7efb7aa27022b9c01c2c1615ac6a7`）。当前权威状态：30 条最新版 VMC teacher action（棍推/球撞/桌角各10）全部 qualified；棍推10/10 让位—蹭过—回位独立审计通过；统一数据上的75个候选、9个锁定模型和MLP容量审计通过；fixed27开发闭环 Task 27/27、Strict 24/27。
