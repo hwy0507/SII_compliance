@@ -1,0 +1,20 @@
+--- actual94
++++ finite95
+@@ -239,7 +239,7 @@
+         validate_resume_protocol(checkpoint['protocol_sha256'], protocol, pdigest)
+         if (checkpoint['controller'], checkpoint['seed']) != (args.controller, args.seed):
+             raise ValueError('Resume controller/seed mismatch')
+-        learner.migrate_parent(checkpoint['learner'])
++        learner.load_state_dict(checkpoint['learner'])
+         replay.load_state_dict(checkpoint['replay'])
+         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
+         _verify_initial_state(learner, replay, checkpoint, out.parent)
+@@ -369,7 +369,7 @@
+                         nxt = (learner.terminal_observation(previous['observation'], stream=slot) if done
+                                else learner.observation(event['observation'], stream=slot))
+                         if steps >= protocol['post_interruption_continuation']['parent_steps'] + 41250:
+-                            raise ValueError('Finite94 new-transition budget exceeded')
++                            raise ValueError('Finite95 new-transition budget exceeded')
+                         replay.add(observations=previous['observation'], actions=previous['raw_action'],
+                                    next_observations=nxt, rewards=[value], dones=[float(done)])
+                         steps += 1
