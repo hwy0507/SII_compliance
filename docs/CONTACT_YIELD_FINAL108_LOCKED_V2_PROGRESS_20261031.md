@@ -1,3 +1,9 @@
+## 2026-10-31 14:59 CST — goal 逐项完成度审计
+
+- 新增逐项权威审计 `docs/evidence/CONTACT_YIELD_GOAL_REQUIREMENTS_AUDIT_20261031.json`，SHA256 `7287f7d851541db2991a7e4cd9174bbd55b7efb7aa27022b9c01c2c1615ac6a7`。
+- 已完成项：30条teacher（每场景10条）全部qualified；棍推10条让位—蹭过—回位全部通过；75候选/9锁定模型的公平训练来源与MLP容量审计通过；fixed27开发Task27/27、Strict24/27。
+- 未完成项：final108仍无`execution.json`，物理完成度0/108，所有最终矩阵指标缺失；不能用开发闭环或历史综合场景替代冻结unseen108。
+
 ## 2026-10-31 14:01 CST — 登记完整性复核
 
 - 重新执行锁定 final108 adapter 的登记检查：9 模型、12 条条件、108 行配对及来源/配置/checkpoint hash 全部通过；登记 SHA256 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6` 保持不变。

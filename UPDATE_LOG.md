@@ -1,3 +1,8 @@
+## 2026-10-31 — goal 逐项完成度审计；final108 仍被资源阻塞
+
+- 新增逐项审计 `docs/evidence/CONTACT_YIELD_GOAL_REQUIREMENTS_AUDIT_20261031.json`（SHA256 `7287f7d851541db2991a7e4cd9174bbd55b7efb7aa27022b9c01c2c1615ac6a7`）。当前权威状态：30 条最新版 VMC teacher action（棍推/球撞/桌角各10）全部 qualified；棍推10/10 让位—蹭过—回位独立审计通过；统一数据上的75个候选、9个锁定模型和MLP容量审计通过；fixed27开发闭环 Task 27/27、Strict 24/27。
+- 审计明确区分开发证据与最终结果：冻结 unseen108 登记仍无 `execution.json`，Task/Strict、双满足SPT、峰值力矩、人舒适度和机器合规率均未产生，final108为0/108。历史综合结果保持独立，不作为当前测试替代。
+
 ## 2026-10-31 — 完整94已审；历史终端拟合改善，原loss尖峰与未收敛保持
 
 - [交接](docs/RL_COMPLETE94_20261031.md)。三路各41250新增/30完整55秒/0中止，旧回放及新52/action/reward精确，Task/Strict18/17、15/14、17/17。原抽样loss均值1.0982/1.0442/.7287、最大16.365/3.949/1.258；actor漂移与I/A尖峰保留，条件估计平滑不替代原loss健康，94–96窗口未完整，未收敛。

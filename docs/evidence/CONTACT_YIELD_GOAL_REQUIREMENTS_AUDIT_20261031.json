@@ -1,0 +1,70 @@
+{
+  "audited_utc": "2026-10-31T06:59:21.133562+00:00",
+  "limitations": [
+    "Development qualification and fixed27 results are not frozen unseen108 results.",
+    "Human-force channel is unavailable in the isolated scenes; comfort is NA with a separately labelled disturbance proxy.",
+    "No final108 physical metrics may be inferred while execution.json is absent."
+  ],
+  "overall_status": "blocked_final108_physical_evaluation",
+  "requirements": {
+    "development_closed_loop": {
+      "evidence": "code/mujoco_6d_vmc_benchmark/outputs/contact_yield_mlp384_fixed27_20261031_v4/REVIEW_WIDE.json",
+      "evidence_sha256": "53cf4b58ca0b5e7f2b3c3647742a3c672d45057e6cec97a1586bcbfabc387b35",
+      "independent_replays": 27,
+      "no_final_test_performed": true,
+      "rows": 27,
+      "status": "verified_development_only",
+      "strict_successes": 24,
+      "task_successes": 27
+    },
+    "fair_esn_mlp_rnn_retraining": {
+      "candidate_jobs": 75,
+      "common_training_data_sha256": "d771433db06103edb3e33264b8040d059c4df6fb19faa66043f458c61457f42a",
+      "locked_models": 9,
+      "mlp_candidates": 36,
+      "mlp_capacity_audit": "code/mujoco_6d_vmc_benchmark/outputs/contact_yield_mlp_capacity_20261031_v1/FIT_AUDIT.json",
+      "mlp_capacity_audit_sha256": "65ba93f488fe6960b76b375e315f5ed8255c74064d3c873d1b0b167221bf32d5",
+      "mlp_optimizer_updates": 1152000,
+      "status": "verified_training_and_development",
+      "training_fit_audit": "code/mujoco_6d_vmc_benchmark/outputs/contact_yield_recovery_retrain_20261030_v7/FIT_AUDIT.json",
+      "training_fit_audit_sha256": "d5b0fa0171e6f8b7a3bcc7923d017a6cced2678b90261fd4777e74c1a721b864",
+      "training_model_lock": "code/mujoco_6d_vmc_benchmark/outputs/contact_yield_recovery_retrain_20261030_v7/MODEL_LOCK.json",
+      "training_model_lock_sha256": "031c20474aab35b7e26e3d471f9b365d86f585108ad48fd471d67c9ff7302368"
+    },
+    "frozen_unseen108_physical_evaluation": {
+      "execution_json_present": false,
+      "registered_rows": 108,
+      "registration": "code/mujoco_6d_vmc_benchmark/outputs/contact_yield_locked_unseen108_20261031_v3/REGISTRATION.json",
+      "registration_sha256": "e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6",
+      "resource_preflight": "rejected_resource_preflight",
+      "status": "not_executed_resource_blocked",
+      "task_strict_spt_torque_comfort_machine_metrics": "missing"
+    },
+    "legacy_results_preserved": {
+      "note": "No historical office/composite result was overwritten; final108 is a separate registration.",
+      "status": "preserved_as_historical"
+    },
+    "new_vmc_teacher_action_collection": {
+      "all_qualified": true,
+      "by_scene": {
+        "ball": 10,
+        "corner": 10,
+        "rod": 10
+      },
+      "episodes": 30,
+      "source_plan": "code/mujoco_6d_vmc_benchmark/outputs/special_scene_vmc_collection_20261029_v8/COLLECTION_PLAN.json",
+      "source_plan_sha256": "2ed3e2b9d407db4bb8186adbdc7a72d25deafdf3eb873453de62f9d059a4d252",
+      "status": "verified_development"
+    },
+    "rod_yield_scrape_rejoin_order": {
+      "all_behavior_checks_pass": true,
+      "evidence": "docs/evidence/CONTACT_YIELD_ALL10_ROD_RECHECK_20261031.json",
+      "evidence_sha256": "50664ffe249b5a7bd63d9803233c91bbdc74007ea563e4e2795d7fe572f58cb5",
+      "failed_rows": [],
+      "qualified_rows": 10,
+      "rejoin_before_retract_median_s": 4.36000000001431,
+      "status": "verified_development"
+    }
+  },
+  "schema": "sii-contact-yield-goal-requirements-audit-v1"
+}
