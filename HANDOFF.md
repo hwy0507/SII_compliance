@@ -1,3 +1,9 @@
+## 2026-10-31 — 第95轮原作业持续：十分钟verified wait
+
+- [交接](docs/RL_CENSUS95_PROGRESS_20261031.md)。原101身份连续600.525s/61样本保持，三路steps增长{'impedance': 5382, 'admittance': 5434, 'vmc': 5303}；保存steps{'impedance': 3923565, 'admittance': 3927109, 'vmc': 3927258}，完成条件{'impedance': 0, 'admittance': 0, 'vmc': 0}。原三训练/90sampler/archive、固定8443终端和全90比较等待继续，无重启或新训练/消费者。
+- 完整95/健康稳定/真实终端增长和两项比较仍待；完整94三组输入已审不等于94–96全九组绑定，原窗口和全部历史失败保持。没有自动96/Direct34；Direct原数值/冻结0/0及指定ESN缺失保持，Goal active，未收敛。
+- GPU121样本min[74, 70, 69, 70]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD20成员/SHA50ce72cb，HDD仅254字节指针、非全备份。main44654f59/baselinef6e8f8c2实际query/fetch/read，发布见收据。
+
 ## 2026-10-31 — 固定94–96窗口完整94输入通过；原95继续
 
 - [交接](docs/RL_CENSUS95_WINDOW_INPUTS_20261031.md)。三个真实完整94输入组的原protocol/review/health/finished、全部30episodes/41250optimizer、原loss和两实际图、checkpoint均完成锁定逐组检查；三完整checkpoint实际加载。抽取原逐组AST逐句精确，未改统计源码/窗口；原全九组检查拒绝仅三组输入，无最终REGISTRATION或稳定性结果。
