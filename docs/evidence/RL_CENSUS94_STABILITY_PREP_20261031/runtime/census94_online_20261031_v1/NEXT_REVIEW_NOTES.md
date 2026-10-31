@@ -1,0 +1,15 @@
+# 第94轮运行后的续接
+
+唯一正式三路为本runtime driver与runs/parameter_census_cycle94_20261031_v1/LAUNCH.json；实际动作前核对PID/start，不因旧工具句柄或等待超时重启。每方法仅一轮≤41250新交互，无自动95、无Direct34，所有旧失败保留。新guard仍用host_recovery CURRENT_GUARD.json身份和/tmp/sii_gpu_util_guard_20261031_recovery_v1，科学结束不停止。
+
+完整94消费者已经启动在archive94.py：原checkpoint原子保存→完整边界/marker验证→独立归档/sha→全回放/物理journal动作奖励审查→strict CPU全state诊断→原抽样/条件估计/actor三列完整loss。FINISHED仍要求后续实际图像查看与独立保存算术复查，不能将脚本结束当收敛。
+
+原生日志agent_train/q_loss在94代表条件估计器，原健康口径用agent_train/original_sampled_q_loss；不要比较新q_loss与93原q_loss后称尖峰解决。health94绘图已用原抽样loss，loss94另列两种loss。CPU诊断完整恢复并在随机forward后恢复RNG/核验fullstate；其4096行TD仍明确为未投影固定min pair诊断，不能当训练mean/projection目标。
+
+启动后首批审查只覆盖非终端前缀，尚不证明94新终端cache实际增长；完整回合出现时核对日志terminal_population随着新增done上升，及checkpoint全部终端计数对应关系。上一轮隔离增长测试不能代替这一在线事实。
+
+下一有用工作：等待现有过程同时，准备固定完整93全部8353终端的94跟踪比较（五critic/原masks/all-row及所有旧中止和大误差行保留），并准备完整93→94训练30条件/三方法的reward分项、Task/Strict、abort、loss与标签变化比较。原93终端参考为runs/violation93_potential_ablation_20261031_v1/*_values.npz的initial_prediction，不使用隔离训练后的predictions。全部资料须绑定实际formal93/94，不能借用restart_fixture。
+
+STABILITY_WINDOW_INTENT锁定首次census版本94–96、原5%/guard1/5000bootstrap/seed2026102861；登记是在94已启动、尚无任何完整回合返回时，准确初始progress在文件中，不冒充启动前登记。95/96各需独立完整科学审查和有限登记，当前未授权自动队列。未来统计绑定仍待，旧90–92失败/92→93波动不被覆盖。最终loss健康与独立测试/指定ESN仍待。
+
+若再次关机中断：94已开始产生新的正式权重和回放，先保全各train/checkpoint_latest.pt原子存档及对应journal；不得回退到93或重用本driver重跑整轮94。此driver故意只允许从完整93首次启动94；中断接续需要另外登记识别census marker的partial恢复，保留实际已学权重/Adam/RNG/回放和未完成94记录。MuJoCo物理状态未保存，不能冒充原回合连续恢复；不得删除partial数据或把它改记成完整回合。

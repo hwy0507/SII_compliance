@@ -1,0 +1,37 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation90_92_reward_stability_20261030_v1/review_saved.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census94_96_reward_stability_20261031_v1/review_saved.py
+@@ -1,4 +1,4 @@
+-"""Independent scalar arithmetic of the existing fixed90-92 report."""
++"""Independent scalar arithmetic of the existing fixed94-96 report."""
+ from pathlib import Path
+ import hashlib,json,math,os,time
+ os.sched_setaffinity(0,{54})
+@@ -8,7 +8,9 @@
+     with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def near(a,b):assert math.isclose(a,b,rel_tol=1e-12,abs_tol=1e-12),(a,b)
+ reg=read(ROOT/'REGISTRATION.json');report=read(ROOT/'REVIEW.json')
+-assert report['passed'] and reg['cycles']==[90,91,92]
++from binding_rules import validate_registration
++validate_registration(ROOT,reg)
++assert report['passed'] and reg['cycles']==[94,95,96]
+ assert reg['relative_limit']==.05 and reg['near_zero_guard']==1 and reg['bootstrap_replicates']==5000
+ assert sha(ROOT/'reward_stability.png')==report['plot_sha256']
+ results={}
+@@ -28,7 +30,7 @@
+         assert len(logs)==sum(e['steps'] for e in episodes)
+         for log in logs:
+             assert all(math.isfinite(v) for v in log.values() if isinstance(v,(int,float)))
+-        q=[x['agent_train/q_loss'] for x in logs]
++        q=[x['agent_train/original_sampled_q_loss'] for x in logs]
+         near(math.fsum(q)/len(q),summary['q_loss_mean'])
+         near(math.fsum(q[:1000])/1000,summary['q_loss_first1000'])
+         near(math.fsum(q[-1000:])/1000,summary['q_loss_last1000'])
+@@ -47,7 +49,7 @@
+     for pair in record['paired_conditions']:
+         assert pair['rewards']==[m[pair['condition']] for m in maps]
+     deltas=[maps[2][k]-maps[0][k] for k in sorted(maps[0])]
+-    near(math.fsum(deltas)/30,record['paired90_to92_mean_delta'])
++    near(math.fsum(deltas)/30,record['paired94_to96_mean_delta'])
+     near((means[2]-means[0])/2,record['slope'])
+     assert sum(x>0 for x in deltas)==record['improved_conditions']
+     assert sum(x<0 for x in deltas)==record['worsened_conditions']

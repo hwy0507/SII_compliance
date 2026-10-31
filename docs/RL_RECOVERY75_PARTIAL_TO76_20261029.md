@@ -1,3 +1,10 @@
+## 2026-10-31 — 第94轮继续；固定94–96稳定性程序与完整输入绑定保护就绪
+
+- [交接](RL_CENSUS94_STABILITY_PREP_20261031.md)。沿94启动后首完整回合前的原意向，锁94–96/5%/nearzero1/5000bootstrap/seed2026102861；统计kernel除输出键名外与原90–92逐字相同，实际旧数据全部结果精确复现、独立标量bootstrap区间通过，I/A旧失败与V reward-only通过保持，非94–96新结果。
+- 实际94协议及33损坏配置拒绝通过；完整九组输入、原抽样loss/真实图、完整checkpoint/census marker/父链/原物理与23/47容量标记等绑定检查已准备，真实缺完整94与空输入拒绝。尚无REGISTRATION/94–96统计或95/96派发；原loss健康与最终独立评测仍待。
+- 原101身份600.436s/61样本保持，steps增长{'impedance': 5405, 'admittance': 5405, 'vmc': 5409}，保存总steps{'impedance': 3878736, 'admittance': 3882242, 'vmc': 3883535}；原三训练/archive/两个只读等待继续，无重启、自动95/Direct34。全部历史失败/Direct原验收/指定ESN缺失保留，Goal active。
+- GPU126样本min[74, 70, 70, 68]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD40成员/SHA7e2ae349，HDD仅254字节指针，非全备份。main03c71133/baselinef6e8f8c2实际query/fetch/read，发布见收据。
+
 ## 2026-10-31 — 第94轮继续；93→94全90比较与终端增长审查准备
 
 - [交接](RL_CENSUS94_COMPARISON_20261031.md)。全90训练条件reward分项/Task/Strict/abort/原抽样loss及变化rollout比较已登记，真实完整93全90摘要/模型/标签/reward算术和缺完整94拒绝通过；唯一等待器2051280沿原archive截止。条件估计loss单列，跨估计器轮次描述对比不替代94–96稳定窗口。
