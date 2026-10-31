@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-31 — 新主机cn2恢复：四卡保活重启、完整93冷恢复精确
+
+- [交接](docs/RL_CENSUS93_HOST_RECOVERY_20261031.md)。主机已切换至cn2p6rygmr，旧guard/PID和工具句柄消失、实测四卡0%；无其他guard确认后从原源码重启，/tmp/sii_gpu_util_guard_20261031_recovery_v1，supervisor96425、workers96426–96429，start身份见CURRENT_GUARD。科学结束继续，非重启服务。
+- 完整恢复79样本各2次低于50/最低0保留；首次全达50后77样本最低73/81/77/83、低于50全0，未知切换间隔不补造。新主机三路全部8353终端及各首个65536批次q与旧保存逐元素相等，全learner/Adam/replay/RNG不变；Direct33 hash与843依赖通过，0physics/optimizer。
+- 上轮科学4575edda与远端非RL397bc1f0安全合并，唯一日志冲突双方前缀保留；571b05a0正常push/远端/38证据字节核验完成。下一步完整native census缓存/actor/target/恢复验证，尚无94/Direct34或辅助权重推广；原未收敛及全部历史结论保持。Goal active，无子agent。
+
+- GPU129样本min[0, 0, 0, 0]%、低于50[2, 2, 2, 2]，科学结束仍guard。SSD23成员/SHA37309943，HDD仅254字节指针、非全备份。main64e2b605/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
+
 ## 2026-10-31 — 原生混合批次条件终端全量平均有限对照通过
 
 - [交接](docs/RL_VIOLATION93_TERMINAL_CENSUS_ABLATION_20261031.md)。完整五位mask分层，对原抽样终端SSE取条件期望，原分母/terminal128/非终端保留；32枚举损失和梯度期望/4拒绝例通过，不称Adam轨迹等价。三方法两方案原64×65536冻结target重复4遍、256步+6首步重复共1542隔离更新，原全state/RNG/grad不变；全初始q/原loss、384final raw及全部终端算术/实际九栏图通过。
