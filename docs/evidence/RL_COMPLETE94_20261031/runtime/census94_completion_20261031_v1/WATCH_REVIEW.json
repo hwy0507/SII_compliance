@@ -1,0 +1,274 @@
+{
+  "passed": true,
+  "time": 1793429172.572119,
+  "reason": "all_existing_training_and_consumers_finished",
+  "samples": 200,
+  "elapsed_s": 1993.83396911202,
+  "first": {
+    "time": 1793427178.753629,
+    "elapsed_s": 0.01547841215506196,
+    "tasks": {
+      "impedance": {
+        "live": true,
+        "completion_present": false
+      },
+      "admittance": {
+        "live": true,
+        "completion_present": false
+      },
+      "vmc": {
+        "live": true,
+        "completion_present": false
+      },
+      "archive": {
+        "live": true,
+        "completion_present": false
+      },
+      "terminal_compare": {
+        "live": true,
+        "completion_present": false
+      },
+      "training_compare": {
+        "live": true,
+        "completion_present": false
+      }
+    },
+    "progress": {
+      "impedance": {
+        "cycle": 94,
+        "steps": 3881277,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3876278,
+        "wall_time_utc": 1793427177.0421128
+      },
+      "admittance": {
+        "cycle": 94,
+        "steps": 3884760,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3879761,
+        "wall_time_utc": 1793427176.610266
+      },
+      "vmc": {
+        "cycle": 94,
+        "steps": 3886163,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3881164,
+        "wall_time_utc": 1793427176.4588282
+      }
+    }
+  },
+  "last": {
+    "time": 1793429172.5709493,
+    "elapsed_s": 1993.832799664,
+    "tasks": {
+      "impedance": {
+        "live": false,
+        "completion_present": true
+      },
+      "admittance": {
+        "live": false,
+        "completion_present": true
+      },
+      "vmc": {
+        "live": false,
+        "completion_present": true
+      },
+      "archive": {
+        "live": false,
+        "completion_present": true
+      },
+      "terminal_compare": {
+        "live": false,
+        "completion_present": true
+      },
+      "training_compare": {
+        "live": false,
+        "completion_present": true
+      }
+    },
+    "progress": {
+      "impedance": {
+        "cycle": 94,
+        "steps": 3894012,
+        "completed_conditions": 30,
+        "running": 0,
+        "pending": 0,
+        "updates": 3889013,
+        "wall_time_utc": 1793428668.3777058
+      },
+      "admittance": {
+        "cycle": 94,
+        "steps": 3897500,
+        "completed_conditions": 30,
+        "running": 0,
+        "pending": 0,
+        "updates": 3892501,
+        "wall_time_utc": 1793428639.5044694
+      },
+      "vmc": {
+        "cycle": 94,
+        "steps": 3898500,
+        "completed_conditions": 30,
+        "running": 0,
+        "pending": 0,
+        "updates": 3893501,
+        "wall_time_utc": 1793428614.5181217
+      }
+    }
+  },
+  "identities": {
+    "time": 1793427178.7394185,
+    "tasks": {
+      "impedance": {
+        "identity": {
+          "controller": "impedance",
+          "command": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_online_20261031_v1/driver.py",
+            "--runtime",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/impedance/REGISTRATION.json",
+            "--resume",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle93_archive_20261031_v1/impedance/cycle_00093.pt",
+            "--output",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/impedance/train",
+            "--controller",
+            "impedance",
+            "--cpus",
+            "13,14,15,16,17,18,19,20,21,22,23,24,25",
+            "--workers",
+            "30",
+            "--device",
+            "cuda:1"
+          ],
+          "pid": 1081267,
+          "proc_start_ticks": "196529848",
+          "time": 1793423907.1842291
+        },
+        "completion": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/impedance/train/FINISHED.json"
+      },
+      "admittance": {
+        "identity": {
+          "controller": "admittance",
+          "command": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_online_20261031_v1/driver.py",
+            "--runtime",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/admittance/REGISTRATION.json",
+            "--resume",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle93_archive_20261031_v1/admittance/cycle_00093.pt",
+            "--output",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/admittance/train",
+            "--controller",
+            "admittance",
+            "--cpus",
+            "26,27,28,29,30,31,32,33,34,35,36,37,38",
+            "--workers",
+            "30",
+            "--device",
+            "cuda:2"
+          ],
+          "pid": 1081271,
+          "proc_start_ticks": "196529848",
+          "time": 1793423907.1857812
+        },
+        "completion": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/admittance/train/FINISHED.json"
+      },
+      "vmc": {
+        "identity": {
+          "controller": "vmc",
+          "command": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_online_20261031_v1/driver.py",
+            "--runtime",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/vmc/REGISTRATION.json",
+            "--resume",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle93_archive_20261031_v1/vmc/cycle_00093.pt",
+            "--output",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/vmc/train",
+            "--controller",
+            "vmc",
+            "--cpus",
+            "39,40,41,42,43,44,45,46,47,48,49,50,51",
+            "--workers",
+            "30",
+            "--device",
+            "cuda:3"
+          ],
+          "pid": 1081275,
+          "proc_start_ticks": "196529848",
+          "time": 1793423907.1872463
+        },
+        "completion": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/vmc/train/FINISHED.json"
+      },
+      "archive": {
+        "identity": {
+          "time": 1793423907.1910293,
+          "pid": 1081280,
+          "proc_start_ticks": "196529848",
+          "script_sha256": "06480bd9a5908c4584d670423a603b3fb0bea2a8976dc900afd0507b551f68ab"
+        },
+        "completion": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_review_20261031_v1/FINISHED.json"
+      },
+      "terminal_compare": {
+        "identity": {
+          "pid": 1895688,
+          "start": "196656130",
+          "time": 1793425170.0065536,
+          "script": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_prefix_20261031_v1/wait_terminal94.py"
+        },
+        "completion": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census94_fixed93_terminal_20261031_v1/FINISHED.json"
+      },
+      "training_compare": {
+        "identity": {
+          "pid": 2051280,
+          "start": "196679638",
+          "time": 1793425405.0912158,
+          "deadline": 1793438307.1910293,
+          "source_sha256": "9e371c0a9d1078c4c37964f9c94daaab99cc0796fbc2c6d186212c3675b40e88"
+        },
+        "completion": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_comparison_20261031_v1/COMPARISON_FINISHED.json"
+      }
+    },
+    "guard": {
+      "time": 1793421579.740745,
+      "root": "/tmp/sii_gpu_util_guard_20261031_recovery_v1",
+      "identities": [
+        {
+          "pid": 96425,
+          "start": "196287191"
+        },
+        {
+          "pid": 96426,
+          "start": "196287194"
+        },
+        {
+          "pid": 96427,
+          "start": "196287194"
+        },
+        {
+          "pid": 96428,
+          "start": "196287194"
+        },
+        {
+          "pid": 96429,
+          "start": "196287195"
+        }
+      ],
+      "gpu": "0, NVIDIA GeForce RTX 4090, GPU-1a6fd25d-dba5-d072-8c61-1f47157e8d44, 595.71.05, 80 %\n1, NVIDIA GeForce RTX 4090, GPU-e6835087-c75d-cc56-b5e6-b1c3418dc9d4, 595.71.05, 86 %\n2, NVIDIA GeForce RTX 4090, GPU-8e6a1eb7-cb03-e875-866b-029db0acb951, 595.71.05, 79 %\n3, NVIDIA GeForce RTX 4090, GPU-b8df8e4e-3bcc-f3d4-2c79-96fa0be5c5ed, 595.71.05, 85 %"
+    }
+  },
+  "convergence_claim": false,
+  "automatic95": false
+}
