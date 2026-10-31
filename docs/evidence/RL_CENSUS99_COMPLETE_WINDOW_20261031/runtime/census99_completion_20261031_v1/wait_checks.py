@@ -1,0 +1,77 @@
+"""Finite read-only consumer of original complete99 core; no training dispatch."""
+from pathlib import Path
+import ast, json, hashlib, os, subprocess, sys, time, traceback
+D=Path(__file__).resolve().parent;B=D.parents[1]
+R=B/'runs/parameter_census_cycle99_20261031_v1';V=B/'runs/parameter_census_cycle99_review_20261031_v1'
+read=lambda p:json.loads(Path(p).read_text())
+def sha(p):
+ with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+def put(p,v):
+ with p.open('x') as f:json.dump(v,f,indent=2,allow_nan=False);f.write('\n')
+def identity(j):
+ s=Path('/proc',str(j['pid']),'stat').read_text().rsplit(')',1)[1].split()
+ assert s[0]!='Z' and s[19]==j.get('start',j.get('proc_start_ticks'))
+def sources(plan):
+ for path,h in plan['sources'].items():
+  p=Path(path);assert sha(p)==h
+  if p.suffix=='.py':ast.parse(p.read_text())
+ assert read(R/'MONITOR_LAUNCH.json')==plan['original_monitor']
+ assert plan['deadline']==min(j['time'] for j in read(R/'LAUNCH.json')['jobs'])+14400
+ assert read(D/'CONTEXT_PLAN.json')['complete_cycle']==99
+ assert read(D/'CONTEXT_PLAN.json')['source_sha256']==sha(D/'check_full_context99.py')
+def ready():
+ assert read(V/'FINISHED.json')['completed']
+ full=read(V/'REVIEW.json');loss=read(V/'loss/REVIEW.json');health=read(V/'health/DIAGNOSIS.json')
+ assert full['passed'] and loss['passed'] and health['cycle']==99
+ for m in ['impedance','admittance','vmc']:
+  r=full['methods'][m];assert 0<r['new_transitions']<=41250 and r['conditions']==30
+  assert r['new_transitions']==loss['methods'][m]['rows']
+  assert r['checkpoint_sha256']==health['methods'][m]['checkpoint_sha256']
+ return full
+def preflight(plan):
+ sources(plan);identity(plan['original_monitor']);assert time.time()<plan['deadline']
+ prior=read(B/'runtime/census98_completion_20261031_v1/COMPLETE98_SCIENTIFIC_REVIEW.json');assert prior['passed'] and prior['complete98']
+ for m in ['impedance','admittance','vmc']:
+  parent=read(R/m/'REGISTRATION.json')['post_interruption_continuation']
+  assert parent['parent_cycle']==98 and parent['new_cycle']==99
+  assert parent['checkpoint']['sha256']==prior['methods'][m]['training']['checkpoint_sha256']
+ try:ready()
+ except FileNotFoundError:pass
+ else:raise AssertionError('Full99 already complete; waiting launch not needed')
+ rejected=[]
+ for name,marker in [('check_full_context99.py','FULL_CONTEXT_REVIEW.json'),('review_saved99.py','FULL_LOSS_SAVED_REVIEW.json'),('consolidate99.py','COMPLETE99_SCIENTIFIC_REVIEW.json')]:
+  assert not (D/marker).exists()
+  run=subprocess.run([str(B/'env/bin/python'),str(D/name)],capture_output=True,text=True,timeout=120,env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1'))
+  assert run.returncode!=0 and 'FileNotFoundError' in run.stderr and str(V) in run.stderr,(name,run.stderr)
+  assert not (D/marker).exists()
+  (D/(name+'.missing99.log')).write_text(run.stdout+run.stderr)
+  rejected.append(dict(script=name,returncode=run.returncode,missing_complete99_rejected=True,output_not_created=True))
+ put(D/'WAIT_PREFLIGHT.json',dict(passed=True,time=time.time(),actual_complete98_parent_binding=True,original_monitor_live=True,missing_complete99_rejections=rejected,new_physics=0,optimizer_updates=0))
+def main(plan):
+ os.sched_setaffinity(0,{11});sources(plan);assert read(D/'WAIT_PREFLIGHT.json')['passed']
+ while not (V/'FINISHED.json').exists():
+  identity(plan['original_monitor']);assert time.time()<plan['deadline'] and not (R/'ARCHIVE_REVIEW_FAILURE.json').exists()
+  time.sleep(10)
+ ready();sources(plan)
+ outputs={'check_full_context99.py':'FULL_CONTEXT_REVIEW.json','review_saved99.py':'FULL_LOSS_SAVED_REVIEW.json'}
+ for script,output in outputs.items():
+  assert not (D/output).exists()
+  with (D/(script+'.log')).open('x') as log:
+   subprocess.run([str(B/'env/bin/python'),str(D/script)],check=True,stdout=log,stderr=subprocess.STDOUT,timeout=plan['analysis_budget_seconds'],env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1'))
+  assert read(D/output)['passed']
+ put(D/'AUTOMATED_CHECKS_FINISHED.json',dict(passed=True,time=time.time(),outputs={n:sha(D/n) for n in outputs.values()},actual_plot_inspection_pending=True,full_consolidation_pending=True,original97_99_audit_pending=True,convergence_claim=False,automatic100=False,new_physics=0,optimizer_updates=0))
+if __name__=='__main__':
+ plan=read(D/'WAIT_PLAN.json')
+ try:
+  if '--preflight' in sys.argv:preflight(plan)
+  elif '--launch' in sys.argv:
+   sources(plan);identity(plan['original_monitor']);assert read(D/'WAIT_PREFLIGHT.json')['passed'] and time.time()<plan['deadline']
+   assert not (D/'PROCESS.json').exists() and not (V/'FINISHED.json').exists()
+   with (D/'wait.log').open('xb') as log:
+    p=subprocess.Popen([str(B/'env/bin/python'),str(Path(__file__))],stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+   st=Path('/proc',str(p.pid),'stat').read_text().rsplit(')',1)[1].split();assert st[0]!='Z'
+   put(D/'PROCESS.json',dict(pid=p.pid,start=st[19],time=time.time(),deadline=plan['deadline'],source_sha256=sha(__file__)))
+   print('Complete99 read-only checks waiter launched',p.pid,flush=True)
+  else:main(plan)
+ except BaseException:
+  put(D/('WAIT_FAILURE_'+str(time.time_ns())+'.json'),dict(time=time.time(),traceback=traceback.format_exc()));raise

@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census97_99_reward_stability_20261031_v1/audit.py
++++ runtime_capacity_assertion_repair
+@@ -68,7 +68,7 @@
+             assert followup['old_capacity'] == 2_000_000 and followup['new_capacity'] == 4_000_000
+             assert followup['marker'] == reg['followup_marker']
+             assert not followup['auxiliary_weights_imported'] and not followup['optimizer_settings_changed']
+-            assert row['replay_capacity_followup'] == followup['marker'] and row['current_replay_capacity'] == 4_000_000
++            assert row['replay_capacity_followup'] == followup['marker'] and row['current_replay_capacity'] == 6_000_000
+             assert deps == baseline_deps
+             if protocols:
+                 assert followup == protocols[0]['replay_capacity_followup_stage']

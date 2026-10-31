@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -3,7 +3,7 @@
+ import json,hashlib,math,time,os
+ import numpy as np
+ os.sched_setaffinity(0,{54})
+-D=Path(__file__).resolve().parent;B=D.parents[1];W=B/'runs/parameter_census94_96_reward_stability_20261031_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];W=B/'runs/parameter_census97_99_reward_stability_20261031_v1'
+ read=lambda p:json.loads(p.read_text())
+ def sha(p):
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+@@ -11,11 +11,11 @@
+  x=sorted(values);position=(len(x)-1)*p;lo=math.floor(position);hi=math.ceil(position)
+  return x[lo]+(position-lo)*(x[hi]-x[lo])
+ reg=read(W/'REGISTRATION.json');review=read(W/'REVIEW.json');assert review['passed']
+-assert reg['cycles']==[94,95,96] and reg['seed']==2026102861 and reg['bootstrap_replicates']==5000
++assert reg['cycles']==[97,98,99] and reg['seed']==2026102861 and reg['bootstrap_replicates']==5000
+ results={}
+ for mi,m in enumerate(['impedance','admittance','vmc']):
+  maps=[]
+- for c in [94,95,96]:
++ for c in [97,98,99]:
+   r=reg['inputs'][f'{m}:{c}']['episodes'];assert sha(Path(r['path']))==r['sha256']
+   es=[json.loads(x) for x in Path(r['path']).read_text().splitlines()];assert len(es)==30
+   maps.append({e['condition']:e for e in es})

@@ -1,0 +1,26 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census94_96_reward_stability_20261031_v1/review_saved.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census97_99_reward_stability_20261031_v1/review_saved.py
+@@ -1,4 +1,4 @@
+-"""Independent scalar arithmetic of the existing fixed94-96 report."""
++"""Independent scalar arithmetic of the existing fixed97-99 report."""
+ from pathlib import Path
+ import hashlib,json,math,os,time
+ os.sched_setaffinity(0,{54})
+@@ -10,7 +10,7 @@
+ reg=read(ROOT/'REGISTRATION.json');report=read(ROOT/'REVIEW.json')
+ from binding_rules import validate_registration
+ validate_registration(ROOT,reg)
+-assert report['passed'] and reg['cycles']==[94,95,96]
++assert report['passed'] and reg['cycles']==[97,98,99]
+ assert reg['relative_limit']==.05 and reg['near_zero_guard']==1 and reg['bootstrap_replicates']==5000
+ assert sha(ROOT/'reward_stability.png')==report['plot_sha256']
+ results={}
+@@ -49,7 +49,7 @@
+     for pair in record['paired_conditions']:
+         assert pair['rewards']==[m[pair['condition']] for m in maps]
+     deltas=[maps[2][k]-maps[0][k] for k in sorted(maps[0])]
+-    near(math.fsum(deltas)/30,record['paired94_to96_mean_delta'])
++    near(math.fsum(deltas)/30,record['paired97_to99_mean_delta'])
+     near((means[2]-means[0])/2,record['slope'])
+     assert sum(x>0 for x in deltas)==record['improved_conditions']
+     assert sum(x<0 for x in deltas)==record['worsened_conditions']
