@@ -1,0 +1,102 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census98_new_terminal_diagnosis_20261031_v1/wait_diagnosis.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census99_new_terminal_diagnosis_20261031_v1/wait_diagnosis.py
+@@ -1,14 +1,14 @@
+-"""Finite read-only full98/new-terminal consumer; no training dispatch."""
++"""Finite read-only full99/new-terminal consumer; no training dispatch."""
+ from pathlib import Path
+ import os, sys, json, hashlib, time, subprocess, traceback, ast
+ 
+ D = Path(__file__).resolve().parent
+ B = D.parents[1]
+-O = B / 'runs/census98_new_terminal_diagnosis_20261031_v1'
+-R = B / 'runs/parameter_census_cycle98_20261031_v1'
+-V = B / 'runs/parameter_census_cycle98_review_20261031_v1'
+-F = B / 'runs/census98_fixed97_terminal_20261031_v1'
+-C = B / 'runtime/census98_prefix_comparison_20261031_v1'
++O = B / 'runs/census99_new_terminal_diagnosis_20261031_v1'
++R = B / 'runs/parameter_census_cycle99_20261031_v1'
++V = B / 'runs/parameter_census_cycle99_review_20261031_v1'
++F = B / 'runs/census99_fixed98_terminal_20261031_v1'
++C = B / 'runtime/census99_prefix_comparison_20261031_v1'
+ read = lambda p: json.loads(Path(p).read_text())
+ 
+ def sha(p):
+@@ -40,7 +40,7 @@
+     assert read(V / 'FINISHED.json')['completed']
+     full = read(V / 'REVIEW.json')
+     assert full['passed'] and read(V / 'loss/REVIEW.json')['passed']
+-    assert read(V / 'health/DIAGNOSIS.json')['cycle'] == 98
++    assert read(V / 'health/DIAGNOSIS.json')['cycle'] == 99
+     assert read(F / 'FINISHED.json')['passed'] and read(F / 'REVIEW.json')['passed']
+     assert read(C / 'COMPARISON_FINISHED.json')['passed']
+     assert read(C / 'CACHE_POPULATION_FULL_REVIEW.json')['passed']
+@@ -56,29 +56,29 @@
+     except FileNotFoundError:
+         missing = True
+     else:
+-        raise AssertionError('Unexpected complete98 already ready before waiting registration')
++        raise AssertionError('Unexpected complete99 already ready before waiting registration')
+     import numpy as np
+     sys.path.insert(0, str(D))
+-    from build_reference98 import stats
+-    previous = B / 'runs/census97_new_terminal_diagnosis_20261031_v1/reference97'
++    from build_reference99 import stats
++    previous = B / 'runs/census98_new_terminal_diagnosis_20261031_v1/reference98'
+     details = {}
+     for m in p['methods']:
+         rv = read(previous / (m + '_REVIEW.json'))
+         with np.load(previous / (m + '_values.npz')) as z:
+             actual = stats(z['initial_prediction'], z['rewards'], z['masks'])
+             assert len(z['indices']) == p['methods'][m]['old_terminal_rows']
+-            assert np.count_nonzero(z['cycles'] == 97) == 30
++            assert np.count_nonzero(z['cycles'] == 98) == 30
+         assert actual == rv['stats']
+-        details[m] = dict(all_prior97_saved_stats_exact=True, old_terminal_rows=rv['terminal_rows'])
++        details[m] = dict(all_prior98_saved_stats_exact=True, old_terminal_rows=rv['terminal_rows'])
+     put(O / 'PREFLIGHT_REVIEW.json', dict(passed=True, time=time.time(),
+-        actual_missing_complete98_rejected=missing, original_consumers_live=True,
++        actual_missing_complete99_rejected=missing, original_consumers_live=True,
+         methods=details, neural_forwards=0, physics_steps=0, optimizer_updates=0))
+ 
+ def bind(p, full):
+     methods, inputs = {}, []
+     for m, e in p['methods'].items():
+         train = R / m / 'train'
+-        cp = B / 'runs/parameter_census_cycle98_archive_20261031_v1' / m / 'cycle_00098.pt'
++        cp = B / 'runs/parameter_census_cycle99_archive_20261031_v1' / m / 'cycle_00099.pt'
+         assert sha(cp) == full['methods'][m]['checkpoint_sha256']
+         old_review = F / (m + '_REVIEW.json')
+         from fixed_report_contract import check_fixed_report
+@@ -94,10 +94,10 @@
+                  F / 'REVIEW.json', C / 'CACHE_POPULATION_FULL_REVIEW.json']:
+         inputs.append(ref(path))
+     put(O / 'REFERENCE_PLAN.json', dict(time=time.time(), deadline_unix=p['deadline_unix'],
+-        source_sha256=p['source_hashes']['build_reference98.py'], methods=methods, inputs=inputs,
++        source_sha256=p['source_hashes']['build_reference99.py'], methods=methods, inputs=inputs,
+         restore_runtime=p['restore_runtime'], runtime_hashes=p['runtime_hashes'],
+         physics_steps=0, formal_updates=0,
+-        scope='Bound after actual full98 reviews. All8803 terminal reference, old8713 predictions exact;90new terminals retained including failures. No99 dispatch.'))
++        scope='Bound after actual full99 reviews. All8893 terminal reference, old8803 predictions exact;90new terminals retained including failures. No100 dispatch.'))
+ 
+ def main(p):
+     sources(p)
+@@ -116,16 +116,16 @@
+     full = ready()
+     sources(p)
+     bind(p, full)
+-    for name in ['build_reference98.py', 'analyze.py', 'review_saved.py']:
++    for name in ['build_reference99.py', 'analyze.py', 'review_saved.py']:
+         with (O / (name + '.log')).open('x') as log:
+             subprocess.run([str(B / 'env/bin/python'), str(D / name)], check=True,
+                 stdout=log, stderr=subprocess.STDOUT,
+                 timeout=min(p['analysis_budget_seconds'], max(1, p['deadline_unix']-time.time())),
+                 env=dict(os.environ, OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', MKL_NUM_THREADS='1'))
+-    assert read(O / 'reference98/REVIEW.json')['passed'] and read(O / 'DIAGNOSIS.json')['passed']
++    assert read(O / 'reference99/REVIEW.json')['passed'] and read(O / 'DIAGNOSIS.json')['passed']
+     assert read(O / 'SAVED_ARITHMETIC_REVIEW.json')['passed']
+     put(O / 'FINISHED.json', dict(passed=True, time=time.time(), actual_plot_inspection_pending=True,
+-        physics_steps=0, optimizer_updates=0, convergence_claim=False, automatic99=False))
++        physics_steps=0, optimizer_updates=0, convergence_claim=False, automatic100=False))
+ 
+ if __name__ == '__main__':
+     p = read(O / 'WAIT_PLAN.json')
