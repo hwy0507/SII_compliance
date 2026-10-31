@@ -1,0 +1,27 @@
+from pathlib import Path
+import os,sys,time,json,shutil,subprocess,traceback
+D=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1');B=D.parents[1];sys.path.insert(0,str(D));from driver import read,sha,put,validate_checkpoint
+R=B/'runs/parameter_census_cycle96_20261031_v1';A=B/'runs/parameter_census_cycle96_archive_20261031_v1';V=B/'runs/parameter_census_cycle96_view_20261031_v1';O=B/'runs/parameter_census_cycle96_review_20261031_v1'
+os.sched_setaffinity(0,{53})
+def live(j):
+ try:s=Path('/proc',str(j['pid']),'stat').read_text().rsplit(')',1)[1].split();return s[0]!='Z' and s[19]==j['proc_start_ticks']
+ except FileNotFoundError:return False
+try:
+ jobs=read(R/'LAUNCH.json')['jobs'];deadline=time.monotonic()+(1793451215.3429887-time.time());assert not A.exists() and not V.exists()
+ for n,h in read(D/'SOURCES.json')['files'].items():assert sha(D/n)==h
+ for j in jobs:
+  m=j['controller'];run=R/m/'train'
+  while not (run/'FINISHED.json').exists():
+   assert live(j) and time.monotonic()<deadline
+   assert not (run/'FAILURE.json').exists() and not (run.parent/'DRIVER_FAILURE.json').exists();time.sleep(5)
+  assert read(run/'FINISHED.json')['status']=='stopped_at_complete_cycle'
+  import torch
+  torch.set_num_threads(1);cp=run/'checkpoint_latest.pt';ck=torch.load(cp,map_location='cpu',weights_only=False);validate_checkpoint(ck,read(run.parent/'REGISTRATION.json'),complete=True);del ck
+  dest=A/m;dest.mkdir(parents=True);q=dest/'cycle_00096.pt';shutil.copyfile(cp,q);assert sha(q)==sha(cp);put(dest/'cycle_00096.json',dict(path=str(q),sha256=sha(q),source=str(cp),cycle=96,time=time.time()))
+ put(A/'FINISHED.json',dict(completed=True,cycle=96,time=time.time()));V.mkdir()
+ for j in jobs:(V/j['controller']).symlink_to(R/j['controller']/'train')
+ shutil.copyfile(R/'LAUNCH.json',V/'LAUNCH.json')
+ env=dict(os.environ,PYTHONPATH=str(D)+':'+str(B/'runtime/source_train17_clock/source/tools'))
+ for command in [['/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_consumer_repair_20261031_v1/review_repaired.py'],[str(D/'health96.py'),'--runtime',str(B/'runtime/source_train17_clock'),'--run',str(V),'--output',str(O/'health'),'--cycle-archive',str(A),'--cycle','96'],[str(D/'loss96.py')]]:subprocess.run([str(B/'env/bin/python'),*command],check=True,env=env)
+ put(O/'FINISHED.json',dict(completed=True,time=time.time(),consumer_repair='/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_consumer_repair_20261031_v1/REPAIR_PLAN.json',plots_still_require_actual_inspection=True,convergence_claim=False,automatic97=False));put(R/'ARCHIVE_REVIEW_FINISHED.json',dict(completed=True,time=time.time(),review=str(O)))
+except BaseException:put(R/'ARCHIVE_REVIEW_FAILURE.json',dict(time=time.time(),traceback=traceback.format_exc()));raise
