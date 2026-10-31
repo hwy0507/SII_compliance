@@ -3,6 +3,14 @@
 - 已将本轮控制脚本、`CONTROL_AUDIT.json`、专题进度和UPDATE_LOG归档到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_final108_v2_controls_20261031_v1/`，目录创建前确认不存在；服务器未运行计算，5个文件（含manifest）均已回读。脚本SHA `4de8f7c048c7718d866a687ea2cc1705747c42f4be1581d4dbe7b851bf804f36`，收据SHA `234fd9d05d75e788f729e210513a93d63539f68e11983a5c30d903dd70619d58`，manifest SHA `15966ecf4643d05847fb8b2c0b9f07a95a2b7d08502f0c97cde9caa1467cca72`。
 - 归档内容是零物理控制证据，不是final108科学结果；登记目录仍没有`execution.json`，final108完成度仍0/108。
 
+## 2026-10-31 — 原生混合批次条件终端全量平均有限对照通过
+
+- [交接](docs/RL_VIOLATION93_TERMINAL_CENSUS_ABLATION_20261031.md)。完整五位mask分层，对原抽样终端SSE取条件期望，原分母/terminal128/非终端保留；32枚举损失和梯度期望/4拒绝例通过，不称Adam轨迹等价。三方法两方案原64×65536冻结target重复4遍、256步+6首步重复共1542隔离更新，原全state/RNG/grad不变；全初始q/原loss、384final raw及全部终端算术/实际九栏图通过。
+- 全终端masked SSE候选较对照I−31.67%/A−88.59%/V−86.67%，原抽样loss均值−7.46%/−7.17%/−5.16%；I最大仍13.098>对照12.145，新93/旧90样本弱于对照、92中止较初始更差、V unmasked退化均保留。额外约4.25%critic行，不是完整actor/target在线或泛化证据，不凭平滑估计值宣布收敛。
+- 下一步完整native actor/target、增量缓存和恢复兼容验证，再单独登记有限在线；无94/Direct34或辅助权重推广。原三路及冻结90完成勿重启，原未收敛/全部失败/Direct原验收/指定ESN缺失保持。Goal active，无子agent。
+
+- GPU120样本min[77, 64, 67, 67]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD39成员/SHA8a6c8381，HDD仅254字节指针、非全备份。main9bd8d0d8/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
+
 ## 2026-10-31 — final108 控制审计已完成；服务器归档获准待提交发布
 
 - 零物理控制检查已绑定真实 v3 登记SHA `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`，验证v2 adapter按序遍历108格、拒绝重复派发、第四格基础设施失败后保留前三格收据且禁止重启、拒绝107格review；收据状态 `passed_zero_physics_v2_adapter_controls`、physics calls=0。脚本与收据均纳入本轮改动。

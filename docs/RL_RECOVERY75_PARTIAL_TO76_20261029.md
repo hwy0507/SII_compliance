@@ -1,3 +1,11 @@
+## 2026-10-31 — 原生混合批次条件终端全量平均有限对照通过
+
+- [交接](RL_VIOLATION93_TERMINAL_CENSUS_ABLATION_20261031.md)。完整五位mask分层，对原抽样终端SSE取条件期望，原分母/terminal128/非终端保留；32枚举损失和梯度期望/4拒绝例通过，不称Adam轨迹等价。三方法两方案原64×65536冻结target重复4遍、256步+6首步重复共1542隔离更新，原全state/RNG/grad不变；全初始q/原loss、384final raw及全部终端算术/实际九栏图通过。
+- 全终端masked SSE候选较对照I−31.67%/A−88.59%/V−86.67%，原抽样loss均值−7.46%/−7.17%/−5.16%；I最大仍13.098>对照12.145，新93/旧90样本弱于对照、92中止较初始更差、V unmasked退化均保留。额外约4.25%critic行，不是完整actor/target在线或泛化证据，不凭平滑估计值宣布收敛。
+- 下一步完整native actor/target、增量缓存和恢复兼容验证，再单独登记有限在线；无94/Direct34或辅助权重推广。原三路及冻结90完成勿重启，原未收敛/全部失败/Direct原验收/指定ESN缺失保持。Goal active，无子agent。
+
+- GPU120样本min[77, 64, 67, 67]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD39成员/SHA8a6c8381，HDD仅254字节指针、非全备份。main9bd8d0d8/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
+
 ## 2026-10-31 — 完整93全回放因果P审计及有限信息消融完成
 
 - [交接](RL_VIOLATION93_POTENTIAL_ABLATION_20261031.md)。全11566262保留行/8460回合群的动作前P/差分/过去窗口范围与journal/reward/replay精确对齐，独立deque算法全6列复算通过；107个缺raw的partial群也覆盖，无补0/删行。8353终端/旧8263精确绑定，三sidecar555180960字节仅SSD。
