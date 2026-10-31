@@ -8,7 +8,7 @@
 - 结果报告、逐scene/seed表、SVG图、哈希和失败表：`docs/evidence/contact_yield_final108_20261031/REPORT.md`。旧office/composite108历史结果未改写。此测试是登记的插值条件，不是广义OOD；终态保持基于13个25Hz采样状态/0.48秒，不声称逐物理子步连续保持。
 - 紧凑证据和registration/execution/review三份核心收据已在服务器独立目录逐项SHA256核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_unseen108_20261031_v3/`。约10.09GB（9.39GiB）的2379个raw文件未传输：自动审批未授权该全量大包；它们仍保留在本机原始输出目录。详见 `docs/evidence/contact_yield_final108_20261031/ARCHIVE_RECEIPT.json`。
 - 本地和服务器三份核心来源hash：registration `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`；execution `b45b51cad36c30324e1d9f1e906bc2a7dfbaa8a361435e27c0e8e0c6371e0e5c`；FINAL_REVIEW `bb24b9660364565a5d8ac4bfb4acb256d1a11a0a5cb0a699b5bf42bc67dc2afa`。
-- 不要运行旧v1/v2登记，不要重跑v3；当前无在途MuJoCo作业。原始结果及独立复核完成；报告已推送到 GitHub `main`，提交 `cb7c517301e458312c589d61fc9a4ea36ac03c84` 已远端核验。
+- 不要运行旧v1/v2登记，不要重跑v3；当前无在途MuJoCo作业。原始结果及独立复核完成；报告已推送到 GitHub `main`，最终收尾提交 `5d41629e98106eb58f947a8a471f6d09eb4621f3` 已远端核验。
 
 ---
 
