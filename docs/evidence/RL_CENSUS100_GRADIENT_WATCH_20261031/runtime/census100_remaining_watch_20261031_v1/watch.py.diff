@@ -1,0 +1,28 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census99_remaining_watch_20261031_v1/watch.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census100_remaining_watch_20261031_v1/watch.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import json,time,os,hashlib,traceback
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle99_20261031_v1';F=B/'runs/census99_fixed98_terminal_20261031_v1';C=B/'runtime/census99_prefix_comparison_20261031_v1';N=B/'runs/census99_new_terminal_diagnosis_20261031_v1';rd=lambda p:json.loads(Path(p).read_text())
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle100_20261031_v1';F=B/'runs/census100_fixed99_terminal_20261031_v1';C=B/'runtime/census100_prefix_comparison_20261031_v1';N=B/'runs/census100_new_terminal_diagnosis_20261031_v1';rd=lambda p:json.loads(Path(p).read_text())
+ def put(p,x):
+  with p.open('x') as f:json.dump(x,f,indent=2);f.write('\n')
+ def live(j):
+@@ -18,7 +18,7 @@
+   while True:
+    for j in guard['identities']:assert live(j)
+    assert not Path(guard['root'],'STOP').exists()
+-   failures=list(R.rglob('*FAILURE*.json'))+list(F.glob('*FAILURE*.json'))+list(C.glob('COMPARISON_FAILURE*'))+list(N.glob('*FAILURE*.json'))+list((B/'runtime/census99_completion_20261031_v1').glob('WAIT_FAILURE*'));assert not failures,failures
++   failures=list(R.rglob('*FAILURE*.json'))+list(F.glob('*FAILURE*.json'))+list(C.glob('COMPARISON_FAILURE*'))+list(N.glob('*FAILURE*.json'))+list((B/'runtime/census100_completion_20261031_v1').glob('WAIT_FAILURE*'));assert not failures,failures
+    statuses={}
+    for j in p['jobs']:
+     finished=Path(j['finished']);done=False
+@@ -39,7 +39,7 @@
+     print(json.dumps(dict(elapsed_s=round(elapsed,1),steps={m:x['steps'] for m,x in progress.items()},complete_conditions={m:x['completed_conditions'] for m,x in progress.items()},finished=[n for n,x in statuses.items() if x['finished']],gpu=util)),flush=True);last_print=elapsed
+    if ready or elapsed>=p['maximum_wait_seconds'] or time.time()>=p['deadline_unix']:break
+    time.sleep(p['interval_seconds'])
+- put(D/'WATCH_REVIEW.json',dict(passed=True,time=time.time(),elapsed_s=time.monotonic()-start,samples=len(rows),ready_for_full_scientific_review=ready,outcome='all_registered_results_ready' if ready else 'bounded_wait_elapsed_jobs_not_restarted',first=rows[0],last=rows[-1],minimum_gpu=[min(x['gpu'][i] for x in rows) for i in range(4)],automatic100=False,convergence_claim=False))
++ put(D/'WATCH_REVIEW.json',dict(passed=True,time=time.time(),elapsed_s=time.monotonic()-start,samples=len(rows),ready_for_full_scientific_review=ready,outcome='all_registered_results_ready' if ready else 'bounded_wait_elapsed_jobs_not_restarted',first=rows[0],last=rows[-1],minimum_gpu=[min(x['gpu'][i] for x in rows) for i in range(4)],automatic101=False,convergence_claim=False))
+  print('WATCH_FINISHED ready='+str(ready),flush=True)
+ if __name__=='__main__':
+  try:main()

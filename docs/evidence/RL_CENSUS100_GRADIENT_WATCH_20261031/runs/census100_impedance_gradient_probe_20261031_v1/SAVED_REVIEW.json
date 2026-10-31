@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "time": 1793466165.0475128,
+  "all_saved_vectors_and_scalar_arithmetic_verified": true,
+  "exact_group_membership_and_original_masks": true,
+  "groups": {
+    "complete99": {
+      "old92": {
+        "rows": 1,
+        "mse_recomputed_float64": 9.466940982747474
+      },
+      "new99": {
+        "rows": 1,
+        "mse_recomputed_float64": 1770.4629458901948
+      },
+      "other_mask1_terminals": {
+        "rows": 2385,
+        "mse_recomputed_float64": 0.01967960586603122
+      }
+    },
+    "prefix100": {
+      "old92": {
+        "rows": 1,
+        "mse_recomputed_float64": 32.42954566521803
+      },
+      "new99": {
+        "rows": 1,
+        "mse_recomputed_float64": 1530.0375580055172
+      },
+      "other_mask1_terminals": {
+        "rows": 2385,
+        "mse_recomputed_float64": 0.017298263472082572
+      }
+    }
+  },
+  "source_sha256": "df87286ef39d895fe7f2cbb3061874837a0ddb3598b3f49adc3eefcf83508ba3",
+  "probe_source_sha256": "75cbed9b35468c292471e7d4d4201e0e38a4a33c9563b882d6340dcc85e13538",
+  "interpretation": "All six local cosine values are positive. These two saved states show no first-order conflict among the three terminal SSE objectives for critic4. No sampled-batch, nonterminal TD, Adam or online-causality claim. This review verifies saved arithmetic, not a second autograd execution."
+}

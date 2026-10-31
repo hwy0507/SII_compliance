@@ -1,0 +1,71 @@
+{
+  "checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census100_prefix_terminal_probe_20261031_v1/impedance_snapshot.pt",
+    "sha256": "fc7d10e5cc7cccccd8c794dfb89c0ac90216e38b428aa3e3c39a4f13d7cb3328"
+  },
+  "steps": 4106894,
+  "gradient_parameters": [
+    "q_net.0.weight",
+    "q_net.0.bias",
+    "q_net.2.weight",
+    "q_net.2.bias",
+    "q_net.3.weight",
+    "q_net.3.bias",
+    "q_net.4.weight",
+    "q_net.4.bias",
+    "q_net.6.weight",
+    "q_net.6.bias"
+  ],
+  "gradient_dimension": 81921,
+  "groups": {
+    "old92": {
+      "rows": 1,
+      "mse": 32.42954635620117
+    },
+    "new99": {
+      "rows": 1,
+      "mse": 1530.0377197265625
+    },
+    "other_mask1_terminals": {
+      "rows": 2385,
+      "mse": 0.017298266291618347
+    }
+  },
+  "two_predictions": {
+    "old92": [
+      -32.19502639770508
+    ],
+    "new99": [
+      2.4343438148498535
+    ]
+  },
+  "pairs": {
+    "old92__new99": {
+      "dot": 52673946.04854894,
+      "left_norm": 10782.396996544618,
+      "right_norm": 12361.198470921732,
+      "cosine": 0.3952027491686476,
+      "local_steepest_descent_conflict": false
+    },
+    "old92__other_mask1_terminals": {
+      "dot": 8856.595361906944,
+      "left_norm": 10782.396996544618,
+      "right_norm": 4.018406958020363,
+      "cosine": 0.20440784892739502,
+      "local_steepest_descent_conflict": false
+    },
+    "new99__other_mask1_terminals": {
+      "dot": 16532.367863063006,
+      "left_norm": 12361.198470921732,
+      "right_norm": 4.018406958020363,
+      "cosine": 0.33282854282606106,
+      "local_steepest_descent_conflict": false
+    }
+  },
+  "values": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census100_impedance_gradient_probe_20261031_v1/prefix100_gradients.npz",
+    "sha256": "cf4c882ab5182337c2be64de5dcd03c391666de64c0fb9910b39efb073890e35"
+  },
+  "learner_adam_replay_rng_unchanged": true,
+  "parameter_grad_buffers_absent": true
+}
