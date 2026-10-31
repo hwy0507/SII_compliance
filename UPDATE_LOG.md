@@ -1,3 +1,11 @@
+## 2026-10-31 — 特化场景 unseen108 正式矩阵完成并独立复核
+
+- 依据本地正式收据 `code/mujoco_6d_vmc_benchmark/outputs/contact_yield_locked_unseen108_20261031_v3/` 完成结果登记：108/108 回合完成，`execution.json` 为 `complete_pending_independent_review`，`FINAL_REVIEW.json` 为 `verified_complete_isolated_unseen_matrix`，独立 actor/filter replay 108/108、最大误差 0。
+- 全局双成功 `T_ref=8.92 s`。ESN：Task 35/36、Strict/双成功 32/36、SPT 0.7913、平均峰值力矩 42.37 Nm、机器合规 35/36；MLP：36/36、25/36、0.7548、41.70 Nm、31/36；RNN：36/36、32/36、0.7614、42.51 Nm、36/36。人舒适度 NA；扰动接触代理单列，不能替代人体测量。
+- MLP 棍推 Strict 4/12、机器合规 7/12；ESN `corner_unseen_03` seed 2026102801 为唯一 Task/Strict/机器合规同时失败格，外穿透约 4.613 mm。19 个失败格全部保留并计入分母，历史 office/composite108 独立保存。
+- 紧凑报告、CSV、SVG 与哈希见 `docs/evidence/contact_yield_final108_20261031/REPORT.md`。紧凑 evidence 与 `REGISTRATION.json`、`execution.json`、`FINAL_REVIEW.json` 已归档到服务器独立目录并逐项 SHA256 回读一致；`ARCHIVE_RECEIPT.json` 记录状态。完整原始 episode 目录约 9.5 GB，自动审批未覆盖该大体量传输，故保留本地、未宣称服务器已有 raw 全备份。
+- 开工远端查询：main `e1f84ca15d10e3d28b4acadf61b335976a18d631`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；随后已成功 fetch 并快进至 `origin/main=8b39c19760d2e69db66999c7ec05962a37e45335`，baseline 未变。当前无仿真进程，swap 0。
+
 ## 2026-10-31 — 600万回放GPU原生更新等价通过；完整96仍待
 
 - [交接](docs/RL_CENSUS_CAPACITY6M_GPU_20261031.md)。三份真实全95在GPU0比较原4m/新6m/重复6m，全部retained设备镜像、8533终端及32分层精确；65536批次与采样RNG相同，原loss/全部metrics和更新后完整learner/Adam/RNG digest逐值相同，随后全state恢复。
