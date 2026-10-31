@@ -1,0 +1,20 @@
+--- review96.py
++++ review_repaired.py
+@@ -8,7 +8,7 @@
+ OUT=B/'runs/parameter_census_cycle96_review_20261031_v1'
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+ sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle75_20261026_v1'))
+-sys.path.insert(0,str(Path(__file__).resolve().parent))
++sys.path.insert(0,'/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1')
+ from parameter_replay_capacity_20261026 import MARKER as CAPACITY_MARKER
+ from parameter_replay_capacity4m_20261027 import MARKER as FOLLOWUP_MARKER
+ from validate_published_finite_check_20261025 import digest
+@@ -49,7 +49,7 @@
+     assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==96
+     assert finite(x['learner']) and x['learner']['critic_clock']
+     assert x['learner']['terminal_loss_weight']==128
+-    assert x['learner']['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9996,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
++    assert x['learner']['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9995,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
+     for key in ('actor_optimizer','q_optimizer','alpha_optimizer'):assert x['learner'][key]['param_groups']==old['learner'][key]['param_groups']
+     assert x['learner'].get('bellman_target_count',2)==2
+     assert execution['batch_size']==65536 and execution['updates_per_transition']==1

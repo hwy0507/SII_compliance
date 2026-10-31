@@ -1,0 +1,24 @@
+--- startup96.py
++++ startup_repaired.py
+@@ -4,10 +4,10 @@
+ import numpy as np
+ import torch
+ torch.set_num_threads(1)
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle96_20261031_v1/startup');OUT.mkdir(exist_ok=False)
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle96_20261031_v1/startup_repaired');OUT.mkdir(exist_ok=False)
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+ sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle75_20261026_v1'))
+-sys.path.insert(0,str(Path(__file__).resolve().parent))
++sys.path.insert(0,'/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1')
+ from parameter_replay_capacity_20261026 import MARKER as CAPACITY_MARKER
+ from parameter_replay_capacity4m_20261027 import MARKER as FOLLOWUP_MARKER
+ from validate_published_finite_check_20261025 import digest
+@@ -46,7 +46,7 @@
+  for k,v in old['replay']['arrays'].items():np.testing.assert_array_equal(v,a[k][:n])
+  assert s['terminal_loss_weight']==128 and s.get('bellman_target_count',2)==2 and finite(s)
+  assert s['target_pair_reduction']==dict(version=1,target={'impedance':'minimum','admittance':'mean','vmc':'mean'}[m],actor='minimum',sampled_targets=2)
+- assert s['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9996,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
++ assert s['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9995,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
+  for key in ['actor_optimizer','q_optimizer','alpha_optimizer']:assert s[key]['param_groups']==original[key]['param_groups']
+  reg=json.loads((run.parent/'REGISTRATION.json').read_text());
+  from driver import validate_checkpoint
