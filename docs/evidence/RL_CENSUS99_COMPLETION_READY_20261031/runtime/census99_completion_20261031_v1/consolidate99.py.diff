@@ -1,0 +1,99 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census98_completion_20261031_v1/consolidate98.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census99_completion_20261031_v1/consolidate99.py
+@@ -1,13 +1,13 @@
+-"""Consolidate complete98 evidence after actual inspection of all required plots."""
++"""Consolidate complete99 evidence after actual inspection of all required plots."""
+ from pathlib import Path
+ import json, hashlib, time
+ 
+ D = Path(__file__).resolve().parent
+ B = D.parents[1]
+-R = B / 'runs/parameter_census_cycle98_review_20261031_v1'
+-T = B / 'runs/census98_fixed97_terminal_20261031_v1'
+-C = B / 'runtime/census98_prefix_comparison_20261031_v1'
+-N = B / 'runs/census98_new_terminal_diagnosis_20261031_v1'
++R = B / 'runs/parameter_census_cycle99_review_20261031_v1'
++T = B / 'runs/census99_fixed98_terminal_20261031_v1'
++C = B / 'runtime/census99_prefix_comparison_20261031_v1'
++N = B / 'runs/census99_new_terminal_diagnosis_20261031_v1'
+ read = lambda p: json.loads(p.read_text())
+ 
+ def sha(p):
+@@ -17,17 +17,17 @@
+ checks = [R / 'REVIEW.json', D / 'FULL_LOSS_SAVED_REVIEW.json', D / 'FULL_CONTEXT_REVIEW.json',
+           C / 'CACHE_POPULATION_FULL_REVIEW.json', C / 'INTERPRETATION.json',
+           C / 'INTERPRETATION_SAVED_REVIEW.json', C / 'CHANGED_CASES_REVIEW.json',
+-          T / 'REVIEW.json', N / 'reference98/REVIEW.json', N / 'DIAGNOSIS.json',
++          T / 'REVIEW.json', N / 'reference99/REVIEW.json', N / 'DIAGNOSIS.json',
+           N / 'SAVED_ARITHMETIC_REVIEW.json']
+ for p in checks:
+     assert read(p)['passed'], str(p)
+ assert read(R / 'FINISHED.json')['completed']
+ for p in [T / 'FINISHED.json', C / 'COMPARISON_FINISHED.json', N / 'FINISHED.json']:
+     assert read(p)['passed']
+-for root, names in [(R, ['loss/loss98.png', 'health/training_diagnostics.png']),
+-                    (T, ['fixed97_terminal_97_98.png']),
+-                    (C, ['training97_98_all90.png']), (N, ['new98_terminal_residuals.png'])]:
+-    p = root / ('FULL98_PLOT_INSPECTION.json' if root == C else 'PLOT_INSPECTION.json')
++for root, names in [(R, ['loss/loss99.png', 'health/training_diagnostics.png']),
++                    (T, ['fixed98_terminal_98_99.png']),
++                    (C, ['training98_99_all90.png']), (N, ['new99_terminal_residuals.png'])]:
++    p = root / ('FULL99_PLOT_INSPECTION.json' if root == C else 'PLOT_INSPECTION.json')
+     record = read(p)
+     assert record['actual_visual_inspection'] and len(record['plots']) == len(names)
+     assert {v['path']:v['sha256'] for v in record['plots']} == {str(root/n):sha(root/n) for n in names}
+@@ -39,7 +39,7 @@
+ pop = read(C / 'CACHE_POPULATION_FULL_REVIEW.json')
+ context = read(D / 'FULL_CONTEXT_REVIEW.json')
+ comp = read(C / 'INTERPRETATION.json')
+-reference = read(N / 'reference98/REVIEW.json')
++reference = read(N / 'reference99/REVIEW.json')
+ diagnosis = read(N / 'DIAGNOSIS.json')
+ methods = {}
+ for m, r in full['methods'].items():
+@@ -69,32 +69,32 @@
+     assert sha(Path(n['values']['path'])) == n['values']['sha256']
+     groups = {}
+     for name, g in t['groups'].items():
+-        a, b = g['complete97'], g['complete98']
++        a, b = g['complete98'], g['complete99']
+         assert a['rows'] == b['rows'] and a['mask_counts'] == b['mask_counts']
+-        groups[name] = dict(rows=a['rows'], masked_sse97=a['total_masked_sse'],
+-            masked_sse98=b['total_masked_sse'], relative_change=b['total_masked_sse']/a['total_masked_sse']-1,
++        groups[name] = dict(rows=a['rows'], masked_sse98=a['total_masked_sse'],
++            masked_sse99=b['total_masked_sse'], relative_change=b['total_masked_sse']/a['total_masked_sse']-1,
+             masked_per_critic_delta=[y-x for x,y in zip(a['masked_sse'],b['masked_sse'])],
+             all_row_per_critic_delta=[y-x for x,y in zip(a['all_row_sse'],b['all_row_sse'])])
+     methods[m] = dict(training=r, loss=l['stats'], terminal_population=p['final_population'],
+-        fixed97_terminal_groups=groups, fixed97_regression_rows=t['regression_rows'],
+-        fixed97_improved_rows=t['improved_rows'], known_terminal_rows=t['known_rows'],
+-        new98_terminal_diagnosis=diagnosis['methods'][m],
++        fixed98_terminal_groups=groups, fixed98_regression_rows=t['regression_rows'],
++        fixed98_improved_rows=t['improved_rows'], known_terminal_rows=t['known_rows'],
++        new99_terminal_diagnosis=diagnosis['methods'][m],
+         reward_change=comp['methods'][m]['mean_reward_delta'],
+         task_gained=comp['methods'][m]['task_gained'], task_lost=comp['methods'][m]['task_lost'],
+         strict_gained=comp['methods'][m]['strict_gained'], strict_lost=comp['methods'][m]['strict_lost'])
+-assert sum(v['terminal_population'] for v in methods.values()) == 8803
+-assert sum(v['fixed97_terminal_groups']['all']['rows'] for v in methods.values()) == 8713
++assert sum(v['terminal_population'] for v in methods.values()) == 8893
++assert sum(v['fixed98_terminal_groups']['all']['rows'] for v in methods.values()) == 8803
+ for p in [B / 'runtime/census97_continuation_20261031_v1/STABILITY_WINDOW_INTENT.json',
+           B / 'runs/parameter_census94_96_reward_stability_20261031_v1/REVIEW.json']:
+     checks.append(p)
+ result = dict(passed=True, time=time.time(), methods=methods,
+-    inputs=[dict(path=str(p),sha256=sha(p)) for p in checks], complete98=True,
++    inputs=[dict(path=str(p),sha256=sha(p)) for p in checks], complete99=True,
+     convergence_claim=False, health_acceptance_pending=True, physics_steps=0, optimizer_updates=0,
+-    scope='Complete98 logs/arrays/scalars/all90 labels/all8713 old and90 new terminals/full next-context closure/all plots. Actual online total terminal growth checked; online per-stratum tensor contents not logged. Original94–96 failures retained; prospective97–99 needs99. No convergence or held-out evaluation claim.')
+-with (D / 'COMPLETE98_SCIENTIFIC_REVIEW.json').open('x') as f:
++    scope='Complete99 logs/arrays/scalars/all90 labels/all8803 old and90 new terminals/full next-context closure/all plots. Actual online total terminal growth checked; online per-stratum tensor contents not logged. Original94–96 failures retained; original97–99 still requires its final bound audit. No convergence or held-out evaluation claim.')
++with (D / 'COMPLETE99_SCIENTIFIC_REVIEW.json').open('x') as f:
+     json.dump(result, f, indent=2, allow_nan=False)
+     f.write('\n')
+ print(json.dumps({m:dict(task=v['training']['task'], strict=v['training']['strict'],
+     reward=v['training']['reward_mean'], original_loss=v['loss']['agent_train/original_sampled_q_loss'],
+-    old_terminal_relative_change=v['fixed97_terminal_groups']['all']['relative_change'],
+-    new_terminal_masked_sse=v['new98_terminal_diagnosis']['total_new98_masked_sse']) for m,v in methods.items()}, indent=2))
++    old_terminal_relative_change=v['fixed98_terminal_groups']['all']['relative_change'],
++    new_terminal_masked_sse=v['new99_terminal_diagnosis']['total_new99_masked_sse']) for m,v in methods.items()}, indent=2))
