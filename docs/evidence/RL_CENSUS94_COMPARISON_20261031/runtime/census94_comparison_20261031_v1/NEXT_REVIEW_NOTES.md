@@ -1,0 +1,15 @@
+# 第94轮全90比较等待与真实终端增长检查
+
+原94 learners1081267/1081271/1081275、archive1081280 start196529848继续；原guard96425–96429继续，科研结束保活，不建STOP。首先核PID/start/实际PROGRESS及各FAILURE，不重复派发或因观察到期而重启。
+
+固定完整93的8353终端等待器1895688/start196656130见runs/census94_fixed93_terminal_20261031_v1/LAUNCH.json；本轮93→94全部90条件比较等待器2051280/start196679638见本runtime PROCESS.json。两者均只读，沿原archive启动+14400s截止，完整94原review/health/loss后执行，无自动95。
+
+本轮比较实际93的90原rollout标签/模型/条件/reward算术检查与缺完整94拒绝通过；下一步完成后读INTERPRETATION/INTERPRETATION_SAVED_REVIEW/CHANGED_CASES_REVIEW，实际查看training93_94_all90.png，保留所有失败和退化。93原q_loss对94 original_sampled_q_loss，不能换成94条件估计q_loss后称异常解决。两轮描述不替代固定94–96统计，不作因果改善。
+
+完整94后必须执行：
+/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_comparison_20261031_v1/check_terminal_population.py --complete
+该只读审查要求完整review/checkpoint，逐更新terminal_population与包含本步done累计对齐、全日志/replay dones/全部30终端/旧93终端indices和masks相符，并保存checkpoint32mask分层数。首5000实际无新terminal，已精确核对且15损坏输入拒绝；真实增长仍待。在线每分层tensor内容未日志化，派生存档32分层数不能称作在线逐分层观察。SOURCE_ORDER_REVIEW绑定28运行源码/三trainer原字节及add→step→journal→update顺序。
+
+同时完成原archive全回放/动作/reward/labels、health及原抽样/条件/actor全loss保存算术和实际图。health4096行未投影固定min pair仅诊断，不是训练target。全8353 terminal消费者输出也需实际图与独立算术审阅。完整94前不要宣布收敛或重启；完整后科学决定下一有限95，保留固定94–96意向的登记时点和阈值，统计具体绑定仍待。
+
+中断必须保存最新94 partial权重/Adam/RNG/replay/journal另登记census-aware恢复，不能回退93/重跑整个94；MuJoCo物理state未保存。全部历史失败、Direct33数值验收/冻结0/0与旧28未全证不变性、指定ESN缺失保持。Goal active，无子agent。
