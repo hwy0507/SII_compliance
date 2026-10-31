@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "time": 1793443582.6715806,
+  "gate_source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/scripts/validate_office_apparatus_v5_20260917.py",
+    "sha256": "75be184dfd5f39f89d2058311e1701c0bef7a2b95128653f772920a0e0ec249b"
+  },
+  "cases": {
+    "admittance": {
+      "95": {
+        "step": 3935510,
+        "task": true,
+        "strict": true,
+        "physical_valid": true,
+        "peak_m": 0.00018987859044674048,
+        "terminal_bonus": 25.0,
+        "carry_entry_s": 7.999999999988025
+      },
+      "96": {
+        "step": 3979999,
+        "task": false,
+        "strict": false,
+        "physical_valid": true,
+        "peak_m": 0.00017019637649773992,
+        "terminal_bonus": -25.0,
+        "carry_entry_s": 26.600000000321263
+      }
+    },
+    "vmc": {
+      "95": {
+        "step": 3934236,
+        "task": true,
+        "strict": true,
+        "physical_valid": true,
+        "peak_m": 0.00019440336862319165,
+        "terminal_bonus": 25.0,
+        "carry_entry_s": 6.359999999991847
+      },
+      "96": {
+        "step": 3975451,
+        "task": true,
+        "strict": false,
+        "physical_valid": false,
+        "peak_m": 0.00020745371105351565,
+        "terminal_bonus": -25.0,
+        "carry_entry_s": 6.359999999991847
+      }
+    }
+  },
+  "unchanged_gate_m": 0.0002,
+  "causal_attribution": false,
+  "notes": [
+    "A carry entry delayed~8s to26.6s, no release by55s, physical_valid remains true.",
+    "V task finishes~29.76s but .207454mm exceeds .2mm; original terminal bonus switches+25 to-25.",
+    "V complete96 critic1 has original mask0 at this new terminal, q=-1.8624 vs reward=-28.4145. Its unmasked residual cannot be substituted for the masked training loss.",
+    "V original loss spike comes32updates after terminal arrival; no sampled indices saved, association only."
+  ]
+}

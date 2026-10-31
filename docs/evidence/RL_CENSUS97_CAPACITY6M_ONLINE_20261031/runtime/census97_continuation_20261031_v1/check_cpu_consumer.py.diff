@@ -1,0 +1,9 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1/check_cpu_consumer.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_continuation_20261031_v1/check_cpu_consumer.py
+@@ -14,5 +14,5 @@
+   q=torch.stack([net(obs,actions).flatten() for net in l.learner.agent.ensemble],1);action,lp=l.learner.agent.get_action_and_log_prob(obs)
+  assert torch.isfinite(q).all() and torch.isfinite(action).all() and torch.isfinite(lp).all();restore_rng(l,rng);assert digest(l.state_dict())==initial and not any(v.grad is not None for v in l.learner.agent.parameters());results[m]=dict(cpu_full_state_exact=True,inference_rng_restored=True,gradients_absent=True)
+  del l,ck,state
+-put(D/'CPU_CONSUMER_REVIEW.json',dict(passed=True,time=time.time(),methods=results,optimizer_updates=0,new_physics=0,scope='CPU diagnostic consumer restores full persisted95 state and preserves it after stochastic inference; not a96 result'))
++put(D/'CPU_CONSUMER_REVIEW.json',dict(passed=True,time=time.time(),methods=results,optimizer_updates=0,new_physics=0,scope='CPU diagnostic consumer restores full persisted96 state and preserves it after stochastic inference; not a97 result'))
+ print('All3 CPU full-state consumers passed',flush=True)

@@ -1,0 +1,27 @@
+--- actual96
++++ finite97
+@@ -268,6 +268,7 @@
+         history_critic_amendment=protocol['history_critic_amendment'],
+         violation_critic_amendment=protocol['violation_critic_amendment'],
+         conditional_terminal_amendment=protocol['conditional_terminal_amendment'],
++        replay_capacity_third_stage=protocol['replay_capacity_third_stage'],
+         registered_trainer_sha256=protocol['post_interruption_continuation']['patched_trainer_sha256'],
+         replay_device_cache=bool(cache_enabled),
+         replay_device_cache_bytes=(sum(v.numel()*v.element_size() for v in replay.arrays.values()) if cache_enabled else 0),
+@@ -301,6 +302,7 @@
+             history_critic_amendment=protocol['history_critic_amendment'],
+             violation_critic_amendment=protocol['violation_critic_amendment'],
+             conditional_terminal_amendment=protocol['conditional_terminal_amendment'],
++            replay_capacity_third_stage=protocol['replay_capacity_third_stage'],
+             environment_state_saved=False,
+             resume_semantics='retain completed transitions and learner state; start new episodes after partial boundary'), temporary)
+         temporary.replace(out/'checkpoint_latest.pt')
+@@ -369,7 +371,7 @@
+                         nxt = (learner.terminal_observation(previous['observation'], stream=slot) if done
+                                else learner.observation(event['observation'], stream=slot))
+                         if steps >= protocol['post_interruption_continuation']['parent_steps'] + 41250:
+-                            raise ValueError('Finite96 new-transition budget exceeded')
++                            raise ValueError('Finite97 new-transition budget exceeded')
+                         replay.add(observations=previous['observation'], actions=previous['raw_action'],
+                                    next_observations=nxt, rewards=[value], dones=[float(done)])
+                         steps += 1

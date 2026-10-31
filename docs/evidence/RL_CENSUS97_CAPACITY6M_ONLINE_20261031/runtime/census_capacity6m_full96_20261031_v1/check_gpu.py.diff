@@ -1,0 +1,54 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census_capacity6m_gpu_20261031_v1/check_gpu.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census_capacity6m_full96_20261031_v1/check_gpu.py
+@@ -1,11 +1,11 @@
+-"""Finite GPU comparison of old/new capacity using unchanged full95 learners.
++"""Finite GPU comparison of old/new capacity using unchanged full96 learners.
+ 
+ Three disposable updates per method: old4m, new6m, repeated new6m. No physics,
+ formal updates, checkpoint writes or online dispatch.
+ """
+ from pathlib import Path
+ import copy,gc,hashlib,importlib.util,json,os,sys,time,traceback
+-D=Path(__file__).resolve().parent;B=D.parents[1];O=B/'runs/census_capacity6m_gpu_20261031_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];O=B/'runs/census_capacity6m_full96_20261031_v1'
+ P=B/'runtime/census_capacity6m_preparation_20261031_v1';OLD=B/'runtime/census96_continuation_20261031_v1'
+ sys.path[:0]=[str(P),str(OLD),str(B/'runtime/source_train17_clock/source/tools')]
+ def sha(p):
+@@ -13,7 +13,7 @@
+ def put(name,data):
+  with (O/name).open('x') as f:json.dump(data,f,indent=2,allow_nan=False);f.write('\n')
+ def main():
+- os.sched_setaffinity(0,{54});os.nice(15)
++ os.sched_setaffinity(0,{52});os.nice(15)
+  import numpy as np
+  import torch
+  torch.set_num_threads(1);torch.cuda.set_device(0)
+@@ -27,13 +27,16 @@
+  spec=importlib.util.spec_from_file_location('original96_driver',OLD/'driver.py');driver=importlib.util.module_from_spec(spec);spec.loader.exec_module(driver)
+  plan=json.loads((O/'PLAN.json').read_text())
+  for p,h in plan['sources'].items():assert sha(p)==h
++ assert time.time()<plan['deadline_unix']
+  results={}
+  for method,ref in plan['parents'].items():
++  assert time.time()<plan['deadline_unix']
+   assert sha(ref['checkpoint']['path'])==ref['checkpoint']['sha256']
+   ck=torch.load(ref['checkpoint']['path'],map_location='cpu',weights_only=False)
+   p=json.loads(Path(ref['parent_registration']['path']).read_text())
+   assert sha(ref['parent_registration']['path'])==ref['parent_registration']['sha256']
+-  assert ck['cycle']==95 and ck['boundary']=='complete_condition_cycle' and ck['protocol_sha256']==ref['parent_registration']['sha256']
++  assert ck['cycle']==96 and ck['boundary']=='complete_condition_cycle' and ck['protocol_sha256']==ref['parent_registration']['sha256']
++  driver.validate_checkpoint(ck,p,complete=True)
+   initial=ck['learner'];ld=digest(initial);s=ck['replay'];rd=digest(s)
+   b=p['violation_critic_amendment']['binding'];dimension=b['action_dimension']
+   old=violation_replay_class(old_class(Replay),b)(dimension,52,0);old.load_state_dict(s)
+@@ -80,8 +83,8 @@
+  for p,h in plan['sources'].items():assert sha(p)==h
+  put('REVIEW.json',dict(passed=True,time=time.time(),methods=results,disposable_optimizer_updates=9,
+       formal_updates=0,physics_steps=0,weights_saved=False,online_deployment=False,
+-      parent_cycle=95,complete96_parent_tested=False,
+-      limitation='Exact GPU equivalence at retained full95 data only. No claim after new4m-crossing data; exact full96 recovery/finite97 registration and scientific review remain required.'))
++      parent_cycle=96,complete96_parent_tested=True,
++      limitation='Exact GPU equivalence at retained full96 data only. No claim after new4m-crossing data; finite97 registration/startup and actual boundary checks remain required.'))
+  print('all GPU checks passed',flush=True)
+ if __name__=='__main__':
+  try:main()

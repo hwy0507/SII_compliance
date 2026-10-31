@@ -1,0 +1,59 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census94_96_reward_stability_20261031_v1/binding_rules.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census97_99_reward_stability_20261031_v1/binding_rules.py
+@@ -1,7 +1,7 @@
+ """Fail closed on missing complete cycles, changed census rules or substituted health loss."""
+ from pathlib import Path
+ import json,hashlib,math
+-METHODS=['impedance','admittance','vmc'];CYCLES=[94,95,96]
++METHODS=['impedance','admittance','vmc'];CYCLES=[97,98,99]
+ KEYS={'protocol','review','health','finished','episodes','optimizer','loss_plot','health_plot','loss_review','plot_inspection','checkpoint'}
+ def read(p):return json.loads(Path(p).read_text())
+ def sha(p):
+@@ -18,7 +18,8 @@
+   if p[k]!=v or intent[k]!=v:raise ValueError('Fixed census window rule changed: '+k)
+  if p['conditional_amendment']!=intent['amendments']:raise ValueError('Census estimator intent changed')
+  for k in ['original_plan','original_failed_report','original_saved_review','original_early_failure']:check_ref(p[k])
+- for group in ['protocol94','anchor_protocol55']:
++ check_ref(p['previous94_96_failed_report'])
++ for group in ['protocol97','anchor_protocol55']:
+   for r in p[group].values():check_ref(r)
+  return p
+ 
+@@ -35,6 +36,7 @@
+  if p['conditional_terminal_amendment']!=plan['conditional_amendment'][m]:raise ValueError('Estimator revision changed inside window')
+  if p['history_critic_amendment']!=plan['history_amendment'][m] or p['violation_critic_amendment']!=plan['violation_amendment'][m]:raise ValueError('Critic architecture changed inside window')
+  if (p['conditional_terminal_amendment']['health_metric'],p['conditional_terminal_amendment']['update_metric'])!=('agent_train/original_sampled_q_loss','agent_train/conditional_terminal_q_loss'):raise ValueError('Original health loss substituted')
++ if p.get('replay_capacity_third_stage')!=plan['third_capacity_stage'][m]:raise ValueError('Third capacity stage changed')
+  if st['optimizer_settings_changed'] is not False:raise ValueError('Optimizer settings changed')
+  for k in ['cycle_review','scientific_decision','parent_registration']:check_ref(st[k])
+  decision=read(st['scientific_decision']['path'])
+@@ -43,7 +45,7 @@
+ 
+ def validate_registration(root,reg,check_checkpoints=False):
+  plan=locked(root)
+- required=dict(cycles=CYCLES,seed=2026102861,bootstrap_replicates=5000,near_zero_guard=1.,relative_limit=.05,automatic_training=False,source_sha256=sha(root/'audit.py'),review_source_sha256=sha(root/'review_saved.py'),binding_source=ref(root/'bind_inputs.py'),original_prospective_plan=plan['intent'],original_failed_window=plan['original_failed_report'],original_early_failure=plan['original_early_failure'],history_amendment=plan['history_amendment'],violation_amendment=plan['violation_amendment'],conditional_amendment=plan['conditional_amendment'],anchor_protocol55=plan['anchor_protocol55'],followup_marker=plan['followup_marker'])
++ required=dict(cycles=CYCLES,seed=2026102861,bootstrap_replicates=5000,near_zero_guard=1.,relative_limit=.05,automatic_training=False,source_sha256=sha(root/'audit.py'),review_source_sha256=sha(root/'review_saved.py'),binding_source=ref(root/'bind_inputs.py'),original_prospective_plan=plan['intent'],original_failed_window=plan['original_failed_report'],original_early_failure=plan['original_early_failure'],history_amendment=plan['history_amendment'],violation_amendment=plan['violation_amendment'],conditional_amendment=plan['conditional_amendment'],anchor_protocol55=plan['anchor_protocol55'],followup_marker=plan['followup_marker'],third_capacity_stage=plan['third_capacity_stage'],previous94_96_failed_report=plan['previous94_96_failed_report'])
+  if set(reg)!=set(required)|{'inputs'}:raise ValueError('Exact window registration fields required')
+  for k,v in required.items():
+   if reg[k]!=v:raise ValueError('Wrong registration '+k)
+@@ -79,8 +81,8 @@
+    if [e for e in episodes if e.get('abort_reason')]!=row['aborts'] or sum(e['task_success'] for e in episodes)!=row['task'] or sum(e['strict_success'] for e in episodes)!=row['strict']:raise ValueError('Task/Strict/aborts changed')
+    if not math.isclose(math.fsum(e['reward'] for e in episodes)/30,row['reward_mean'],abs_tol=1e-10):raise ValueError('Reward summary mismatch')
+ 
+-   if c==94:
+-    if p!=read(plan['protocol94'][m]['path']):raise ValueError('Initial94 registration changed')
++   if c==97:
++    if p!=read(plan['protocol97'][m]['path']):raise ValueError('Initial94 registration changed')
+    else:
+     prev=reg['inputs'][f'{m}:{c-1}'];parent=read(prev['review']['path'])['methods'][m]
+     if st['checkpoint']['sha256']!=prev['checkpoint']['sha256'] or st['parent_registration']['sha256']!=prev['protocol']['sha256'] or st['parent_steps']!=parent['steps']:raise ValueError('Noncontiguous formal parent chain')
+@@ -90,7 +92,8 @@
+     if (ck['controller'],ck['cycle'],ck['boundary'],ck['protocol_sha256'])!=(m,c,'complete_condition_cycle',refs['protocol']['sha256']):raise ValueError('Actual saved boundary/identity mismatch')
+     if ck['conditional_terminal_amendment']!=p['conditional_terminal_amendment'] or ck['learner']['conditional_terminal_census']!=p['conditional_terminal_amendment']['marker']:raise ValueError('Persisted estimator marker missing')
+     if ck['history_critic_amendment']!=p['history_critic_amendment'] or ck['violation_critic_amendment']!=p['violation_critic_amendment']:raise ValueError('Saved architecture metadata changed')
+-    if ck['steps']!=row['steps'] or ck['replay']['size']!=row['steps'] or ck['replay']['cursor']!=row['steps'] or ck['replay']['capacity']!=4000000:raise ValueError('Saved replay counters/capacity changed')
++    if ck['steps']!=row['steps'] or ck['replay']['size']!=row['steps'] or ck['replay']['cursor']!=row['steps'] or ck['replay']['capacity']!=6000000:raise ValueError('Saved replay counters/capacity changed')
++    if ck.get('replay_capacity_third_stage')!=plan['third_capacity_stage'][m] or ck['replay'].get('replay_capacity_third')!=plan['third_capacity_stage'][m]['marker']:raise ValueError('Saved third capacity marker missing')
+     if any(ck['replay']['arrays'][k].shape!=(row['steps'],52) for k in ['observations','next_observations']):raise ValueError('Full52 replay required')
+     del ck
+  return True

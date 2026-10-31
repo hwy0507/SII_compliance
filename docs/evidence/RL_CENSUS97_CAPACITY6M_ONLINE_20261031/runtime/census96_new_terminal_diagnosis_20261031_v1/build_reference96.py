@@ -1,0 +1,56 @@
+from pathlib import Path
+import json,hashlib,time,os,sys,math,gc,traceback
+D=Path(__file__).resolve().parent;B=D.parents[1];O=B/'runs/census96_new_terminal_diagnosis_20261031_v1';F=O/'reference96'
+read=lambda p:json.loads(Path(p).read_text())
+def sha(p):
+ with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+def put(p,x):
+ with Path(p).open('x') as f:json.dump(x,f,indent=2,allow_nan=False);f.write('\n')
+def stats(pred,reward,mask):
+ err=(pred.astype(float)-reward.astype(float)[:,None])**2
+ return dict(masked_sse=[math.fsum(err[:,j]*mask[:,j]) for j in range(5)],all_row_sse=[math.fsum(err[:,j]) for j in range(5)],total_masked_sse=math.fsum((err*mask).reshape(-1)))
+def main():
+ p=read(O/'REFERENCE_PLAN.json');assert time.time()<p['deadline_unix'];assert sha(__file__)==p['source_sha256']
+ for f in p['inputs']:assert sha(f['path'])==f['sha256']
+ for n,h in p['runtime_hashes'].items():assert sha(Path(p['restore_runtime'])/n)==h
+ F.mkdir();os.sched_setaffinity(0,{54});sys.path.insert(0,p['restore_runtime'])
+ from driver import validate_checkpoint,restore_consumer
+ from frozen_helpers import capture_rng,restore_rng
+ from validate_published_finite_check_20261025 import digest
+ import numpy as np,torch
+ torch.set_num_threads(1);methods={}
+ for m,e in p['methods'].items():
+  assert time.time()<p['deadline_unix'];cp=Path(e['checkpoint']['path']);ck=torch.load(cp,map_location='cpu',weights_only=False);reg=read(e['registration']['path']);validate_checkpoint(ck,reg,complete=True);assert sha(cp)==e['checkpoint']['sha256'];arr=ck['replay']['arrays'];idx=np.flatnonzero(arr['dones'][:,0]==1);assert len(idx)==e['terminal_rows']
+  with np.load(e['old_values']['path']) as z:old={k:z[k].copy() for k in ['indices','observations','actions','rewards','masks','cycles','conditions','complete96']}
+  n=len(old['indices']);np.testing.assert_array_equal(idx[:n],old['indices']);assert len(idx)-n==30
+  for k in ['observations','actions','masks']:np.testing.assert_array_equal(arr[k][idx[:n]],old[k])
+  np.testing.assert_array_equal(arr['rewards'][idx[:n],0],old['rewards'])
+  terminal={}
+  with Path(e['transitions']['path']).open() as f:
+   for line in f:
+    t=json.loads(line)
+    if t['done']:assert t['cycle']==96 and t['step']-1 not in terminal;terminal[t['step']-1]=t
+  assert set(terminal)==set(idx[n:]);assert len({t['condition'] for t in terminal.values()})==30
+  episodes=[json.loads(l) for l in Path(e['episodes']['path']).read_text().splitlines()];assert len(episodes)==30;by={r['condition']:r for r in episodes}
+  for i in idx[n:]:
+   t=terminal[i];assert arr['rewards'][i,0]==np.float32(t['reward']);ep=by[t['condition']];assert ep['cycle']==96 and ep['steps']==1375 and ep['full_task_horizon_completed'] and ep['abort_reason'] is None
+  a={k:arr[k][idx].copy() for k in ['observations','actions','masks']};a.update(indices=idx,rewards=arr['rewards'][idx,0].copy(),cycles=np.concatenate([old['cycles'],np.full(30,96,dtype=np.int64)]),conditions=np.concatenate([old['conditions'],np.array([terminal[i]['condition'] for i in idx[n:]])]))
+  assert np.all(np.diff(idx)>0) and a['observations'].shape==(len(idx),52) and set(np.unique(a['masks']))<={0,1}
+  l=restore_consumer(ck['learner'],reg,'cpu');before=digest(ck['learner']);rb=digest(ck['replay']);rng=capture_rng(l);pred=[]
+  with torch.no_grad():
+   for lo,hi in zip(e['prediction_block_boundaries'],e['prediction_block_boundaries'][1:]):
+    obs=torch.as_tensor(a['observations'][lo:hi]);act=torch.as_tensor(a['actions'][lo:hi]);pred.append(torch.stack([q(obs,act).reshape(-1) for q in l.learner.agent.ensemble],1).numpy())
+  q=np.concatenate(pred);assert np.isfinite(q).all();np.testing.assert_array_equal(q[:n],old['complete96']);restore_rng(l,rng)
+  assert digest(l.state_dict())==before==digest(ck['learner']) and digest(ck['replay'])==rb and digest(capture_rng(l))==digest(rng) and not any(x.grad is not None for x in l.learner.agent.parameters()) and sha(cp)==e['checkpoint']['sha256']
+  a['initial_prediction']=q;out=F/(m+'_values.npz');np.savez_compressed(out,**a);s=stats(q,a['rewards'],a['masks']);old_stats=read(e['old_review']['path'])['groups']['all']['complete96'];np.testing.assert_allclose(stats(q[:n],a['rewards'][:n],a['masks'][:n])['masked_sse'],old_stats['masked_sse'],rtol=1e-12,atol=1e-8)
+  with np.load(out) as z:
+   for k,v in a.items():np.testing.assert_array_equal(z[k],v)
+   for j in range(5):
+    error=[(float(v)-float(r))**2 for v,r in zip(z['initial_prediction'][:,j],z['rewards'])];np.testing.assert_allclose(math.fsum(v*float(w) for v,w in zip(error,z['masks'][:,j])),s['masked_sse'][j],rtol=1e-12,atol=1e-8);np.testing.assert_allclose(math.fsum(error),s['all_row_sse'][j],rtol=1e-12,atol=1e-8)
+  r=dict(passed=True,time=time.time(),checkpoint_sha256=e['checkpoint']['sha256'],terminal_rows=len(idx),old95_terminal_rows=n,new96_terminal_rows=30,old8533_full96_predictions_exact=True,all_current96_terminal_rows_and_fields_exact=True,new96_labels_bound_to_terminal_transitions_and_episodes=True,full_learner_optimizer_replay_rng_unchanged=True,saved_scalar_arithmetic_verified=True,stats=s,values=dict(path=str(out),sha256=sha(out)),physics_steps=0,optimizer_updates=0)
+  put(F/(m+'_REVIEW.json'),r);methods[m]=r;print(m,len(idx),flush=True);del ck,arr,l,a,obs,act;gc.collect()
+ assert sum(v['terminal_rows'] for v in methods.values())==8623
+ put(F/'REVIEW.json',dict(passed=True,time=time.time(),methods=methods,physics_steps=0,optimizer_updates=0,scope='All8623 full96 terminal inputs and CPU full96 predictions; old8533 predictions reproduce saved full96 reference exactly,90new96 rows mapped to original terminal summaries. Seen training data, no97 outputs or independent generalization claim.'))
+if __name__=='__main__':
+ try:main()
+ except BaseException:put(O/('REFERENCE_FAILURE_'+str(time.time_ns())+'.json'),dict(time=time.time(),traceback=traceback.format_exc()));raise

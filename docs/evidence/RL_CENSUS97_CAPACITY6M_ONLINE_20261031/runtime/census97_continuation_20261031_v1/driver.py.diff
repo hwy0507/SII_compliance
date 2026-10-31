@@ -1,0 +1,160 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1/driver.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_continuation_20261031_v1/driver.py
+@@ -1,7 +1,7 @@
+-"""One finite census continuation96, exact complete95 full-state restore."""
++"""One finite census continuation97, exact complete96 full-state restore."""
+ from pathlib import Path
+ import argparse,copy,hashlib,importlib.util,json,os,sys,time,traceback
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle96_20261031_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle97_20261031_v1'
+ sys.path[:0]=[str(D),str(B/'runtime/source_train17_clock/source/tools'),str(B/'runtime/violation93_terminal_followup_20261031_v1')]
+ read=lambda p:json.loads(Path(p).read_text())
+ def sha(p):
+@@ -12,29 +12,35 @@
+ def parent_driver():
+  oldpath=list(sys.path)
+  try:
+-  path=B/'runtime/census95_continuation_20261031_v1/driver.py'
+-  spec=importlib.util.spec_from_file_location('registered_parent95_driver',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
++  path=B/'runtime/census96_continuation_20261031_v1/driver.py'
++  spec=importlib.util.spec_from_file_location('registered_parent96_driver',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
+  finally:sys.path[:]=oldpath
+ 
+ def transform(source):
+- changes=[('Finite95 new-transition budget exceeded','Finite96 new-transition budget exceeded')]
++ changes=[('Finite96 new-transition budget exceeded','Finite97 new-transition budget exceeded')]
++ for indent in (8,12):
++  old="\n"+' '*indent+"conditional_terminal_amendment=protocol['conditional_terminal_amendment'],"
++  new=old+"\n"+' '*indent+"replay_capacity_third_stage=protocol['replay_capacity_third_stage'],"
++  changes.append((old,new))
+  for a,b in changes:
+-  if source.count(a)!=1:raise ValueError('Frozen95 trainer seam changed: '+a)
++  if source.count(a)!=1:raise ValueError('Frozen96 trainer seam changed: '+a)
+   source=source.replace(a,b)
+  return source
+ 
+ def expected_protocol(m):
+  from census_native import marker
+  decision=read(D/'SCIENTIFIC_DECISION.json');e=decision['methods'][m];parent=read(e['parent_registration']['path'])
+- if sha(e['parent_registration']['path'])!=e['parent_registration']['sha256']:raise ValueError('Formal95 registration drift')
+- stage=dict(version=1,parent_cycle=95,new_cycle=96,new_cycles=1,controller=m,parent_registration=e['parent_registration'],checkpoint=e['checkpoint'],parent_steps=e['steps'],parent_updates=e['updates'],parent_history_digest=e['history_digest'],cycle_review=decision['cycle_review'],driver_sha256=sha(__file__),trainer_path=e['trainer']['path'],trainer_sha256=e['trainer']['sha256'],patched_trainer_sha256=hashlib.sha256(transform(Path(e['trainer']['path']).read_text()).encode()).hexdigest(),maximum_new_actions=41250,environment_state_saved=False,old_window_continuity_claim=False,automatic_followup=False,optimizer_settings_changed=False,scientific_decision=ref(D/'SCIENTIFIC_DECISION.json'))
+- return dict(parent,post_interruption_continuation=stage)
++ if sha(e['parent_registration']['path'])!=e['parent_registration']['sha256']:raise ValueError('Formal96 registration drift')
++ stage=dict(version=1,parent_cycle=96,new_cycle=97,new_cycles=1,controller=m,parent_registration=e['parent_registration'],checkpoint=e['checkpoint'],parent_steps=e['steps'],parent_updates=e['updates'],parent_history_digest=e['history_digest'],cycle_review=decision['cycle_review'],driver_sha256=sha(__file__),trainer_path=e['trainer']['path'],trainer_sha256=e['trainer']['sha256'],patched_trainer_sha256=hashlib.sha256(transform(Path(e['trainer']['path']).read_text()).encode()).hexdigest(),maximum_new_actions=41250,environment_state_saved=False,old_window_continuity_claim=False,automatic_followup=False,optimizer_settings_changed=False,scientific_decision=ref(D/'SCIENTIFIC_DECISION.json'))
++ from parameter_replay_capacity6m import MARKER
++ cap=dict(version=1,parent_cycle=96,first_cycle=97,marker=MARKER,entry_checkpoint=e['checkpoint'],parent_stripped_replay_digest=e['stripped_replay_digest'],source=ref(D/'parameter_replay_capacity6m.py'),old_rows_preserved=True)
++ return dict(parent,post_interruption_continuation=stage,replay_capacity_third_stage=cap)
+ 
+ def validate_protocol(parent_digest,p,current_digest=None):
+  m=p['post_interruption_continuation']['controller'];expected=expected_protocol(m)
+- if p!=expected or parent_digest!=expected['post_interruption_continuation']['parent_registration']['sha256']:raise ValueError('Exact finite96 scientific contract required')
++ if p!=expected or parent_digest!=expected['post_interruption_continuation']['parent_registration']['sha256']:raise ValueError('Exact finite97 scientific contract required')
+  d=read(D/'SCIENTIFIC_DECISION.json')
+- if (d['parent_cycle'],d['new_cycle'],d['new_cycles'],d['maximum_new_actions_per_method'],d['automatic_followup'],d['offline_weights_promoted'],d['optimizer_settings_changed'],d['reward_physics_changed'])!=(95,96,1,41250,False,False,False,False):raise ValueError('Finite scientific decision changed')
++ if (d['parent_cycle'],d['new_cycle'],d['new_cycles'],d['maximum_new_actions_per_method'],d['automatic_followup'],d['offline_weights_promoted'],d['optimizer_settings_changed'],d['reward_physics_changed'])!=(96,97,1,41250,False,False,False,False):raise ValueError('Finite scientific decision changed')
+  for item in d['evidence']:
+   if sha(item['path'])!=item['sha256']:raise ValueError('Scientific decision evidence changed')
+  for item in [d['cycle_review'],d['complete_scientific_review'],d['terminal_review']]:
+@@ -47,9 +53,9 @@
+  st=p['post_interruption_continuation'];old=read(st['parent_registration']['path']);pd=parent_driver()
+  pd.validate_protocol(old['post_interruption_continuation']['parent_registration']['sha256'],old)
+  pd.validate_checkpoint(ck,old,complete=True)
+- if ck['learner'].get(KEY)!=marker() or ck.get('conditional_terminal_amendment')!=p['conditional_terminal_amendment']:raise ValueError('Exact persisted95 census rule required')
+- if ck['steps']!=st['parent_steps'] or ck['learner']['num_gradient_steps']!=st['parent_updates'] or digest(ck['cycles'])!=st['parent_history_digest']:raise ValueError('Formal95 counters/history changed')
+- if ck['protocol_sha256']!=st['parent_registration']['sha256'] or ck['steps']+41250>4000000:raise ValueError('Parent identity/capacity mismatch')
++ if ck['learner'].get(KEY)!=marker() or ck.get('conditional_terminal_amendment')!=p['conditional_terminal_amendment']:raise ValueError('Exact persisted96 census rule required')
++ if ck['steps']!=st['parent_steps'] or ck['learner']['num_gradient_steps']!=st['parent_updates'] or digest(ck['cycles'])!=st['parent_history_digest']:raise ValueError('Formal96 counters/history changed')
++ if ck['protocol_sha256']!=st['parent_registration']['sha256'] or ck['steps']+41250>6000000:raise ValueError('Parent identity/capacity mismatch')
+ 
+ def validate_checkpoint(ck,p,complete=False):
+  from persisted_history_critic import KEY as HK,marker as hm
+@@ -57,9 +63,10 @@
+  from parameter_replay_capacity_20261026 import MARKER as CAP2
+  from parameter_replay_capacity4m_20261027 import MARKER as CAP4
+  from census_native import KEY,marker
++ from parameter_replay_capacity6m import KEY as CK,MARKER as CAP6
+  from validate_published_finite_check_20261025 import digest
+  st=p['post_interruption_continuation'];h=p['history_critic_amendment'];v=p['violation_critic_amendment'];m=st['controller'];n=ck['steps']
+- if ck['controller']!=m or ck['seed']!=20261025 or ck['cycle']!=96 or ck['environment_state_saved'] is not False:raise ValueError('Wrong96 checkpoint identity')
++ if ck['controller']!=m or ck['seed']!=20261025 or ck['cycle']!=97 or ck['environment_state_saved'] is not False:raise ValueError('Wrong97 checkpoint identity')
+  if ck['protocol_sha256']!=sha(R/m/'REGISTRATION.json') or ck['conditional_terminal_amendment']!=p['conditional_terminal_amendment']:raise ValueError('Estimator registration missing or changed')
+  if ck['recovery_continuation']!=st or ck['interruption_recovery']!=p['interrupted_episode_recovery'] or ck['history_critic_amendment']!=h or ck['violation_critic_amendment']!=v:raise ValueError('Historical metadata changed')
+  if not st['parent_steps']<n<=st['parent_steps']+41250 or ck['learner']['num_gradient_steps']!=st['parent_updates']+n-st['parent_steps']:raise ValueError('Transition/update budget mismatch')
+@@ -67,28 +74,40 @@
+  for k in ['learner','replay']:
+   if ck[k].get(HK)!=hm(h['binding']) or ck[k].get(VK)!=vm(v['binding']):raise ValueError('History/rawbit marker changed')
+  r=ck['replay']
+- if r['capacity']!=4000000 or r['size']!=n or r['cursor']!=n or r['replay_capacity_extension']!=CAP2 or r['replay_capacity_followup']!=CAP4:raise ValueError('Append-only replay changed')
++ if r.get(CK)!=CAP6 or ck.get('replay_capacity_third_stage')!=p['replay_capacity_third_stage'] or r['capacity']!=6000000 or r['size']!=n or r['cursor']!=n or r['replay_capacity_extension']!=CAP2 or r['replay_capacity_followup']!=CAP4:raise ValueError('Append-only replay changed')
+  if any(r['arrays'][k].shape!=(n,52) for k in ['observations','next_observations']):raise ValueError('Full52 replay required')
+  full=ck['boundary']=='complete_condition_cycle';history=ck['cycles'][:-1] if full else ck['cycles']
+  if digest(history)!=st['parent_history_digest'] or any(c['cycle']==75 for c in ck['cycles']):raise ValueError('Historical cycle records changed')
+- if full and ck['cycles'][-1]['cycle']!=96:raise ValueError('Wrong final cycle record')
+- if complete and not full:raise ValueError('Complete96 required')
++ if full and ck['cycles'][-1]['cycle']!=97:raise ValueError('Wrong final cycle record')
++ if complete and not full:raise ValueError('Complete97 required')
+ 
+ def classes(p):
+  from violation_pipeline import classes as old_classes
+  from census_native import census_class
+- base,replay=old_classes(p);return census_class(base),replay
++ from train_published_compliance_20261025 import Replay
++ from parameter_replay_capacity6m import replay_class
++ from persisted_violation_critic import violation_replay_class
++ base,_=old_classes(p);cap=p['replay_capacity_third_stage'];wrapped=violation_replay_class(replay_class(Replay,cap['parent_stripped_replay_digest']),p['violation_critic_amendment']['binding'])
++ class Replay6m(wrapped):
++  def __init__(self,dimension,observation_dim,seed,capacity=6000000):
++   if capacity!=6000000:raise ValueError('Explicit6m required')
++   super().__init__(dimension,observation_dim,seed,capacity=6000000)
++ return census_class(base),Replay6m
+ 
+ def restore_consumer(state,p,device):
+  from census_native import strict_restore
+  from validate_published_finite_check_20261025 import digest
+  cls,_=classes(p);l=cls(Path(p['runtime']),dimension=p['violation_critic_amendment']['binding']['action_dimension'],direct=False,seed=20261025,device=device,algorithm='cheq',critic_layer_norm=True,numerical_amendments=True,critic_clock=True);strict_restore(l,state,digest);return l
+ 
++def expected_replay(state):
++ from parameter_replay_capacity6m import KEY,MARKER
++ return dict(state,capacity=6000000,**{KEY:MARKER})
++
+ def verify_initial(learner,replay,ck,out):
+  from census_native import KEY,marker
+  from validate_published_finite_check_20261025 import digest
+- state=learner.state_dict();assert state[KEY]==marker();assert digest(state)==digest(ck['learner']) and digest(replay.state_dict())==digest(ck['replay'])
+- put(out/'INITIAL_STATE_REVIEW.json',dict(passed=True,time=time.time(),full_trained95_learner_and_replay_exact=True,learner_digest=digest(state),parent_learner_digest=digest(ck['learner']),replay_digest=digest(ck['replay']),new_physics=0,optimizer_updates=0))
++ state=learner.state_dict();assert state[KEY]==marker();assert digest(state)==digest(ck['learner']) and digest(replay.state_dict())==digest(expected_replay(ck['replay']))
++ put(out/'INITIAL_STATE_REVIEW.json',dict(passed=True,time=time.time(),full_trained96_learner_and_replay_exact=True,capacity_only_migration=True,expanded_replay_digest=digest(replay.state_dict()),learner_digest=digest(state),parent_learner_digest=digest(ck['learner']),replay_digest=digest(ck['replay']),new_physics=0,optimizer_updates=0))
+ 
+ def main(args):
+  import torch
+@@ -101,26 +120,26 @@
+  if args.runtime.resolve()!=root or sha(root/'RUNTIME.json')!=p['runtime_sha256']:raise ValueError('Frozen runtime mismatch')
+  for n,h in read(root/'SOURCE_HASHES.json').items():
+   if sha(root/'source'/n)!=h:raise ValueError('Frozen physics/source changed')
+- if args.resume.resolve()!=Path(st['checkpoint']['path']) or sha(args.resume)!=st['checkpoint']['sha256']:raise ValueError('Formal95 archive required')
++ if args.resume.resolve()!=Path(st['checkpoint']['path']) or sha(args.resume)!=st['checkpoint']['sha256']:raise ValueError('Formal96 archive required')
+  validate_protocol(st['parent_registration']['sha256'],p);cpus=list(map(int,args.cpus.split(',')));validate_pool(p,args,cpus)
+  ck=torch.load(args.resume,map_location='cpu',weights_only=False);validate_parent(ck,p);cls,replay_cls=classes(p);source=Path(st['trainer_path']).read_text()
+  if sha(st['trainer_path'])!=st['trainer_sha256']:raise ValueError('Parent trainer changed')
+  modified=transform(source);assert hashlib.sha256(modified.encode()).hexdigest()==st['patched_trainer_sha256']
+  if args.check_only:
+   os.sched_setaffinity(0,{cpus[0]});l=cls(root,dimension=p['violation_critic_amendment']['binding']['action_dimension'],direct=False,seed=20261025,device=args.device,algorithm='cheq',critic_layer_norm=True,numerical_amendments=True,critic_clock=True);l.load_state_dict(ck['learner']);r=replay_cls(l.dimension if hasattr(l,'dimension') else p['violation_critic_amendment']['binding']['action_dimension'],52,20261078);r.load_state_dict(ck['replay']);out=args.output.parent/'check';out.mkdir();verify_initial(l,r,ck,out)
+-  initial=l.state_dict();rr=copy.deepcopy(r.rng.bit_generator.state);cache=CensusCache(r,args.device);l.bind_cache(cache);batch=cache.sample(65536);a=l.update(batch);after=digest(l.state_dict());l.load_state_dict(initial);l.bind_cache(cache);b=l.update(batch);assert a==b and digest(l.state_dict())==after;l.load_state_dict(initial);r.rng.bit_generator.state=rr;assert digest(l.state_dict())==digest(initial) and digest(r.state_dict())==digest(ck['replay'])
++  initial=l.state_dict();rr=copy.deepcopy(r.rng.bit_generator.state);cache=CensusCache(r,args.device);l.bind_cache(cache);batch=cache.sample(65536);a=l.update(batch);after=digest(l.state_dict());l.load_state_dict(initial);l.bind_cache(cache);b=l.update(batch);assert a==b and digest(l.state_dict())==after;l.load_state_dict(initial);r.rng.bit_generator.state=rr;assert digest(l.state_dict())==digest(initial) and digest(r.state_dict())==digest(expected_replay(ck['replay']))
+   consumer=restore_consumer(initial,p,args.device);assert digest(consumer.state_dict())==digest(initial);assert sha(args.resume)==st['checkpoint']['sha256']
+   put(args.output.parent/'CHECK_ONLY_REVIEW.json',dict(passed=True,time=time.time(),checkpoint_sha256=st['checkpoint']['sha256'],registration_sha256=sha(args.registration),actual_native_batch=65536,disposable_restored_clone_updates=2,repeat_native_update_full_state_exact=True,original_state_restored=True,consumer_full_state_exact=True,estimator_marker=marker(),metrics=a,new_physics=0,actual_formal_updates=0));return
+  gate=read(R/'PRELAUNCH_REVIEW.json');assert gate['passed'] and gate['registration_hashes'][args.controller]==sha(args.registration);assert read(args.output.parent/'CHECK_ONLY_REVIEW.json')['passed']
+  if time.time()>read(D/'SCIENTIFIC_DECISION.json')['launch_deadline_unix']:raise ValueError('Finite launch window expired')
+- trainer=root/'source/tools/train_published_compliance_20261025.py';spec=importlib.util.spec_from_file_location('census96_trainer',trainer);module=importlib.util.module_from_spec(spec);exec(compile(modified,str(trainer),'exec'),module.__dict__)
++ trainer=root/'source/tools/train_published_compliance_20261025.py';spec=importlib.util.spec_from_file_location('census97_trainer',trainer);module=importlib.util.module_from_spec(spec);exec(compile(modified,str(trainer),'exec'),module.__dict__)
+  def stage_check(checkpoint,stage,cycle_budget,rates):
+   validate_parent(checkpoint,p);assert stage==p['completed_stage_continuation'] and cycle_budget==1;_,expected=module.registered_stage_actor_rates(stage);assert len(rates)==len(expected) and all(abs(a-b)<1e-12 for a,b in zip(rates,expected))
+  import published_replay_device_cache_20261025 as cm
+  cm.DeviceReplayCache=CensusCache
+  module.Replay=replay_cls;module.PublishedLearner=cls;module.validate_resume_protocol=validate_protocol;module.validate_completed_stage_checkpoint=stage_check;module._parameter_sampler_affinity=sampler_affinity;module._validate_parameter_sampler_pool=validate_pool;module._verify_initial_state=verify_initial
+  args.algorithm='cheq';args.seed=20261025;args.cycles=1;(args.output.parent/'trainer_registered.py').write_text(modified)
+- put(args.output.parent/'CENSUS_EXECUTION.json',dict(time=time.time(),pid=os.getpid(),registration_sha256=sha(args.registration),driver_sha256=sha(__file__),trainer_sha256=st['patched_trainer_sha256'],cycle=96,automatic_followup=False,maximum_new_actions=41250))
++ put(args.output.parent/'CENSUS_EXECUTION.json',dict(time=time.time(),pid=os.getpid(),registration_sha256=sha(args.registration),driver_sha256=sha(__file__),trainer_sha256=st['patched_trainer_sha256'],cycle=97,automatic_followup=False,maximum_new_actions=41250))
+  del ck;module.main(args)
+ if __name__=='__main__':
+  parser=argparse.ArgumentParser()

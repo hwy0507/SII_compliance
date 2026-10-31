@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1/health96.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_continuation_20261031_v1/health97.py
+@@ -44,7 +44,7 @@
+     if not np.isfinite(a).all():
+         raise ValueError('Nonfinite diagnostic values')
+     return dict(count=int(a.size), mean=float(a.mean()), minimum=float(a.min()),
+-        maximum=float(a.max()), p50=float(np.median(a)), p95=float(np.percentile(a, 95)))
++        maximum=float(a.max()), p50=float(np.median(a)), p96=float(np.percentile(a, 96)))
+ 
+ 
+ def sha(path):
