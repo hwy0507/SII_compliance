@@ -1,3 +1,17 @@
+# 特化场景 unseen108 正式矩阵最终状态（2026-10-31 18:07 CST）
+
+之前各条“资源阻塞／0/108”记录均为正式启动前的历史快照。当前正式矩阵已经完成，不需要也不得在同一登记目录重复启动：
+
+- 目录：`code/mujoco_6d_vmc_benchmark/outputs/contact_yield_locked_unseen108_20261031_v3/`。108/108 回合完整结束（2026-10-31 07:35:21–09:42:23 UTC）；`execution.json` 保留运行器状态 `complete_pending_independent_review`。独立复核文件状态为 `verified_complete_isolated_unseen_matrix`，重放覆盖108/108，actor/filter最大误差均为0。
+- 共同双成功参考 `T_ref=8.92 s`。汇总 ESN：Task35/36、Strict32/36、双成功SPT0.7913、平均峰值力矩42.37Nm、机器合规35/36；MLP：36/36、25/36、0.7548、41.70Nm、31/36；RNN：36/36、32/36、0.7614、42.51Nm、36/36。人舒适度NA（没有人体力/接触通道）。
+- MLP棍推Strict仅4/12、机器合规7/12；ESN `corner_unseen_03` seed2026102801为唯一同时Task/Strict/机器失败格，外穿透4.613mm。总计19个至少一项失败的格全部留在原始目录和统计分母。
+- 结果报告、逐scene/seed表、SVG图、哈希和失败表：`docs/evidence/contact_yield_final108_20261031/REPORT.md`。旧office/composite108历史结果未改写。此测试是登记的插值条件，不是广义OOD；终态保持基于13个25Hz采样状态/0.48秒，不声称逐物理子步连续保持。
+- 紧凑证据和registration/execution/review三份核心收据已在服务器独立目录逐项SHA256核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_unseen108_20261031_v3/`。约10.09GB（9.39GiB）的2379个raw文件未传输：自动审批未授权该全量大包；它们仍保留在本机原始输出目录。详见 `docs/evidence/contact_yield_final108_20261031/ARCHIVE_RECEIPT.json`。
+- 本地和服务器三份核心来源hash：registration `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`；execution `b45b51cad36c30324e1d9f1e906bc2a7dfbaa8a361435e27c0e8e0c6371e0e5c`；FINAL_REVIEW `bb24b9660364565a5d8ac4bfb4acb256d1a11a0a5cb0a699b5bf42bc67dc2afa`。
+- 不要运行旧v1/v2登记，不要重跑v3；当前无在途MuJoCo作业。原始结果完成，现进入文档/Git发布收尾。
+
+---
+
 ## 2026-10-31 — 恢复后资源阻塞再次复现
 
 - 预检 v2 收据 `docs/evidence/CONTACT_YIELD_FINAL108_RESOURCE_PREFLIGHT_20261031_v2.json`（SHA256 `f14cc179888c49da76cde97f81ecdfbfae0d3e460d5b3ee44edde654395f8f13`）仍在 `memory.max` 断言处拒绝，`physics_calls=0`。
