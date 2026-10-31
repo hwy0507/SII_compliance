@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation93_placement_audit_20261031_v1/review_saved.py", line 19, in <module>
+    obj=a['object_position'][i];vel=a['qvel'][i];qp=a['qpos'][i];values=[math.hypot(obj[0]-dest[0],obj[1]-dest[1]),math.sqrt(sum(float(x)**2 for x in vel[v:v+3])),float(qp[f[0]]+qp[f[1]]),abs(obj[2]-dest[2]),math.sqrt(sum(float(x)**2 for x in vel[v+3:v+6]))];gates=[values[0]<.025,values[1]<.015,values[2]>.075,values[3]<.015,values[4]<.15]
+                                                    ~^^^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/numpy/lib/_npyio_impl.py", line 254, in __getitem__
+    return format.read_array(bytes,
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/numpy/lib/format.py", line 851, in read_array
+    data = _read_bytes(fp, read_size, "array data")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/numpy/lib/format.py", line 986, in _read_bytes
+    r = fp.read(size - len(data))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/zipfile.py", line 991, in read
+    data = self._read1(n)
+           ^^^^^^^^^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/zipfile.py", line 1074, in _read1
+    data = self._decompressor.decompress(data, n)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
