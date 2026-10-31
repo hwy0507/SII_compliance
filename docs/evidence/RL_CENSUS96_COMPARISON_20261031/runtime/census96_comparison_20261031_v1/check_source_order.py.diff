@@ -1,0 +1,10 @@
+--- check_source_order.py
++++ check_source_order.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import ast,hashlib,json,time
+-D=Path(__file__).resolve().parent;B=D.parents[1];S=B/'runtime/census95_continuation_20261031_v1';R=B/'runs/parameter_census_cycle95_20261031_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];S=B/'runtime/census96_continuation_20261031_v1';R=B/'runs/parameter_census_cycle96_20261031_v1'
+ rd=lambda p:json.loads(p.read_text())
+ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ lock=rd(S/'SOURCES.json')
