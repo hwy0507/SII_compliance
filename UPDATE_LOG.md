@@ -1,3 +1,8 @@
+## 2026-10-31 — final108 登记完整性复核通过；零物理
+
+- 重新执行 `evaluate_contact_yield_unseen108_locked_v2_20261031.py` 的登记检查函数，9 个模型、12 个冻结条件、108 个派发行、源码/配置/checkpoint 哈希和配对均通过。收据：`docs/evidence/CONTACT_YIELD_FINAL108_REGISTRATION_RECHECK_20261031.json`，SHA256 `5e128e97eda7848e1ce947a81bc902028d8240884990c66efbe2fcb2672879d2`。
+- `execution_present=false`、`physics_calls=0`；这证明登记完整性，不证明 final108 物理性能。资源预检仍拒绝，正式测试仍 0/108。
+
 ## 2026-10-31 — 第94轮继续；93→94全90比较与终端增长审查准备
 
 - [交接](docs/RL_CENSUS94_COMPARISON_20261031.md)。全90训练条件reward分项/Task/Strict/abort/原抽样loss及变化rollout比较已登记，真实完整93全90摘要/模型/标签/reward算术和缺完整94拒绝通过；唯一等待器2051280沿原archive截止。条件估计loss单列，跨估计器轮次描述对比不替代94–96稳定窗口。

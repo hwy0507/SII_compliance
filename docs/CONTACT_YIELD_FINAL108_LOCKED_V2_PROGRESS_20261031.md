@@ -1,3 +1,8 @@
+## 2026-10-31 14:01 CST — 登记完整性复核
+
+- 重新执行锁定 final108 adapter 的登记检查：9 模型、12 条条件、108 行配对及来源/配置/checkpoint hash 全部通过；登记 SHA256 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6` 保持不变。
+- `execution.json` 不存在、`physics_calls=0`。该收据只证明 provenance/dispatch registration 完整，不提供物理 Task/Strict 或指标结果。
+
 ## 2026-10-31 服务器归档状态
 
 - 新资源预检 JSON 的服务器归档请求被自动审批拒绝；只读确认 incoming 和最终目标目录均不存在，未写入服务器。既有 rod recheck、binding audit 和 controls v2 归档保持已核验状态。
