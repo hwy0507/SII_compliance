@@ -6,7 +6,7 @@
 - 全局双成功参考 `T_ref=8.92 s`；SPT 仅在 Task 与 Strict 同时成功的回合上计算。ESN 35/36 Task、32/36 Strict、SPT 0.7913、平均峰值力矩 42.37 Nm、机器合规 35/36；MLP 36/36、25/36、0.7548、41.70 Nm、31/36；RNN 36/36、32/36、0.7614、42.51 Nm、36/36。人舒适度为 NA，因为没有人体力/接触通道。
 - MLP 的棍推 Strict 为 4/12、机器合规为 7/12；ESN 唯一 Task/Strict/机器合规同时失败格为 `corner_unseen_03` seed 2026102801，外穿透约 4.613 mm。全部 19 个失败格保留在原始证据和分母中；历史 office/composite108 结果不被覆盖。
 - 紧凑发布证据、按场景/seed 表和 SVG 图见 [`docs/evidence/contact_yield_final108_20261031/REPORT.md`](docs/evidence/contact_yield_final108_20261031/REPORT.md)。紧凑 evidence 与三份核心收据已归档并逐项回读 SHA256 到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_unseen108_20261031_v3/`；收据见 `ARCHIVE_RECEIPT.json`。约10.09 GB（9.39 GiB）的 episode 原始目录不纳入 Git，因自动审批未覆盖大体量 raw transfer 而暂留本地。完整本地收据哈希为 registration `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`、execution `b45b51cad36c30324e1d9f1e906bc2a7dfbaa8a361435e27c0e8e0c6371e0e5c`、review `bb24b9660364565a5d8ac4bfb4acb256d1a11a0a5cb0a699b5bf42bc67dc2afa`。
-- 本轮开始时远端 `main`/`baseline` 已查询为 `e1f84ca15d10e3d28b4acadf61b335976a18d631`/`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；此前 fetch 失败，随后fetch到 `origin/main=8b39c19760d2e69db66999c7ec05962a37e45335`，baseline未变；发布前远端main继续前进到 `f529b4ff`，本次结果提交已安全rebase到该提交之上。当前无在途仿真，主机swap为0。
+- 本轮开始时远端 `main`/`baseline` 已查询为 `e1f84ca15d10e3d28b4acadf61b335976a18d631`/`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；发布前 main 前进至 `f529b4ff`，本任务安全 rebase 后以 `cb7c517301e458312c589d61fc9a4ea36ac03c84` 推送并从 GitHub 复核，baseline 未变。紧凑服务器归档 SHA256 回读一致；10.09 GB raw transfer 被自动审批拒绝，保留本地。当前无在途仿真，主机 swap 为 0。
 
 
 ## 2026-10-31 — 600万回放GPU原生更新等价通过；完整96仍待
