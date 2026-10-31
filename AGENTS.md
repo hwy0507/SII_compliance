@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-31 — 第94轮继续；93→94全90比较与终端增长审查准备
+
+- [交接](docs/RL_CENSUS94_COMPARISON_20261031.md)。全90训练条件reward分项/Task/Strict/abort/原抽样loss及变化rollout比较已登记，真实完整93全90摘要/模型/标签/reward算术和缺完整94拒绝通过；唯一等待器2051280沿原archive截止。条件估计loss单列，跨估计器轮次描述对比不替代94–96稳定窗口。
+- 真实first5000每步terminal_population与done累计精确，15损坏输入拒绝；此前缀无新终端，真实增长仍待。完整94全回放dones/全部日志检查脚本已准备，需完成后运行；未提前声称增长或收敛。
+- 原101身份连续600.436s/61样本保持，steps增长{'impedance': 5185, 'admittance': 5174, 'vmc': 5263}，总steps{'impedance': 3870872, 'admittance': 3874369, 'vmc': 3875631}；三训练/archive/固定8353终端与全90比较等待继续，无重启、自动95/Direct34。全部历史失败/Direct原验收/指定ESN缺失不变，Goal active。
+- GPU124样本min[75, 70, 69, 70]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD38成员/SHA7c73f892，HDD仅254字节指针、非全备份。main414944fe/baselinef6e8f8c2已query/fetch/read，发布见收据。
+
 ## 2026-10-31 — 第94轮前5000已审；固定93全部终端比较等待
 
 - [交接](docs/RL_CENSUS94_PREFIX_20261031.md)。固定first5000原始字节/全部metrics/保存算术/实际九栏图通过；原抽样loss最大I16.365/A1.537/V1.152，I尖峰与actor上移仍保留。新q_loss是条件估计，不替代原抽样健康口径；前缀无新terminal，完整94/真实cache增长和收敛均待。

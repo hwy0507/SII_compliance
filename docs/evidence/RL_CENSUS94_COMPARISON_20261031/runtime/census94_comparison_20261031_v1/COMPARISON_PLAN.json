@@ -1,0 +1,127 @@
+{
+  "time": 1793425380.657772,
+  "source_sha256": "10911a9d846cf19a6fa730d904e584acb46eb1636160579cf43fec5a0c81a0b9",
+  "prior_inputs": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle93_review_20261031_v1/REVIEW.json": "0416435337f5849cc45b9b4fe8f54e8b692344051a62bd16a4bd660812d05747",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle93_review_20261031_v1/FINISHED.json": "8d43eed9e0a88cf3b2ae23fcff9cafa5b3d35ccc27af4becc8f39ce6d7e1edf1",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle93_review_20261031_v1/health/DIAGNOSIS.json": "c963a27cfa3d470908aafb7037977a1df593ed8bfac3f7ac8b37d670539abbdd",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle93_review_20261031_v1/loss/REVIEW.json": "71a35983a11ee84038c8b7e58d73314702252d93157d490543890a023ebd845a",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_violation_cycle93_review_20261031_v1/PLOT_INSPECTION.json": "495312aa5ba62b18df8013d7ca62cf90800ffd07c20f726e05e96c0ef03f7916",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/impedance/REGISTRATION.json": "8d030394f749409d1a84c7c3b337bccbb25435504da11987d4d274231a5c0a57",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/admittance/REGISTRATION.json": "182f03488bb5f8885cbbf9b497cf237ba85f90f278ef0d00e76083106982bb00",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle94_20261031_v1/vmc/REGISTRATION.json": "ee872d4e40fc2db76859bf727cf53458dd597e5a3f56ce1e8b724e8b519087bb",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_online_20261031_v1/STABILITY_WINDOW_INTENT.json": "f0345ab0809384ef42a055e066a9df0744ba157be325878872616110e6a55960"
+  },
+  "conditional_amendments": {
+    "impedance": {
+      "version": 1,
+      "first_cycle": 94,
+      "kind": "conditional_terminal_census",
+      "marker": {
+        "version": 1,
+        "strata": "complete_binary_five_critic_mask",
+        "terminal_weight": 128,
+        "denominator": "original_sampled_weighted_mask_sum",
+        "nonterminal": "original_sampled_td",
+        "population": "all_current_retained_terminals",
+        "sampling": "unchanged_uniform_rejection",
+        "statistic": "mean_squared_residual_not_squared_mean",
+        "actor_target_temperature": "unchanged",
+        "implementation_sha256": "a553aa5f7c21993e04d86f5287cd61c044fc9a6fc5df8fd1ffea214b76a0baf5"
+      },
+      "source": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_online_20261031_v1/census_native.py",
+        "sha256": "a553aa5f7c21993e04d86f5287cd61c044fc9a6fc5df8fd1ffea214b76a0baf5"
+      },
+      "native_compatibility_review": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census93_native_compatibility_20261031_v2/SAVED_REVIEW.json",
+        "sha256": "0ff9ce6d59efdd9a6e719c39f2bb8e912ccc9ce869b13e125d32b1ccd178a5cc"
+      },
+      "frozen_census_review": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation93_terminal_census_ablation_20261031_v1/SAVED_REVIEW.json",
+        "sha256": "c418895a48c0ade2cf36eca7faa0a369cb25a96699e82d8d666da8695fc90368"
+      },
+      "health_metric": "agent_train/original_sampled_q_loss",
+      "update_metric": "agent_train/conditional_terminal_q_loss",
+      "same_expected_terminal_loss_and_gradient": true,
+      "equal_finite_Adam_trajectory_claim": false
+    },
+    "admittance": {
+      "version": 1,
+      "first_cycle": 94,
+      "kind": "conditional_terminal_census",
+      "marker": {
+        "version": 1,
+        "strata": "complete_binary_five_critic_mask",
+        "terminal_weight": 128,
+        "denominator": "original_sampled_weighted_mask_sum",
+        "nonterminal": "original_sampled_td",
+        "population": "all_current_retained_terminals",
+        "sampling": "unchanged_uniform_rejection",
+        "statistic": "mean_squared_residual_not_squared_mean",
+        "actor_target_temperature": "unchanged",
+        "implementation_sha256": "a553aa5f7c21993e04d86f5287cd61c044fc9a6fc5df8fd1ffea214b76a0baf5"
+      },
+      "source": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_online_20261031_v1/census_native.py",
+        "sha256": "a553aa5f7c21993e04d86f5287cd61c044fc9a6fc5df8fd1ffea214b76a0baf5"
+      },
+      "native_compatibility_review": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census93_native_compatibility_20261031_v2/SAVED_REVIEW.json",
+        "sha256": "0ff9ce6d59efdd9a6e719c39f2bb8e912ccc9ce869b13e125d32b1ccd178a5cc"
+      },
+      "frozen_census_review": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation93_terminal_census_ablation_20261031_v1/SAVED_REVIEW.json",
+        "sha256": "c418895a48c0ade2cf36eca7faa0a369cb25a96699e82d8d666da8695fc90368"
+      },
+      "health_metric": "agent_train/original_sampled_q_loss",
+      "update_metric": "agent_train/conditional_terminal_q_loss",
+      "same_expected_terminal_loss_and_gradient": true,
+      "equal_finite_Adam_trajectory_claim": false
+    },
+    "vmc": {
+      "version": 1,
+      "first_cycle": 94,
+      "kind": "conditional_terminal_census",
+      "marker": {
+        "version": 1,
+        "strata": "complete_binary_five_critic_mask",
+        "terminal_weight": 128,
+        "denominator": "original_sampled_weighted_mask_sum",
+        "nonterminal": "original_sampled_td",
+        "population": "all_current_retained_terminals",
+        "sampling": "unchanged_uniform_rejection",
+        "statistic": "mean_squared_residual_not_squared_mean",
+        "actor_target_temperature": "unchanged",
+        "implementation_sha256": "a553aa5f7c21993e04d86f5287cd61c044fc9a6fc5df8fd1ffea214b76a0baf5"
+      },
+      "source": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_online_20261031_v1/census_native.py",
+        "sha256": "a553aa5f7c21993e04d86f5287cd61c044fc9a6fc5df8fd1ffea214b76a0baf5"
+      },
+      "native_compatibility_review": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census93_native_compatibility_20261031_v2/SAVED_REVIEW.json",
+        "sha256": "0ff9ce6d59efdd9a6e719c39f2bb8e912ccc9ce869b13e125d32b1ccd178a5cc"
+      },
+      "frozen_census_review": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/violation93_terminal_census_ablation_20261031_v1/SAVED_REVIEW.json",
+        "sha256": "c418895a48c0ade2cf36eca7faa0a369cb25a96699e82d8d666da8695fc90368"
+      },
+      "health_metric": "agent_train/original_sampled_q_loss",
+      "update_metric": "agent_train/conditional_terminal_q_loss",
+      "same_expected_terminal_loss_and_gradient": true,
+      "equal_finite_Adam_trajectory_claim": false
+    }
+  },
+  "parent_cycle": 93,
+  "new_cycle": 94,
+  "conditions_per_method": 30,
+  "methods": [
+    "impedance",
+    "admittance",
+    "vmc"
+  ],
+  "scope": "Full all90 training93-to94 reward/terms/task/strict/abort and original sampled loss comparison; estimator changes at94. All regressions retained, zero physics/update; not causal, not94\u201396 stability proof.",
+  "optimizer_updates": 0,
+  "new_physics": 0
+}
