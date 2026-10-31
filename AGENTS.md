@@ -7,6 +7,15 @@
 - 原94–96九组真实checkpoint/父链/原loss/实际图绑定，原5%/nearzero1/5000bootstrap/seed2026102861及独立标量/区间复核通过；描述性reward检查I通过、A/V失败，不是联合收敛。首次过早调用binder与相对root命令失败原件保留，后续成功，统计源码/窗口未变。
 - 原96三训练/archive/两消费者正常结束勿重启，下一步准确全96父、6m接入与有限97准备前核新终端/short0600退化，尚未派发97。Direct原数值/冻结0/0、旧28缺口/恢复2已证及指定ESN缺失保持，Goal active。GPU348样本min[72, 68, 67, 64]%、低于50[0, 0, 0, 0]；科学结束仍guard，SSD223成员/SHA0f51fb57，HDD仅指针。
 
+## 2026-10-31 — 特化场景 unseen108 正式矩阵完成并独立复核
+
+- 当前专题正式结果已完成 108/108：`code/mujoco_6d_vmc_benchmark/outputs/contact_yield_locked_unseen108_20261031_v3/`。执行收据状态为 `complete_pending_independent_review`，`FINAL_REVIEW.json` 状态为 `verified_complete_isolated_unseen_matrix`，独立 actor/filter replay 覆盖 108/108 且最大误差均为 0。
+- 全局双成功参考 `T_ref=8.92 s`；SPT 仅在 Task 与 Strict 同时成功的回合上计算。ESN 35/36 Task、32/36 Strict、SPT 0.7913、平均峰值力矩 42.37 Nm、机器合规 35/36；MLP 36/36、25/36、0.7548、41.70 Nm、31/36；RNN 36/36、32/36、0.7614、42.51 Nm、36/36。人舒适度为 NA，因为没有人体力/接触通道。
+- MLP 的棍推 Strict 为 4/12、机器合规为 7/12；ESN 唯一 Task/Strict/机器合规同时失败格为 `corner_unseen_03` seed 2026102801，外穿透约 4.613 mm。全部 19 个失败格保留在原始证据和分母中；历史 office/composite108 结果不被覆盖。
+- 紧凑发布证据、按场景/seed 表和 SVG 图见 [`docs/evidence/contact_yield_final108_20261031/REPORT.md`](docs/evidence/contact_yield_final108_20261031/REPORT.md)。紧凑 evidence 与三份核心收据已归档并逐项回读 SHA256 到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_unseen108_20261031_v3/`；收据见 `ARCHIVE_RECEIPT.json`。约10.09 GB（9.39 GiB）的 episode 原始目录不纳入 Git，因自动审批未覆盖大体量 raw transfer 而暂留本地。完整本地收据哈希为 registration `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`、execution `b45b51cad36c30324e1d9f1e906bc2a7dfbaa8a361435e27c0e8e0c6371e0e5c`、review `bb24b9660364565a5d8ac4bfb4acb256d1a11a0a5cb0a699b5bf42bc67dc2afa`。
+- 本轮开始时远端 `main`/`baseline` 已查询为 `e1f84ca15d10e3d28b4acadf61b335976a18d631`/`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；发布前 main 前进至 `f529b4ff`，本任务安全 rebase 后以 `5d41629e98106eb58f947a8a471f6d09eb4621f3` 推送并从 GitHub 复核，baseline 未变。紧凑服务器归档 SHA256 回读一致；10.09 GB raw transfer 被自动审批拒绝，保留本地。当前无在途仿真，主机 swap 为 0。
+
+
 ## 2026-10-31 — 600万回放GPU原生更新等价通过；完整96仍待
 
 - [交接](docs/RL_CENSUS_CAPACITY6M_GPU_20261031.md)。三份真实全95在GPU0比较原4m/新6m/重复6m，全部retained设备镜像、8533终端及32分层精确；65536批次与采样RNG相同，原loss/全部metrics和更新后完整learner/Adam/RNG digest逐值相同，随后全state恢复。
