@@ -1,3 +1,8 @@
+## 2026-10-31 — adapter 控制流回归复核
+
+- 零物理控制脚本重新通过：108行有序调度、重复启动拒绝、基础设施失败保留前三条收据、失败重启拒绝、107行复核拒绝；登记 SHA 未漂移。收据 `docs/evidence/CONTACT_YIELD_FINAL108_CONTROL_RECHECK_20261031.json`，`physics_calls=0`。
+- 该审计不提供物理指标；资源前置仍不合规，final108仍0/108。
+
 ## 2026-10-31 — goal 恢复后当前状态审计
 
 - 新收据 `docs/evidence/CONTACT_YIELD_GOAL_CURRENT_STATE_AUDIT_20261031.json`：登记检查通过，9/9模型来源绑定一致，30/30 teacher qualified。

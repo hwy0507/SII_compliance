@@ -1,3 +1,8 @@
+## 2026-10-31 — final108 adapter 控制流回归复核；物理调用仍为0
+
+- 重新运行零物理控制审计，当前登记 SHA `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6` 与控制源码 SHA 保持一致。108 行有序派发、重复派发拒绝、基础设施失败收据保留、失败目录重启拒绝、107 行复核拒绝全部通过。
+- 收据 `docs/evidence/CONTACT_YIELD_FINAL108_CONTROL_RECHECK_20261031.json` SHA256 `234fd9d05d75e788f729e210513a93d63539f68e11983a5c30d903dd70619d58`；`physics_calls=0`。这只是控制流回归，不是 final108 物理结果。当前资源仍不合规，final108 仍0/108。
+
 ## 2026-10-31 — goal 恢复后当前状态审计；final108 仍未执行
 
 - 新增 `docs/evidence/CONTACT_YIELD_GOAL_CURRENT_STATE_AUDIT_20261031.json`（SHA256 `0918234bf7eae9f1114a3fc646b92aaed44ccf2f49b8534c3d672ff0b98dfc4c`）。登记检查通过，9/9 模型 checkpoint 与 metadata 绑定一致，30/30 teacher collection 轨迹 qualified。
