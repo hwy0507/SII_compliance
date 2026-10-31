@@ -1,0 +1,15 @@
+"""Read-only inclusive-prefix audit of real95 online terminal population, no training."""
+from pathlib import Path
+import os,sys,json,time,hashlib,itertools
+D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle95_20261031_v1';C=B/'runtime/census95_comparison_20261031_v1';sys.path.insert(0,str(C))
+from check_terminal_population import audit_rows,first_lines,sha
+read=lambda p:json.loads(Path(p).read_text());plan=read(C/'CACHE_POPULATION_PLAN.json');assert sha(C/'check_terminal_population.py')==plan['source_sha256'];results={}
+for m,e in plan['methods'].items():
+ reg=read(R/m/'REGISTRATION.json');n=reg['post_interruption_continuation']['parent_steps'];op=R/m/'train/optimizer.jsonl';tp=R/m/'train/transitions.jsonl'
+ data=op.read_bytes();lines=data.splitlines(keepends=True)
+ if not lines[-1].endswith(b'\n'):lines.pop()
+ raw=b''.join(lines);count=len(lines);assert count>5000;trans=first_lines(tp,count);ts=[json.loads(x) for x in trans.splitlines()];us=[json.loads(x) for x in lines];r=audit_rows(ts,us,n,e['terminal_rows']);assert first_lines(op,count)==raw and first_lines(tp,count)==trans
+ r.update(first_step=us[0]['step'],last_step=us[-1]['step'],optimizer_prefix=dict(path=str(op),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()),transition_prefix=dict(path=str(tp),bytes=len(trans),sha256=hashlib.sha256(trans).hexdigest()),actual_new_terminal_growth_observed=r['new_terminal_rows']>0);results[m]=r
+result=dict(passed=True,time=time.time(),methods=results,source_sha256=sha(__file__),auditor_source_sha256=sha(C/'check_terminal_population.py'),new_physics=0,optimizer_updates=0,full95=False,scope='Snapshot of every complete optimizer log row available at read time; matched same-step transition prefix and all inclusive done counts. Actual online total population growth only; not online per-stratum tensor inspection, full-cycle proof, or reward convergence.')
+with (D/'LIVE_TERMINAL_GROWTH_REVIEW.json').open('x') as f:json.dump(result,f,indent=2);f.write('\n')
+print({m:dict(rows=x['rows'],new_terminals=x['new_terminal_rows'],population=x['final_population']) for m,x in results.items()})
