@@ -1,0 +1,58 @@
+--- actual93
++++ finite94
+@@ -235,11 +235,11 @@
+             replay.add(**{k: column[i] for k, column in columns.items()})
+         steps = replay.size
+     if args.resume:
+-        checkpoint = torch.load(args.resume, map_location=args.device, weights_only=False)
++        checkpoint = torch.load(args.resume, map_location='cpu', weights_only=False)
+         validate_resume_protocol(checkpoint['protocol_sha256'], protocol, pdigest)
+         if (checkpoint['controller'], checkpoint['seed']) != (args.controller, args.seed):
+             raise ValueError('Resume controller/seed mismatch')
+-        learner.load_state_dict(checkpoint['learner'])
++        learner.migrate_parent(checkpoint['learner'])
+         replay.load_state_dict(checkpoint['replay'])
+         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
+         _verify_initial_state(learner, replay, checkpoint, out.parent)
+@@ -253,6 +253,7 @@
+             raise ValueError('Device replay requires its registered performance amendment')
+         from published_replay_device_cache_20261025 import DeviceReplayCache
+         replay = DeviceReplayCache(replay, learner.device)
++        learner.bind_cache(replay)
+     out.mkdir(parents=True, exist_ok=False)
+     write(out/'EXECUTION.json', dict(status='running', pid=os.getpid(), protocol_sha256=pdigest,
+         controller=args.controller, algorithm=args.algorithm, seed=args.seed, cpus=cpus,
+@@ -266,6 +267,7 @@
+         interruption_recovery=protocol['interrupted_episode_recovery'],
+         history_critic_amendment=protocol['history_critic_amendment'],
+         violation_critic_amendment=protocol['violation_critic_amendment'],
++        conditional_terminal_amendment=protocol['conditional_terminal_amendment'],
+         registered_trainer_sha256=protocol['post_interruption_continuation']['patched_trainer_sha256'],
+         replay_device_cache=bool(cache_enabled),
+         replay_device_cache_bytes=(sum(v.numel()*v.element_size() for v in replay.arrays.values()) if cache_enabled else 0),
+@@ -298,6 +300,7 @@
+             recovery_continuation=protocol['post_interruption_continuation'],
+             history_critic_amendment=protocol['history_critic_amendment'],
+             violation_critic_amendment=protocol['violation_critic_amendment'],
++            conditional_terminal_amendment=protocol['conditional_terminal_amendment'],
+             environment_state_saved=False,
+             resume_semantics='retain completed transitions and learner state; start new episodes after partial boundary'), temporary)
+         temporary.replace(out/'checkpoint_latest.pt')
+@@ -365,6 +368,8 @@
+                         terms.update(completion_efficiency=bonus, final_reward=value)
+                         nxt = (learner.terminal_observation(previous['observation'], stream=slot) if done
+                                else learner.observation(event['observation'], stream=slot))
++                        if steps >= protocol['post_interruption_continuation']['parent_steps'] + 41250:
++                            raise ValueError('Finite94 new-transition budget exceeded')
+                         replay.add(observations=previous['observation'], actions=previous['raw_action'],
+                                    next_observations=nxt, rewards=[value], dones=[float(done)])
+                         steps += 1
+@@ -412,7 +417,7 @@
+                        reward_std=float(np.std(returns)), strict_success_rate=float(np.mean(successes)))
+             cycles.append(row)
+             checkpoint_now('complete_condition_cycle')
+-            write(out/'CYCLES.json', dict(cycles=cycles, plateau=plateau_status([c for c in cycles if c['cycle'] >= 90]),
++            write(out/'CYCLES.json', dict(cycles=cycles, plateau=plateau_status([c for c in cycles if c['cycle'] >= 94]),
+                  status='training', sufficient_convergence_claim=False))
+             cycle += 1
+             if args.cycles and cycle-start_cycle >= args.cycles:
