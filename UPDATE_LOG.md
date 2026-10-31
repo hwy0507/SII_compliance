@@ -5,12 +5,22 @@
 - 原101身份600.436s/61样本保持，steps增长{'impedance': 5405, 'admittance': 5405, 'vmc': 5409}，保存总steps{'impedance': 3878736, 'admittance': 3882242, 'vmc': 3883535}；原三训练/archive/两个只读等待继续，无重启、自动95/Direct34。全部历史失败/Direct原验收/指定ESN缺失保留，Goal active。
 - GPU126样本min[74, 70, 70, 68]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD40成员/SHA7e2ae349，HDD仅254字节指针，非全备份。main03c71133/baselinef6e8f8c2实际query/fetch/read，发布见收据。
 
+## 2026-10-31 — final108 登记完整性复核通过；零物理
+
+- 重新执行 `evaluate_contact_yield_unseen108_locked_v2_20261031.py` 的登记检查函数，9 个模型、12 个冻结条件、108 个派发行、源码/配置/checkpoint 哈希和配对均通过。收据：`docs/evidence/CONTACT_YIELD_FINAL108_REGISTRATION_RECHECK_20261031.json`，SHA256 `5e128e97eda7848e1ce947a81bc902028d8240884990c66efbe2fcb2672879d2`。
+- `execution_present=false`、`physics_calls=0`；这证明登记完整性，不证明 final108 物理性能。资源预检仍拒绝，正式测试仍 0/108。
+
 ## 2026-10-31 — 第94轮继续；93→94全90比较与终端增长审查准备
 
 - [交接](docs/RL_CENSUS94_COMPARISON_20261031.md)。全90训练条件reward分项/Task/Strict/abort/原抽样loss及变化rollout比较已登记，真实完整93全90摘要/模型/标签/reward算术和缺完整94拒绝通过；唯一等待器2051280沿原archive截止。条件估计loss单列，跨估计器轮次描述对比不替代94–96稳定窗口。
 - 真实first5000每步terminal_population与done累计精确，15损坏输入拒绝；此前缀无新终端，真实增长仍待。完整94全回放dones/全部日志检查脚本已准备，需完成后运行；未提前声称增长或收敛。
 - 原101身份连续600.436s/61样本保持，steps增长{'impedance': 5185, 'admittance': 5174, 'vmc': 5263}，总steps{'impedance': 3870872, 'admittance': 3874369, 'vmc': 3875631}；三训练/archive/固定8353终端与全90比较等待继续，无重启、自动95/Direct34。全部历史失败/Direct原验收/指定ESN缺失不变，Goal active。
 - GPU124样本min[75, 70, 69, 70]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD38成员/SHA7c73f892，HDD仅254字节指针、非全备份。main414944fe/baselinef6e8f8c2已query/fetch/read，发布见收据。
+
+## 2026-10-31 — 预检收据服务器归档被自动审批拒绝
+
+- 本轮尝试将新生成的资源预检收据归档到独立服务器目录；自动审批拒绝了该数据导出，理由是此前授权未明确覆盖这份具体预检 payload/目标目录。随后只读确认 `incoming/contact_yield_final108_resource_preflight_20261031_v1` 与最终 `runs/main/contact_yield_final108_resource_preflight_20261031_v1` 均不存在，未发生服务器写入。
+- 本地证据和 GitHub 提交不受影响；既有已核验归档保持不变。新收据仍只在本地 GitHub 版本中，final108 仍 0/108，未启动物理。
 
 ## 2026-10-31 — final108 登记资源函数零物理预检保留
 
