@@ -1,3 +1,8 @@
+## 2026-10-31 — final108 v2 控制证据服务器归档完成
+
+- 已将本轮控制脚本、`CONTROL_AUDIT.json`、专题进度和UPDATE_LOG归档到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_final108_v2_controls_20261031_v1/`，目录创建前确认不存在；服务器未运行计算，5个文件（含manifest）均已回读。脚本SHA `4de8f7c048c7718d866a687ea2cc1705747c42f4be1581d4dbe7b851bf804f36`，收据SHA `234fd9d05d75e788f729e210513a93d63539f68e11983a5c30d903dd70619d58`，manifest SHA `15966ecf4643d05847fb8b2c0b9f07a95a2b7d08502f0c97cde9caa1467cca72`。
+- 归档内容是零物理控制证据，不是final108科学结果；登记目录仍没有`execution.json`，final108完成度仍0/108。
+
 ## 2026-10-31 — final108 控制审计已完成；服务器归档获准待提交发布
 
 - 零物理控制检查已绑定真实 v3 登记SHA `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`，验证v2 adapter按序遍历108格、拒绝重复派发、第四格基础设施失败后保留前三格收据且禁止重启、拒绝107格review；收据状态 `passed_zero_physics_v2_adapter_controls`、physics calls=0。脚本与收据均纳入本轮改动。
