@@ -1,0 +1,44 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_comparison_20261031_v1/check_terminal_population.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census95_comparison_20261031_v1/check_terminal_population.py
+@@ -1,12 +1,12 @@
+ """Verify actual online total terminal-population diagnostic against transition done events.
+ 
+-A prefix without new terminals cannot prove growth. Full mode requires complete94
+-and checks all replay dones against the retained full93 population and94 journal.
++A prefix without new terminals cannot prove growth. Full mode requires complete95
++and checks all replay dones against the retained full94 population and95 journal.
+ Per-stratum online tensor contents are not logged, so no such observation is claimed.
+ """
+ from pathlib import Path
+ import sys,os,json,time,hashlib,math,gc
+-os.sched_setaffinity(0,{12});D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle94_20261031_v1';V=B/'runs/parameter_census_cycle94_review_20261031_v1'
++os.sched_setaffinity(0,{12});D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle95_20261031_v1';V=B/'runs/parameter_census_cycle95_review_20261031_v1'
+ read=lambda p:json.loads(Path(p).read_text())
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+@@ -16,7 +16,7 @@
+  if len(transitions)!=len(updates):raise ValueError('Journal/update length mismatch')
+  count=parent_count;changes=[]
+  for i,(t,u) in enumerate(zip(transitions,updates),parent_steps+1):
+-  if t['step']!=i or u['step']!=i or t['cycle']!=94 or u['update_index']!=0:raise ValueError('Noncontiguous94 journal/update binding')
++  if t['step']!=i or u['step']!=i or t['cycle']!=95 or u['update_index']!=0:raise ValueError('Noncontiguous95 journal/update binding')
+   if type(t['done']) is not bool:raise ValueError('Nonboolean done')
+   count+=int(t['done'])
+   if type(u['agent_train/terminal_population']) is not int or u['agent_train/terminal_population']!=count:raise ValueError('Online population differs from inclusive journal done count')
+@@ -42,14 +42,14 @@
+    assert s['rows']==review['methods'][m]['new_transitions']
+    sys.path.insert(0,plan['restore_runtime']);from driver import validate_checkpoint
+    import torch
+-   torch.set_num_threads(1);cp=B/'runs/parameter_census_cycle94_archive_20261031_v1'/m/'cycle_00094.pt';h=review['methods'][m]['checkpoint_sha256'];assert sha(cp)==h;ck=torch.load(cp,map_location='cpu',weights_only=False);validate_checkpoint(ck,reg,complete=True);arrays=ck['replay']['arrays'];done=arrays['dones'][:,0]
++   torch.set_num_threads(1);cp=B/'runs/parameter_census_cycle95_archive_20261031_v1'/m/'cycle_00095.pt';h=review['methods'][m]['checkpoint_sha256'];assert sha(cp)==h;ck=torch.load(cp,map_location='cpu',weights_only=False);validate_checkpoint(ck,reg,complete=True);arrays=ck['replay']['arrays'];done=arrays['dones'][:,0]
+    np.testing.assert_array_equal(np.flatnonzero(done[:n]),indices);np.testing.assert_array_equal(arrays['masks'][indices],masks);np.testing.assert_array_equal(done[n:],np.array([int(t['done']) for t in ts]));assert int(done.sum())==s['final_population']
+    assert s['new_terminal_rows']==len(reg['conditions'])==len(set(x['condition'] for x in s['changes']))==30
+    terminal_mask=arrays['masks'][np.flatnonzero(done)];assert np.all((terminal_mask==0)|(terminal_mask==1));codes=(terminal_mask*np.array([1,2,4,8,16])).sum(1).astype(int);s['checkpoint_32strata_population']=np.bincount(codes,minlength=32).tolist();s['checkpoint_sha256']=h;assert sha(cp)==h;del ck,arrays;gc.collect()
+   else:
+    assert first_lines(tp,5000)==tbytes and first_lines(up,5000)==ubytes
+   s.update(transitions_sha256=hashlib.sha256(tbytes).hexdigest(),optimizer_sha256=hashlib.sha256(ubytes).hexdigest(),online_total_count_checked=True,online_new_terminal_growth_observed=s['new_terminal_rows']>0);results[m]=s
+- result=dict(passed=True,time=time.time(),methods=results,full94=full,physics_steps=0,optimizer_updates=0,scope='Every optimizer total population compared to inclusive94 done cumsum plus all retained93 terminals; full mode additionally binds all94 replay dones. Online per-stratum tensor contents not logged; no observation claim for them.')
++ result=dict(passed=True,time=time.time(),methods=results,full95=full,physics_steps=0,optimizer_updates=0,scope='Every optimizer total population compared to inclusive95 done cumsum plus all retained94 terminals; full mode additionally binds all95 replay dones. Online per-stratum tensor contents not logged; no observation claim for them.')
+  with (D/('CACHE_POPULATION_FULL_REVIEW.json' if full else 'CACHE_POPULATION_PREFIX_REVIEW.json')).open('x') as f:json.dump(result,f,indent=2);f.write('\n')
+  print({m:(r['rows'],r['new_terminal_rows'],r['final_population']) for m,r in results.items()})
+ if __name__=='__main__':main()

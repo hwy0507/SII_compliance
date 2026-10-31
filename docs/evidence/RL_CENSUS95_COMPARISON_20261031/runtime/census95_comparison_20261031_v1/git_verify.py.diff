@@ -1,0 +1,10 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_comparison_20261031_v1/git_verify.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census95_comparison_20261031_v1/git_verify.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import subprocess,json,hashlib,tarfile,time,argparse
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'repository/SII_compliance';TAG='RL_CENSUS94_COMPARISON_20261031';E=R/'docs/evidence'/TAG;A=B/'repository'/TAG
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'repository/SII_compliance';TAG='RL_CENSUS95_COMPARISON_20261031';E=R/'docs/evidence'/TAG;A=B/'repository'/TAG
+ read=lambda p:json.loads(p.read_text())
+ def git(*args):return subprocess.check_output(['git',*args],cwd=R)
+ def digest(b):return hashlib.sha256(b).hexdigest()

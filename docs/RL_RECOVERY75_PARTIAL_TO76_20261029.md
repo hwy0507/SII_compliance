@@ -1,3 +1,10 @@
+## 2026-10-31 — 第95轮继续；94→95全90比较与终端增长检查准备
+
+- [交接](RL_CENSUS95_COMPARISON_20261031.md)。全90训练条件reward分项/Task/Strict/abort/原抽样loss及所有标签变化比较已登记，真实完整94全90模型/摘要/标签/算术与缺完整95拒绝通过；唯一等待器1569117沿原archive截止。两轮census amendment完全相同，原抽样健康loss两轮同口径；描述比较不替代固定94–96稳定窗口。
+- 实际first5000每步terminal_population等于旧8443分路总数加done累计，15损坏输入拒绝；此前缀无新终端，真实增长仍待。完整95全日志/回放done与32分层存档计数检查准备，尚未运行；不声称在线分层tensor已观测。
+- 原101身份连续600.513s/61样本保持，steps增长{'impedance': 5422, 'admittance': 5408, 'vmc': 4999}，保存总steps{'impedance': 3913890, 'admittance': 3917440, 'vmc': 3917574}；原三训练/archive/固定8443终端与全90比较等待继续。完整95、原loss健康与收敛待，无自动96/Direct34。全部历史失败、Direct原验收/冻结0/0及指定ESN缺失保持，Goal active。
+- GPU127样本min[72, 69, 68, 70]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD46成员/SHAb3066629，HDD仅254字节指针、非全备份。maine98541b3/baselinef6e8f8c2实际query/fetch/read，发布见收据。
+
 ## 2026-10-31 — 第95轮前5000已审；全8443固定94终端参考与比较等待
 
 - [交接](RL_CENSUS95_PREFIX_20261031.md)。固定first5000原始字节/全部metrics/保存算术/实际九栏图通过；原loss最大I3.434/A1.521/V1.133，I反复尖峰和actor上移保持，条件估计平滑不替代原loss健康，前缀没有新terminal，完整95与收敛待。

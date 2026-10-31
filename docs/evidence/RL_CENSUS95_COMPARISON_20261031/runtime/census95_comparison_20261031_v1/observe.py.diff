@@ -1,0 +1,10 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census94_comparison_20261031_v1/observe.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census95_comparison_20261031_v1/observe.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import hashlib,json,time,traceback
+-D=Path(__file__).resolve().parent;B=D.parents[1];T=B/'runs/parameter_census_cycle94_20261031_v1';F=B/'runs/census94_fixed93_terminal_20261031_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];T=B/'runs/parameter_census_cycle95_20261031_v1';F=B/'runs/census95_fixed94_terminal_20261031_v1'
+ read=lambda p:json.loads(Path(p).read_text())
+ def ident(pid):
+  s=Path('/proc',str(pid),'stat').read_text().rsplit(')',1)[1].split();assert s[0]!='Z';return dict(pid=pid,start=s[19])
