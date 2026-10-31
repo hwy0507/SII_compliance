@@ -1,0 +1,9 @@
+# Census95 continues; prefix and fixed94 reference complete
+
+- Original95 training/archive running; no restart or auto96/Direct34. Check actual PID/start and latest partial95 before action. Preserve latest95 learner/Adam/RNG/replay/journals if interrupted; physicsstate absent.
+- Fixed first5000 original sampled/conditional/actor arrays and actual plot reviewed. I recurring peaks and actor drift remain; no new terminal in this prefix. Full-cycle results, actual new cache growth and reward stability still pending.
+- All8443 full94 terminal reference at /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census95_fixed94_terminal_20261031_v1/reference94 completed with strictCPU fullstate invariant, old8353 full94 predictions exact and90new94 terminals bound. No95 outputs yet.
+- Unique wait PID1270332/start197302459 at /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census95_fixed94_terminal_20261031_v1/LAUNCH.json; follows original archive deadline, then terminal95.py zero-update comparison on all8443 with allfive/masks/old<=93,new94/knownfailures and regressions. Do not duplicate. Final REVIEW/FINISHED require actual plot inspection and scientific interpretation.
+- Full95 archive original review and loss/health plots require inspection; full terminal_population growth/all90 condition comparison still needed.94–96 fixed statistical binder unchanged and incomplete; no future result inference.
+- Independent GPU guard must remain after all science; no STOP. GPU occupancy includes synthetic load. No new training dispatch in this turn.
+- Direct33 numerical/frozen0/0 and missing designatedESN unchanged. Goal active; six-doc/manifest/tar publication workflow; HDD pointer exactly254bytes in place,large assets sharedSSD only.

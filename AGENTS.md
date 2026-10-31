@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-31 — 第95轮前5000已审；全8443固定94终端参考与比较等待
+
+- [交接](docs/RL_CENSUS95_PREFIX_20261031.md)。固定first5000原始字节/全部metrics/保存算术/实际九栏图通过；原loss最大I3.434/A1.521/V1.133，I反复尖峰和actor上移保持，条件估计平滑不替代原loss健康，前缀没有新terminal，完整95与收敛待。
+- 全8443终端完整94 CPU参考完成，全部旧8353预测与保存full94逐值一致、新90终端与原transition/episode绑定；全learner/Adam/replay/RNG不变、保存标量算术通过。全5/original masks/old≤93/new94及原79/90/92中止和93尖峰均纳入，不是95结果或独立泛化。
+- 原三实际partial95拒绝完整检查，唯一等待器1270332沿原archive截止等待完整95后比较；无自动96/Direct34。原99身份180.137s/19样本保持，steps增长{'impedance': 1581, 'admittance': 1610, 'vmc': 1426}，三训练/archive继续。全部历史失败、Direct原验收/冻结0/0及指定ESN缺失保持，Goal active。
+- GPU68样本min[70, 70, 71, 71]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD44成员/SHA6ae2cf45，HDD仅254字节指针，非全备份。main9b5ae09c/baselinef6e8f8c2实际query/fetch/read，发布见收据。
+
 ## 2026-10-31 — 完整94同协议接续：有限95实际训练
 
 - [交接](docs/RL_CENSUS95_ONLINE_20261031.md)。从准确完整94 learner/Adam/RNG/全部旧回放直接恢复，每方法仅一轮≤41250/30×55s，census源码及原科学设置不变，无辅助权重、自动96或Direct34；94原loss尖峰/actor漂移、A short0200失败和全部历史退化保留，尚未收敛。
