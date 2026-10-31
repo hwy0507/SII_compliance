@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -6,13 +6,15 @@
+ def sha(p):
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ p=read(W/'PLAN.json');assert sha(W/'watch.py')==p['source_sha256']
+-watch=read(W/'WATCH_REVIEW.json');assert watch['passed'] and watch['ready_for_full_scientific_review']
++interruption=read(D/'TOOL_SESSION_INTERRUPTION.json');assert interruption['watch_exit_code']==143
++assert not (W/'WATCH_REVIEW.json').exists()
+ assert not list(W.glob('WATCH_FAILURE*'))
+ rows=[json.loads(line) for line in (W/'OBSERVATIONS.jsonl').read_text().splitlines()];assert rows
+ assert all(all(s['live'] or s['finished'] for s in row['status'].values()) for row in rows)
+-assert all(s['finished'] for s in rows[-1]['status'].values())
++assert not all(s['finished'] for s in rows[-1]['status'].values())
++assert sha(W/'OBSERVATIONS.jsonl')==interruption['watch_last_observation_sha256']
+ assert all(min(row['gpu'])>=50 for row in rows)
+-assert watch['minimum_gpu']==[min(row['gpu'][i] for row in rows) for i in range(4)]
++minimum_gpu=[min(row['gpu'][i] for row in rows) for i in range(4)]
+ final={}
+ for job in p['jobs']:
+  f=Path(job['finished']);assert read(f)[job['finished_key']]==job['finished_value']
+@@ -21,6 +23,6 @@
+  s=Path('/proc',str(j['pid']),'stat').read_text().rsplit(')',1)[1].split()
+  assert s[0]!='Z' and s[19]==j.get('start',j.get('proc_start_ticks'))
+ assert not Path(p['guard']['root'],'STOP').exists()
+-result=dict(passed=True,time=time.time(),all_complete=True,samples=len(rows),elapsed_seconds=rows[-1]['time']-rows[0]['time'],first_steps={m:q['steps'] for m,q in rows[0]['progress'].items()},last_steps={m:q['steps'] for m,q in rows[-1]['progress'].items()},minimum_gpu=watch['minimum_gpu'],final_gates=final,watch_review=dict(path=str(W/'WATCH_REVIEW.json'),sha256=sha(W/'WATCH_REVIEW.json')),original_raw_observations_sha256=sha(W/'OBSERVATIONS.jsonl'),actual_plots_pending=True,convergence_claim=False,training_restarted=False,physics_restarted=False,guard_continues=True,scope='Original finite98 and all three registered consumers actually complete. Raw observed original identities, terminal markers and GPU samples rechecked. Separate full scientific/plot review still required.')
++result=dict(passed=True,time=time.time(),all_complete=True,samples=len(rows),elapsed_seconds=rows[-1]['time']-rows[0]['time'],first_steps={m:q['steps'] for m,q in rows[0]['progress'].items()},last_steps={m:q['steps'] for m,q in rows[-1]['progress'].items()},minimum_gpu=minimum_gpu,final_gates=final,watch_interruption=dict(path=str(D/'TOOL_SESSION_INTERRUPTION.json'),sha256=sha(D/'TOOL_SESSION_INTERRUPTION.json')),original_watch_completed=False,original_raw_observations_sha256=sha(W/'OBSERVATIONS.jsonl'),actual_plots_pending=True,convergence_claim=False,training_restarted=False,physics_restarted=False,guard_continues=True,scope='Original watcher terminated143 without terminal receipt; partial observations preserved. Original finite98 and all three registered consumers now individually verified complete. No claim that the interrupted watcher observed every finish. Raw observed identities and GPU samples rechecked. Separate full scientific/plot review still required.')
+ with (D/'COMPLETION_REVIEW.json').open('x') as f:json.dump(result,f,indent=2);f.write('\n')
+ print('Complete98 terminal receipts reconciled')

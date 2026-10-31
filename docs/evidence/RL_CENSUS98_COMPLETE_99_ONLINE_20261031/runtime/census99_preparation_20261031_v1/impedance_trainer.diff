@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle98_20261031_v1/impedance/trainer_registered.py
++++ static99_candidate_trainer
+@@ -371,7 +371,7 @@
+                         nxt = (learner.terminal_observation(previous['observation'], stream=slot) if done
+                                else learner.observation(event['observation'], stream=slot))
+                         if steps >= protocol['post_interruption_continuation']['parent_steps'] + 41250:
+-                            raise ValueError('Finite98 new-transition budget exceeded')
++                            raise ValueError('Finite99 new-transition budget exceeded')
+                         replay.add(observations=previous['observation'], actions=previous['raw_action'],
+                                    next_observations=nxt, rewards=[value], dones=[float(done)])
+                         steps += 1

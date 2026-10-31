@@ -1,0 +1,45 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census98_continuation_20261031_v1/prepare.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census99_preparation_20261031_v1/prepare.py
+@@ -1,29 +1,29 @@
+ from pathlib import Path
+ import sys,time,os,ast,difflib,json,hashlib
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle98_20261031_v1';OLD=B/'runtime/census97_continuation_20261031_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle99_20261031_v1';OLD=B/'runtime/census98_continuation_20261031_v1'
+ sys.path[:0]=[str(D),str(B/'runtime/source_train17_clock/source/tools')]
+ from driver import read,sha,ref,put,expected_protocol,transform,parent_driver
+ from validate_published_finite_check_20261025 import digest
+ import torch
+ os.sched_setaffinity(0,{54});torch.set_num_threads(1)
+-V=B/'runs/parameter_census_cycle97_review_20261031_v1';C=B/'runtime/census97_completion_20261031_v1';N=B/'runs/census97_new_terminal_diagnosis_20261031_v1';W=B/'runs/parameter_census97_99_reward_stability_20261031_v1'
+-prior=read(C/'NEXT_FINITE_DECISION.json');assert prior['passed'] and prior['new_cycle']==98
++V=B/'runs/parameter_census_cycle98_review_20261031_v1';C=B/'runtime/census98_completion_20261031_v1';N=B/'runs/census98_new_terminal_diagnosis_20261031_v1';W=B/'runs/parameter_census97_99_reward_stability_20261031_v1'
++prior=read(C/'NEXT_FINITE_DECISION.json');assert prior['passed'] and prior['new_cycle']==99
+ for r in prior['evidence']:assert sha(r['path'])==r['sha256']
+-evidence=[Path(r['path']) for r in prior['evidence']]+[C/'NEXT_FINITE_DECISION.json',C/'COMPLETION_REVIEW.json',V/'REVIEW.json',V/'FINISHED.json',V/'loss/REVIEW.json',V/'health/DIAGNOSIS.json',V/'PLOT_INSPECTION.json',N/'reference97/REVIEW.json',N/'SAVED_ARITHMETIC_REVIEW.json',N/'FINISHED.json',N/'PLOT_INSPECTION.json',OLD/'driver.py',OLD/'SOURCES.json',W/'PLAN.json',W/'SOURCE_LOCK.json']
++evidence=[Path(r['path']) for r in prior['evidence']]+[C/'NEXT_FINITE_DECISION.json',C/'COMPLETION_REVIEW.json',V/'REVIEW.json',V/'FINISHED.json',V/'loss/REVIEW.json',V/'health/DIAGNOSIS.json',V/'PLOT_INSPECTION.json',N/'reference98/REVIEW.json',N/'SAVED_ARITHMETIC_REVIEW.json',N/'FINISHED.json',N/'PLOT_INSPECTION.json',OLD/'driver.py',OLD/'SOURCES.json',W/'PLAN.json',W/'SOURCE_LOCK.json']
+ assert read(N/'DIAGNOSIS.json')['passed'];full=read(V/'REVIEW.json');assert full['passed'];methods={}
+ for n,h in read(OLD/'SOURCES.json')['files'].items():assert sha(OLD/n)==h
+ for m in ['impedance','admittance','vmc']:
+- cp=B/f'runs/parameter_census_cycle97_archive_20261031_v1/{m}/cycle_00097.pt';reg=B/f'runs/parameter_census_cycle97_20261031_v1/{m}/REGISTRATION.json';p=read(reg);ck=torch.load(cp,map_location='cpu',weights_only=False,mmap=True);parent_driver().validate_checkpoint(ck,p,complete=True)
++ cp=B/f'runs/parameter_census_cycle98_archive_20261031_v1/{m}/cycle_00098.pt';reg=B/f'runs/parameter_census_cycle98_20261031_v1/{m}/REGISTRATION.json';p=read(reg);ck=torch.load(cp,map_location='cpu',weights_only=False,mmap=True);parent_driver().validate_checkpoint(ck,p,complete=True)
+  assert sha(cp)==full['methods'][m]['checkpoint_sha256']==prior['facts'][m]['checkpoint_sha256'];assert ck['replay']['capacity']==6000000 and ck['steps']+41250<6000000
+- methods[m]=dict(parent_registration=ref(reg),checkpoint=ref(cp),steps=ck['steps'],updates=ck['learner']['num_gradient_steps'],history_digest=digest(ck['cycles']),trainer=ref(B/f'runs/parameter_census_cycle97_20261031_v1/{m}/trainer_registered.py'));del ck
+-p=dict(time=time.time(),parent_cycle=97,new_cycle=98,new_cycles=1,maximum_new_actions_per_method=41250,automatic_followup=False,offline_weights_promoted=False,optimizer_settings_changed=False,reward_physics_changed=False,direct34=False,convergence_claim=False,launch_deadline_unix=time.time()+4*3600,methods=methods,evidence=[ref(f) for f in evidence],cycle_review=ref(V/'REVIEW.json'),complete_scientific_review=ref(C/'COMPLETE97_SCIENTIFIC_REVIEW.json'),terminal_review=ref(N/'DIAGNOSIS.json'),reason=prior['reason'],capacity_unchanged=6000000,third_capacity_stage_inherited=True)
++ methods[m]=dict(parent_registration=ref(reg),checkpoint=ref(cp),steps=ck['steps'],updates=ck['learner']['num_gradient_steps'],history_digest=digest(ck['cycles']),trainer=ref(B/f'runs/parameter_census_cycle98_20261031_v1/{m}/trainer_registered.py'));del ck
++p=dict(time=time.time(),parent_cycle=98,new_cycle=99,new_cycles=1,maximum_new_actions_per_method=41250,automatic_followup=False,offline_weights_promoted=False,optimizer_settings_changed=False,reward_physics_changed=False,direct34=False,convergence_claim=False,launch_deadline_unix=time.time()+4*3600,methods=methods,evidence=[ref(f) for f in evidence],cycle_review=ref(V/'REVIEW.json'),complete_scientific_review=ref(C/'COMPLETE98_SCIENTIFIC_REVIEW.json'),terminal_review=ref(N/'DIAGNOSIS.json'),reason=prior['reason'],capacity_unchanged=6000000,third_capacity_stage_inherited=True)
+ put(D/'SCIENTIFIC_DECISION.json',p);R.mkdir();jobs=[];source_reviews=[]
+ for i,m in enumerate(methods,1):
+- (R/m).mkdir();reg=expected_protocol(m);put(R/m/'REGISTRATION.json',reg);old=Path(methods[m]['trainer']['path']).read_text();new=transform(old);ast.parse(new);assert new.replace('Finite98 new-transition budget exceeded','Finite97 new-transition budget exceeded')==old
+- (D/(m+'_trainer.diff')).write_text(''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True),fromfile='actual97',tofile='registered98')))
++ (R/m).mkdir();reg=expected_protocol(m);put(R/m/'REGISTRATION.json',reg);old=Path(methods[m]['trainer']['path']).read_text();new=transform(old);ast.parse(new);assert new.replace('Finite99 new-transition budget exceeded','Finite98 new-transition budget exceeded')==old
++ (D/(m+'_trainer.diff')).write_text(''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True),fromfile='actual98',tofile='registered99')))
+  first={'impedance':13,'admittance':26,'vmc':39}[m];jobs.append(dict(controller=m,command=[str(B/'env/bin/python'),str(D/'driver.py'),'--runtime',reg['runtime'],'--registration',str(R/m/'REGISTRATION.json'),'--resume',methods[m]['checkpoint']['path'],'--output',str(R/m/'train'),'--controller',m,'--cpus',','.join(map(str,range(first,first+13))),'--workers','30','--device','cuda:'+str(i)]));source_reviews.append(dict(method=m,trainer_delta_only_budget_error_label=True,parent=methods[m]['trainer'],registered_sha256=hashlib.sha256(new.encode()).hexdigest()))
+-put(R/'COMMANDS.json',dict(jobs=jobs));put(D/'PREFLIGHT_PLAN.json',dict(time=time.time(),budget_seconds=1800,maximum_disposable_updates=6,formal_updates=0,new_physics=0,scope='Finite98 actual driver exact complete97 restore and repeated native65536, all states restored, no retained update'))
+-put(D/'SOURCE_REVIEW.json',dict(passed=True,methods=source_reviews,census_source_byte_exact=sha(D/'census_native.py')==sha(OLD/'census_native.py'),capacity_module_byte_exact=sha(D/'parameter_replay_capacity6m.py')==sha(OLD/'parameter_replay_capacity6m.py'),health_source_byte_exact=sha(D/'health98.py')==sha(OLD/'health97.py'),gamma_consumers_original_9995=True))
+-put(D/'OBSERVATION_PLAN.json',dict(time=time.time(),startup_wait_seconds=2400,observe_seconds=120,interval_seconds=5,source_sha256=sha(D/'observe98.py')))
++put(R/'COMMANDS.json',dict(jobs=jobs));put(D/'PREFLIGHT_PLAN.json',dict(time=time.time(),budget_seconds=1800,maximum_disposable_updates=6,formal_updates=0,new_physics=0,scope='Finite99 actual driver exact complete98 restore and repeated native65536, all states restored, no retained update'))
++put(D/'SOURCE_REVIEW.json',dict(passed=True,methods=source_reviews,census_source_byte_exact=sha(D/'census_native.py')==sha(OLD/'census_native.py'),capacity_module_byte_exact=sha(D/'parameter_replay_capacity6m.py')==sha(OLD/'parameter_replay_capacity6m.py'),health_source_byte_exact=sha(D/'health99.py')==sha(OLD/'health98.py'),gamma_consumers_original_9995=True))
++put(D/'OBSERVATION_PLAN.json',dict(time=time.time(),startup_wait_seconds=2400,observe_seconds=120,interval_seconds=5,source_sha256=sha(D/'observe99.py')))
+ for f in D.glob('*.py'):ast.parse(f.read_text())
+-put(D/'SOURCES.json',dict(files={f.name:sha(f) for f in sorted(D.glob('*.py'))}));print('Finite98 registered; no online dispatch',flush=True)
++put(D/'SOURCES.json',dict(files={f.name:sha(f) for f in sorted(D.glob('*.py'))}));print('Finite99 registered; no online dispatch',flush=True)
