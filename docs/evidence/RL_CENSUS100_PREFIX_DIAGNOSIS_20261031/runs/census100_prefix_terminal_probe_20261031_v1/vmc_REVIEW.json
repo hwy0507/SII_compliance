@@ -1,0 +1,201 @@
+{
+  "passed": true,
+  "steps": 4112750,
+  "new_steps": 8000,
+  "cycle": 100,
+  "boundary": "partial_episode_valid_replay_reset_environment_on_resume",
+  "snapshot": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census100_prefix_terminal_probe_20261031_v1/vmc_snapshot.pt",
+    "sha256": "6e232ab8a7e865339c59467805bf28f61b0ca38c74b9ab2760dc0d8cb2b6bdef"
+  },
+  "registration": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle100_20261031_v1/vmc/REGISTRATION.json",
+    "sha256": "5140ee542bbce4de3b5c0a78d48834585f01da6dc76873014cff24611db40f18"
+  },
+  "baseline_values": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census99_new_terminal_diagnosis_20261031_v1/reference99/vmc_values.npz",
+    "sha256": "53ea929ab85c4e9af661a6a58e6f4eebce058aefe49f5e4f18804bd28e2341b4"
+  },
+  "values": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census100_prefix_terminal_probe_20261031_v1/vmc_values.npz",
+    "sha256": "a9e77ca7118e3f2c03ddf7645c0591122f3e06478d01f1068a130b51c5218e90"
+  },
+  "terminal_rows": 2964,
+  "old": {
+    "rows": 2964,
+    "masked_sse": [
+      20.341519912799413,
+      19.434520933049498,
+      13.420045282691717,
+      20.26900371339434,
+      15.869321258836862
+    ],
+    "all_row_sse": [
+      1025.5797226709692,
+      1005.6525327647926,
+      4428.020798125078,
+      10313.157680385713,
+      3537.2104005905812
+    ],
+    "mask_counts": [
+      2366.0,
+      2390.0,
+      2366.0,
+      2379.0,
+      2400.0
+    ],
+    "total_masked_sse": 89.33441110077183
+  },
+  "new": {
+    "rows": 2964,
+    "masked_sse": [
+      14.991902610312536,
+      18.551211474212323,
+      15.988615621910867,
+      20.09956363306992,
+      19.093979102097364
+    ],
+    "all_row_sse": [
+      1548.1597086456986,
+      1235.453705920811,
+      5190.967128869375,
+      7645.837886086532,
+      3732.2599883842063
+    ],
+    "mask_counts": [
+      2366.0,
+      2390.0,
+      2366.0,
+      2379.0,
+      2400.0
+    ],
+    "total_masked_sse": 88.72527244160301
+  },
+  "masked_sse_change_percent": -0.6818634070153484,
+  "improvements": 1399,
+  "regressions": 1565,
+  "known_rows": [
+    {
+      "cycle": 97,
+      "replay_index": 4021832,
+      "kind": "largest_new97_masked_residual_long0300",
+      "condition": "active_long_train_0300",
+      "mask": [
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "reward": 23.178489685058594,
+      "complete99_prediction": [
+        23.1163330078125,
+        23.035429000854492,
+        23.1803035736084,
+        23.27191925048828,
+        23.186574935913086
+      ],
+      "prefix100_prediction": [
+        23.059274673461914,
+        23.173141479492188,
+        22.981834411621094,
+        23.24148941040039,
+        23.159137725830078
+      ],
+      "complete99_masked_sse": 0.033058895587601,
+      "prefix100_masked_sse": 0.018209787685918855
+    },
+    {
+      "cycle": 98,
+      "replay_index": 4058182,
+      "kind": "largest_new98_masked_residual_active_long_train_0600",
+      "condition": "active_long_train_0600",
+      "mask": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "reward": 23.66473960876465,
+      "complete99_prediction": [
+        23.633028030395508,
+        23.53623390197754,
+        23.45068359375,
+        23.72997283935547,
+        23.73851203918457
+      ],
+      "prefix100_prediction": [
+        23.708147048950195,
+        23.614730834960938,
+        23.685266494750977,
+        23.685955047607422,
+        23.708702087402344
+      ],
+      "complete99_masked_sse": 0.07303706430684542,
+      "prefix100_masked_sse": 0.007189230742369546
+    },
+    {
+      "cycle": 98,
+      "replay_index": 4061571,
+      "kind": "new98_short0600_strict_loss_critic2_original_mask0_large_unmasked_residual",
+      "condition": "active_short_train_0600",
+      "mask": [
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "reward": -28.41529655456543,
+      "complete99_prediction": [
+        -28.170475006103516,
+        -29.02812385559082,
+        4.002996921539307,
+        -28.640483856201172,
+        -28.810630798339844
+      ],
+      "prefix100_prediction": [
+        -28.35369300842285,
+        -29.02306365966797,
+        5.035713195800781,
+        -28.34271240234375,
+        -28.05238151550293
+      ],
+      "complete99_masked_sse": 0.6424933765920287,
+      "prefix100_masked_sse": 0.5101516356735374
+    },
+    {
+      "cycle": 99,
+      "replay_index": 4102783,
+      "kind": "largest_new99_masked_residual_active_short_train_0600",
+      "condition": "active_short_train_0600",
+      "mask": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "reward": -28.42286491394043,
+      "complete99_prediction": [
+        -27.63962173461914,
+        -28.58555793762207,
+        -28.70052719116211,
+        -28.263479232788086,
+        -28.76104736328125
+      ],
+      "prefix100_prediction": [
+        -28.11265754699707,
+        -28.66860008239746,
+        -28.433074951171875,
+        -28.45050811767578,
+        -28.661008834838867
+      ],
+      "complete99_masked_sse": 0.8568064024984778,
+      "prefix100_masked_sse": 0.21419530215644045
+    }
+  ],
+  "full_learner_adam_replay_rng_unchanged": true,
+  "saved_scalar_arithmetic_verified": true
+}

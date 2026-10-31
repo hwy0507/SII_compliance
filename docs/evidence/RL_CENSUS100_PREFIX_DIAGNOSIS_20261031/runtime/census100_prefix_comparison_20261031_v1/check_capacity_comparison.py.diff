@@ -1,0 +1,20 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census99_prefix_comparison_20261031_v1/check_capacity_comparison.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census100_prefix_comparison_20261031_v1/check_capacity_comparison.py
+@@ -1,7 +1,7 @@
+ from pathlib import Path
+ import copy,json,time
+ from capacity_contract import verify_science
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle99_20261031_v1';results={}
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle100_20261031_v1';results={}
+ for m in ['impedance','admittance','vmc']:
+  p=json.loads((R/m/'REGISTRATION.json').read_text());old=json.loads(Path(p['post_interruption_continuation']['parent_registration']['path']).read_text());assert verify_science(p,old);rejected=[]
+  for case in ['changed_physics','missing_condition','wrong_capacity','missing_third_stage','wrong_capacity_parent','changed_estimator']:
+@@ -11,7 +11,7 @@
+   elif case=='wrong_capacity':bad['replay_capacity_third_stage']['marker']['capacity']=4000000
+   elif case=='missing_third_stage':bad.pop('replay_capacity_third_stage')
+   elif case=='wrong_capacity_parent':bad['replay_capacity_third_stage']['entry_checkpoint']['sha256']='0'*64
+-  elif case=='changed_estimator':bad['conditional_terminal_amendment']['marker']['version']=99
++  elif case=='changed_estimator':bad['conditional_terminal_amendment']['marker']['version']=100
+   try:verify_science(bad,old)
+   except (ValueError,AssertionError,KeyError):rejected.append(case)
+   else:raise AssertionError('Changed scientific contract accepted: '+case)
