@@ -32,4 +32,4 @@
 - 对既有独立收据 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_ALL10_ROD_INDEPENDENT_REVIEW_20261030.json` 做了逐条只读核验；`rod_00`–`rod_09` 共 10 条均 `qualified=true`，Task、安全、行为、actor replay、filter replay 全部为 true，失败列表为空。
 - 十条均满足“撤杆前让位、持杆越过、撤杆前持续回位、穿透≤0.20 mm”。回位确认时间早于撤杆 1.24–5.59 s（中位数 4.36 s）；各条时间与轨迹 SHA 已保存到 `docs/evidence/CONTACT_YIELD_ALL10_ROD_RECHECK_20261031.json`。这验证的是开发 teacher collection，不是冻结 unseen108 的模型性能或最终科学结果。
 - final108 v3 目录仍只有 `REGISTRATION.json`，物理完成度 0/108；未生成 `execution.json`、Task/Strict、SPT、峰值力矩、人舒适度或机器合规统计。当前容器仍不满足登记的 CPU6/单线程/3 GiB/零 swap 约束，未启动仿真。
-- 已按用户批准的归档授权只读核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/` 存在；本轮未向服务器写入文件，也未在服务器计算。GitHub/服务器后续发布仍以提交和可用网络为前提。
+- 已按用户批准的归档授权核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/` 存在，并将本轮复核包归档到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_rod_recheck_20261031_v1/`；4个文件及 `SHA256SUMS` 已逐项回读通过，MANIFEST SHA256 为 `ef3e40bd72b7dac43461092c9be44d64bc9eac1dda2ac28b3abd01d8fa86ec45`。服务器未运行计算。

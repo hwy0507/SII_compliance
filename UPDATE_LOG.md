@@ -2,7 +2,7 @@
 
 - 只读复核既有 `CONTACT_YIELD_ALL10_ROD_INDEPENDENT_REVIEW_20261030.json`：rod_00–rod_09 共10条均 qualified，Task/安全/行为/actor replay/filter replay 全通过；撤杆前让位、持杆越过、持续回位和≤0.20 mm 穿透条件逐条通过。回位确认早于撤杆 1.24–5.59 s，中位数4.36 s。逐条时间、判定值和轨迹哈希写入 `docs/evidence/CONTACT_YIELD_ALL10_ROD_RECHECK_20261031.json`。
 - 这只是开发 teacher collection 的独立收据复核，不是 unseen108 模型测试结果。`outputs/contact_yield_locked_unseen108_20261031_v3/` 仍只有 REGISTRATION.json，final108 完成度0/108；没有 Task/Strict、SPT、峰值力矩、人舒适度或机器合规统计。
-- 当前容器资源仍不满足登记的CPU6/单线程/3GiB/零swap，未启动物理仿真。SSH只读核验共享根存在；本轮未向服务器写入文件、未在服务器计算。保留历史失败和未完成收据。
+- 当前容器资源仍不满足登记的CPU6/单线程/3GiB/零swap，未启动物理仿真。SSH只读核验共享根存在；本轮服务器归档已完成到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/contact_yield_rod_recheck_20261031_v1/`，4个证据文件和 `SHA256SUMS` 已逐项回读校验；服务器未运行计算。保留历史失败和未完成收据。
 
 ## 2026-10-31 — 条件终端估计器完整native更新与恢复兼容通过
 
