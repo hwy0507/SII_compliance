@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-31 — 600万回放容量准备通过；原第96轮继续
+
+- [交接](docs/RL_CENSUS_CAPACITY6M_PREPARATION_20261031.md)。现4m不能容纳完整97，独立6m候选仅准备；真实完整95三路全部回放/历史双容量及架构标记/RNG精确、CPU census终端与1/32/256/65536采样一致，完整learner digest和原checkpoint hash保持。
+- 合成3,999,998→4,000,002保留全部旧行/缓存/终端新增4、恢复采样及RNG精确；最后6m槽位写入通过，满容量写入拒绝且完整状态不变；21损坏状态拒绝。无physics/optimizer更新，非GPU/full96接入验证，无97派发。原wrapper默认4m须显式传6m。
+- 原101身份在两端检查一致，steps增长{'impedance': 2358, 'admittance': 2346, 'vmc': 2254}（非连续观察）；GPU73样本min[74, 70, 68, 70]%、低于50[0, 0, 0, 0]，guard继续。原96三训练/修正版archive/两个消费者继续；完整96、94–96统计及收敛待，A原19.7689%必要条件失败保持，Direct原结论与指定ESN缺失保持，Goal active。
+- SSD小证据16成员/SHA01678bf0，HDD仅指针；main e1f84ca1/baseline f6e8f8c2已query/fetch/read。部署需完整96审查、精确全state/GPU预检及独立有限97登记。
+
 ## 2026-10-31 — 第96轮继续；全90比较/终端计数与完整95窗口输入已核验
 
 - [交接](docs/RL_CENSUS96_COMPARISON_20261031.md)。全95→96的90条件reward分项/Task/Strict/abort/原loss比较登记；真实完整95全90模型/标签/算术、缺完整96拒绝通过。唯一比较等待器882729沿修正版archive原截止，完成后自动检查全部96终端计数/回放，零新增训练。

@@ -1,0 +1,99 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1/parameter_replay_capacity4m_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census_capacity6m_preparation_20261031_v1/parameter_replay_capacity6m.py
+@@ -1,24 +1,25 @@
+-"""Explicit second append-only capacity expansion, preserving the first marker.
++"""Preparation-only 4m -> 6m append-only replay; no training dispatch.
+ 
+-Only a digest-bound unwrapped 2m parent can enter. Subsequent 4m restores carry
+-both historical and followup markers. Beyond 2m, retaining rows differs from
+-overwriting a ring; this does not claim algorithmic equivalence to a ring.
++Wrap the original Replay, then the original 52-column architecture wrapper.
++Migration binds the complete stripped parent replay digest. Existing capacity
++markers stay unchanged. Retaining rows past 4m differs from ring overwrite.
+ """
+ import copy
+ import numpy as np
++from parameter_replay_capacity_20261026 import MARKER as CAP2
++from parameter_replay_capacity4m_20261027 import MARKER as CAP4
+ 
+-from parameter_replay_capacity_20261026 import MARKER as ORIGINAL_MARKER
+-
+-MARKER = dict(version=1, previous_capacity=2_000_000, capacity=4_000_000,
++KEY = 'replay_capacity_third'
++MARKER = dict(version=1, previous_capacity=4_000_000, capacity=6_000_000,
+               retention='append_without_overwrite', sampling='uniform_all_retained_rows',
+-              full_behavior='raise_before_overwrite', historical_marker_preserved=True)
++              full_behavior='raise_before_overwrite', historical_markers_preserved=True)
+ 
+ 
+ def replay_class(base, parent_digest=None):
+     class CapacityReplay(base):
+-        def __init__(self, dimension, observation_dim, seed, capacity=4_000_000):
++        def __init__(self, dimension, observation_dim, seed, capacity=6_000_000):
+             if capacity != MARKER['capacity']:
+-                raise ValueError('Registered second expanded capacity required')
++                raise ValueError('Registered third expanded capacity required')
+             super().__init__(dimension, observation_dim, seed, capacity=capacity)
+ 
+         def add(self, **row):
+@@ -28,25 +29,24 @@
+             self.cursor = self.size
+ 
+         def state_dict(self):
+-            return dict(super().state_dict(),
+-                        replay_capacity_extension=copy.deepcopy(ORIGINAL_MARKER),
+-                        replay_capacity_followup=copy.deepcopy(MARKER))
++            return dict(super().state_dict(), replay_capacity_extension=copy.deepcopy(CAP2),
++                        replay_capacity_followup=copy.deepcopy(CAP4),
++                        **{KEY: copy.deepcopy(MARKER)})
+ 
+         def load_state_dict(self, state):
+             from validate_published_finite_check_20261025 import digest
+-            required = {'capacity', 'size', 'cursor', 'arrays', 'rng', 'replay_capacity_extension'}
+-            if state.get('replay_capacity_extension') != ORIGINAL_MARKER:
+-                raise ValueError('Original historical capacity marker changed')
+-            if 'replay_capacity_followup' in state:
+-                if (set(state) != required | {'replay_capacity_followup'}
+-                        or state['replay_capacity_followup'] != MARKER
+-                        or state['capacity'] != self.capacity):
+-                    raise ValueError('Unexpected second capacity state')
++            required = {'capacity', 'size', 'cursor', 'arrays', 'rng',
++                        'replay_capacity_extension', 'replay_capacity_followup'}
++            if state.get('replay_capacity_extension') != CAP2 or state.get('replay_capacity_followup') != CAP4:
++                raise ValueError('Historical capacity markers changed')
++            if KEY in state:
++                if set(state) != required | {KEY} or state[KEY] != MARKER or state['capacity'] != self.capacity:
++                    raise ValueError('Unexpected third capacity state')
+             elif (set(state) != required or parent_digest is None
+-                    or state['capacity'] != MARKER['previous_capacity']
+-                    or digest(state) != parent_digest
+-                    or not 0 <= state['size'] <= state['capacity']):
+-                raise ValueError('Only exact registered unwrapped 2m parent may migrate')
++                  or state['capacity'] != MARKER['previous_capacity']
++                  or type(state['size']) is not int or not 0 <= state['size'] <= state['capacity']
++                  or digest(state) != parent_digest):
++                raise ValueError('Only exact registered unwrapped 4m parent may migrate')
+             size = state['size']
+             if (type(size) is not int or not 0 <= size <= self.capacity
+                     or state['cursor'] != size or set(state['arrays']) != set(self.arrays)):
+@@ -55,14 +55,12 @@
+                 if (value.dtype != np.float32 or value.shape != (size, self.arrays[key].shape[1])
+                         or not np.isfinite(value).all()):
+                     raise ValueError('Invalid replay field: '+key)
+-            masks = state['arrays']['masks']
+-            if not np.all((masks == 0) | (masks == 1)):
+-                raise ValueError('Binary CHEQ bootstrap masks required')
+-            # Reject invalid RNG before the base loader writes any arrays.
++            for key in ('masks', 'dones'):
++                if not np.all((state['arrays'][key] == 0) | (state['arrays'][key] == 1)):
++                    raise ValueError('Binary '+key+' required')
+             rng = np.random.default_rng()
+             rng.bit_generator.state = copy.deepcopy(state['rng'])
+-            migrated = dict(state, capacity=self.capacity)
+-            migrated.pop('replay_capacity_extension')
+-            migrated.pop('replay_capacity_followup', None)
+-            super().load_state_dict(migrated)
++            plain = {k: v for k, v in state.items() if k not in
++                     ('replay_capacity_extension', 'replay_capacity_followup', KEY)}
++            super().load_state_dict(dict(plain, capacity=self.capacity))
+     return CapacityReplay
