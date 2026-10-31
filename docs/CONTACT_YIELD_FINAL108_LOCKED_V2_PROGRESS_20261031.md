@@ -1,3 +1,8 @@
+## 2026-10-31 — final108 静态 readiness
+
+- adapter/evaluator/resource guard 编译与CLI检查通过，静态收据 `docs/evidence/CONTACT_YIELD_FINAL108_STATIC_READINESS_20261031.json`，`run_called=false`、`physics_calls=0`。
+- `execution.json`仍不存在；只待合规资源scope，不改变冻结模型、条件或门槛。
+
 ## 2026-10-31 — adapter 控制流回归复核
 
 - 零物理控制脚本重新通过：108行有序调度、重复启动拒绝、基础设施失败保留前三条收据、失败重启拒绝、107行复核拒绝；登记 SHA 未漂移。收据 `docs/evidence/CONTACT_YIELD_FINAL108_CONTROL_RECHECK_20261031.json`，`physics_calls=0`。

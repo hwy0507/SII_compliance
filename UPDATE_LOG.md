@@ -1,3 +1,8 @@
+## 2026-10-31 — final108 静态 readiness 检查通过；等待资源 scope
+
+- final108 adapter、冻结 evaluator、资源 guard 的 `py_compile` 和 CLI help 均通过；静态收据 `docs/evidence/CONTACT_YIELD_FINAL108_STATIC_READINESS_20261031.json` SHA256 `ec5b1e76ede08c1759b34b8f7ff5a79a9fd624277e175d76963afb76c25af34f`。
+- 收据明确 `run_called=false`、`physics_calls=0`，登记 SHA 保持 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`，`execution.json` 不存在。正式 108 回合仍未开始，等待合规 CPU6/单线程/3GiB/禁swap scope。
+
 ## 2026-10-31 — final108 adapter 控制流回归复核；物理调用仍为0
 
 - 重新运行零物理控制审计，当前登记 SHA `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6` 与控制源码 SHA 保持一致。108 行有序派发、重复派发拒绝、基础设施失败收据保留、失败目录重启拒绝、107 行复核拒绝全部通过。
