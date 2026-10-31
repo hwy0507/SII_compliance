@@ -1,3 +1,11 @@
+## 2026-10-31 — 完整93全回放因果P审计及有限信息消融完成
+
+- [交接](docs/RL_VIOLATION93_POTENTIAL_ABLATION_20261031.md)。全11566262保留行/8460回合群的动作前P/差分/过去窗口范围与journal/reward/replay精确对齐，独立deque算法全6列复算通过；107个缺raw的partial群也覆盖，无补0/删行。8353终端/旧8263精确绑定，三sidecar555180960字节仅SSD。
+- 三方法×baseline/P/history×固定256隔离终端更新+9首步重复，共2313；原全state/RNG/grad不变、初始预测/首步重复/保存算术及实际九栏图通过。检查86—93原checkpoint已见，非独立泛化；I相对对照−3.25%/−4.37%但较初始仍退化，A+2.50%/+8.95%、V+5.06%/+8.07%。新93尖峰全部更差，全部unmasked/早期瞬态保留，不部署特征或辅助权重。
+- 下一步有限原生混合回放的旧/新终端学习分配或梯度诊断，未派发94/Direct34，不用替代loss宣布原异常解决。9进程结束；原93/冻结90完成勿重启，原未收敛/全部失败/Direct原验收/指定ESN缺失保持。Goal active，无子agent。
+
+- GPU165样本min[74, 72, 68, 64]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD69成员/SHA6ac8a0fc，HDD仅254字节指针、非全备份。main8b50530f/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
+
 ## 2026-10-31 — 98回合放置状态核验：几何保持上界不能替代原接触保持
 
 - [交接](docs/RL_VIOLATION93_PLACEMENT_AUDIT_20261031.md)。98回合/132864行原相位、journal观察/potential、全部实际evaluator/原接触源码、独立标量/实际四栏图通过；0physics/optimizer/回放写入。I93尖峰long0000原hold.24而几何上界6.76，约54.76s必为接触条件重置，具体力条件无法区分；旧两大失败也上界过门但原hold不足，不能将上界当真hold。
