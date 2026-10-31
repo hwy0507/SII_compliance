@@ -6,6 +6,18 @@
 
 - GPU120样本min[77, 64, 67, 67]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD39成员/SHA8a6c8381，HDD仅254字节指针、非全备份。main9bd8d0d8/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
 
+## 2026-10-31 — final108 控制审计已完成；服务器归档获准待提交发布
+
+- 零物理控制检查已绑定真实 v3 登记SHA `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`，验证v2 adapter按序遍历108格、拒绝重复派发、第四格基础设施失败后保留前三格收据且禁止重启、拒绝107格review；收据状态 `passed_zero_physics_v2_adapter_controls`、physics calls=0。脚本与收据均纳入本轮改动。
+- final108尚未运行：当前登记目录仍只有REGISTRATION.json。Chromium scope资源仍不满足限制（CPU affinity 0–23、memory/swap限额为max、cpu quota/cpuset不可读、swap近满），user systemd不可访问；没有绕过限制启动仿真。
+- 用户明确批准将本轮产物归档到服务器独立目录并校验SHA256；SSH只读确认共享根有效且目标 `runs/main/nonrl_final108_v2_controls_20261031_v1` 不存在。提交/合并发布后才创建该目录，服务器不做计算。远端main=`9bd8d0d8ce202f1a147e5aa5736fcf88e74bb96d`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已查询；main包含的新cycle93材料保留并安全合并。详见专题进度和CONTROL_AUDIT.json。
+
+## 2026-10-31 — final108 v2 控制审计与归档准备（本地）
+
+- 已运行零物理控制脚本 `code/mujoco_6d_vmc_benchmark/experiments/check_contact_yield_unseen108_v2_controls_20261031.py`。针对登记 v3 的 v2 adapter，以合成 worker 验证 108 格有序调度、重复启动拒绝、第四格基础设施失败后前三格收据保留且同目录重跑拒绝、107 格独立复核拒绝；`CONTROL_AUDIT.json` 状态为 `passed_zero_physics_v2_adapter_controls`，`physics_calls=0`。登记 SHA256 仍为 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`。
+- 本轮没有启动 MuJoCo final108：目标目录仍只有 `REGISTRATION.json`，没有 `execution.json` 或 episode。当前 Chromium scope 的资源限制仍不满足登记约束，user systemd 不可用，swap 几乎用满；这份控制审计不代表资源预检或科学结果通过。
+- 服务器归档批准已收到；SSH 只读检查现已成功，目标独立目录 `runs/main/nonrl_final108_v2_controls_20261031_v1` 已确认不存在，尚未写入，因为归档需绑定本次合并提交。GitHub 最新可读 main=`9bd8d0d8ce202f1a147e5aa5736fcf88e74bb96d`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；已安全合并远端 main，待本地提交后再推送。
+
 ## 2026-10-31 — 完整93全回放因果P审计及有限信息消融完成
 
 - [交接](docs/RL_VIOLATION93_POTENTIAL_ABLATION_20261031.md)。全11566262保留行/8460回合群的动作前P/差分/过去窗口范围与journal/reward/replay精确对齐，独立deque算法全6列复算通过；107个缺raw的partial群也覆盖，无补0/删行。8353终端/旧8263精确绑定，三sidecar555180960字节仅SSD。
