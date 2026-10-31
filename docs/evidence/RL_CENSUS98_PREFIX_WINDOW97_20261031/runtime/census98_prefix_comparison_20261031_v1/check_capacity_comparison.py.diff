@@ -1,0 +1,20 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census97_prefix_comparison_20261031_v1/check_capacity_comparison.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census98_prefix_comparison_20261031_v1/check_capacity_comparison.py
+@@ -1,7 +1,7 @@
+ from pathlib import Path
+ import copy,json,time
+ from capacity_contract import verify_science
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle97_20261031_v1';results={}
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle98_20261031_v1';results={}
+ for m in ['impedance','admittance','vmc']:
+  p=json.loads((R/m/'REGISTRATION.json').read_text());old=json.loads(Path(p['post_interruption_continuation']['parent_registration']['path']).read_text());assert verify_science(p,old);rejected=[]
+  for case in ['changed_physics','missing_condition','wrong_capacity','missing_third_stage','wrong_capacity_parent','changed_estimator']:
+@@ -15,6 +15,6 @@
+   try:verify_science(bad,old)
+   except (ValueError,AssertionError,KeyError):rejected.append(case)
+   else:raise AssertionError('Changed scientific contract accepted: '+case)
+- results[m]=dict(registered_capacity_only_change_accepted=True,rejected=rejected)
++ results[m]=dict(unchanged_inherited_capacity_accepted=True,rejected=rejected)
+ with (D/'CAPACITY_COMPARISON_REVIEW.json').open('x') as f:json.dump(dict(passed=True,time=time.time(),methods=results,negative_count=18,physics_steps=0,optimizer_updates=0),f,indent=2);f.write('\n')
+-print('Capacity-only comparison accepted;18 unintended changes rejected')
++print('Unchanged6m comparison accepted;18 unintended changes rejected')
