@@ -1,3 +1,177 @@
+## 2026-10-31 — 完整93全回放因果P审计及有限信息消融完成
+
+- [交接](RL_VIOLATION93_POTENTIAL_ABLATION_20261031.md)。全11566262保留行/8460回合群的动作前P/差分/过去窗口范围与journal/reward/replay精确对齐，独立deque算法全6列复算通过；107个缺raw的partial群也覆盖，无补0/删行。8353终端/旧8263精确绑定，三sidecar555180960字节仅SSD。
+- 三方法×baseline/P/history×固定256隔离终端更新+9首步重复，共2313；原全state/RNG/grad不变、初始预测/首步重复/保存算术及实际九栏图通过。检查86—93原checkpoint已见，非独立泛化；I相对对照−3.25%/−4.37%但较初始仍退化，A+2.50%/+8.95%、V+5.06%/+8.07%。新93尖峰全部更差，全部unmasked/早期瞬态保留，不部署特征或辅助权重。
+- 下一步有限原生混合回放的旧/新终端学习分配或梯度诊断，未派发94/Direct34，不用替代loss宣布原异常解决。9进程结束；原93/冻结90完成勿重启，原未收敛/全部失败/Direct原验收/指定ESN缺失保持。Goal active，无子agent。
+
+- GPU165样本min[74, 72, 68, 64]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD69成员/SHA6ac8a0fc，HDD仅254字节指针、非全备份。main8b50530f/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
+
+## 2026-10-31 — 98回合放置状态核验：几何保持上界不能替代原接触保持
+
+- [交接](RL_VIOLATION93_PLACEMENT_AUDIT_20261031.md)。98回合/132864行原相位、journal观察/potential、全部实际evaluator/原接触源码、独立标量/实际四栏图通过；0physics/optimizer/回放写入。I93尖峰long0000原hold.24而几何上界6.76，约54.76s必为接触条件重置，具体力条件无法区分；旧两大失败也上界过门但原hold不足，不能将上界当真hold。
+- 原85全部7740回合群文件存在性核验：I/A/V各35/36/36个保留partial群缺完整raw，对应27936/28250/29250保留行；不删行不补0。未证明全93回放可重建，新critic/94/Direct34未派发。下一步只针对全历史可得的因果journal信号做有限隔离消融，再另行决定在线方案。原未收敛/全部失败/Direct原验收/指定ESN缺失保持。
+- 科学audit成功；review v1反复解压慢读主动中断130留源码/trace，v2只缓存相同数组、完整标量核验退出0。原93/冻结90完成勿重启，Goal active，无子agent。
+
+- GPU101样本min[78, 75, 68, 66]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD127成员/SHA72e368e8，HDD仅254字节指针、非全备份。mainf598a5c1/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
+
+## 2026-10-31 — 完整93冻结诊断：新放置失败终端主导batch尖峰
+
+- [交接](RL_VIOLATION93_DIAGNOSIS_20261031.md)。固定2755旧终端92/93梯度及全state不变、保存算术通过；总体余弦+.03569→+.05112，不支持简单总体强冲突。2755输入均唯一，两尺度全近邻核验，接近不证明不可辨识。
+- 三路各64×65536原生batch、首批重复/全state-RNG恢复，192raw算术及三实际图通过，0optimizer/physics。I两大峰14.256/14.490由新93 long0000终端3851694主导，最大92.24%；完整55秒但hold .24<原.5，非安全abort。其他62批最高4.113及旧90中止影响保留，A/V有限未重现非已解决。
+- 下一步核验可从历史raw重建的动作前放置状态/信息消融，再决定在线方案；未派发94/Direct34，未改科学协议。原93/冻结90完成勿重启；全部失败、Direct原结论及指定ESN缺失保持，未收敛。
+
+- GPU187样本min[76, 62, 67, 68]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD68成员/SHA3320c53f，raw192共363377306字节单独SSD；HDD仅254字节指针、非全备份。mainccfa18c0/baselinef6e8f8c2已query/fetch/read，发布见收据，Goal active。
+
+## 2026-10-31 — 完整93审查完成；阻抗稀有中止改善但其他终端退化
+
+- [交接](RL_COMPLETE93_20261031.md)。三路各41250新增/30完整55秒/0中止，旧回放和新增52/action/reward精确；Task/Strict17/16、15/14、17/16。完整loss I/V尖峰32.685/17.469及actor漂移保留，92→93 reward相对变化8.803%/16.873%/62.877%均超原5%，未收敛。
+- 全8263固定92终端/all5/原mask完整state不变、保存算术及实际图通过；I总masked SSE+16.95%，三中止组−2323.95、其余2752终端+3154.24且五critic全退化。A总−39.92%但critic3退化，V总−1.02%但critic0/2退化。原79行退化保留，不称因果干扰证明。
+- 全90训练比较、六标签变化和全90终端时间审查通过。原训练/archive/两个消费者均正常结束勿重启；下一步冻结93误差转移/原生batch/表征诊断，未派发94/Direct34。原90–92失败、冻结90完整结论、Direct原验收、指定ESN缺失及全部旧失败保持。
+
+- GPU343采样min[73, 66, 68, 67]%、低于50[0, 0, 0, 0]，科学结束继续guard。SSD309成员/SHA8c4023fc；HDD仅254字节指针、非全备份。main3de8e089/baselinef6e8f8c2实际query/fetch/read，发布见收据。Goal active，无子agent。
+
+## 2026-10-31 — 第93轮继续；科学完成后仍保持四卡GPU保活
+
+- [交接](RL_VIOLATION93_GUARD_PROGRESS_20261031.md)。用户再次要求全部完成后仍保持GPU≥50%；原独立guard源码与SSD持久副本逐字相符，原5进程正常，训练结束不触发退出。不是重启服务，不承诺每瞬时利用率。
+- 原101身份连续180.068s/19样本保持，三路steps增长{'impedance': 1996, 'admittance': 1964, 'vmc': 1985}，保存steps{'impedance': 3840691, 'admittance': 3843982, 'vmc': 3845017}。原93/archive/两个只读等待器继续，完整93/健康稳定/两项比较仍待，无新训练或自动94/Direct34，未收敛。原冻结90完成勿重启；所有历史失败、Direct原结论、指定ESN缺失保持。
+- GPU41样本min[76, 69, 68, 71]%、低于50[0, 0, 0, 0]，含synthetic guard、不等于科学吞吐。SSD33成员/SHAafa66ac6核验，HDD仅254字节指针、非全备份；main10b1fb69/baselinef6e8f8c2实际query/fetch/read，正常发布见收据。Goal active，无子agent。
+
+## 2026-10-31 — 第93轮继续；完整92→93全90比较等待器已启动
+
+- [交接](RL_VIOLATION93_COMPARE_READY_20261031.md)。全90训练条件reward分项/Task/Strict/abort/loss及变化rollout绑定消费者已准备，真实完整92输入/缺完整93拒绝通过；唯一等待器2089103沿原archive截止、0update/physics，无未来比较结果或自动94/Direct34。
+- 原101身份连续600.219s/61样本保持，三路steps增长{'impedance': 6268, 'admittance': 6277, 'vmc': 6347}，保存steps{'impedance': 3836441, 'admittance': 3839756, 'vmc': 3840744}。原archive/固定92全部终端等待继续，完整93/健康稳定/两项比较仍待，未收敛。冻结90全部审查已完成勿重启，所有失败/Direct原结论/指定ESN缺失保持。
+- GPU143样本min[64, 68, 67, 70]%、低于50[0, 0, 0, 0]，科学结束仍守护。SSD41成员/SHA381c3b13核验，HDD仅254字节指针、非全备份；main66be0095/baselinef6e8f8c2实际query/fetch/read，正常发布见收据。Goal active，无子agent。
+
+## 2026-10-31 — 第93轮前5000/固定终端等待；冻结90全部审查完成
+
+- [交接](RL_PREFIX93_FROZEN90_COMPLETE_20261031.md)。固定first5000原字节/保存算术/实际六栏图通过；critic首末I1.416558→1.376017、A1.080119→1.091732、V.762984→.803952，最大15.038/2.379/2.838，I密集尖峰与actor上移保留，非收敛。首版父路径失败原件保留，v2仅修路径。
+- 全8263固定92/all5/原masks算术预检、实际partial93拒绝和27metadata反例通过；唯一等待器1461907沿原archive截止，完整93后零更新比较，尚无93终端结果/自动94/Direct34。原训练300.158s/100身份保持，steps{'impedance': 3826498, 'admittance': 3829977, 'vmc': 3830985}。
+- 原冻结90全90/98391200子步/full-state/raw/88→90配对与实际图完成，Task/Strict17/16、15/15、17/16；I长0000安全中止与I/V短0600违规保留，所有原冻结进程正常结束勿重启。GPU162样本min[68, 68, 66, 63]%、低于50[0, 0, 0, 0]，科学结束仍守护。SSD211成员/SHAefeba11d核验，HDD仅254字节指针、非全备份；main15609269/baselinef6e8f8c2实际query/fetch/read，发布见收据。Goal active，无子agent，Direct原结论/指定ESN缺失保持。
+
+## 2026-10-31 — 全部92终端已审；有限同协议93实际训练
+
+- [交接](RL_TERMINAL92_ONLINE93_20261031.md)。全部8263终端/all5/原masks及原79/90/92中止来源、保存算术和实际图核验，完整learner/Adam/replay/RNG不变。I90/92两条占masked SSE76.3184%，79占.2162%；非纵向改善/不可约/历史在线因果证明，A/V和未参与mask的critic误差保留。
+- 据完整92与集中误差单独登记一轮93，每方法≤41250，实际trainer/数值协议不变；108负例、6原生batch clone重复恢复、实际startup旧replay/新52/action/reward0误差通过。120.045s/99身份保持，steps{'impedance': 3816234, 'admittance': 3819659, 'vmc': 3820553}。完整93及固定92比较待，无自动94/Direct34；原90–92 I/A失败、V reward-only通过保持，未收敛。
+- 原冻结90继续，完成{'impedance': 30, 'admittance': 28, 'vmc': 28}，最终全90/raw/paired待。GPU199样本min[68, 66, 68, 68]%、低于50[0, 0, 0, 0]，科研结束仍守护。SSD164成员/SHA5979f575核验，HDD仅254字节指针、非全备份。main624c7cf2/baselinef6e8f8c2实际query/fetch/read，发布见收据。全部历史失败/Direct原结论/指定ESN缺失保持；Goal active，无子agent。
+
+## 2026-10-31 — 完整92冻结原生batch尖峰来源已核验
+
+- [交接](RL_VIOLATION92_BATCH_DIAGNOSIS_20261031.md)。三路各64×65536、首批精确重复、完整learner/Adam/replay/RNG不变，0update/physics；全部192原批独立算术与实际图核验。I两尖峰由原90安全中止terminal index3726050主导，最大贡献85.52%，bit0；非历史在线尖峰因果复现、pair因果或修复证明。A/V有限未复现大尖峰不等于已解决，未收敛。
+- 原92和诊断完成勿重启；下一步完整终端误差集中审查后单独科学决定，无自动93/Direct34。原冻结90继续，完成{'impedance': 27, 'admittance': 25, 'vmc': 25}，最终全90/raw/paired待；全部历史失败/Direct原结论/指定ESN缺失保持。
+- GPU104样本min[76, 67, 68, 68]%、低于50[0, 0, 0, 0]，科研结束仍守护。SSD148小证据成员/SHAe1a6d296核验，192raw NPZ仅SSD且逐hash核验；HDD仅254字节指针，非全备份。main03c9f084/baselinef6e8f8c2实际query/fetch/read，发布见收据。Goal active，无子agent。
+
+## 2026-10-31 — 完整92与原90—92窗口已审；I/A失败保留
+
+- [交接](RL_COMPLETE92_20261031.md)。I40562新增/29完整+1安全中止，A/V41250各30完整；旧replay与新52/action/reward精确，Task/Strict17/16、14/13、17/17。I long0000在687动作/27.48s全局87.97mm中止，external bit0不覆盖该失败。全loss仍有尖峰/actor上移，未收敛。
+- 原90—92固定5%/5000bootstrap实际完成并保存算术/实际图核验；I/A失败、V reward条件通过，非联合健康收敛。全91→92及五组标签变化绑定通过；固定87全部终端masked SSE I−54.37%、A−5.39%、V+22.61%，单critic退化保留，0updates。
+- 原92/archive/终端等待正常完成勿重启，无自动93/Direct34；原冻结90继续，完成{'impedance': 24, 'admittance': 23, 'vmc': 23}，最终全90/raw/paired待。GPU346样本min[75, 67, 67, 68]%、低于50[0, 0, 0, 0]，科研结束仍守护。
+- SSD222成员/SHAf4863fa5核验，HDD仅254字节指针、非全备份。maineecc365d/baselinef6e8f8c2已query/fetch/read，发布见收据。Goal active，无子agent；全部历史失败/Direct原结论/指定ESN缺失保持。
+
+## 2026-10-30 — 原92与冻结90持续：十分钟 verified wait
+
+- [交接](RL_VIOLATION92_PROGRESS_20261030.md)。原105身份连续600.226s/61样本保持，三路steps增长{'impedance': 6418, 'admittance': 6422, 'vmc': 6272}；保存steps{'impedance': 3798963, 'admittance': 3801750, 'vmc': 3803008}，冻结完成{'impedance': 20, 'admittance': 19, 'vmc': 19}。原archive/终端等待继续，无重启、新训练或预算延长。
+- 完整92/健康稳定/固定终端92与冻结90全90/raw/paired仍待；前轮绑定和原I/A失败保持，无完整窗口统计/自动93/Direct34，未收敛。全部历史失败、Direct原结论及指定ESN缺失保持。
+- GPU125样本min[75, 68, 69, 69]%、低于50[0, 0, 0, 0]，科学结束仍守护；SSD27成员/SHAcab3b62d，HDD仅254字节指针、非全备份。main63bd0e67/baselinef6e8f8c2已query/fetch/read，正常发布见收据。Goal active，无子agent。
+
+## 2026-10-30 — 原90—92实际图与loss绑定就绪；92继续
+
+- [交接](RL_VIOLATION92_STABILITY_READY_20261030.md)。完整90/91六组原核心引用精确保留，每组补充实际两图/loss收据/查看记录/原plan/早期失败hash；16错误元数据与真实缺完整92均拒绝。原统计/5%/5000bootstrap未改、未运行，I/A必要条件失败保留，无自动93/Direct34，未收敛。
+- 原105身份连续600.241s/61样本保持、三路steps增长；保存steps{'impedance': 3791337, 'admittance': 3794104, 'vmc': 3795479}，冻结完成{'impedance': 18, 'admittance': 18, 'vmc': 17}。完整92、固定终端92及冻结全90/raw/paired仍待；所有历史失败/Direct原结论/指定ESN缺失保持。
+- GPU121样本min[77, 68, 69, 71]%、低于50[0, 0, 0, 0]，科学结束仍守护。SSD59成员/SHA6a91206b核验，HDD仅254字节指针、非全备份。main3fa4b77a/baselinef6e8f8c2已query/fetch/read，发布见收据。Goal active，无子agent。
+
+## 2026-10-30 — 第92轮前5000已审；固定87终端跟踪92已登记
+
+- [交接](RL_VIOLATION92_DIAGNOSTICS_20261030.md)。固定first5000原字节/保存标量/实际六栏图通过；critic首末I1.953316→1.872588、A1.121138→1.135406、V.747855→.770665，最大20.756/2.490/4.629。I密集尖峰与actor上移保持，仅早期证据，非收敛；prefix首版父路径错误原件保留，v2仅路径修复。
+- 原7813终端/all5/原masks，87–91保存算术与52 raw输入精确；三份实际startup92架构/partial拒绝和27负例通过。唯一等待器1234380沿原archive截止等待，无新forward/physics/update；完整92终端结果待，无自动93/Direct34。
+- 原92/冻结90继续，180.071s/105身份保持，steps{'impedance': 3782554, 'admittance': 3785355, 'vmc': 3786584}，冻结完成{'impedance': 15, 'admittance': 16, 'vmc': 15}。完整92及冻结全90/raw/paired仍待；原90–92 I/A必要条件失败与所有历史失败保留。
+- GPU70样本min[79, 65, 68, 67]%、低于50[0, 0, 0, 0]，科学结束仍守护；SSD61成员/SHAc4c7f829核验，HDD仅254字节指针、非全备份。mainef232815/baselinef6e8f8c2已query/fetch/read，发布见收据；Goal active，无子agent，指定ESN仍缺。
+
+## 2026-10-30 — 完整91精确恢复；同52协议有限92已启动
+
+- [交接](RL_VIOLATION92_ONLINE_20261030.md)。依据完整91混合结果单独登记92，各方法一轮/最多41250新增，trainer与实际91逐字相同，原52/actor49/history/violation/Adam/RNG及全部协议保持。原90–92 I/A相邻5%必要条件失败保持，无自动93/Direct34，未收敛。
+- 108负例、6次真实batch65536 clone重复恢复与准确91边界通过；实际startup全旧回放/新current-next52/action/reward0误差、30MJB/30sampler通过。120.039s/99身份保持，steps{'impedance': 3775686, 'admittance': 3778467, 'vmc': 3779579}；完整92及健康稳定审查待。
+- 原冻结90/后处理继续，完成数{'impedance': 14, 'admittance': 14, 'vmc': 13}，最终全90/raw/paired待。GPU141样本min[77, 66, 67, 68]%、低于50[0, 0, 0, 0]，科学结束仍守护；全部旧失败及指定ESN缺失保持。
+- SSD122成员/SHA276394df逐成员核验，HDD仅254字节指针，非全备份。main3a4a5e35/baselinef6e8f8c2已query/fetch/read，正常发布见收据。Goal active，无子agent。
+
+## 2026-10-30 — 完整91审计完成；原90–92 I/A必要条件失败
+
+- [交接](RL_COMPLETE91_20261030.md)。三路各30完整55秒/41250新增/0abort，旧replay及新52/action/reward精确；Task/Strict18/17、14/13、17/17。全loss仍有尖峰、I尾部抬升，actor均值上移，未收敛；原91/archive/固定终端等待正常结束勿重启。
+- 全90训练对照及六个标签变化案例绑定通过，原90 I97.91mm安全中止和A short0600跨.2mm失败保留。原90–92相邻I42.5116%/A20.8292%违反5%必要条件，V .09648%仅一对不失败；准确90/91绑定通过，原PLAN未改、无完整窗口/bootstrap或自动92/Direct34。
+- 固定87全部7813终端/all5跟踪91完成，masked SSE I−32.96%、A+25.48%、V−60.72%，各critic退化均保留；独立保存算术和四实际图通过。冻结90原评测/后处理继续，完成数{'impedance': 11, 'admittance': 11, 'vmc': 11}，最终全90/raw/paired待。
+- GPU367样本min[76, 65, 67, 68]%、低于50[0, 0, 0, 0]，科学结束仍守护；SSD172成员/SHA4100649e逐成员核验，HDD仅254字节指针，非全备份。mainbc17c95f/baselinef6e8f8c2已实际query/fetch/read，发布见收据；Goal active，无子agent，全部历史失败及指定ESN缺失保持。
+
+## 2026-10-30 — 原91与冻结90持续：十分钟verified wait
+
+- [交接](RL_VIOLATION91_PROGRESS_20261030.md)。原105身份实际存活并连续600.232s/61样本保持，三路steps增长；总steps{'impedance': 3760471, 'admittance': 3763280, 'vmc': 3763721}，冻结完成{'impedance': 6, 'admittance': 7, 'vmc': 6}。原archive/固定终端等待继续，无重启、新训练或预算延长。
+- 完整91/loss/health/终端诊断、冻结90全90/raw/paired仍待；90—92绑定准备保持，无完整窗口统计/自动92/Direct34，未收敛。全部旧失败、Direct原结论及指定ESN缺失保持。
+- GPU120样本min[64, 68, 69, 65]%、低于50[0, 0, 0, 0]，科学结束仍守护；SSD27成员/SHA6d41a5bc，HDD仅254字节指针，非全备份。mainbab8faff/baselinef6e8f8c已query/fetch/read，正常发布见收据；Goal active，无子agent。
+
+## 2026-10-30 — 原91继续；90—92稳定性实际90输入绑定通过
+
+- [交接](RL_VIOLATION91_STABILITY_READY_20261030.md)。原90—92方案/hash/5%/nearzero1/5000bootstrap不变；新绑定以准确父+实际新增步数替代早期固定41250假设，实际90 I40752/29完整+1安全中止、A/V41250及30分母/reward/loss/原55契约通过。真实缺91拒绝，无完整窗口统计/REGISTRATION、无92派发。
+- 原91/冻结90/archive/固定终端等待及guard持续，300.117s/105身份保持，总steps{'impedance': 3751608, 'admittance': 3754455, 'vmc': 3755041}，冻结完成{'impedance': 5, 'admittance': 5, 'vmc': 5}。完整91及冻结90全90/raw/paired仍待，未收敛。
+- GPU67样本min[70, 68, 71, 68]%、低于50[0, 0, 0, 0]，科学结束仍守护；SSD31成员/SHAbd827cd7，HDD仅254字节指针，非全备份。main20c5b5fc/baselinef6e8f8c实际query/fetch/read，正常发布见收据；Goal active，无子agent，全部旧失败保持。
+
+## 2026-10-30 — 原91继续；固定87终端跟踪91已登记
+
+- [交接](RL_VIOLATION91_TERMINAL_FOLLOWUP_20261030.md)。原7813终端/all5/原masks，87—90保存算术及52 raw输入精确；真实缺完整91拒绝。专用91边界按实际90 steps，三份startup架构/partial拒绝和27负例通过；check91路径类型错误原件保留，v2仅Path转换修复，无新forward/physics/update。
+- 唯一等待器1706570沿原archive截止；原91/冻结90继续，180.075s/105身份保持，总steps{'impedance': 3745137, 'admittance': 3747935, 'vmc': 3748645}。完整91/新终端诊断及冻结90全90/raw/paired待，未收敛、无自动92/Direct34。
+- GPU86样本min[65, 66, 68, 69]%、低于50[0, 0, 0, 0]，科研结束仍守护；冻结完成{'impedance': 4, 'admittance': 4, 'vmc': 4}。SSD41成员/SHAc1ca2d5c核验，HDD仅254字节指针、非全备份。main6a0ff687/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，全部失败保持。
+
+## 2026-10-30 — 原91固定前5000审查；I/V尖峰保留
+
+- [交接](RL_VIOLATION91_PREFIX_20261030.md)。准确完整90边界、固定5000原字节/保存算术/六栏实际图通过。critic首末I1.764565→1.638681、A1.145342→1.161649、V.764069→.798559；I/V最大25.0458/21.4508，I actor继续上移。仅早期有限值，非loss健康或reward收敛；无新训练派发/自动92/Direct34。
+- 原91/冻结90/消费者继续，180.075s/104身份保持；steps{'impedance': 3737955, 'admittance': 3740715, 'vmc': 3741559}，冻结完成{'impedance': 2, 'admittance': 3, 'vmc': 2}。完整91及冻结90全90/raw/paired仍待，所有旧失败保持。
+- GPU41样本min[69, 67, 67, 71]%、低于50[0, 0, 0, 0]，科研结束仍守护；SSD29成员/SHA5322b2e3核验、HDD仅254字节指针，非全备份。maine0842d5f/baselinef6e8f8c实际query/fetch/read（首次TLS失败重试成功），正常发布见收据；Goal active，无子agent。
+
+## 2026-10-30 — 完整90精确恢复；同52修订有限91实际运行
+
+- [交接](RL_VIOLATION91_ONLINE_20261030.md)。依据完整90混合结果及I安全中止单独登记91，trainer与实际90逐字相同，原52/actor49/历史/Adam/RNG及全部协议保持，无自动92/Direct34。108负例、6真实batch65536 clone重复恢复通过；I按实际3729700父行保留中止，loss边界不假定41250。
+- 实际startup旧52全回放/新bit-history-clock/action/reward0误差、30MJB/30sampler通过；120.129s/99身份保持，总steps{'impedance': 3734112, 'admittance': 3736866, 'vmc': 3737781}。完整91、reward稳定和loss健康待；原90冻结完成数{'impedance': 2, 'admittance': 2, 'vmc': 2}继续，最终全90/raw/paired待。
+- GPU135样本min[69, 68, 69, 65]%、低于50[0, 0, 0, 0]，科研结束仍保载。SSD122成员/SHA922a8c73核验、HDD仅254字节指针，非HDD/arm1全备份。main697d2d5b/baselinef6e8f8c2已query/fetch/read，正常发布见收据；Goal active，无子agent，所有旧失败保留。
+
+## 2026-10-30 — 完整90与安全中止已审；冻结90全90实际启动
+
+- [交接](RL_COMPLETE90_FROZEN90_20261030.md)。I40752/A,V41250新步，全旧replay及新52输入/动作/reward0误差；Task/Strict17/16、14/14、17/17。I long0000在35.08s全局穿透安全中止（97.91mm），外部bit0不覆盖该失败；原分母保留。critic末段下降但I尖峰/actor漂移，未收敛。
+- 固定87旧终端all5 masked SSE：I−83.45%、A+9.70%、V+146.79%；所有退化保留，全state/RNG不变。全90训练对照及四实际图通过；首解释脚本路径类型失败/v2修复原件保留。完整90三份冻结check-only通过，有限全90实际派发及90.02s启动观察通过；最终raw/88→90配对/内存证明待。
+- 原90/archive/终端等待正常结束勿重启，无91/Direct34；GPU315样本min[77, 67, 67, 65]%、低于50[0, 0, 0, 0]，科研结束仍保载。SSD144成员/SHAd26d47a2核验、HDD仅254字节指针，非HDD/arm1全备份。maind8f15b89/baselinef6e8f8c2已query/fetch/read，正常发布见收据；Goal active，无子agent。
+
+## 2026-10-30 — 冻结88全部90评测与raw/配对审计完成
+
+- [交接](RL_FROZEN88_COMPLETE_20261030.md)。原三路各30、123750动作/99000000子步，final full learner/replay不变、0updates；原evaluator/collector/postprocessor正常结束勿重启。Task/Strict分别[(18, 17), (16, 15), (17, 17)]，全90 raw/reward/力矩/接触分母与82→88配对/保存算术通过，实际图已查看，全部失败保留，非泛化/收敛。
+- 原90/归档/固定87终端等待器继续，总steps{'impedance': 3720281, 'admittance': 3722579, 'vmc': 3723505}；完整90与健康稳定待。无自动91/Direct34，指定ESN仍缺。GPU176采样min[75, 68, 67, 66]%、低于50[0, 0, 0, 0]，科研结束仍保载，非科研吞吐。
+- SSD164成员/SHAe709de07核验，HDD仅254字节指针、非HDD/arm1全备份。maindd548140/baselinef6e8f8c2已query/fetch/read；正常发布见收据，Goal active，无子agent，全部历史失败保留。
+
+## 2026-10-30 — 原90继续；固定87全部终端跟踪90已登记
+
+- [交接](RL_VIOLATION90_TERMINAL_FOLLOWUP_20261030.md)。固定原87全部7813终端/all5/原masks，旧87/88/89保存算术精确；新增52输入与raw bit/历史逐位绑定通过，真实缺完整90拒绝。唯一等待器2283008沿原archive截止等待，无新forward/physics/update、无90新终端结果或自动91。
+- Direct原数值验收及冻结33全30 Task/Strict0/0、旧28最终内存证明缺失复核保留，不额外启动34。原90/冻结88持续，180.067秒/105身份保持，总steps{'impedance': 3706926, 'admittance': 3709226, 'vmc': 3710237}，完整结果与健康收敛仍待。
+- GPU65样本min[78, 66, 64, 70]%、低于50[0, 0, 0, 0]，科研结束仍保载；冻结88完成数{'impedance': 28, 'admittance': 27, 'vmc': 27}。SSD40成员/SHAd075b260核验，非HDD/arm1全备份。main4b19b5f9/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无子agent，所有历史失败保留。
+
+## 2026-10-30 — 已学90违规位冻结接口通过；首5000 loss保留尖峰
+
+- [交接](RL_VIOLATION90_FROZEN_READY_20261030.md)。实际partial90三份全learner/replay恢复、双marker/非零bit及Adam、1375 native与外部RNG精确重放/terminal bit/actor49隔离通过，8271记录动作、0新physics/update。完整90冻结全90预登记及缺前置真实拒绝，最终恢复/评测仍待；不把partial当complete。
+- 三路固定前5000原字节/保存标量/实际六栏图通过。critic首末I1.990384→2.029705、A1.367704→1.220512、V1.013427→.812925；I尖峰34.85与actor漂移保留，非收敛。原90/88冻结继续，180.063秒/104身份保持，总steps{'impedance': 3699865, 'admittance': 3702178, 'vmc': 3703149}。
+- GPU59采样min[78, 66, 71, 69]%、低于50[0, 0, 0, 0]，科研结束仍保载；冻结88完成数{'impedance': 27, 'admittance': 26, 'vmc': 26}，最终全90/raw/paired待。SSD78成员/SHAc772c15f核验，非HDD/arm1全备份。maincb2631f0/baselinef6e8f8c已query/fetch/read，发布见收据；Goal active，无自动91/Direct34，无子agent。
+
+## 2026-10-30 — 违规位 critic 有限90实际训练
+
+- [交接](RL_VIOLATION90_ONLINE_20261030.md)。完整89退化与原88—90 A/V失败均保留；单独登记一个52维违规位在线90，不导入离线权重，保持已学history/Adam/双marker、actor49及原全部科学协议。93负例/6原生clone重复恢复通过；新90—92仅统计预登记，不自动91/92/Direct34。
+- 实际startup全部旧52维前缀/新current-next bit/30MJB/CPU/reward0误差通过；120.041秒/99身份保持，总steps{'impedance': 3693373, 'admittance': 3695763, 'vmc': 3696815}。完整archive/review/health/loss消费者继续，未收敛。首次注册路径错误原件保留。
+- 原冻结88完成数{'impedance': 25, 'admittance': 25, 'vmc': 24}继续，最终全90/raw/paired待。GPU162样本min[78, 68, 66, 68]%、低于50[0, 0, 0, 0]，科研结束仍保载；SSD136成员/SHA477cbcc2核验，非HDD/arm1全备份。mainef822738/baselinef6e8f8c已query/fetch/read，发布见收据；无子agent，Goal active。
+
+## 2026-10-30 — 完整89违规位训练恢复、原生更新及消费端预检通过
+
+- [交接](RL_HISTORY89_VIOLATION_PIPELINE_20261030.md)。准确89科学元数据逆迁移、52全state/replay落盘、生成训练器原样恢复AST通过；源码仅新增bit保存、准备拒绝和修订floor90。69拒绝，三份真实batch65536共6次clone更新重复/序列化精确、bit梯度和target引用通过，最终全state/RNG恢复；没有执行完整物理训练循环。
+- 实际完整冻结evaluator check-only三路及原完整health诊断通过，原89 terminal/sample诊断字段精确、实际图已查看。0正式update/physics；真正有限90科学决定/driver/startup/full消费者仍待，无90/Direct34，失败窗口保持、未收敛。
+- 原冻结88完成数{'impedance': 22, 'admittance': 22, 'vmc': 21}，原评测/后处理继续；GPU137样本min[69, 75, 65, 76]%、低于50[0, 0, 0, 0]，科研结束仍守护。SSD83成员/SHAea381917核验，非HDD/arm1全备份。main46772a18/baselinef6e8f8c已query/fetch/read，发布见收据，无子agent，Goal active。
+
+## 2026-10-30 — 完整89违规位全量保存、GPU cache及完整消费者通过
+
+- [交接](RL_HISTORY89_VIOLATION_CONSUMERS_20261030.md)。三份52维full snapshot磁盘重载、11072448旧行/learner/Adam逆迁移精确、实际4m GPU cache下一65536/RNG、可丢弃append/mask/fallback通过；大快照SSD、非在线90 checkpoint。
+- 同完整89三条short0600各1375+terminal，原51与新52的观测/raw/mixed/context/clock/terminal/外部RNG精确，全部learner/RNG/replay不变；全部7993终端all5 online/target及原projection精确。真实跨bit门，0physics/正式update。trainer/eval/health正式调度和有限90仍待，原失败窗口保持，未收敛。
+- 原冻结88完成数{'impedance': 20, 'admittance': 19, 'vmc': 19}，原评测/后处理继续。GPU129样本min[68, 73, 67, 75]%、低于50[0, 0, 0, 0]；用户明确科研结束也继续守护。SSD50成员/SHAc2f52675核验，非HDD/arm1全备份。main72d318a5→cea807d8/baselinef6e8f8c已query/fetch/read/ff，正常发布见收据，无子agent，Goal active。
+
 ## 2026-10-30 — 完整89因果违规位数据与持久化初始接口通过
 
 - [交接](RL_HISTORY89_VIOLATION_INTERFACE_20261030.md)。原87 prefix精确保留，88/89新增247500 raw历史及逐标量复算通过；全11072448行原51特征/独立bit对齐，现有回放不改。新critic/replay52、actor49、clock49/history50/bit51、10critic/Adam零列迁移，原history与23/47 marker保持。

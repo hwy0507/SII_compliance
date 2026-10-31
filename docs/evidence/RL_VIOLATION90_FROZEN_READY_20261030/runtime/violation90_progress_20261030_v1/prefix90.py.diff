@@ -1,0 +1,29 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_prefix_followup_20261030_v1/prefix89.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_progress_20261030_v1/prefix90.py
+@@ -5,10 +5,10 @@
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_history_cycle89_20261030_v1';O=D/'prefix5000';O.mkdir()
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_violation_cycle90_20261030_v1';O=D/'prefix5000';O.mkdir()
+ read=lambda p:json.loads(p.read_text())
+ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+-full=read(B/'runs/parameter_history_cycle88_review_20261030_v2/REVIEW.json');previous=read(B/'runs/parameter_history_cycle88_review_20261030_v2/loss/REVIEW.json');assert full['passed'] and previous['passed']
++full=read(B/'runs/parameter_history_cycle89_review_20261030_v1/REVIEW.json');previous=read(B/'runs/parameter_history_cycle89_review_20261030_v1/loss/REVIEW.json');assert full['passed'] and previous['passed']
+ methods={};fig,axes=plt.subplots(3,2,figsize=(14,10),constrained_layout=True)
+ for i,m in enumerate(['impedance','admittance','vmc']):
+  source=R/m/'train/optimizer.jsonl'
+@@ -24,9 +24,9 @@
+    assert np.array_equal(saved[k],v);s=saved[k];stats[k]=dict(first1000=math.fsum(map(float,s[:1000]))/1000,last1000=math.fsum(map(float,s[-1000:]))/1000,mean=math.fsum(map(float,s))/5000,minimum=min(map(float,s)),maximum=max(map(float,s)))
+    assert abs(stats[k]['mean']-float(v.mean()))<1e-10
+  for col,key in enumerate(['agent_train/q_loss','agent_train/actor_loss']):
+-  a=vals[key];ax=axes[i,col];ax.plot(np.arange(1,5001),a,alpha=.45,lw=.35);ax.plot(np.arange(250,5001),np.convolve(a,np.ones(250)/250,'valid'),lw=1,label='250-update mean');ax.set_title(m+' '+key.split('/')[-1]);ax.set_xlabel('First 5000 actual cycle89 updates');ax.grid(alpha=.2);ax.legend()
++  a=vals[key];ax=axes[i,col];ax.plot(np.arange(1,5001),a,alpha=.45,lw=.35);ax.plot(np.arange(250,5001),np.convolve(a,np.ones(250)/250,'valid'),lw=1,label='250-update mean');ax.set_title(m+' '+key.split('/')[-1]);ax.set_xlabel('First 5000 actual cycle90 updates');ax.grid(alpha=.2);ax.legend()
+  with source.open('rb') as f:assert b''.join(next(f) for _ in range(5000))==raw
+- methods[m]=dict(rows=5000,parent_steps=n,first_step=n+1,last_step=n+5000,original_prefix_sha256=sha(target),saved_values_sha256=sha(O/(m+'_values.npz')),all_metrics_finite=True,stats=stats,complete88_last1000=previous['methods'][m]['stats'])
+-fig.suptitle('Cycle89 fixed early prefix; partial training, no convergence claim');fig.savefig(O/'prefix5000.png',dpi=150);plt.close(fig)
+-(O/'REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),methods=methods,plot_sha256=sha(O/'prefix5000.png'),plot_viewed=False,source_prefix_exact=True,independent_saved_scalar_arithmetic=True,physical_steps=0,optimizer_updates=0,convergence_claim=False,limits='All methods fixed first5000 actual updates, selected before reading loss values; no complete episode reward or full-cycle claim. Original88 losses retained separately.'),indent=2)+'\n')
++ methods[m]=dict(rows=5000,parent_steps=n,first_step=n+1,last_step=n+5000,original_prefix_sha256=sha(target),saved_values_sha256=sha(O/(m+'_values.npz')),all_metrics_finite=True,stats=stats,complete89_last1000=previous['methods'][m]['stats'])
++fig.suptitle('Cycle90 fixed early prefix; partial training, no convergence claim');fig.savefig(O/'prefix5000.png',dpi=150);plt.close(fig)
++(O/'REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),methods=methods,plot_sha256=sha(O/'prefix5000.png'),plot_viewed=False,source_prefix_exact=True,independent_saved_scalar_arithmetic=True,physical_steps=0,optimizer_updates=0,convergence_claim=False,limits='All methods fixed first5000 actual updates, selected before reading loss values; no complete episode reward or full-cycle claim. Original89 losses retained separately; architecture changed51 to52, no pooled stability or causal improvement claim.'),indent=2)+'\n')
+ print(json.dumps({m:v['stats']['agent_train/q_loss'] for m,v in methods.items()},indent=2))

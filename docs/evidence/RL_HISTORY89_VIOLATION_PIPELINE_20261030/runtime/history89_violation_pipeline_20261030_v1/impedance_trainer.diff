@@ -1,0 +1,36 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_history_cycle89_20261030_v1/impedance/trainer_registered.py
++++ prepared52
+@@ -189,6 +189,8 @@
+     torch.set_num_threads(1)
+     root, out = args.runtime.resolve(), args.output.resolve()
+     protocol = json.loads(args.registration.read_text())
++    from violation_pipeline import require_online_launch
++    require_online_launch(protocol)
+     if protocol['runtime'] != str(root) or protocol['status'] != 'registered':
+         raise ValueError('Expected registered runtime')
+     if protocol['runtime_sha256'] != sha(root/'RUNTIME.json'):
+@@ -265,6 +267,7 @@
+         recovery_continuation=protocol['post_interruption_continuation'],
+         interruption_recovery=protocol['interrupted_episode_recovery'],
+         history_critic_amendment=protocol['history_critic_amendment'],
++        violation_critic_amendment=protocol['violation_critic_amendment'],
+         registered_trainer_sha256=protocol['post_interruption_continuation']['patched_trainer_sha256'],
+         replay_device_cache=bool(cache_enabled),
+         replay_device_cache_bytes=(sum(v.numel()*v.element_size() for v in replay.arrays.values()) if cache_enabled else 0),
+@@ -296,6 +299,7 @@
+             interruption_recovery=protocol['interrupted_episode_recovery'],
+             recovery_continuation=protocol['post_interruption_continuation'],
+             history_critic_amendment=protocol['history_critic_amendment'],
++            violation_critic_amendment=protocol['violation_critic_amendment'],
+             environment_state_saved=False,
+             resume_semantics='retain completed transitions and learner state; start new episodes after partial boundary'), temporary)
+         temporary.replace(out/'checkpoint_latest.pt')
+@@ -410,7 +414,7 @@
+                        reward_std=float(np.std(returns)), strict_success_rate=float(np.mean(successes)))
+             cycles.append(row)
+             checkpoint_now('complete_condition_cycle')
+-            write(out/'CYCLES.json', dict(cycles=cycles, plateau=plateau_status([c for c in cycles if c['cycle'] >= 88]),
++            write(out/'CYCLES.json', dict(cycles=cycles, plateau=plateau_status([c for c in cycles if c['cycle'] >= 90]),
+                  status='training', sufficient_convergence_claim=False))
+             cycle += 1
+             if args.cycles and cycle-start_cycle >= args.cycles:

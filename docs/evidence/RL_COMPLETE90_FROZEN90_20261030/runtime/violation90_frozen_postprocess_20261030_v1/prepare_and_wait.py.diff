@@ -1,0 +1,36 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history88_frozen_postprocess_20261030_v1/prepare_and_wait.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_frozen_postprocess_20261030_v1/prepare_and_wait.py
+@@ -1,8 +1,8 @@
+-"""Bind actual frozen88 launch and collect all90 saved comparisons/audits once."""
++"""Bind actual frozen90 launch and collect all90 saved comparisons/audits once."""
+ from pathlib import Path
+ import json,hashlib,os,sys,time,subprocess,traceback
+ D=Path(__file__).resolve().parent;B=D.parents[1]
+-O=B/'runs/parameter88_history_frozen_full30_20261030_v1';A=B/'runs/parameter88_history_frozen_saved_audit_20261030_v1';C=O/'comparison82_88'
++O=B/'runs/parameter90_violation_frozen_full30_20261030_v1';A=B/'runs/parameter90_violation_frozen_saved_audit_20261030_v1';C=O/'comparison88_90'
+ os.sched_setaffinity(0,{10})
+ read=lambda p:json.loads(Path(p).read_text())
+ def sha(p):
+@@ -20,11 +20,11 @@
+     pre=read(D/'PRE_REGISTRATION.json');r=pre['current_preregistration'];assert sha(r['path'])==r['sha256']
+     r=pre['prior_review'];assert sha(r['path'])==r['sha256']
+     evaluation=read(O/'PLAN.json');launch=read(O/'REVIEW_LAUNCH.json')
+-    assert evaluation['parent_cycle']==88 and evaluation['case_ids']==pre['case_ids']
++    assert evaluation['parent_cycle']==90 and evaluation['case_ids']==pre['case_ids']
+     assert evaluation['preregistration']['sha256']==pre['current_preregistration']['sha256']
+     assert sha(A/'audit.py')==read(A/'PLAN.json')['source']['sha256']
+     assert not C.exists();C.mkdir()
+-    put(C/'PLAN.json',dict(time=time.time(),source=ref(D/'compare82_88.py'),prior_review=pre['prior_review'],evaluation_plan=ref(O/'PLAN.json'),all90_paired=True,physics_steps=0,optimizer_updates=0))
++    put(C/'PLAN.json',dict(time=time.time(),source=ref(D/'compare88_90.py'),prior_review=pre['prior_review'],evaluation_plan=ref(O/'PLAN.json'),all90_paired=True,physics_steps=0,optimizer_updates=0))
+     put(D/'LAUNCH_BINDING.json',dict(time=time.time(),original_reviewer=launch,evaluation_plan=ref(O/'PLAN.json'),deadline=launch['time']+21600,physics_steps=0,optimizer_updates=0))
+     deadline=launch['time']+21600
+     while True:
+@@ -35,7 +35,7 @@
+         assert time.time()<deadline,'Original frozen review deadline expired; no automatic extension'
+         time.sleep(5)
+     assert read(O/'REVIEW.json')['passed']
+-    for source,logfile in [(D/'compare82_88.py',C/'driver.log'),(A/'audit.py',A/'driver.log')]:
++    for source,logfile in [(D/'compare88_90.py',C/'driver.log'),(A/'audit.py',A/'driver.log')]:
+         with logfile.open('x') as log:
+             subprocess.run([str(B/'env/bin/python'),'-u',str(source)],check=True,stdout=log,stderr=subprocess.STDOUT,timeout=3600)
+     assert read(C/'REVIEW.json')['passed'] and read(C/'SAVED_REVIEW.json')['passed']

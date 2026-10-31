@@ -1,0 +1,35 @@
+"""One finite online90 trial after complete89 and persistent52 evidence."""
+from pathlib import Path
+import sys,json,time,hashlib,ast
+D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_violation_cycle90_20261030_v1';M=B/'runs/history89_violation_pipeline_preflight_20261030_v1';OLD=B/'runs/parameter_history_cycle89_20261030_v1';V=B/'runs/parameter_history_cycle89_review_20261030_v1';S=B/'runs/parameter_violation90_92_reward_stability_20261030_v1'
+sys.path[:0]=[str(D),str(B/'runtime/source_train17_clock/source/tools')]
+from driver import read,sha,put,transform,validate_protocol
+ref=lambda p:dict(path=str(p),sha256=sha(p))
+assert not R.exists()
+required=[V/n for n in ('REVIEW.json','FINISHED.json','health/DIAGNOSIS.json','loss/REVIEW.json','PLOT_INSPECTION.json')]+[M/n for n in ('MIGRATION_REVIEW.json','FINAL_REVIEW.json','RUN_REVIEW.json','TRAINER_DIFF_REVIEW.json','PLOT_INSPECTION.json','HEALTH_PARENT_BINDING_REVIEW.json')]+[B/'runtime/history89_completion_20261030_v1'/n for n in ('INTERPRETATION.json','EARLY_WINDOW_FAILURE.json','BOUNDARY_AND_CONTRIBUTORS_REVIEW.json')]+[B/'runtime/history89_violation_bit_review_20261030_v1/SCIENTIFIC_DECISION.json',B/'runs/history89_violation_bit_paired_fit_20261030_v1/SAVED_REVIEW.json',B/'runs/history89_violation_bit_paired_fit_20261030_v1/PLOT_INSPECTION.json',B/'runtime/history89_violation_interface_20261030_v2/REVIEW.json',B/'runtime/history89_violation_interface_20261030_v2/NUMERICAL_LAYOUT_CORRECTION.json',B/'runtime/history89_violation_consumers_20261030_v1/CONSUMER_REVIEW.json',B/'runs/parameter_history88_90_reward_stability_20261030_v1/REVISION_BOUNDARY_90.json']
+for p in required:
+ x=read(p)
+ if 'passed' in x:assert x['passed'],p
+ if 'actual_visual_inspection' in x:assert x['actual_visual_inspection'],p
+assert read(V/'FINISHED.json')['completed']
+for j in read(OLD/'LAUNCH.json')['jobs']:
+ assert read(OLD/j['controller']/'train/FINISHED.json')['status']=='stopped_at_complete_cycle'
+ q=Path('/proc',str(j['pid']),'stat')
+ if q.exists():f=q.read_text().rsplit(')',1)[1].split();assert f[0]=='Z' or f[19]!=j['proc_start_ticks']
+methods=['impedance','admittance','vmc'];parents={m:read(M/m/'REGISTRATION.json') for m in methods}
+put(S/'PLAN.json',dict(time=time.time(),cycles=[90,91,92],bootstrap_seed=2026102861,replicates=5000,near_zero_guard=1.,relative_limit=.05,source_sha256=sha(S/'audit.py'),review_source_sha256=sha(S/'review_saved.py'),history_amendment={m:p['history_critic_amendment'] for m,p in parents.items()},violation_amendment={m:p['violation_critic_amendment'] for m,p in parents.items()},registration_state='Before any violation90 launch. Only finite90 trial is being decided;91/92 require separate full-cycle reviews and decisions.',automatic_training=False,original88_90_plan=ref(B/'runs/parameter_history88_90_reward_stability_20261030_v1/PLAN.json'),original_failure=ref(B/'runtime/history89_completion_20261030_v1/EARLY_WINDOW_FAILURE.json'),revision_boundary=ref(B/'runs/parameter_history88_90_reward_stability_20261030_v1/REVISION_BOUNDARY_90.json'),scope='All3 future cycles must share raw-violation52 architecture and original scientific contracts. Existing failures preserved. Statistics do not establish loss health or authorize further training.'))
+required.append(S/'PLAN.json')
+put(D/'SCIENTIFIC_DECISION.json',dict(time=time.time(),parent_cycle=89,new_cycle=90,new_cycles=1,maximum_new_actions_per_method=41250,critic_revision='raw_violation52',automatic_followup=False,offline_weights_promoted=False,optimizer_settings_changed=False,reward_physics_changed=False,direct34=False,architecture_final_acceptance=False,convergence_claim=False,evidence=[ref(p) for p in required],reason='Complete89 has all90 full55s/noabort and exact replay/reward, but A loses4 Strict and3Task, V loses1 Strict, and all critic tail means increase. Original88-90 A/V necessary stability conjunct fails and cannot be rescued. A matched zero-input52 versus causal-bit52 offline terminal fit improves total masked loss53.4%/.83%/1.52%, with Icritic0/Acritic1 regressions and A/V spikes retained; this is limited seen-terminal evidence, not policy improvement. Raw causal bits, zero-weight/Adam migration preserving learned history, exact old initial inference via preserved dot-product layout, all full replay/cache/RNG and complete recorded consumers, generated trainer restore, actual batch65536 clone repeats and actual evaluator/health restoration now pass. A single finite41250-action trial per method tests this candidate under unchanged online Bellman objective, original learning rates/reward/masks/UTD, with no fitted weights imported. Critic52 is provisional; actor49 and physics remain frozen. Full90 review and original failures must inform any91 decision.'))
+R.mkdir();jobs=[]
+for job in read(OLD/'COMMANDS.json')['jobs']:
+ m=job['controller'];dest=R/m;dest.mkdir();(dest/'check').mkdir();p=parents[m];old=p['post_interruption_continuation'];cp=M/'archive'/m/'cycle_00089.pt';trainer=OLD/m/'trainer_registered.py';assert sha(cp)==read(M/'MIGRATION_REVIEW.json')['methods'][m]['checkpoint_sha256']
+ p['post_interruption_continuation']=dict(old,parent_cycle=89,new_cycle=90,parent_registration=ref(M/m/'REGISTRATION.json'),checkpoint=ref(cp),cycle_review=ref(V/'REVIEW.json'),health_review=ref(V/'health/DIAGNOSIS.json'),previous_driver=ref(B/'runtime/history89_continuation_20261030_v1/driver.py'),driver_sha256=sha(D/'driver.py'),trainer_path=str(trainer),trainer_sha256=sha(trainer),patched_trainer_sha256=hashlib.sha256(transform(trainer.read_text()).encode()).hexdigest(),loss_review=ref(V/'loss/REVIEW.json'),fixed_terminal_review=ref(B/'runs/history89_fixed87_terminal_followup_20261030_v1/REVIEW.json'),training_pair_review=ref(B/'runtime/history89_completion_20261030_v1/INTERPRETATION.json'),scientific_decision=ref(D/'SCIENTIFIC_DECISION.json'),migration_review=ref(M/'MIGRATION_REVIEW.json'),migration_final_review=ref(M/'FINAL_REVIEW.json'),stability_plan=ref(S/'PLAN.json'),old_window_failure=ref(B/'runtime/history89_completion_20261030_v1/EARLY_WINDOW_FAILURE.json'),physical_semantics='One finite violation52 trial from exact migrated complete89; retain original historical migration amendment and all failed windows. No automatic91 or cross-revision stability pooling.')
+ validate_protocol(p['post_interruption_continuation']['parent_registration']['sha256'],p);put(dest/'REGISTRATION.json',p)
+ cmd=list(job['command']);cmd[1]=str(D/'driver.py')
+ for flag,val in [('--registration',dest/'REGISTRATION.json'),('--resume',cp),('--output',dest/'train')]:cmd[cmd.index(flag)+1]=str(val)
+ jobs.append(dict(controller=m,command=cmd))
+put(R/'COMMANDS.json',dict(jobs=jobs,automatic_training=False))
+for p in D.glob('*.py'):ast.parse(p.read_text())
+put(D/'SOURCES.json',dict(time=time.time(),files={p.name:sha(p) for p in D.glob('*.py')}))
+put(D/'PREFLIGHT_PLAN.json',dict(time=time.time(),sources=ref(D/'SOURCES.json'),parent_cycle=89,new_cycle=90,disposable_native_updates=6,batch=65536,formal_updates=0,physical_steps=0,budget_seconds=1800,automatic_training=False))
+print('Finite90 registered; no physics launched')

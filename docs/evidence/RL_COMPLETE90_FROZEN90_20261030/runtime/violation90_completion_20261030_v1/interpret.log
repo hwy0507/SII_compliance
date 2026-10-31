@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_completion_20261030_v1/interpret90.py", line 16, in <module>
+    for p,h in plan['prior_inputs'].items():assert sha(p)==h
+                                                   ^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_completion_20261030_v1/interpret90.py", line 10, in sha
+    with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+         ^^^^^^
+AttributeError: 'str' object has no attribute 'open'

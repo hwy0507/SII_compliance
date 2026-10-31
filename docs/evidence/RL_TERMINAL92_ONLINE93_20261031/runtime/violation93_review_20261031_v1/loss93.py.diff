@@ -1,0 +1,22 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation92_review_20261030_v1/loss92.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation93_review_20261031_v1/loss93.py
+@@ -6,7 +6,7 @@
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');R=B/'runs/parameter_violation_cycle92_20261030_v1';O=B/'runs/parameter_violation_cycle92_review_20261030_v1/loss';O.mkdir()
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');R=B/'runs/parameter_violation_cycle93_20261031_v1';O=B/'runs/parameter_violation_cycle93_review_20261031_v1/loss';O.mkdir()
+ read=lambda p:json.loads(p.read_text())
+ def sha(p):
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+@@ -23,7 +23,7 @@
+    a=saved[key];stats[key]=dict(first1000_mean=math.fsum(map(float,a[:1000]))/min(1000,len(a)),last1000_mean=math.fsum(map(float,a[-1000:]))/min(1000,len(a)),mean=math.fsum(map(float,a))/len(a),maximum=max(map(float,a)),minimum=min(map(float,a)))
+    assert abs(stats[key]['mean']-float(a.mean()))<1e-10
+  for col,key in enumerate(['agent_train/q_loss','agent_train/actor_loss']):
+-  a=values[key];ax=axes[i,col];ax.plot(np.arange(len(a)),a,lw=.3,alpha=.5);ax.plot(np.arange(min(500,len(a))-1,len(a)),np.convolve(a,np.ones(min(500,len(a)))/min(500,len(a)),'valid'),lw=1);ax.set_title(m+' '+key.split('/')[-1]);ax.set_xlabel('New violation92 updates');ax.grid(alpha=.2)
++  a=values[key];ax=axes[i,col];ax.plot(np.arange(len(a)),a,lw=.3,alpha=.5);ax.plot(np.arange(min(500,len(a))-1,len(a)),np.convolve(a,np.ones(min(500,len(a)))/min(500,len(a)),'valid'),lw=1);ax.set_title(m+' '+key.split('/')[-1]);ax.set_xlabel('New violation93 updates');ax.grid(alpha=.2)
+  methods[m]=dict(rows=len(rows),endpoint_window_count=min(1000,len(rows)),optimizer_log_sha256=sha(p),all_saved_losses_sha256=sha(O/(m+'_all_losses.npz')),all_finite=True,stats=stats)
+-fig.tight_layout();fig.savefig(O/'loss92.png',dpi=150);plt.close(fig)
+-(O/'REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),methods=methods,independent_saved_scalar_means_checked=True,plot_sha256=sha(O/'loss92.png'),plot_viewed=False,convergence_claim=False,scope='All actual contiguous updates per method (max41250); abort lengths retained; prior revision failures retained; no cross-revision stability claim'),indent=2)+'\n')
++fig.tight_layout();fig.savefig(O/'loss93.png',dpi=150);plt.close(fig)
++(O/'REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),methods=methods,independent_saved_scalar_means_checked=True,plot_sha256=sha(O/'loss93.png'),plot_viewed=False,convergence_claim=False,scope='All actual contiguous updates per method (max41250); abort lengths retained; prior revision failures retained; no cross-revision stability claim'),indent=2)+'\n')

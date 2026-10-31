@@ -23,3 +23,6 @@
 2026-10-31 本轮容器实际 cgroup 为 `app-org.chromium.Chromium-1534058.scope`：`memory.max=max`、`memory.swap.max=max`、`cpu.max`与有效cpuset不可读，affinity 为 CPU 0–23；读取时cgroup `memory.current=1089753088`、`memory.swap.current=5459968`，主机swap已使用2097112/2097148 KiB。`systemctl --user` 返回 bus `Operation not permitted`，NVIDIA driver不可访问。当前环境不符合登记的 CPU6、单线程、MemoryMax 3 GiB、swap 0 资源约束，故未运行物理 episode，也未生成任何 final108 结果。向自动审批申请建立无仿真的 user-systemd 资源预检 scope 被拒，给出的理由是当前环境显式只读且approval policy=never；按拒绝要求没有改用其他执行通道。需在获准的受限本机执行环境通过资源检查后，才可以对v3登记运行一次；基础设施失败及科学失败都须保留，不得在同一目录自动重试。
 
 最初一次 GitHub 查询失败；随后恢复只读查询并 fetch，读取到 `main=d9507f2f319856428246018c77922a9fc1425aaf`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。main 新增的 history89 RL 接口与证据更新未改本专题冻结条件、模型或登记，与本轮无冲突。本轮提交 `72d318a5a3a9cdbc94744da4b3c5964f670d3817` 已推送并从远端核验；登记 JSON 远端 SHA256 为 `e4f3b353eb45c4b672fc666154b9a90628bea604964f1e714f3ace4d9e5b88b6`。baseline 未修改。
+## 本轮续接状态
+
+2026-10-31，v2控制审计通过，审计脚本、控制收据与本进度更新已准备并随本轮提交发布。用户已明确批准使用SSH将本轮必要产物归档到共享服务器独立目录并逐文件校验SHA256；只读检查确认共享根存在、目标目录 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_final108_v2_controls_20261031_v1/` 在归档前不存在。SSH访问已恢复。GitHub远端main `9bd8d0d8ce202f1a147e5aa5736fcf88e74bb96d` 与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 已查询，main远端更新已合并；发布和归档需在本轮最终提交后完成。final108仍未派发，测试完成度0/108。

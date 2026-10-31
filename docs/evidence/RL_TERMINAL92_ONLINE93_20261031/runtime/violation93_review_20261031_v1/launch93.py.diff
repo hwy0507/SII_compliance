@@ -1,0 +1,28 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation92_review_20261030_v1/launch92.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation93_review_20261031_v1/launch93.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import sys,os,json,time,subprocess,hashlib,ast
+-D=Path(__file__).resolve().parent;B=D.parents[1];P=B/'runtime/violation92_continuation_20261030_v1';R=B/'runs/parameter_violation_cycle92_20261030_v1';O=B/'runs/parameter_violation_cycle92_review_20261030_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];P=B/'runtime/violation93_continuation_20261031_v1';R=B/'runs/parameter_violation_cycle93_20261031_v1';O=B/'runs/parameter_violation_cycle93_review_20261031_v1'
+ sys.path[:0]=[str(P),str(B/'runtime/source_train17_clock/source/tools')]
+ from driver import read,put,sha,validate_protocol
+ 
+@@ -18,7 +18,7 @@
+   ck=read(R/m/'CHECK_ONLY_REVIEW.json');initial=read(R/m/'check/INITIAL_STATE_REVIEW.json')
+   assert ck['passed'] and ck['registration_sha256']==sha(R/m/'REGISTRATION.json') and ck['checkpoint_sha256']==st['checkpoint']['sha256']==sha(st['checkpoint']['path'])
+   assert ck['repeat_native_update_full_state_exact'] and ck['original_state_restored'] and ck['disposable_restored_clone_updates']==2 and ck['new_physics']==ck['actual_formal_updates']==0
+-  assert initial['passed'] and initial['full_trained91_learner_and_replay_exact'] and initial['learned_history_weights_and_adam_retained'] and initial['learned_violation_weights_and_adam_retained']
++  assert initial['passed'] and initial['full_trained92_learner_and_replay_exact'] and initial['learned_history_weights_and_adam_retained'] and initial['learned_violation_weights_and_adam_retained']
+  for pid,tick in [(97370,'570509460'),(97399,'570509475'),(97400,'570509475'),(97401,'570509475'),(97402,'570509475'),(283421,'576955693'),(283428,'576955694'),(283430,'576955694'),(283433,'576955694'),(292743,'576957672')]:assert identity(pid)==tick
+  assert not Path('/tmp/sii_gpu_util_guard_20261030_v7/STOP').exists()
+  for j in read(P/'PREFLIGHT_PROCESSES.json')['jobs'].values():
+@@ -36,7 +36,7 @@
+   with (R/(j['controller']+'_driver.log')).open('x') as f:p=subprocess.Popen(j['command'],stdout=f,stderr=subprocess.STDOUT,env=env,start_new_session=True,cwd=P)
+   j.update(pid=p.pid,proc_start_ticks=identity(p.pid),time=time.time())
+  put(R/'LAUNCH.json',dict(time=time.time(),jobs=jobs,new_cycles=1,automatic_followup=False,maximum_new_actions_per_method=41250))
+- for name,script in [('MONITOR','archive92.py'),('STARTUP','startup92.py'),('OBSERVER','observe92.py')]:
++ for name,script in [('MONITOR','archive93.py'),('STARTUP','startup93.py'),('OBSERVER','observe93.py')]:
+   with (R/(name.lower()+'.log')).open('x') as f:p=subprocess.Popen([str(B/'env/bin/python'),str(D/script)],stdout=f,stderr=subprocess.STDOUT,env=env,start_new_session=True,cwd=D)
+   put(R/(name+'_LAUNCH.json'),dict(time=time.time(),pid=p.pid,proc_start_ticks=identity(p.pid),script_sha256=sha(D/script)))
+  print(json.dumps(jobs,indent=2))

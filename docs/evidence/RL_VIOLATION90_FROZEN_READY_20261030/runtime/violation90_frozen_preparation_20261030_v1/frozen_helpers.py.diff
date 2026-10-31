@@ -1,0 +1,24 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/history89_violation_pipeline_20261030_v1/frozen_helpers.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/violation90_frozen_preparation_20261030_v1/frozen_helpers.py
+@@ -147,9 +147,16 @@
+             learner.consume_interval(row['interval'])
+             obs, raw, action, context = learner.act(row['observation'], step=ck['steps'], deterministic=False)
+             assert obs.shape == (52,) and obs[49] == np.float32((1375-index)/1375)
++            from persisted_history_critic import feature
++            peak = 0. if row['interval'] is None else row['interval']['external_penetration_peak_m']
++            assert obs[50] == feature(peak) and obs[51] == float(peak > .0002)
+             np.testing.assert_allclose(action, row['action'], rtol=0, atol=1e-7)
+             max_error = max(max_error, float(np.max(abs(action-np.asarray(row['action'])))))
+         learner.consume_interval(terminal['interval'])
++        terminal_obs = learner.terminal_observation(obs)
++        peak = terminal['interval']['external_penetration_peak_m']
++        assert terminal_obs[49] == np.float32((1375-len(rows))/1375)
++        assert terminal_obs[50] == feature(peak) and terminal_obs[51] == float(peak > .0002)
+     finally:
+         restore_rng(learner, original)
+     assert digest(learner.state_dict()) == initial
+@@ -172,4 +179,3 @@
+                 external_penetration_mm=rollout['stats']['max_external_penetration_m']*1000,
+                 native_stochastic_parameter_action_max_error=max_error,
+                 full_learner_state_unchanged=True, new_optimizer_updates=0, new_physics=0)
+-
