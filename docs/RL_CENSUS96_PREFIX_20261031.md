@@ -1,0 +1,55 @@
+# 第96轮前缀审查与完整95全部终端参考
+
+第96轮原三路训练、90sampler和修正版archive继续；本轮零新增科学训练派发，所有诊断零physics/optimizer更新。Goal active，reward平稳和原loss健康的联合收敛验收未完成。
+
+## 固定first5000原始loss
+
+在读取本轮loss数值前锁定每方法前5000次更新，原JSONL前缀逐字保存并再次回读相等，step连续/update_index0，全部metrics有限。保存NPZ逐字段精确，math.fsum独立首末1000/均值/极值与NumPy结果核验通过。原抽样、条件估计、actor九栏图已实际查看，收据 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_prefix_20261031_v1/PLOT_INSPECTION.json`。
+
+|方法|原loss首1000|原loss末1000|原loss最大|条件估计最大|actor首→末1000|
+|---|---:|---:|---:|---:|---:|
+|impedance|0.945483540|0.952090118|1.655311108|1.474849820|28.243008→28.326713|
+|admittance|1.018767020|1.031450979|1.464031458|1.464716315|-7.330913→-7.313997|
+|vmc|0.732185915|0.742312380|1.300890923|1.302131057|-9.791862→-9.756796|
+
+
+原loss均值I.951134/A1.024960/V.739975。I仍有重复尖峰、均值接近水平，actor逐渐上移；A/V原loss首末均值略升，actor也略向上变化。此前缀未见非有限值或接近0的loss坍塌，不代表完整96健康或收敛。原sampled_q_loss与conditional_terminal_q_loss分别保留，不能用后者替代健康口径；health4096 TD仍是未投影固定min-pair诊断，与正式投影/I-min/A-V-mean目标不同。
+
+first5000 terminal_population恒为2845/2844/2844，没有新增终端；这不是终端cache实际增长证明。完整95原loss尖峰、A long0900 Task/Strict失去、部分critic/样本退化和全部历史失败保留。
+
+## 全部8533终端参考与精确恢复
+
+`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census96_fixed95_terminal_20261031_v1/REFERENCE_PLAN.json` 在CPU推理前登记完整95所有done行：I2845/A2844/V2844，共8533，1200秒有限预算、CPU11、全5critic/原mask。完整95checkpoint、协议、全部来源与runtime哈希绑定，严格恢复完整learner/Adam/replay/RNG，推理前后digest和checkpoint hash不变、无梯度。
+
+完整95参考的masked SSE总量I591.506459/A155.162374/V89.453603；其中新增95终端分别32.124715/23.291275/1.965561，旧≤94部分仍精确对应559.381744/131.871098/87.488042。全部保存数组另用独立标量分组复算通过（REFERENCE_GROUP_REVIEW），不是96改善结果。
+
+旧8443条输入、动作、reward、masks与上次固定94数据逐元素相同，full95预测与保存complete95精确相等；新95的90条终端从剩余全部done索引提取，与原transition step/condition/reward和完整30episode标签/1375步/55s/无abort逐项绑定。保存indices/obs52/actions/rewards/masks/cycles/conditions/initial_prediction，回读逐值及独立标量masked和all-row SSE核验通过，不筛选低误差样本。
+
+CPU forward保留原≤93块和新增94块的形状，再加入新增95第三块；96比较也使用相同三块，避免把批形状数值差异当成权重变化。历史79/90/92中止和93放置失败3851694原索引/标签保持。这里只构建完整95参考，没有训练或推广辅助权重，不是96预测结果或独立泛化证明。
+
+## 完整96比较与拒绝保护
+
+`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census96_fixed95_terminal_20261031_v1/PLAN.json` 绑定全部参考hash、真实96协议、完整95审查、30份96原锁定源码；消费者 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_prefix_20261031_v1/terminal96.py` 与 `wait_terminal96.py`。全baseline保存算术预检通过，缺完整96拒绝；三份真实startup_repaired96快照通过架构校验但complete=True均被拒绝，未把partial当完成。
+
+后续须等待完整96的review/health/loss/FINISHED，严格加载全state，核验所有保留95终端索引/字段，输出all5 masked及all-row SSE、≤94旧组/新95组、所有逐行预测、已知失败与退化计数及最大20行，保存后再独立复算。最终图仍须实际查看。**完整96固定终端比较尚未运行。**
+
+唯一等待器PID630628/start197966164；绑定修正版archive PID33045/start197863908，实际身份以PLAN原件为准，截止继续使用原96 archive启动+14400秒，完成后分析预算1200秒，无自动97/Direct34。原startup/review中gamma误写.9996的失败仍在，实际训练保持.9995；修复仅更换只读消费者，原训练/采样/guard未重启。本轮适配额外核对全部浮点常量不变、历史93索引、真实文件名和checkpoint轮次。
+
+## 持续训练与尚未完成
+
+99身份（原3learner、90sampler、5guard及此前已替换archive）连续180.165s/19样本保持，steps增长{'impedance': 1716, 'admittance': 1716, 'vmc': 1624}。完整96、真实新终端增长、全loss/图与全90条件比较及原94–96九组输入绑定/统计仍待。
+
+原窗口94–96、5%/nearzero1/5000bootstrap/seed2026102861保持，原意向在94启动后首完整回合前登记。A94→95相对reward变化19.7689%已经违反原5%必要条件，不能移动窗口或抹去失败。4m回放足够完整96，96后I/A/V余量23488/20000/19000，完整97无法容纳，须另作容量决定，不覆盖旧回放。
+
+原physics/MJB/Task/Strict/canonical48/filter/执行器限制/dt5e−5、actor49/critic52/clock/history/rawbit、原LR/reward/masks/terminal128/batch65536/UTD1及census/容量23和47标记不变。中断保全最新96 partial权重/Adam/RNG/replay/journals，另登记恢复，不回退95或重跑整轮96；MuJoCo物理state未保存。
+
+Direct33原数值验收保持但冻结全30 Task/Strict0/0；旧28缺完整memory-invariance证明、恢复2已证，指定ESN仍缺，最终独立对比未完成。原90–92和之后全部失败均保留。
+
+
+## GPU、保存与来源
+
+实际主机 `rltest-1025--a6ed2ff39b3c-cn2p6rygmr`，共享SSD `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`，解释器 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python`。开工实际query/fetch/read main `8dbc07f96943d26ba3e6d6f71f74cb3079066a0f`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，按仓库sii-research-sync保存。代码 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_prefix_20261031_v1`，参考与比较 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/census96_fixed95_terminal_20261031_v1`，原训练 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census_cycle96_20261031_v1`。
+
+独立guard `/tmp/sii_gpu_util_guard_20261031_recovery_v1` 科学结束后继续，不创建STOP，非系统重启服务。当前窗口74样本/371.490s，最低[72, 69, 67, 69]%、低于50[0, 0, 0, 0]、末值[78, 91, 91, 94]%；含synthetic guard，不等于科学吞吐或瞬时保证，旧主机切换0%保留。保存总steps{'impedance': 3947722, 'admittance': 3951215, 'vmc': 3951942}。
+
+小证据包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_CENSUS96_PREFIX_20261031/SMALL_EVIDENCE.tar.gz`，52成员/3833408字节，SHA256 `12b5a2ed9d254cf9501facf755b1f1299aabc1695e0bdaa53849a2147de3a2ca`，逐tar成员/源码AST/JSON核验。包含固定first5000原始指标、数组、实际图和全部8533参考数组；大型checkpoint/raw仅共享SSD。HDD配额满仅254字节LATEST原地更新回读，非HDD/arm1全备份。发布与字节核验 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_CENSUS96_PREFIX_20261031/GIT_BYTES_REVIEW.json`、`PUBLICATION.json`。

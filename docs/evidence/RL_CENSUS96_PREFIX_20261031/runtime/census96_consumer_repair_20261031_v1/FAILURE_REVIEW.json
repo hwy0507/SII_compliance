@@ -1,0 +1,19 @@
+{
+  "time": 1793437233.299378,
+  "original_startup_launch": {
+    "time": 1793436815.345341,
+    "pid": 3978085,
+    "proc_start_ticks": "197820664",
+    "script_sha256": "83481cdd2ea6fa16d289b2b766f6b1f733e22ed21864808334c984e27ea85c97"
+  },
+  "startup_log_sha256": "9a9ec5ce3f54294fe616889a6dba980c154b843d65baf63cd262e1a0ef09fd65",
+  "startup_traceback": "Traceback (most recent call last):\n  File \"/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1/startup96.py\", line 49, in <module>\n    assert s['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9996,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "original_observer_failure": {
+    "error": "FileNotFoundError(2, 'No such file or directory')",
+    "traceback": "Traceback (most recent call last):\n  File \"/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1/observe96.py\", line 13, in <module>\n    for j in jobs+[monitor,startup]:check(j)\n                                    ^^^^^^^^\n  File \"/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1/observe96.py\", line 9, in check\n    def check(j):assert identity(j['pid'])['start']==j.get('start',j.get('proc_start_ticks'))\n                        ^^^^^^^^^^^^^^^^^^\n  File \"/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census96_continuation_20261031_v1/observe96.py\", line 8, in identity\n    f=Path(f'/proc/{pid}/stat').read_text().rsplit(')',1)[1].split();assert f[0]!='Z';return dict(pid=pid,start=f[19])\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/pathlib.py\", line 1058, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/pathlib.py\", line 1044, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/proc/3978085/stat'\n"
+  },
+  "observer_failure_sha256": "90d41543b09773b4326e47fd6eebdd19919006d5017f6a8c7ecb6fa0f6f35f72",
+  "cause": "Cycle-label adaptation accidentally changed diagnostic expected gamma0.9995 to0.9996 in startup and complete reviewer. Actual trainers label-only and helpers byte-identical; checkpoints retain0.9995. Failure retained. No learner restart or state change.",
+  "training_restarted": false,
+  "guard_restarted": false
+}
