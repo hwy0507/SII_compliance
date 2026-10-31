@@ -1,3 +1,10 @@
+## 2026-10-31 — 完整99准确恢复，有限100上线；新100–102意向固定
+
+- [交接](docs/RL_CENSUS100_ONLINE_20261031.md)。三路精确99全state/replay/Adam/RNG恢复，120负例/6隔离native更新恢复/三CPU/资源/协议检查通过；实际trainer仅预算文字，health字节不变。初次fstring路径拒绝及修复证据保留。
+- startup新增{'impedance': 1000, 'admittance': 1000, 'vmc': 2000}、旧回放/新52/reward/context/30MJB/30sampler通过；99身份连续120.278s保持，steps增长{'impedance': 1066, 'admittance': 1063, 'vmc': 1064}。三正式/archive继续，固定8893原mask终端消费者等待；I99新中止明确跟踪。
+- 原97–99三路失败不移窗口，新100–102在100启动前固定，原标准/历史失败保留；101/102仍须独立登记，无自动派发。完整100/联合收敛、指定ESN/最终比较待，Direct33原验收及冻结0/0/历史缺口保持，Goal active。
+- GPU175样本min[75, 67, 70, 69]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD165成员/SHA0024c2a8，HDD仅指针。开工maine2f63775/baselinef6e8f8c2已query/fetch/read。
+
 ## 2026-10-31 — 完整99与原97–99已审：三路稳定性失败，阻抗新中止与loss尖峰保留
 
 - [交接](docs/RL_CENSUS99_COMPLETE_WINDOW_20261031.md)。原99全部作业正常完成；I40882新步/29完整+1中止、A/V各41250/30完整，Task/Strict17/16、15/14、17/16。全部旧回放/新52/reward/context、123382 loss行/数组/算术与五实际图通过，原loss最大22.261616/1.626923/2.861036，非健康收敛。

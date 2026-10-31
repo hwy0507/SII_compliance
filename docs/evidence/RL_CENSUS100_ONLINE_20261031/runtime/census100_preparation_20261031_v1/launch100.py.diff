@@ -1,0 +1,53 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census99_continuation_20261031_v1/launch99.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census100_continuation_20261031_v1/launch100.py
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import sys,os,json,time,subprocess,traceback
+-D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle99_20261031_v1';O=B/'runs/parameter_census_cycle99_review_20261031_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];R=B/'runs/parameter_census_cycle100_20261031_v1';O=B/'runs/parameter_census_cycle100_review_20261031_v1'
+ sys.path.insert(0,str(D));from driver import read,put,sha,validate_protocol
+ 
+ def identity(pid):
+@@ -8,7 +8,7 @@
+ def gate():
+  assert not (R/'LAUNCH.json').exists()
+  for n,h in read(D/'SOURCES.json')['files'].items():assert sha(D/n)==h
+- assert read(D/'CPU_CONSUMER_REVIEW.json')['passed'] and read(D/'WINDOW97_99_PROTOCOL_REVIEW.json')['passed']
++ assert read(D/'CPU_CONSUMER_REVIEW.json')['passed'] and read(D/'WINDOW100_102_PROTOCOL_REVIEW.json')['passed']
+  assert read(D/'RESOURCE_REVIEW.json')['passed'] and time.time()-read(D/'RESOURCE_REVIEW.json')['time']<3600
+  assert read(D/'PREFLIGHT_FINISHED.json')['passed'];contract=read(D/'CONTRACT_REVIEW.json');assert contract['passed'] and sum(x['negative_count'] for x in contract['methods'].values())==120
+  for m in contract['methods']:
+@@ -16,7 +16,7 @@
+   p=read(R/m/'REGISTRATION.json');st=p['post_interruption_continuation'];validate_protocol(st['parent_registration']['sha256'],p);ck=read(R/m/'CHECK_ONLY_REVIEW.json');initial=read(R/m/'check/INITIAL_STATE_REVIEW.json')
+   assert ck['passed'] and ck['registration_sha256']==sha(R/m/'REGISTRATION.json') and ck['checkpoint_sha256']==sha(st['checkpoint']['path'])
+   assert ck['repeat_native_update_full_state_exact'] and ck['original_state_restored'] and ck['consumer_full_state_exact'] and ck['disposable_restored_clone_updates']==2
+-  assert initial['passed'] and initial['full_trained98_learner_and_replay_exact']
++  assert initial['passed'] and initial['full_trained99_learner_and_replay_exact']
+  guard=read(B/'runtime/host_recovery_census93_20261031_v1/CURRENT_GUARD.json')
+  for j in guard['identities']:assert identity(j['pid'])==j['start']
+  assert not Path(guard['root'],'STOP').exists()
+@@ -25,13 +25,13 @@
+   if f.exists():
+    s=f.read_text().rsplit(')',1)[1].split();assert s[0]=='Z' or int(s[19])!=j['start_ticks']
+  assert time.time()<read(D/'SCIENTIFIC_DECISION.json')['launch_deadline_unix']
+- # Exclude an existing formal98/99 job, checking actual argv rather than old receipts.
++ # Exclude an existing formal99/100 job, checking actual argv rather than old receipts.
+  active=[]
+  for q in Path('/proc').iterdir():
+   if not q.name.isdigit():continue
+   try:
+    argv=q.joinpath('cmdline').read_bytes().decode().split('\0')
+-   if any(a in [str(D/'driver.py'),str(B/'runtime/census98_continuation_20261031_v1/driver.py')] for a in argv):active.append(int(q.name))
++   if any(a in [str(D/'driver.py'),str(B/'runtime/census99_continuation_20261031_v1/driver.py')] for a in argv):active.append(int(q.name))
+   except (OSError,UnicodeDecodeError):pass
+  assert not active,active
+  return dict(passed=True,time=time.time(),registration_hashes={m:sha(R/m/'REGISTRATION.json') for m in contract['methods']},source_manifest_sha256=sha(D/'SOURCES.json'),contract_sha256=sha(D/'CONTRACT_REVIEW.json'),negative_rejections=120,disposable_native_updates=6,automatic_followup=False,new_cycles=1,current_guard=guard)
+@@ -44,7 +44,7 @@
+   with (R/(j['controller']+'_driver.log')).open('x') as f:p=subprocess.Popen(j['command'],stdout=f,stderr=subprocess.STDOUT,env=env,start_new_session=True,cwd=D)
+   j.update(pid=p.pid,proc_start_ticks=identity(p.pid),time=time.time())
+  put(R/'LAUNCH.json',dict(time=time.time(),jobs=jobs,new_cycles=1,automatic_followup=False,maximum_new_actions_per_method=41250))
+- for name,script in [('MONITOR','archive99.py'),('STARTUP','startup99.py'),('OBSERVER','observe99.py')]:
++ for name,script in [('MONITOR','archive100.py'),('STARTUP','startup100.py'),('OBSERVER','observe100.py')]:
+   with (R/(name.lower()+'.log')).open('x') as f:p=subprocess.Popen([str(B/'env/bin/python'),str(D/script)],stdout=f,stderr=subprocess.STDOUT,env=env,start_new_session=True,cwd=D)
+   put(R/(name+'_LAUNCH.json'),dict(time=time.time(),pid=p.pid,proc_start_ticks=identity(p.pid),script_sha256=sha(D/script)))
+  print(json.dumps(dict(jobs=jobs,goal='active')),flush=True)

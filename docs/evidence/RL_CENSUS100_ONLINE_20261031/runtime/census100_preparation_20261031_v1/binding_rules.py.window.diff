@@ -1,0 +1,42 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census97_99_reward_stability_20261031_v1/binding_rules.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_census100_102_reward_stability_20261031_v1/binding_rules.py
+@@ -1,7 +1,7 @@
+ """Fail closed on missing complete cycles, changed census rules or substituted health loss."""
+ from pathlib import Path
+ import json,hashlib,math
+-METHODS=['impedance','admittance','vmc'];CYCLES=[97,98,99]
++METHODS=['impedance','admittance','vmc'];CYCLES=[100,101,102]
+ KEYS={'protocol','review','health','finished','episodes','optimizer','loss_plot','health_plot','loss_review','plot_inspection','checkpoint'}
+ def read(p):return json.loads(Path(p).read_text())
+ def sha(p):
+@@ -18,8 +18,8 @@
+   if p[k]!=v or intent[k]!=v:raise ValueError('Fixed census window rule changed: '+k)
+  if p['conditional_amendment']!=intent['amendments']:raise ValueError('Census estimator intent changed')
+  for k in ['original_plan','original_failed_report','original_saved_review','original_early_failure']:check_ref(p[k])
+- check_ref(p['previous94_96_failed_report'])
+- for group in ['protocol97','anchor_protocol55']:
++ check_ref(p['previous94_96_failed_report']);check_ref(p['previous97_99_failed_report'])
++ for group in ['protocol100','anchor_protocol55']:
+   for r in p[group].values():check_ref(r)
+  return p
+ 
+@@ -45,7 +45,7 @@
+ 
+ def validate_registration(root,reg,check_checkpoints=False):
+  plan=locked(root)
+- required=dict(cycles=CYCLES,seed=2026102861,bootstrap_replicates=5000,near_zero_guard=1.,relative_limit=.05,automatic_training=False,source_sha256=sha(root/'audit.py'),review_source_sha256=sha(root/'review_saved.py'),binding_source=ref(root/'bind_inputs.py'),original_prospective_plan=plan['intent'],original_failed_window=plan['original_failed_report'],original_early_failure=plan['original_early_failure'],history_amendment=plan['history_amendment'],violation_amendment=plan['violation_amendment'],conditional_amendment=plan['conditional_amendment'],anchor_protocol55=plan['anchor_protocol55'],followup_marker=plan['followup_marker'],third_capacity_stage=plan['third_capacity_stage'],previous94_96_failed_report=plan['previous94_96_failed_report'])
++ required=dict(cycles=CYCLES,seed=2026102861,bootstrap_replicates=5000,near_zero_guard=1.,relative_limit=.05,automatic_training=False,source_sha256=sha(root/'audit.py'),review_source_sha256=sha(root/'review_saved.py'),binding_source=ref(root/'bind_inputs.py'),original_prospective_plan=plan['intent'],original_failed_window=plan['original_failed_report'],original_early_failure=plan['original_early_failure'],history_amendment=plan['history_amendment'],violation_amendment=plan['violation_amendment'],conditional_amendment=plan['conditional_amendment'],anchor_protocol55=plan['anchor_protocol55'],followup_marker=plan['followup_marker'],third_capacity_stage=plan['third_capacity_stage'],previous94_96_failed_report=plan['previous94_96_failed_report'],previous97_99_failed_report=plan['previous97_99_failed_report'])
+  if set(reg)!=set(required)|{'inputs'}:raise ValueError('Exact window registration fields required')
+  for k,v in required.items():
+   if reg[k]!=v:raise ValueError('Wrong registration '+k)
+@@ -81,8 +81,8 @@
+    if [e for e in episodes if e.get('abort_reason')]!=row['aborts'] or sum(e['task_success'] for e in episodes)!=row['task'] or sum(e['strict_success'] for e in episodes)!=row['strict']:raise ValueError('Task/Strict/aborts changed')
+    if not math.isclose(math.fsum(e['reward'] for e in episodes)/30,row['reward_mean'],abs_tol=1e-10):raise ValueError('Reward summary mismatch')
+ 
+-   if c==97:
+-    if p!=read(plan['protocol97'][m]['path']):raise ValueError('Initial94 registration changed')
++   if c==100:
++    if p!=read(plan['protocol100'][m]['path']):raise ValueError('Initial100 registration changed')
+    else:
+     prev=reg['inputs'][f'{m}:{c-1}'];parent=read(prev['review']['path'])['methods'][m]
+     if st['checkpoint']['sha256']!=prev['checkpoint']['sha256'] or st['parent_registration']['sha256']!=prev['protocol']['sha256'] or st['parent_steps']!=parent['steps']:raise ValueError('Noncontiguous formal parent chain')

@@ -1,0 +1,78 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census99_continuation_20261031_v1/review99.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/census100_continuation_20261031_v1/review100.py
+@@ -5,7 +5,7 @@
+ import torch
+ torch.set_num_threads(1)
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-OUT=B/'runs/parameter_census_cycle99_review_20261031_v1'
++OUT=B/'runs/parameter_census_cycle100_review_20261031_v1'
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+ sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle75_20261026_v1'))
+ sys.path.insert(0,str(Path(__file__).resolve().parent))
+@@ -30,24 +30,24 @@
+     return True
+ methods={}
+ for m in ['impedance', 'admittance', 'vmc']:
+-    run=B/'runs/parameter_census_cycle99_20261031_v1'/m/'train'
+-    cp=B/'runs/parameter_census_cycle99_archive_20261031_v1'/m/'cycle_00099.pt'
++    run=B/'runs/parameter_census_cycle100_20261031_v1'/m/'train'
++    cp=B/'runs/parameter_census_cycle100_archive_20261031_v1'/m/'cycle_00100.pt'
+     deadline=time.monotonic()+7200
+     while not cp.exists():
+-        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle99 archive unavailable: '+m)
++        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle100 archive unavailable: '+m)
+         time.sleep(2)
+     x=torch.load(cp,map_location='cpu',weights_only=False)
+     execution=read(run/'EXECUTION.json');parent=Path(execution['resumed_from'])
+     assert sha(parent)==execution['resumed_checkpoint_sha256']
+     stage_parent=parent
+-    # Exact parent is complete trained98; incomplete75 remains absent from complete-cycle history.
++    # Exact parent is complete trained99; incomplete75 remains absent from complete-cycle history.
+     old=torch.load(parent,map_location='cpu',weights_only=False)
+     assert x['replay']['capacity']==6_000_000 and x['replay'][THIRD_KEY]==THIRD_MARKER and x['replay_capacity_third_stage']==json.loads((run.parent/'REGISTRATION.json').read_text())['replay_capacity_third_stage'] and x['replay']['replay_capacity_followup']==FOLLOWUP_MARKER and x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     assert old['replay']['capacity']==6_000_000 and old['replay'][THIRD_KEY]==THIRD_MARKER and old['replay_capacity_third_stage']==x['replay_capacity_third_stage'] and old['replay']['replay_capacity_extension']==CAPACITY_MARKER and old['replay']['replay_capacity_followup']==FOLLOWUP_MARKER
+     assert x['replay']['size']==x['replay']['cursor']==x['steps'] and x['steps']>1_000_000
+-    assert x['cycle']==99 and x['boundary']=='complete_condition_cycle'
++    assert x['cycle']==100 and x['boundary']=='complete_condition_cycle'
+     assert x['learner']['target_pair_reduction']==dict(version=1,target={'impedance':'minimum','admittance':'mean','vmc':'mean'}[m],actor='minimum',sampled_targets=2)
+-    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==99
++    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==100
+     assert finite(x['learner']) and x['learner']['critic_clock']
+     assert x['learner']['terminal_loss_weight']==128
+     assert x['learner']['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9995,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
+@@ -66,7 +66,7 @@
+     followup=reg['replay_capacity_followup_stage']
+     assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47
+     assert followup==previous['replay_capacity_followup_stage']
+-    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==98
++    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==99
+     baseline_deps=previous['batch_size_stage']['dependency_hashes'];deps=reg['batch_size_stage']['dependency_hashes']
+     assert deps==baseline_deps
+     assert all(deps[k]==v for k,v in baseline_deps.items())
+@@ -78,7 +78,7 @@
+     assert read(run.parent/'CHECK_ONLY_REVIEW.json')['passed'] and read(run.parent/'INITIAL_STATE_REVIEW.json')['passed']
+     assert sha(recovery['partial_audit']['path'])==recovery['partial_audit']['sha256']
+     continuation=reg['post_interruption_continuation']
+-    assert x['recovery_continuation']==continuation and continuation['parent_cycle']==98 and continuation['new_cycle']==99
++    assert x['recovery_continuation']==continuation and continuation['parent_cycle']==99 and continuation['new_cycle']==100
+     assert old['interruption_recovery']==recovery and sha(parent)==continuation['checkpoint']['sha256']
+     n=old['replay']['size'];arr=x['replay']['arrays']
+     for k,v in old['replay']['arrays'].items():assert np.array_equal(v,arr[k][:n])
+@@ -90,7 +90,7 @@
+     assert x['learner'][VK]==x['replay'][VK]==old['learner'][VK]==old['replay'][VK]==violation_marker(v['binding'])
+     assert arr['observations'].shape[1]==arr['next_observations'].shape[1]==52
+     assert execution['replay_observation_dimension']==52 and execution['actor_observation_dimension']==49 and execution['protocol_sha256']==x['protocol_sha256']
+-    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==99]
++    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==100]
+     assert 0<len(transitions)<=41250 and len(transitions)==x['steps']-old['steps']
+     assert [t['step'] for t in transitions]==list(range(old['steps']+1,x['steps']+1))
+     assert x['learner']['num_gradient_steps']-old['learner']['num_gradient_steps']==len(transitions)
+@@ -98,7 +98,7 @@
+     np.testing.assert_array_equal(arr['dones'][n:,0],np.array([t['done'] for t in transitions],np.float32))
+     by_case=collections.defaultdict(list)
+     for t in transitions:by_case[t['condition']].append(t)
+-    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==99]
++    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==100]
+     assert len(episodes)==30 and {e['condition'] for e in episodes}==set(conditions)
+     max_reward_error=0.
+     for e in episodes:
