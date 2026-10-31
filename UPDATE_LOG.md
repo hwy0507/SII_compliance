@@ -1,3 +1,9 @@
+## 2026-10-31 — 第94轮前5000已审；固定93全部终端比较等待
+
+- [交接](docs/RL_CENSUS94_PREFIX_20261031.md)。固定first5000原始字节/全部metrics/保存算术/实际九栏图通过；原抽样loss最大I16.365/A1.537/V1.152，I尖峰与actor上移仍保留。新q_loss是条件估计，不替代原抽样健康口径；前缀无新terminal，完整94/真实cache增长和收敛均待。
+- 全8353固定93终端/all5/原masks比较准备完成，使用initial_prediction不使用隔离拟合结果；全来源/算术及三实际partial94拒绝通过。唯一只读等待器1895688沿原archive截止，完整94后strict census恢复，0update/physics，无自动95/Direct34。原99身份180.123s/19样本保持，steps增长{'impedance': 1508, 'admittance': 1506, 'vmc': 1533}。
+- GPU51样本min[76, 70, 71, 71]%、低于50[0, 0, 0, 0]，科学结束仍guard；SSD35成员/SHAc4e3f3cf，HDD仅254字节指针、非全备份。main93de46c6/baselinef6e8f8c2实际query/fetch/read。全部历史失败/Direct原验收/指定ESN缺失保留；Goal active，无子agent。
+
 ## 2026-10-31 — 条件终端估计器有限在线94实际训练
 
 - [交接](docs/RL_CENSUS94_ONLINE_20261031.md)。准确完整93全state迁入，仅增加census规则；每方法一轮≤41250/30×55s，原physics/actor49/critic52/reward/LR/batch65536/UTD1保持，无辅助权重或自动95/Direct34。新marker/top amendment持久，原抽样loss与条件估计loss分列，CPU消费者strict恢复/RNG不变。
