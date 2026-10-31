@@ -1,3 +1,9 @@
+## 2026-10-31 — final108 登记资源函数零物理预检保留
+
+- 直接使用登记环境的 `select_v9_closed_loop_candidates_v3_20261029.py::check_resources()` 做零物理预检；没有调用 `run()`、没有创建 final108 `execution.json`、没有启动 MuJoCo。收据：`docs/evidence/CONTACT_YIELD_FINAL108_RESOURCE_PREFLIGHT_20261031.json`，`physics_calls=0`，状态 `rejected_resource_preflight`。
+- 拒绝证据：Chromium scope、affinity 0–23、`memory.max=max`、user systemd bus 不可用、主机 `SwapFree=8 KiB`；登记要求 CPU6/单线程/3 GiB/禁 swap。收据 SHA256 `c4d68bdd045d142e360ead2dd9d7aeef2c38725ae379414e615b3d87f2d6a98b`。
+- final108 仍为 0/108；该预检只证明当前资源不合规，不提供任何 Task/Strict、SPT、力矩、舒适度或机器合规结果。Goal active，待外部提供合规本机 scope 后继续一次性正式评测。
+
 ## 2026-10-31 — final108 资源前置再次核验；测试仍未派发
 
 - 本轮先重新读取了项目规则及 GitHub 两个分支：远端 `main=414944fe9b270dfa5664de38f2da96952df365e0`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；本地已快进到该 main。远端 main 的 RL census94 更新与本专题无冲突，未改 final108 登记或模型锁定。
