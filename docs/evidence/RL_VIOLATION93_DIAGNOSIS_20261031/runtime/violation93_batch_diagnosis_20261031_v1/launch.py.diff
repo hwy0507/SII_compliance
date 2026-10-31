@@ -1,0 +1,10 @@
+--- launch.py92
++++ launch.py93
+@@ -1,6 +1,6 @@
+ from pathlib import Path
+ import os,sys,json,time,subprocess,hashlib,traceback
+-D=Path(__file__).resolve().parent;B=D.parents[1];O=B/'runs/violation92_frozen_batch_diagnosis_20261031_v1';plan=json.loads((O/'PLAN.json').read_text());assert hashlib.sha256((D/'probe.py').read_bytes()).hexdigest()==plan['source_sha256']
++D=Path(__file__).resolve().parent;B=D.parents[1];O=B/'runs/violation93_frozen_batch_diagnosis_20261031_v1';plan=json.loads((O/'PLAN.json').read_text());assert hashlib.sha256((D/'probe.py').read_bytes()).hexdigest()==plan['source_sha256']
+ children=[];jobs=[];start=time.monotonic()
+ try:
+  for m,e in plan['methods'].items():

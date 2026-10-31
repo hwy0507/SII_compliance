@@ -1,0 +1,43 @@
+--- probe.py92
++++ probe.py93
+@@ -1,7 +1,7 @@
+-"""Frozen full92 native65536 critic batches, stopped before zero_grad/backward/step."""
++"""Frozen full93 native65536 critic batches, stopped before zero_grad/backward/step."""
+ from pathlib import Path
+ import argparse,copy,gc,hashlib,json,marshal,os,sys,time,traceback
+-D=Path(__file__).resolve().parent;B=D.parents[1];O=B/'runs/violation92_frozen_batch_diagnosis_20261031_v1'
++D=Path(__file__).resolve().parent;B=D.parents[1];O=B/'runs/violation93_frozen_batch_diagnosis_20261031_v1'
+ read=lambda p:json.loads(Path(p).read_text())
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+@@ -14,18 +14,18 @@
+  assert sha(__file__)==plan['source_sha256']
+  for p,h in plan['dependencies'].items():assert sha(p)==h,p
+  for ref in plan['inputs']:assert sha(ref['path'])==ref['sha256']
+- sys.path[:0]=[plan['restore_runtime'],str(B/'runtime/violation92_continuation_20261030_v1'),str(B/'runtime/source_train17_clock/source/tools'),str(B/'runtime/violation92_terminal_followup_20261030_v1')]
++ sys.path[:0]=[plan['restore_runtime'],str(B/'runtime/violation93_continuation_20261031_v1'),str(B/'runtime/source_train17_clock/source/tools'),str(B/'runtime/violation93_terminal_followup_20261031_v1')]
+  import numpy as np
+  import torch
+  from violation_consumers import restore_learner
+  from violation_pipeline import classes
+- from compare92 import validate_recovery92
++ from compare93 import validate_complete93
+  from published_exact_pipeline_20261026 import cache_class,accepted
+  from published_replay_device_cache_20261025 import DeviceReplayCache
+  from frozen_helpers import capture_rng,restore_rng
+  from validate_published_finite_check_20261025 import digest
+  torch.set_num_threads(1)
+- cp=Path(entry['checkpoint']);assert sha(cp)==entry['checkpoint_sha256'];ck=torch.load(cp,map_location='cpu',weights_only=False);reg=read(entry['registration']);validate_recovery92(ck,reg);assert ck['steps']==entry['steps']
++ cp=Path(entry['checkpoint']);assert sha(cp)==entry['checkpoint_sha256'];ck=torch.load(cp,map_location='cpu',weights_only=False);reg=read(entry['registration']);validate_complete93(ck,reg);assert ck['steps']==entry['steps']
+  binding=reg['violation_critic_amendment']['binding'];learner=restore_learner(ck['learner'],binding,B/'runtime/source_train17_clock',entry['device'],ck['seed']);_,replay_cls=classes(reg);replay=replay_cls(binding['action_dimension'],52,20261078);replay.load_state_dict(ck['replay'])
+  initial=learner.state_dict();initial_digest=digest(initial);replay_digest=digest(ck['replay']);assert initial_digest==digest(ck['learner']) and digest(replay.state_dict())==replay_digest
+  native=learner.learner;original_rng=capture_rng(learner);original_replay_rng=copy.deepcopy(replay.rng.bit_generator.state);cache=cache_class(DeviceReplayCache)(replay,entry['device']);captured=[]
+@@ -62,7 +62,7 @@
+    err=q.astype(np.float64)-target.astype(np.float64)[:,None];weight=mask.astype(np.float64)*(1+127*done.astype(np.float64))[:,None];den=weight.sum(0);contribution=err**2*weight/den;percritic=contribution.sum(0)
+    np.testing.assert_allclose(percritic,c['native_losses'],rtol=3e-6,atol=1e-6);assert abs(percritic.sum()-c['native_loss'])<=max(1e-6,3e-6*abs(c['native_loss']))
+    perrow=contribution.sum(1);order=np.argsort(-perrow)[:20];groups={}
+-   for name,sel in [('terminal',done==1),('nonterminal',done==0),('old',idx<entry['parent_steps']),('new92',idx>=entry['parent_steps']),('bit0',bits==0),('bit1',bits==1)]:groups[name]=dict(count=int(sel.sum()),loss=float(perrow[sel].sum()),per_critic=contribution[sel].sum(0).tolist())
++   for name,sel in [('terminal',done==1),('nonterminal',done==0),('old',idx<entry['parent_steps']),('new93',idx>=entry['parent_steps']),('bit0',bits==0),('bit1',bits==1)]:groups[name]=dict(count=int(sel.sum()),loss=float(perrow[sel].sum()),per_critic=contribution[sel].sum(0).tolist())
+    raw=out/'raw'/f'batch_{n:03d}.npz';np.savez_compressed(raw,indices=idx.astype(np.uint32),q=q,target=target,rewards=reward,masks=mask,dones=done,bits=bits,pair=c['pair'],native_losses=c['native_losses'],native_loss=np.asarray(c['native_loss']))
+    record=dict(batch=n,native_loss=c['native_loss'],native_losses=c['native_losses'].tolist(),reconstructed_loss=float(perrow.sum()),pair=c['pair'].tolist(),denominators=den.tolist(),groups=groups,top20=[dict(replay_index=int(idx[j]),contribution=float(perrow[j]),terminal=bool(done[j]),violation_bit=int(bits[j]),reward=float(reward[j]),target=float(target[j]),q=q[j].tolist(),mask=mask[j].tolist()) for j in order])
+    records.append(record);manifest.append(dict(path=str(raw),bytes=raw.stat().st_size,sha256=sha(raw)))
