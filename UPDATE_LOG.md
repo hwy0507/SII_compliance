@@ -1,3 +1,8 @@
+## 2026-10-31 — final108 v2 控制证据归档 v2 完成
+
+- 因远端main在归档期间有并发提交，已保留v1目录不改，并将当前已推送提交 `abd2fc269f087108160d2edf8ff34a07eb533b1d` 对应的四个小证据文件与manifest归档到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_final108_v2_controls_20261031_v2/`。新目录创建前确认不存在，服务器未运行计算，逐文件SHA256回读一致；manifest SHA `19d139b4f622ba80ad1425906bb85f7a93f65b3bebf0b511d18e98971927b18a`。
+- 仍只有零物理控制审计，不是final108科学结果；登记目录无`execution.json`，完成度0/108。
+
 ## 2026-10-31 — final108 v2 控制证据服务器归档完成
 
 - 已将本轮控制脚本、`CONTROL_AUDIT.json`、专题进度和UPDATE_LOG归档到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_final108_v2_controls_20261031_v1/`，目录创建前确认不存在；服务器未运行计算，5个文件（含manifest）均已回读。脚本SHA `4de8f7c048c7718d866a687ea2cc1705747c42f4be1581d4dbe7b851bf804f36`，收据SHA `234fd9d05d75e788f729e210513a93d63539f68e11983a5c30d903dd70619d58`，manifest SHA `15966ecf4643d05847fb8b2c0b9f07a95a2b7d08502f0c97cde9caa1467cca72`。
