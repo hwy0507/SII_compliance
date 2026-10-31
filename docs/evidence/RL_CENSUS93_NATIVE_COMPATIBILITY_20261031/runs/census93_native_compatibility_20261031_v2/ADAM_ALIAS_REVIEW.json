@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "time": 1793422656.051049,
+  "cpu_Adam_step_storage": {
+    "original_loader": {
+      "q_optimizer": {
+        "shared": 50,
+        "total": 50
+      },
+      "actor_optimizer": {
+        "shared": 8,
+        "total": 8
+      },
+      "alpha_optimizer": {
+        "shared": 1,
+        "total": 1
+      }
+    },
+    "census_owned_copy": {
+      "q_optimizer": {
+        "shared": 0,
+        "total": 50
+      },
+      "actor_optimizer": {
+        "shared": 0,
+        "total": 8
+      },
+      "alpha_optimizer": {
+        "shared": 0,
+        "total": 1
+      }
+    }
+  },
+  "no_optimizer_or_physics": true,
+  "source_input_unchanged": true,
+  "interpretation": "Original loader aliases input CPU step counters; independent owned state copy prevents disposable updates from mutating reset reference. V1 metric/RNG equality was insufficient."
+}

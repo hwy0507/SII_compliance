@@ -1,3 +1,11 @@
+## 2026-10-31 — 条件终端估计器完整native更新与恢复兼容通过
+
+- [交接](RL_CENSUS93_NATIVE_COMPATIBILITY_20261031.md)。只替换q_losses、原train code字节重建核验、原sampler/RNG及actor/target/温度路径保持；增量终端cache与版本化marker已实现。三方法各四臂×8完整更新，共96隔离更新，候选重复/中途重载完整state精确，原生对照抽样/RNG一致；独立首批loss/gradient最大差0、三磁盘存档旧回放前缀/新增fixture/masks/RNG/Adam+4通过。
+- 第一版I32更新后state断言失败、空load残留终端缺陷保留；原loader CPU Adam step别名50/8/1确认，第二版独立state副本降为0并清除缓存后重建，额外空/无终端/负例通过。总128隔离更新，0正式/physics，不推广fixture权重。原抽样loss和条件估计loss分列，8步非收敛/线上稳定证据。
+- 下一步单独登记有限在线94及driver/消费者/startup；尚无94/Direct34。父仍完整93，原上轮I/V退化、全部历史失败、Direct原验收及指定ESN缺失保持；科学结束仍独立guard，Goal active，无子agent。
+
+- GPU126样本min[76, 77, 76, 70]%、低于50[0, 0, 0, 0]，科学结束仍guard。SSD49成员/SHA1897580a，HDD仅254字节指针、非全备份。main27ac709a/baselinef6e8f8c2已query/fetch/read，实际发布见收据。
+
 ## 2026-10-31 — 新主机cn2恢复：四卡保活重启、完整93冷恢复精确
 
 - [交接](RL_CENSUS93_HOST_RECOVERY_20261031.md)。主机已切换至cn2p6rygmr，旧guard/PID和工具句柄消失、实测四卡0%；无其他guard确认后从原源码重启，/tmp/sii_gpu_util_guard_20261031_recovery_v1，supervisor96425、workers96426–96429，start身份见CURRENT_GUARD。科学结束继续，非重启服务。
